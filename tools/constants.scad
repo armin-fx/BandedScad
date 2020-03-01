@@ -15,7 +15,7 @@ extra=0.02;
 epsilon=  0.000075;
 
 // Konstante pi = 3.14159265359
-pi  = calculate_pi( function_find_first(check_accuracy_pi, true, 21));
+pi  = get_max_accuracy_pi();
 tau = 2*pi;
 // Eulersche Zahl = 2.71828182846
 euler  = exp(1);
