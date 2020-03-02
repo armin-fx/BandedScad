@@ -4,11 +4,12 @@
 
 
 // setzt einen Wert innerhalb eines Bereiches
-// (umbenennen in constrain?)
-function scope (value, a, b) = 
-	 (a<b) ? (value<a) ? a : (value>b) ? b : value
-	:(a>b) ? (value<b) ? b : (value>a) ? a : value
-	:a
+function constrain (value, a, b) = 
+	 (a<=b) ?
+		 (value<a) ? a
+		:(value>b) ? b
+		: value
+	: constrain(value, b, a)
 ;
 
 // Test: die Zahl ist eine ungerade Zahl? 
@@ -34,8 +35,8 @@ function sqr (x) = x*x;
 // n = "Diagonale"
 // v = "Kathete" oder Liste von "Katheten"
 function reverse_norm (n, v) =
-	(is_value(v)) ? sqrt( sqr(n) - sqr(v) )
-	:               sqrt( sqr(n) + reverse_norm_intern(v))
+	(is_num(v)) ? sqrt( sqr(n) - sqr(v) )
+	:             sqrt( sqr(n) + reverse_norm_intern(v))
 ;
 function reverse_norm_intern (v, index=0) =
 	(index==len(v)) ? 0
@@ -158,7 +159,7 @@ function continued_fraction_intern_ (b, a, pos=0) =
 
 
 // Größter gemeinsamer Teiler
-function ggt (a, b=0) =
+function ggt (a, b=0) =  // deutscher Name
 	 (a==0) ? abs(b)
 	:(b==0) ? abs(a)
 	:ggt_intern(round(a),round(b))
@@ -167,9 +168,9 @@ function ggt_intern (a,b) =
 	(b==0) ? a
 	:ggt_intern(b, a%b)
 ;
-function gcd (a, b=0) = ggt (a, b); // englischer Name
+function gcd (a, b=0) = ggt (a, b); // english name
 
 // Kleinstes gemeinsames Vielfaches
-function kgv (a, b=1) = a/ggt(a,b) * b;
-function lcm (a, b=1) = kgv (a, b); // englischer Name
+function kgv (a, b=1) = a/ggt(a,b) * b; // deutscher Name
+function lcm (a, b=1) = kgv (a, b);     // english name
 

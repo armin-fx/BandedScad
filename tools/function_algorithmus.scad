@@ -7,7 +7,6 @@ function select_function (number, argument, arg2, arg3, arg4, arg5, arg6, arg7, 
 	// Liste als Parameter
 	:(is_list(number)) ? number[argument]
 	// interne Funtionen
-	:(number==check_accuracy_pi) ? check_accuracy_pi(argument)
 	:(number==Si_taylor_index)   ? Si_taylor_index  (argument, arg2)
 	// frei benutzbare funktionen
 	:(number==fn_0) ? fn_0(argument, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9)

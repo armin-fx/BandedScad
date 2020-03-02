@@ -45,38 +45,21 @@ function extract_list (list, begin, last, range) =
 		]) list[i]]
 ;
 
-// testet eine Variable, ob sie eine Zahl enthält
-function is_value   (value) = (len(value)==undef && value+0!=undef);
-
 // testet eine Variable, ob sie eine Liste enthält
 // dimension - Tiefe der verschachtelten Listen,
 //             ohne Angabe wird eine eindimensionale Liste getestet
 //             bei 0 wird die Variable getestet, ob sie eine Zahl enthält
-function is_list (value, dimension=1) =
-	(dimension==0) ? is_value (value) :
-	(dimension==1) ? is_list_1(value)
-	:                is_list  (value[0], dimension-1)
+function is_list_depth (value, dimension=1) =
+	(dimension==0) ? is_num(value) :
+	(dimension==1) ? (is_list(value) && !is_list(value[0]))
+	:                is_list_depth  (value[0], dimension-1)
 ;
-// testet eine Variable, ob sie eine (eindimensionale) Liste enthält
-function is_list_1 (value) = (len(value)!=undef && value[0]+0!=undef);
-// testet eine Variable, ob sie eine zweidimensionale Liste enthält
-function is_list_2 (value) = (len(value)!=undef && value[0][0]+0!=undef);
-
-// testet eine Variable, ob sie einen Text enthält
-function is_string  (value) = ( len(value)!=undef && value[0]+0==undef && value[0][0]+0==undef && value[0]==value[0][0]
-	&& ( (len(value)==1) ? value==value[0] : true)
-	)
-;
-
-function is_bool  (value) = (value==true || value==false) ? true : false;
-function is_undef (value) = (undef == value);
 
 // gibt die Verschachelungstiefe einer Liste zurück
 function get_list_depth (list) = get_list_depth_intern(list);
 function get_list_depth_intern (list, i=0) =
-	 (len(list)==undef) ? i
-	:(is_string(list))  ? i
-	:get_list_depth_intern (list[0], i+1)
+	(!is_list(list)) ? i
+	:                  get_list_depth_intern (list[0], i+1)
 ;
 
 
