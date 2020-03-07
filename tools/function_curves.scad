@@ -182,11 +182,3 @@ function square_curve_intern(size, center) =
 	:translate_list(  [[0,0], [size[0],0], [size[0],size[1]], [0,size[1]]], [-size[0]/2,-size[0]/2])
 ;
 
-// eine Kurve verschieben
-function translate_list (list, vector) =
-	[for (x=list) x+vector]
-;
-
-function rotate_list (list, angle) =
-	undef // TODO
-;
