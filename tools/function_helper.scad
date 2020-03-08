@@ -28,6 +28,19 @@ function max_norm (list) = norm(diff_list_all(list));
 function get_position (list, position) =
 	(position>=0) ? position : len(list)+position
 ;
+// gibt die echte Position innerhalb einer Liste zurück
+// Kodierung sinnvoll für Einfügepositionen:
+//     positive Angaben = Liste vom Anfang
+//     negative Angaben = Liste vom Ende, nach dem Element
+//     [a,  b,  c,  d]
+//      |   |   |   |
+//      0   1   2   3
+//    ^   ^   ^   ^   ^
+//     \   \   \   \   \
+//     -5  -4  -3  -2  -1
+function get_position_insert (list, position) =
+	(position>=0) ? position : len(list)+position+1
+;
 
 // extrahiert eine Sequenz aus der Liste
 // Angaben:

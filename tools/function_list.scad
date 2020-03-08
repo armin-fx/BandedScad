@@ -10,6 +10,32 @@ function concat_list (list) = [for (a=list) for (b=a) b];
 // kehrt die Reihenfolge einer Liste um
 function reverse_list (list) = [for (a=[len(list)-1:-1:0]) list[a]];
 
+// entfernt Elemente aus einer Liste
+function erase_list (list, begin, count=1) =
+	concat(
+		 (get_position(list,begin)==0) ? []
+		 :[for (i=[0:min(get_position(list,begin)-1,len(list)-1)])
+				list[i]]
+		,(get_position(list,begin)+get_position(list,count)>=len(list)) ? []
+		 :[for (i=[min(get_position(list,begin)+get_position(list,count),len(list)-1):len(list)-1])
+				list[i]]
+	)
+;
+
+// fügt eine alle Elemente einer Liste in die Liste eine
+function insert_list (list, list_insert, position=-1, begin=0, count=-1) =
+	concat(
+		 (get_position_insert(list,position)<=0) ? []
+		 :[for (i=[0:min(get_position_insert(list,position)-1,len(list)-1)])
+				list[i] ]
+		,(get_position(list_insert,begin)>min(get_position(list_insert,begin)+get_position_insert(list_insert,count)-1,len(list_insert)-1)) ? []
+		 :[for (i=[get_position(list_insert,begin):min(get_position(list_insert,begin)+get_position_insert(list_insert,count)-1,len(list_insert)-1)])
+				list_insert[i] ]
+		,(get_position_insert(list,position)>=len(list)) ? []
+		 :[for (i=[max(0,min(get_position_insert(list,position),len(list)-1)):len(list)-1])
+				list[i] ]
+	)
+;
 
 // Listenfunktionen
 
@@ -19,9 +45,9 @@ function reverse_list (list) = [for (a=[len(list)-1:-1:0]) list[a]];
 //     1...n = Liste mit Position [1,2,3]
 // Wird in den folgenden Listenfunktionen verwendet,
 // um zwischen den Daten umschalten zu können von außerhalb der Funktion
-function get_value (v, type=0) = (type==0) ? v : v[type-1];
+function get_value (data, type=0) = (type==0) ? data : data[type-1];
 
-// Gibt eine Liste des gewählten Typs zurück
+// Gibt eine Liste des gewählten Typs zurück aus einer Liste
 function value_list (list, type=0) = [for (e=list) get_value(e, type)];
 
 // Maximum oder Minimum einer Liste gemäß des Typs
@@ -29,7 +55,7 @@ function min_list(list, type=0) = (type==0) ? min(list) : min(value_list(list, t
 function max_list(list, type=0) = (type==0) ? max(list) : max(value_list(list, type));
 
 // Listen sortieren
-function sort_list (list, type=0) = sort_list_mergesort (list, type);
+function sort_list (list, type=0) = sort_list_quicksort (list, type);
 
 // unstabiles sortieren
 function sort_list_quicksort (list, type=0) =
@@ -43,12 +69,11 @@ function sort_list_quicksort (list, type=0) =
 	)
 ;
 
-
 // stabiles sortierten
 function sort_list_mergesort (list, type=0) =
 	(len(list)<=1) ? list :
 	let(end=len(list)-1, middle=floor((len(list)-1)/2))
-	merge_sorted_list(
+	merge_list(
 		 sort_list_mergesort([for (i=[0:middle])     list[i]], type)
 		,sort_list_mergesort([for (i=[middle+1:end]) list[i]], type)
 		,type
@@ -56,26 +81,40 @@ function sort_list_mergesort (list, type=0) =
 ;
 
 // 2 sortierte Listen miteinander verschmelzen
-function merge_sorted_list        (list1, list2, type=0) = merge_sorted_list_intern (list1, list2, type);
-function merge_sorted_list_intern (list1, list2, type, i1=0, i2=0) =
+function merge_list        (list1, list2, type=0) = merge_list_intern (list1, list2, type);
+function merge_list_intern (list1, list2, type, i1=0, i2=0) =
 	(i1>=len(list1) || i2>=len(list2)) ?
 		(i1>=len(list1)) ? [ for (e=[i2:len(list2)-1]) list2[e] ]
 	:	(i2>=len(list2)) ? [ for (e=[i1:len(list1)-1]) list1[e] ]
 	:   []
 	:(get_value(list1[i1],type) <= get_value(list2[i2],type)) ?
-		 concat([list1[i1]], merge_sorted_list_intern (list1, list2, type, i1+1, i2))
-		:concat([list2[i2]], merge_sorted_list_intern (list1, list2, type, i1,   i2+1))
+		 concat([list1[i1]], merge_list_intern (list1, list2, type, i1+1, i2))
+		:concat([list2[i2]], merge_list_intern (list1, list2, type, i1,   i2+1))
 ;
 
-function binary_search        (list, v, type=0) = (len(list)<=1) ? 0 : binary_search_intern (list, v, type, 0, len(list)-1);
-function binary_search_intern (list, v, type, begin, end) =
+function binary_search_list        (list, value, type=0) = (len(list)<=1) ? 0 : binary_search_list_intern (list, value, type, 0, len(list)-1);
+function binary_search_list_intern (list, value, type, begin, end) =
 	(end<begin)        ? -begin
 	:let(middle=floor((begin+end)/2))
-	 (get_value(list[middle])==v) ? middle
-	:(get_value(list[middle])< v) ? binary_search_intern (list, v, middle+1, end)
-	:                               binary_search_intern (list, v, begin   , middle-1)
+	 (get_value(list[middle])==value) ? middle
+	:(get_value(list[middle])< value) ? binary_search_list_intern (list, value, middle+1, end)
+	:                                   binary_search_list_intern (list, value, begin   , middle-1)
 ;
 
+// sucht nach einem Wert und gibt die Position des Treffers aus einer Liste heraus
+// Argumente:
+//   list    -Liste
+//   value   -gesuchter Wert
+//   index   -Bei gleichen Werten wird index-mal übersprungen
+//            standartmäßig wird der erste gefundene Schlüssel genommen (index=0)
+function find_first_list        (list, value, index=0, type=0) = find_first_list_intern(list, value, index, type);
+function find_first_list_intern (list, value, index,   type, n=0) =
+	(list[n]==undef) ? len(list)
+	:(get_value(list[n],type)==value) ?
+		(index==0) ? n
+		:	find_first_list_intern (list, value, index-1, type, n+1)
+	:		find_first_list_intern (list, value, index,   type, n+1)
+;
 
 // pair-Funktionen
 //
@@ -92,14 +131,8 @@ type_pair_value=2;
 //   key     -gesuchter Schlüssel zum Wert
 //   index   -Bei gleichen Schlüsselwerten wird index-mal übersprungen
 //            standartmäßig wird der erste gefundene Schlüssel genommen (index=0)
-function pair_value        (list, key, index=0) = pair_value_intern(list, key, index);
-function pair_value_intern (list, key, index, n=0) =
-	(list[n]==undef) ? undef
-	:(list[n][0]==key) ?
-		(index==0) ? list[n][1]
-		:	pair_value_intern (list, key, index-1, n+1)
-	:		pair_value_intern (list, key, index,   n+1)
-;
+function pair_value     (list, key, index=0) =
+	list[find_first_list(list, key, index, type_pair_key)][type_pair_value-1];
 
 // gibt den Schlüssel eines Wertes aus einer Liste heraus
 // Argumente:
@@ -107,14 +140,8 @@ function pair_value_intern (list, key, index, n=0) =
 //   key     -gesuchter Wert zum Schlüssel
 //   index   -Bei gleichen Werten wird index-mal übersprungen
 //            standartmäßig wird der erste gefundene Wert genommen (index=0)
-function pair_key        (list, value, index=0) = pair_key_intern(list, value, index);
-function pair_key_intern (list, value, index, n=0) =
-	(list[n]==undef) ? undef
-	:(list[n][1]==value) ?
-		(index==0) ? list[n][0]
-		:	pair_key_intern (list, value, index-1, n+1)
-	:		pair_key_intern (list, value, index,   n+1)
-;
+function pair_key       (list, value, index=0) =
+	list[find_first_list(list, value, index, type_pair_value)][type_pair_key-1];
 
 // erzeugt ein Schlüssel-Werte-Paare
 function pair (key, value) = [key, value];

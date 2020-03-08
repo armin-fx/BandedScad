@@ -13,9 +13,9 @@ function constrain (value, a, b) =
 ;
 
 // Test: die Zahl ist eine ungerade Zahl? 
-function is_odd  (n) = ((n%2)*(n%2)==1) ? true : false;
+function is_odd  (n) = (abs(n%2)==1);
 // Test: die Zahl ist eine gerade Zahl? 
-function is_even (n) = (n%2==0) ? true : false;
+function is_even (n) = (n%2==0);
 
 function positiv_if_odd  (n) = (is_odd (n)) ?  1 : -1;
 function positiv_if_even (n) = (is_even(n)) ?  1 : -1;
@@ -80,7 +80,7 @@ function si   (x) = (x==0) ? 1 : sin(x*degree_per_radian) / x;
 function sinc (x) = si(pi*x);
 // Integralsinus (arbeitet nur bis x<32)
 function Si (x) = taylor_auto(Si_taylor_index, x, n=100);
-function Si_taylor_index(x, n) = positiv_if_even(n) * pow(x, 2*n+1) / (factorial(2*n+1) * (2*n+1));
+function Si_taylor_index(x, n) = let (term=2*n+1) positiv_if_even(n) * pow(x, term) / (factorial(term) * (term));
 Si_taylor_index = str("Si_taylor_index");
 
 // Gaußsche Normalverteilung
