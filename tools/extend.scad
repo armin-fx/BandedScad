@@ -34,7 +34,7 @@ function get_fn_circle_closed (r, fn, fa, fs) =
 ;
 function get_fn_circle (r, angle=360, piece=true, fn, fa, fs) = 
 	max(ceil(get_fn_circle_closed(r, fn, fa, fs) * angle/360),
-	    (piece) ? 1 : 2)
+	    (piece==true || piece==0) ? 1 : 2)
 ;
 
 // gibt die Anzahl der Segmente eines Kreises zurück
@@ -50,7 +50,7 @@ function get_fn_circle_closed_x (r, fn, fa, fs, fn_min, fn_max, fx, fp) =
 ;
 function get_fn_circle_x (r, angle=360, piece=true, fn, fa, fs, fn_min, fn_max, fx, fp) = 
 	max(ceil(get_fn_circle_closed_x(r, fn, fa, fs, fn_min, fn_max, fx, fp) * angle/360),
-	    (piece) ? 1 : 2)
+	    (piece==true || piece==0) ? 1 : 2)
 ;
 
 function get_fn_circle_current   (r, angle=360, piece=true) = get_fn_circle   (r, angle, piece, $fn, $fa, $fs);
@@ -83,7 +83,8 @@ function sf_min   (base, v1, v2, safe=sf_safe()) = sf_is_activated(base) ? min(v
 // Argumente wie function circle_curve()
 module circle_extend (r, d, angle=360, slices="x", piece=true, angle_begin=0)
 {
-	polygon(circle_curve (r=r, angle=angle, slices=slices, piece=piece, angle_begin=angle_begin, d=d), convexity=(piece && angle>180) ? 4 : 2);
+	polygon(circle_curve (r=r, angle=angle, slices=slices, piece=piece, angle_begin=angle_begin, d=d),
+	        convexity=(piece==true && angle>180) ? 4 : 2);
 }
 
 module cylinder_extend (h, r1, r1, center=false, r, d, d1, d2, angle=360, piece=true)

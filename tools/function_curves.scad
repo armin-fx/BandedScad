@@ -117,6 +117,7 @@ function circle_point_r (r, angle=0) =
 // slices - Anzahl der Segmente, ohne Angabe wird wie bei circle() gerechnet
 // piece  - true  = wie ein Tortenstück
 //          false = Enden des Kreises verbinden
+//          0     = zum weiterverarbeiten, Enden nicht verbinden, keine zusätzlichen Kanten
 // outer  - 0...1 = 0 - Ecken auf der Kreislinie ... 1 - Tangenten auf der Kreislinie
 function circle_curve   (r, angle=360, slices, piece=true, angle_begin=0, outer=0, d) = circle_curve_r(parameter_circle_r(r,d), angle, slices, piece, angle_begin, outer);
 function circle_curve_r (r, angle=360, slices, piece=true, angle_begin=0, outer=0)    =
@@ -125,20 +126,20 @@ function circle_curve_r (r, angle=360, slices, piece=true, angle_begin=0, outer=
 	:(slices=="x") ?
 		circle_curve_p_intern(r, angle, get_fn_circle_current_x(r,angle,piece), piece, angle_begin, outer)
 	:(slices< 2) ?
-		(piece) ?
+		(piece==true || pierce==0) ?
 			circle_curve_p_intern(r, angle, 1     , piece, angle_begin, outer)
 		:	circle_curve_p_intern(r, angle, 2     , piece, angle_begin, outer)
 	:		circle_curve_p_intern(r, angle, slices, piece, angle_begin, outer)
 ;
 function circle_curve_p_intern (r, angle, slices, piece, angle_begin, outer) =
-	(piece) ?
-		concat([[0,0]],
-		circle_curve_intern(r, angle, slices, angle_begin, outer) )
+	(piece==true && angle!=360) ? concat(
+		circle_curve_intern(r, angle, slices, angle_begin, outer)
+		,[[0,0]])
 	:
 		circle_curve_intern(r, angle, slices, angle_begin, outer)
 ;
 function circle_curve_intern (r, angle, slices, angle_begin, outer) =
-	[for (i = [0 : slices]) circle_point_r(r, angle_begin + angle*i/(slices) )]
+	[for (i = [0 : (angle==0) ? 0 : slices]) circle_point_r(r, angle_begin + angle*i/(slices) )]
 ;
 
 // Polynomfunktion
