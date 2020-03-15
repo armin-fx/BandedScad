@@ -1,6 +1,6 @@
 // function_curves.scad
 //
-// Enthält einige zusätzliche Funktionen
+// Enthält Funktionen, die Kurven beschreiben
 
 
 // ermittelt den Punkt einer Bezierkurve n. Grades abhängig von den Parametern

@@ -93,6 +93,15 @@ function product_intern (number, n, k, value=0) =
 	:product_intern(number, n, k+1,
 		value * select_function(number, k))
 ;
+function product_list (l, n, k=0) =
+	(n==undef) ?
+	 product_list_intern(l, len(l)-1,         k+1, l[k])
+	:product_list_intern(l, min(n, len(l)-1), k)
+;
+function product_list_intern (l, n, k, value=0) =
+	 (k>n) ? value
+	:product_list_intern(l, n, k+1, value * l[k])
+;
 
 function taylor        (number, x, n=0, k=0) = taylor_intern(number, x, n, k);
 function taylor_intern (number, x, n,   k,  value=0) =

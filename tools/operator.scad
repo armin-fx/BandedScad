@@ -110,6 +110,18 @@ module mirror_check (v)
 	else mirror(v) children(0);
 }
 
+// rotiert ein Objekt rückwärts
+// Argumente wie bei rotate()
+module rotate_backwards (a, v=undef)
+{
+	if (is_list(a))
+		rotate_x(-a[0]) rotate_y(-a[1]) rotate_z(-a[2]) children(0);
+	else if (is_num(a))
+		rotate(-a,v) children(0);
+	else
+		children(0);
+}
+
 // rotiert ein Objekt an der angegebenen Position
 // Argumente:
 // a, (v) - wie bei rotate()
@@ -122,14 +134,69 @@ module rotate_at (a=[0,0,0], p=[0,0,0], v=undef)
 	children(0);
 }
 
+// rotiert ein Objekt rückwärts an der angegebenen Position
+// Argumente wie rotate_at()
+// a, (v) - wie bei rotate()
+// p      - wie bei translate()
+module rotate_backwards_at (a=[0,0,0], p=[0,0,0], v=undef)
+{
+	translate(p)
+	rotate_backwards(a, v)
+	translate(-p)
+	children(0);
+}
+
+// Objekt von in Richtung Z-Achse in Richtung Vektor v drehen
+// angle = Objekt um die eigene Achse drehen
+module rotate_to_vector (v=[0,0,1], angle=0)
+{
+	b = acos(v[2]/norm(v)); // inclination angle
+	c = atan2(v[1],v[0]);   // azimuthal angle
+	
+	rotate([0, b, c]) rotate_z(angle) children(0);
+}
+// Objekt von in Richtung Z-Achse in Richtung Vektor v rückwärts drehen
+module rotate_backwards_to_vector (v=[0,0,1], angle=0)
+{
+	b = acos(v[2]/norm(v)); // inclination angle
+	c = atan2(v[1],v[0]);   // azimuthal angle
+	
+	rotate_backwards_z(angle) rotate_backwards([0, b, c]) children(0);
+}
+
+// Objekt von in Richtung Z-Achse in Richtung Vektor v drehen an der angegebenen Position
+module rotate_to_vector_at (v=[0,0,1], p=[0,0,0], angle=0)
+{
+	translate(p)
+	rotate_to_vector(v, angle)
+	translate(-p)
+	children(0);
+}
+// Objekt von in Richtung Z-Achse in Richtung Vektor v rückwärts drehen an der angegebenen Position
+module rotate_backwards_to_vector_at (v=[0,0,1], p=[0,0,0], angle=0)
+{
+	translate(p)
+	rotate_backwards_to_vector(v, angle)
+	translate(-p)
+	children(0);
+}
+
 // rotiert um die jeweilige Achse wie die Hauptfunktion
-module rotate_x (x, v=undef) { rotate([x,0,0], v) children(0); }
-module rotate_y (y, v=undef) { rotate([0,y,0], v) children(0); }
-module rotate_z (z, v=undef) { rotate([0,0,z], v) children(0); }
+module rotate_x (x) { rotate([x,0,0]) children(0); }
+module rotate_y (y) { rotate([0,y,0]) children(0); }
+module rotate_z (z) { rotate([0,0,z]) children(0); }
 //
-module rotate_at_x (x, p=[0,0,0], v=undef) { rotate_at([x,0,0], p, v) children(0); }
-module rotate_at_y (y, p=[0,0,0], v=undef) { rotate_at([0,y,0], p, v) children(0); }
-module rotate_at_z (z, p=[0,0,0], v=undef) { rotate_at([0,0,z], p, v) children(0); }
+module rotate_backwards_x (x) { rotate_backwards([x,0,0]) children(0); }
+module rotate_backwards_y (y) { rotate_backwards([0,y,0]) children(0); }
+module rotate_backwards_z (z) { rotate_backwards([0,0,z]) children(0); }
+//
+module rotate_at_x (x, p=[0,0,0]) { rotate_at([x,0,0], p) children(0); }
+module rotate_at_y (y, p=[0,0,0]) { rotate_at([0,y,0], p) children(0); }
+module rotate_at_z (z, p=[0,0,0]) { rotate_at([0,0,z], p) children(0); }
+//
+module rotate_backwards_at_x (x, p=[0,0,0]) { rotate_backwards_at([x,0,0], p) children(0); }
+module rotate_backwards_at_y (y, p=[0,0,0]) { rotate_backwards_at([0,y,0], p) children(0); }
+module rotate_backwards_at_z (z, p=[0,0,0]) { rotate_backwards_at([0,0,z], p) children(0); }
 
 // verschiebt in der jeweiligen Achse wie die Hauptfunktion
 module translate_x (x) { translate([x,0,0]) children(0); }
@@ -216,5 +283,7 @@ module plain_trace_connect_extrude (trace, range=[0,-1], convexity, lenght=1000,
 	) children();
 }
 
+/*
 module trace_extrude (trace, rotation, convexity, lenght=1000)
 {}
+*/

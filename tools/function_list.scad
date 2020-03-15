@@ -12,27 +12,29 @@ function reverse_list (list) = [for (a=[len(list)-1:-1:0]) list[a]];
 
 // entfernt Elemente aus einer Liste
 function erase_list (list, begin, count=1) =
+	let (size=len(list))
 	concat(
 		 (get_position(list,begin)==0) ? []
-		 :[for (i=[0:min(get_position(list,begin)-1,len(list)-1)])
+		 :[for (i=[0:min(get_position(list,begin)-1,size-1)])
 				list[i]]
-		,(get_position(list,begin)+get_position(list,count)>=len(list)) ? []
-		 :[for (i=[min(get_position(list,begin)+get_position(list,count),len(list)-1):len(list)-1])
+		,(get_position(list,begin)+get_position(list,count)>=size) ? []
+		 :[for (i=[min(get_position(list,begin)+get_position(list,count),size-1):size-1])
 				list[i]]
 	)
 ;
 
 // fügt eine alle Elemente einer Liste in die Liste eine
 function insert_list (list, list_insert, position=-1, begin=0, count=-1) =
+	let (size=len(list), size_insert=len(list_insert))
 	concat(
 		 (get_position_insert(list,position)<=0) ? []
-		 :[for (i=[0:min(get_position_insert(list,position)-1,len(list)-1)])
+		 :[for (i=[0:min(get_position_insert(list,position)-1,size-1)])
 				list[i] ]
-		,(get_position(list_insert,begin)>min(get_position(list_insert,begin)+get_position_insert(list_insert,count)-1,len(list_insert)-1)) ? []
-		 :[for (i=[get_position(list_insert,begin):min(get_position(list_insert,begin)+get_position_insert(list_insert,count)-1,len(list_insert)-1)])
+		,(get_position(list_insert,begin)>min(get_position(list_insert,begin)+get_position_insert(list_insert,count)-1,size_insert-1)) ? []
+		 :[for (i=[get_position(list_insert,begin):min(get_position(list_insert,begin)+get_position_insert(list_insert,count)-1,size_insert-1)])
 				list_insert[i] ]
-		,(get_position_insert(list,position)>=len(list)) ? []
-		 :[for (i=[max(0,min(get_position_insert(list,position),len(list)-1)):len(list)-1])
+		,(get_position_insert(list,position)>=size) ? []
+		 :[for (i=[max(0,min(get_position_insert(list,position),size-1)):size-1])
 				list[i] ]
 	)
 ;
@@ -57,7 +59,7 @@ function max_list(list, type=0) = (type==0) ? max(list) : max(value_list(list, t
 // Listen sortieren
 function sort_list (list, type=0) = sort_list_quicksort (list, type);
 
-// unstabiles sortieren
+// stabiles sortieren mit Quicksort
 function sort_list_quicksort (list, type=0) =
 	!(len(list)>0) ? [] : let(
 		pivot   = get_value( list[floor(len(list)/2)] ,type),
@@ -69,7 +71,7 @@ function sort_list_quicksort (list, type=0) =
 	)
 ;
 
-// stabiles sortierten
+// stabiles sortierten mit Mergesort
 function sort_list_mergesort (list, type=0) =
 	(len(list)<=1) ? list :
 	let(end=len(list)-1, middle=floor((len(list)-1)/2))
@@ -81,6 +83,7 @@ function sort_list_mergesort (list, type=0) =
 ;
 
 // 2 sortierte Listen miteinander verschmelzen
+// sehr langsame Implementierung
 function merge_list        (list1, list2, type=0) = merge_list_intern (list1, list2, type);
 function merge_list_intern (list1, list2, type, i1=0, i2=0) =
 	(i1>=len(list1) || i2>=len(list2)) ?

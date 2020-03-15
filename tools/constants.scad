@@ -14,11 +14,10 @@ extra=0.02;
 //epsilon=0.00005;
 epsilon=  0.000075;
 
-// Konstante pi = 3.14159265359
-pi  = get_max_accuracy_pi();
-tau = 2*pi;
+// Konstante PI = 3.14159265359 ist in OpenSCAD integriert
+tau = 2*PI;
 // Eulersche Zahl = 2.71828182846
-euler  = exp(1);
+euler = exp(1);
 // Euler-Mascheroni-Konstante = 0.577215664901
 euler_mascheroni = 0 + 0.577215664901;
 // Goldener Schnitt = 1.61803398875
@@ -26,7 +25,7 @@ golden = (1 + sqrt(5)) / 2;
 
 // Maßeinheiten umrechnen
 mm_per_inch = 0 + 25.4;
-degree_per_radian = 180/pi;
+degree_per_radian = 180/PI;
 percent = 0 + 0.01;
 //
 // Lichtgeschwindigkeit in m/s

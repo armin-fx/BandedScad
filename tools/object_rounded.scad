@@ -57,14 +57,18 @@ module cube_rounded_full (size, r, center=false, d)
 	}
 }
 
-// Quader mit abgerundeten Kanten, alle Kanten mit gleichen Radius/Durchmesser
+// Quader mit gefasten Kanten, wahlweise abgerundet oder angeschrägt
 // Argumente:
 //   size          - Größe des Quaders wie bei cube()
-//   r, d          - Radius,Durchmesser der Kanten
-//   edges_xxx     - Angabe, welche Kanten abgerundet sein sollen
-//                   0  = nicht abgerundet
-//                   1  = abgerundet
-//                   andere Zahl = Radius wird um diese Zahl vergrößert
+//   r             - Radius der Kanten oder Breite der Schräge
+//   type          - allgemein, welcher Fasentyp für alle Kanten verwendet werden sollen
+//                   0 = keine Fase (Standart)
+//                   1 = Rundung
+//                   2 = Schräge
+//   edges_xxx     - Angabe, welche Kanten gefast sein sollen
+//                   0  = nicht gefast
+//                   1  = gefast
+//                   andere Zahl = Radius oder Breite wird um diese Zahl vergrößert
 //                   [x0(->x1), x1(->y1), y1(->y0), y0(->x0)]  -> bottom, top
 //                   [x0      , x1      , y1      , y0      ]  -> side
 //                             y
@@ -79,21 +83,47 @@ module cube_rounded_full (size, r, center=false, d)
 //   edges_bottom  - alle 4 Kanten am Boden
 //   edges_top     - alle 4 Kanten oben
 //   edges_side    - alle 4 Kanten an der Seite (vertikal)
+//
+//   type_xxx      - spezielle Angabe des Fasentyp der jeweiligen Kante
+//                   Liste wie bei edges_xxx ([x,x,x,x])
+//                   Werte wie bei type (0...1...2)
+//                   -1 = Angabe von type nehmen (Standart)
+//   type_bottom   - alle 4 Kanten am Boden
+//   type_top      - alle 4 Kanten oben
+//   type_side     - alle 4 Kanten an der Seite (vertikal)
+//
+//   center        - wenn true, Quader wird zum Koordinatenursprung zentriert, Standart=false
 // TODO Noch nicht implementiert:
-//   corner_xxx    - Angabe, welche Ecken abgerundet sein sollen
-//                   0  = nicht abgerundet
-//                   1  = abgerundet
+//   corner_xxx    - Angabe, welche Ecken gefast sein sollen
+//                   0  = nicht gefast
+//                   1  = gefast
 //                   [x0, x1, y1, y0]  -> bottom, top
 //   corner_bottom - alle 4 Ecken am Boden
 //   corner_top    - alle 4 Ecken oben
-module cube_rounded (size, r, edges_bottom=[1,1,1,1],  edges_top=[1,1,1,1], edges_side=[1,1,1,1],
-                             corner_bottom=[1,1,1,1], corner_top=[1,1,1,1],
-                     center=false, d)
+module cube_fillet (size, r, type=0
+                   , edges_bottom=[1,1,1,1],   edges_top=[1,1,1,1],   edges_side=[1,1,1,1]
+                   ,corner_bottom=[1,1,1,1],  corner_top=[1,1,1,1]
+                   ,  type_bottom=[-1,-1,-1,-1],type_top=[-1,-1,-1,-1],type_side=[-1,-1,-1,-1]
+                   ,center=false)
 {
-	R    = parameter_circle_r(r, d);
+	R    = get_first_good (r, 1);
 	Size = parameter_size_3d (size);
 	
 	center_offset = (center==false) ? [0,0,0] : [-Size[0]/2, -Size[1]/2, -Size[2]/2];
+	
+	function get_type (type, type_xxx) =
+		 (type_xxx == undef) ? get_type (0, type)
+		:(type_xxx < 0     ) ? get_type (0, type)
+		: type_xxx
+	;
+	module trans_side   ()  {                                  children(); }
+	module trans_bottom ()  { rotate_y(90)rotate_z(90)         children(); }
+	module trans_top    ()  { translate_z(Size[2])rotate_y(90) children(); }
+	//
+	module trans_0 ()  { translate([0      ,0      ]) rotate_z(  0) children(); }
+	module trans_1 ()  { translate([Size[0],0      ]) rotate_z( 90) children(); }
+	module trans_2 ()  { translate([Size[0],Size[1]]) rotate_z(180) children(); }
+	module trans_3 ()  { translate([0      ,Size[1]]) rotate_z(270) children(); }
 	
 	render()
 	translate(center_offset) difference()
@@ -101,27 +131,54 @@ module cube_rounded (size, r, edges_bottom=[1,1,1,1],  edges_top=[1,1,1,1], edge
 		cube (size=Size);
 		
 		union ()
-		{ // Rundungen in der Seite (edges_side)
-		translate([0      ,0      ]) rotate_z(  0) cut_edge_round(h=Size[2], r=R*edges_side[0]);
-		translate([Size[0],0      ]) rotate_z( 90) cut_edge_round(h=Size[2], r=R*edges_side[1]);
-		translate([Size[0],Size[1]]) rotate_z(180) cut_edge_round(h=Size[2], r=R*edges_side[2]);
-		translate([0      ,Size[1]]) rotate_z(270) cut_edge_round(h=Size[2], r=R*edges_side[3]);
+		{ // Fase in der Seite (edges_side)
+		trans_0() trans_side() edge_fillet (h=Size[2], r=R*edges_side[0], type=get_type(type, type_side[0]));
+		trans_1() trans_side() edge_fillet (h=Size[2], r=R*edges_side[1], type=get_type(type, type_side[1]));
+		trans_2() trans_side() edge_fillet (h=Size[2], r=R*edges_side[2], type=get_type(type, type_side[2]));
+		trans_3() trans_side() edge_fillet (h=Size[2], r=R*edges_side[3], type=get_type(type, type_side[3]));
 		}
 		union ()
-		{ // Rundungen auf dem Boden (edges_bottom)
-		translate([0      ,0      ]) rotate_z(  0) rotate_y(90)rotate_z(90) cut_edge_round (h=Size[0], r=R*edges_bottom[0]);
-		translate([Size[0],0      ]) rotate_z( 90) rotate_y(90)rotate_z(90) cut_edge_round (h=Size[1], r=R*edges_bottom[1]);
-		translate([Size[0],Size[1]]) rotate_z(180) rotate_y(90)rotate_z(90) cut_edge_round (h=Size[0], r=R*edges_bottom[2]);
-		translate([0      ,Size[1]]) rotate_z(270) rotate_y(90)rotate_z(90) cut_edge_round (h=Size[1], r=R*edges_bottom[3]);
+		{ // Fase auf dem Boden (edges_bottom)
+		trans_0() trans_bottom() edge_fillet (h=Size[0], r=R*edges_bottom[0], type=get_type(type, type_bottom[0]));
+		trans_1() trans_bottom() edge_fillet (h=Size[1], r=R*edges_bottom[1], type=get_type(type, type_bottom[1]));
+		trans_2() trans_bottom() edge_fillet (h=Size[0], r=R*edges_bottom[2], type=get_type(type, type_bottom[2]));
+		trans_3() trans_bottom() edge_fillet (h=Size[1], r=R*edges_bottom[3], type=get_type(type, type_bottom[3]));
 		}
 		union ()
-		{ // Rundungen auf der Dachseite (edges_top)
-		translate([0      ,0      ]) rotate_z(  0) translate_z(Size[2])rotate_y(90) cut_edge_round (h=Size[0], r=R*edges_top[0]);
-		translate([Size[0],0      ]) rotate_z( 90) translate_z(Size[2])rotate_y(90) cut_edge_round (h=Size[1], r=R*edges_top[1]);
-		translate([Size[0],Size[1]]) rotate_z(180) translate_z(Size[2])rotate_y(90) cut_edge_round (h=Size[0], r=R*edges_top[2]);
-		translate([0      ,Size[1]]) rotate_z(270) translate_z(Size[2])rotate_y(90) cut_edge_round (h=Size[1], r=R*edges_top[3]);
+		{ // Fase auf der Dachseite (edges_top)
+		trans_0() trans_top() edge_fillet (h=Size[0], r=R*edges_top[0], type=get_type(type, type_top[0]));
+		trans_1() trans_top() edge_fillet (h=Size[1], r=R*edges_top[1], type=get_type(type, type_top[1]));
+		trans_2() trans_top() edge_fillet (h=Size[0], r=R*edges_top[2], type=get_type(type, type_top[2]));
+		trans_3() trans_top() edge_fillet (h=Size[1], r=R*edges_top[3], type=get_type(type, type_top[3]));
 		}
 	}
+}
+
+// Quader mit abgerundeten Kanten
+// Argumente wie bei cube_fillet()
+//   r, d  - Radius,Durchmesser der Kanten
+module cube_rounded (size, r, edges_bottom=[1,1,1,1],  edges_top=[1,1,1,1], edges_side=[1,1,1,1],
+                             corner_bottom=[1,1,1,1], corner_top=[1,1,1,1],
+                     center=false, d)
+{
+	cube_fillet (size=size, r=parameter_circle_r(r, d), type=1,
+		 edges_bottom= edges_bottom,  edges_top= edges_top, edges_side=edges_side,
+		corner_bottom=corner_bottom, corner_top=corner_top,
+		center=center
+	);
+}
+// Quader mit abgeschrägten Kanten
+// Argumente wie bei cube_rounded()
+//   r  - Breite der Schräge
+module cube_chamfer (size, r, edges_bottom=[1,1,1,1],  edges_top=[1,1,1,1], edges_side=[1,1,1,1],
+                             corner_bottom=[1,1,1,1], corner_top=[1,1,1,1],
+                     center=false)
+{
+	cube_fillet (size=size, r=r, type=2,
+		 edges_bottom= edges_bottom,  edges_top= edges_top, edges_side=edges_side,
+		corner_bottom=corner_bottom, corner_top=corner_top,
+		center=center
+	);
 }
 
 
@@ -186,13 +243,61 @@ module cylinder_edges_rounded (h=1, r, r_bottom=0, r_top=0, center=false, d)
 	}
 }
 
-// erzeugt eine abgerundete Ecke zum Auschneiden
+/*
+// Erzeugt einen Keil mit den Parametern von FreeCAD mit gefasten Kanten
+// v_min  = [Xmin, Ymin, Zmin]
+// v_max  = [Xmax, Ymax, Zmax]
+// v2_min = [X2min, Z2min]
+// v2_max = [X2max, Z2max]
+module wedge_fillet (v_min, v_max, v2_min, v2_max
+                    , r, type=0
+                    , edges_bottom=[1,1,1,1],   edges_top=[1,1,1,1],   edges_side=[1,1,1,1]
+                    ,corner_bottom=[1,1,1,1],  corner_top=[1,1,1,1]
+                    ,  type_bottom=[-1,-1,-1,-1],type_top=[-1,-1,-1,-1],type_side=[-1,-1,-1,-1] )
+{
+	function get_type (type, type_xxx) =
+		 (type_xxx == undef) ? get_type (0, type)
+		:(type_xxx < 0     ) ? get_type (0, type)
+		: type_xxx
+	;
+	
+	render()
+	difference()
+	{
+		wedge (v_min, v_max, v2_min, v2_max);
+		
+		union()
+		{
+			
+		}
+	}
+}
+*/
+
+// erzeugt eine gefaste Ecke zum auschneiden oder ankleben, wahlweise abgerundet oder angeschrägt
+// Argumente:
+//   h       Höhe der Kante
+//   r       Radius r der Rundung oder Breite der Schräge
+//   angle   Winkel der Ecke, Standart=90° (rechter Winkel)
+//   type    allgemein, welcher Fasentyp für alle Kanten verwendet werden sollen
+//           0 = keine Fase (Standart)
+//           1 = Rundung
+//           2 = Schräge
+//   extra   zusätzlichen Überstand abschneiden, wegen Z-Fighting
+module edge_fillet (h=1, r, angle=90, type=0, extra=extra)
+{
+	if (type==1) edge_rounded (h, r, angle, extra);
+	if (type==2) edge_chamfer (h, r, angle, extra);
+}
+
+
+// erzeugt eine abgerundete Ecke zum auschneiden oder ankleben
 // Argumente:
 //   h       Höhe der Kante
 //   r, d    Radius oder Durchmesser der Rundung
 //   angle   Winkel der Ecke, Standart=90° (rechter Winkel)
 //   extra   zusätzlichen Überstand abschneiden, wegen Z-Fighting
-module cut_edge_round (h=1, r, angle=90, extra=extra, d)
+module edge_rounded (h=1, r, angle=90, extra=extra, d)
 {
 	R        = parameter_circle_r(r, d);
 	t_factor = sin(90-angle/2) / sin(angle/2);
@@ -215,18 +320,18 @@ module cut_edge_round (h=1, r, angle=90, extra=extra, d)
 	));
 }
 
-// erzeugt eine abgeschrägte Kante zum Auschneiden
+// erzeugt eine abgeschrägte Kante zum auschneiden oder ankleben
 // Argumente:
 //   h       Höhe der Kante
-//   size    Breite der Schräge
+//   c       Breite der Schräge
 //   angle   Winkel der Ecke, Standart=90° (rechter Winkel)
 //   extra   zusätzlichen Überstand abschneiden, wegen Z-Fighting
-module cut_edge_chamfer (h=1, size, angle=90, extra=extra)
+module edge_chamfer (h=1, c, angle=90, extra=extra)
 {
-	t       = size/2 / sin(angle/2);
+	t       = c/2 / sin(angle/2);
 	h_extra = extra * cot(angle/2);
 	//
-	if (size>0)
+	if (c>0)
 	linear_extrude(height=h, convexity=2)
 	polygon([
 		 [ t,       0]

@@ -8,7 +8,6 @@ function calculate_pi (num=21) =
 		[ for (i=[0:num]) 2*i + 1 ] ,
 		[ for (i=[1:num]) i*i     ] )
 ;
-
 function get_max_accuracy_pi (n=21, pi1=0, pi2=1) =
 	(pi1==pi2) ?
 		pi1

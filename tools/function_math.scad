@@ -77,15 +77,15 @@ function arcoth (x) = ln((x + 1) / (x - 1)) / 2;
 // Kardinalsinus
 function si   (x) = (x==0) ? 1 : sin(x*degree_per_radian) / x;
 // normierter Kardinalsinus
-function sinc (x) = si(pi*x);
+function sinc (x) = si(PI*x);
 // Integralsinus (arbeitet nur bis x<32)
 function Si (x) = taylor_auto(Si_taylor_index, x, n=100);
-function Si_taylor_index(x, n) = let (term=2*n+1) positiv_if_even(n) * pow(x, term) / (factorial(term) * (term));
+function Si_taylor_index(x, n) = let (term=2*n+1) positiv_if_even(n) * pow(x, term) / (factorial(term) * term);
 Si_taylor_index = str("Si_taylor_index");
 
 // Gaußsche Normalverteilung
 function normal_distribution(x, mean=0, sigma=1) =
-	1/(sqrt(2*pi)*sigma) * exp(-sqr(x-mean/sigma)/2)
+	1/(sqrt(2*PI)*sigma) * exp(-sqr(x-mean/sigma)/2)
 ;
 
 // errechnet die Fakultät einer natürlichen Zahl
