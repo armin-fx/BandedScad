@@ -7,7 +7,9 @@ include <tools/function_math.scad>
 include <tools/function_curves.scad>
 include <tools/function_helper.scad>
 include <tools/function_list.scad>
+include <tools/function_transform_basic.scad>
 include <tools/function_transform.scad>
-include <tools/function_primitives.scad>
+include <tools/function_transform_names.scad>
+//include <tools/function_primitives.scad>
 include <tools/function_vector.scad>
  
