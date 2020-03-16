@@ -9,7 +9,8 @@
 //  list = Punkt-Liste
 //  v    = Vektor
 function translate_list (list, v) =
-	[for (e=list) e+v]
+	let ( vector = !is_undef(v) ? v : [0,0,0] )
+	[for (e=list) e+vector]
 ;
 
 // jeden Punkt in der Liste <list> rotieren
@@ -72,6 +73,56 @@ function rotate_vector_list (list, a, v) =
 		 [ x*x*(1-cosa)+  cosa, x*y*(1-cosa)-z*sina, x*z*(1-cosa)+y*sina ],
 		 [ y*x*(1-cosa)+z*sina, y*y*(1-cosa)+  cosa, y*z*(1-cosa)-x*sina ],
 		 [ z*x*(1-cosa)-y*sina, z*y*(1-cosa)+x*sina, z*z*(1-cosa)+  cosa ]
+		]
+	]
+;
+
+// jeden Punkt in der Liste <list> entlang dem Vektor <v> spiegeln am Koordinatenursprung
+// funktioniert wie mirror()
+//  list = Punkt-Liste
+//  v    = Vektor, in dieser Richtung wird gespiegelt
+function mirror_list (list, v) =
+	(!is_list(list) || !is_list(list[0])) ? undef
+	:len(list[0])==3 ? mirror_list_3d (list, v)
+	:len(list[0])==2 ? mirror_list_2d (list, v)
+	:len(list[0])==1 ? -list
+	:undef
+	
+;
+function mirror_list_2d (list, v) =
+	let (
+		v_std = [1,0],
+		V = (is_list(v) && len(v)>=2) ? v : v_std,
+		angle = atan2(V[1],V[0]) 
+	)
+	rotate_z_list(
+	[ for (e=rotate_backwards_z_list(list, angle)) [-e[0],e[1]] ]
+	, angle)
+;
+function mirror_list_3d (list, v) =
+	let (
+		v_std = [1,0,0],
+		V = is_list(v) ? len(v)==3 ? v : len(v)==2 ? [v[0],v[1],0] : v_std : v_std,
+		a = atan2(V[1],V[0])
+	)
+	rotate_to_vector_list(
+	[ for (e=rotate_backwards_to_vector_list(list, V,a)) [e[0],e[1],-e[2]] ]
+	, V,a)
+;
+
+// jeden Punkt in der Liste <list> an der jeweiligen Achse vergrößern
+// funktioniert wie scale()
+//  list = Punkt-Liste
+//  v    = Vektor mit den Vergrößerungsfaktoren
+function scale_list (list, v) =
+	(!is_list(v) || len(v)==0) ? list :
+	let ( 
+		last = len(list[0])-1,
+		V    = [ for (i=[0:last]) (len(v)>i) ? (v[i]!=0 && is_num(v[i])) ? v[i] : 1 : 1 ]
+	)
+	[ for (e=list)
+		[ for (i=[0:last])
+			e[i] * V[i]
 		]
 	]
 ;
