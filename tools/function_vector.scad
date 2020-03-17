@@ -20,6 +20,10 @@ function angle_vector (v1, v2) =
 	(v1==v2) ? 0 :
 	acos( (v1 * v2) / (norm(v1) * norm(v2)) )
 ;
+// Winkel zweier Vektoren ermitteln entsprechend seiner Rotation
+// gerechnet wird mit Linksrotation = gegen den Uhrzeigersinn
+// wie in der Mathematik üblich
+function rotation_vector (v1, v2) = angle_left_vector (v1, v2);
 function angle_left_vector (v1, v2) =
 	(v1==v2) ? 0 :
 	(cross(v1,v2) >= 0) ?
@@ -27,7 +31,6 @@ function angle_left_vector (v1, v2) =
 	:	360 - acos( (v1 * v2) / (norm(v1) * norm(v2)) )
 ;
 function angle_right_vector (v1, v2) = 360 - angle_left_vector(v1, v2);
-function rotation_vector (v1, v2) = angle_left_vector (v1, v2);
 
 // Determinante berechnen
 // Determinante einer  quadratischen Matrix mit den Laplaceschen Entwicklungssatz ausrechnen

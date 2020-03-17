@@ -127,3 +127,16 @@ function scale_list (list, v) =
 	]
 ;
 
+// jeden Punkt in der Liste <list> auf die xy-Ebene projizieren
+//  list  = Punkt-Liste
+//  cut   = nur den Umriss nehmen, der durch die xy-Ebene geht
+//          TODO nicht implementiert
+//  plane = true  = eine 2D-Liste machen - Standart
+//          false = 3D-Liste behalten, alle Punkte auf xy-Ebene
+function projection_list (list, cut=false, plane) =
+	let (Plane=is_bool(plane) ? plane : true)
+	//
+	Plane==true ? [ for (e=list) [e[0],e[1]]   ]
+	:             [ for (e=list) [e[0],e[1],0] ]
+;
+

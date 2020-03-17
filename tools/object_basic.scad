@@ -45,7 +45,17 @@ module wedge (v_min, v_max, v2_min, v2_max)
 	Vmax  = v_max;
 	V2min = [v2_min[0], 0, v2_min[1]];
 	V2max = [v2_max[0], 0, v2_max[1]];
-	
+	//
+	//    7 +---------+ 6
+	//     /:        /|
+	//  4 / :     5 / |
+	//   +---------+  |
+	//   |  + - - -|- +
+	//   | . 3     | / 2
+	//   |.        |/
+	//   +---------+
+	//  0          1
+	//
 	CubePoints = [
 		//             X     Y      Z
 		pick_vector(  Vmin, Vmin,  Vmin ),  //0

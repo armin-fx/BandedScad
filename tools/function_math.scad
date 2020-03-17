@@ -4,7 +4,15 @@
 
 
 // setzt einen Wert innerhalb eines Bereiches
-function constrain (value, a, b) = 
+// zwischen Minimum <min> und Maximum <max>
+// <min> muss kleiner sein als <max>, sonst seltsames Verhalten
+function constrain (value, min, max) = 
+	 (value<min) ? min
+	:(value>max) ? max
+	: value
+;
+// ... zwischen beiden Werten <a> und <b>
+function constrain_bidirectional (value, a, b) = 
 	 (a<=b) ?
 		 (value<a) ? a
 		:(value>b) ? b

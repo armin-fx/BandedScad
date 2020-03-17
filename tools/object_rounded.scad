@@ -111,9 +111,9 @@ module cube_fillet (size, r, type=0
 	
 	center_offset = (center==false) ? [0,0,0] : [-Size[0]/2, -Size[1]/2, -Size[2]/2];
 	
-	function get_type (type, type_xxx) =
-		 (type_xxx == undef) ? get_type (0, type)
-		:(type_xxx < 0     ) ? get_type (0, type)
+	function get_type (type_xxx, type=type) =
+		 (type_xxx == undef) ? get_type (type, 0)
+		:(type_xxx < 0     ) ? get_type (type, 0)
 		: type_xxx
 	;
 	module trans_side   ()  {                                  children(); }
@@ -132,24 +132,24 @@ module cube_fillet (size, r, type=0
 		
 		union ()
 		{ // Fase in der Seite (edges_side)
-		trans_0() trans_side() edge_fillet (h=Size[2], r=R*edges_side[0], type=get_type(type, type_side[0]));
-		trans_1() trans_side() edge_fillet (h=Size[2], r=R*edges_side[1], type=get_type(type, type_side[1]));
-		trans_2() trans_side() edge_fillet (h=Size[2], r=R*edges_side[2], type=get_type(type, type_side[2]));
-		trans_3() trans_side() edge_fillet (h=Size[2], r=R*edges_side[3], type=get_type(type, type_side[3]));
+		trans_0() trans_side() edge_fillet (h=Size[2], r=R*edges_side[0], type=get_type(type_side[0]));
+		trans_1() trans_side() edge_fillet (h=Size[2], r=R*edges_side[1], type=get_type(type_side[1]));
+		trans_2() trans_side() edge_fillet (h=Size[2], r=R*edges_side[2], type=get_type(type_side[2]));
+		trans_3() trans_side() edge_fillet (h=Size[2], r=R*edges_side[3], type=get_type(type_side[3]));
 		}
 		union ()
 		{ // Fase auf dem Boden (edges_bottom)
-		trans_0() trans_bottom() edge_fillet (h=Size[0], r=R*edges_bottom[0], type=get_type(type, type_bottom[0]));
-		trans_1() trans_bottom() edge_fillet (h=Size[1], r=R*edges_bottom[1], type=get_type(type, type_bottom[1]));
-		trans_2() trans_bottom() edge_fillet (h=Size[0], r=R*edges_bottom[2], type=get_type(type, type_bottom[2]));
-		trans_3() trans_bottom() edge_fillet (h=Size[1], r=R*edges_bottom[3], type=get_type(type, type_bottom[3]));
+		trans_0() trans_bottom() edge_fillet (h=Size[0], r=R*edges_bottom[0], type=get_type(type_bottom[0]));
+		trans_1() trans_bottom() edge_fillet (h=Size[1], r=R*edges_bottom[1], type=get_type(type_bottom[1]));
+		trans_2() trans_bottom() edge_fillet (h=Size[0], r=R*edges_bottom[2], type=get_type(type_bottom[2]));
+		trans_3() trans_bottom() edge_fillet (h=Size[1], r=R*edges_bottom[3], type=get_type(type_bottom[3]));
 		}
 		union ()
 		{ // Fase auf der Dachseite (edges_top)
-		trans_0() trans_top() edge_fillet (h=Size[0], r=R*edges_top[0], type=get_type(type, type_top[0]));
-		trans_1() trans_top() edge_fillet (h=Size[1], r=R*edges_top[1], type=get_type(type, type_top[1]));
-		trans_2() trans_top() edge_fillet (h=Size[0], r=R*edges_top[2], type=get_type(type, type_top[2]));
-		trans_3() trans_top() edge_fillet (h=Size[1], r=R*edges_top[3], type=get_type(type, type_top[3]));
+		trans_0() trans_top() edge_fillet (h=Size[0], r=R*edges_top[0], type=get_type(type_top[0]));
+		trans_1() trans_top() edge_fillet (h=Size[1], r=R*edges_top[1], type=get_type(type_top[1]));
+		trans_2() trans_top() edge_fillet (h=Size[0], r=R*edges_top[2], type=get_type(type_top[2]));
+		trans_3() trans_top() edge_fillet (h=Size[1], r=R*edges_top[3], type=get_type(type_top[3]));
 		}
 	}
 }
@@ -170,11 +170,11 @@ module cube_rounded (size, r, edges_bottom=[1,1,1,1],  edges_top=[1,1,1,1], edge
 // Quader mit abgeschrägten Kanten
 // Argumente wie bei cube_rounded()
 //   r  - Breite der Schräge
-module cube_chamfer (size, r, edges_bottom=[1,1,1,1],  edges_top=[1,1,1,1], edges_side=[1,1,1,1],
+module cube_chamfer (size, c, edges_bottom=[1,1,1,1],  edges_top=[1,1,1,1], edges_side=[1,1,1,1],
                              corner_bottom=[1,1,1,1], corner_top=[1,1,1,1],
                      center=false)
 {
-	cube_fillet (size=size, r=r, type=2,
+	cube_fillet (size=size, r=c, type=2,
 		 edges_bottom= edges_bottom,  edges_top= edges_top, edges_side=edges_side,
 		corner_bottom=corner_bottom, corner_top=corner_top,
 		center=center
@@ -243,23 +243,42 @@ module cylinder_edges_rounded (h=1, r, r_bottom=0, r_top=0, center=false, d)
 	}
 }
 
-/*
 // Erzeugt einen Keil mit den Parametern von FreeCAD mit gefasten Kanten
 // v_min  = [Xmin, Ymin, Zmin]
 // v_max  = [Xmax, Ymax, Zmax]
 // v2_min = [X2min, Z2min]
 // v2_max = [X2max, Z2max]
+// Kantenargumente wie bei cube_fillet()
 module wedge_fillet (v_min, v_max, v2_min, v2_max
                     , r, type=0
                     , edges_bottom=[1,1,1,1],   edges_top=[1,1,1,1],   edges_side=[1,1,1,1]
                     ,corner_bottom=[1,1,1,1],  corner_top=[1,1,1,1]
                     ,  type_bottom=[-1,-1,-1,-1],type_top=[-1,-1,-1,-1],type_side=[-1,-1,-1,-1] )
 {
-	function get_type (type, type_xxx) =
-		 (type_xxx == undef) ? get_type (0, type)
-		:(type_xxx < 0     ) ? get_type (0, type)
+	function get_type (type_xxx, type=type) =
+		 (type_xxx == undef) ? get_type (type, 0)
+		:(type_xxx < 0     ) ? get_type (type, 0)
 		: type_xxx
 	;
+	R    = get_first_good (r, 1);
+	//
+	Vmin  = v_min;
+	Vmax  = v_max;
+	V2min = [v2_min[0], 0, v2_min[1]];
+	V2max = [v2_max[0], 0, v2_max[1]];
+	
+	P = [
+		//             X     Y      Z
+		pick_vector(  Vmin, Vmin,  Vmin ),  //0
+		pick_vector(  Vmax, Vmin,  Vmin ),  //1
+		pick_vector( V2max, Vmax, V2min ),  //2
+		pick_vector( V2min, Vmax, V2min ),  //3
+		pick_vector(  Vmin, Vmin,  Vmax ),  //4
+		pick_vector(  Vmax, Vmin,  Vmax ),  //5
+		pick_vector( V2max, Vmax, V2max ),  //6
+		pick_vector( V2min, Vmax, V2max )]; //7
+	
+	k = max_norm(P); // Fase länger auschneiden als die Kante lang ist, mit ordentlich Sicherheitsreserve
 	
 	render()
 	difference()
@@ -267,12 +286,53 @@ module wedge_fillet (v_min, v_max, v2_min, v2_max
 		wedge (v_min, v_max, v2_min, v2_max);
 		
 		union()
-		{
-			
+		{ // Fase in der Seite (edges_side)
+			edge_fillet_to ([P[0],P[4]], P[1], P[3], r=R*edges_side[0], type=get_type(type_side[0]), extra_h=k);
+			edge_fillet_to ([P[1],P[5]], P[2], P[0], r=R*edges_side[1], type=get_type(type_side[1]), extra_h=k);
+			edge_fillet_to ([P[2],P[6]], P[3], P[1], r=R*edges_side[2], type=get_type(type_side[2]), extra_h=k);
+			edge_fillet_to ([P[3],P[7]], P[0], P[2], r=R*edges_side[3], type=get_type(type_side[3]), extra_h=k);
 		}
+		union()
+		{ // Fase auf dem Boden (edges_bottom)
+			edge_fillet_to ([P[0],P[1]], P[3], P[4], r=R*edges_bottom[0], type=get_type(type_bottom[0]), extra_h=k);
+			edge_fillet_to ([P[1],P[2]], P[0], P[5], r=R*edges_bottom[1], type=get_type(type_bottom[1]), extra_h=k);
+			edge_fillet_to ([P[2],P[3]], P[1], P[6], r=R*edges_bottom[2], type=get_type(type_bottom[2]), extra_h=k);
+			edge_fillet_to ([P[3],P[0]], P[2], P[7], r=R*edges_bottom[3], type=get_type(type_bottom[3]), extra_h=k);
+		}
+		union ()
+		{ // Fase auf der Dachseite (edges_top)
+			edge_fillet_to ([P[4],P[5]], P[0], P[7], r=R*edges_top[0], type=get_type(type_top[0]), extra_h=k);
+			edge_fillet_to ([P[5],P[6]], P[1], P[4], r=R*edges_top[1], type=get_type(type_top[1]), extra_h=k);
+			edge_fillet_to ([P[6],P[7]], P[2], P[5], r=R*edges_top[2], type=get_type(type_top[2]), extra_h=k);
+			edge_fillet_to ([P[7],P[4]], P[3], P[6], r=R*edges_top[3], type=get_type(type_top[3]), extra_h=k);
+		}
+
 	}
 }
-*/
+// Keil mit abgerundeten Kanten
+module wedge_rounded (v_min, v_max, v2_min, v2_max, r,
+                      edges_bottom=[1,1,1,1],  edges_top=[1,1,1,1], edges_side=[1,1,1,1],
+                     corner_bottom=[1,1,1,1], corner_top=[1,1,1,1],
+                     d)
+{
+	wedge_fillet (v_min, v_max, v2_min, v2_max,
+		r=parameter_circle_r(r, d), type=1,
+		 edges_bottom= edges_bottom,  edges_top= edges_top, edges_side=edges_side,
+		corner_bottom=corner_bottom, corner_top=corner_top
+	);
+}
+// Keil mit abgeschrägten Kanten
+module wedge_chamfer (v_min, v_max, v2_min, v2_max, c,
+                      edges_bottom=[1,1,1,1],  edges_top=[1,1,1,1], edges_side=[1,1,1,1],
+                     corner_bottom=[1,1,1,1], corner_top=[1,1,1,1],
+                     )
+{
+	wedge_fillet (v_min, v_max, v2_min, v2_max,
+		r=c, type=2,
+		 edges_bottom= edges_bottom,  edges_top= edges_top, edges_side=edges_side,
+		corner_bottom=corner_bottom, corner_top=corner_top
+	);
+}
 
 // erzeugt eine gefaste Ecke zum auschneiden oder ankleben, wahlweise abgerundet oder angeschrägt
 // Argumente:
@@ -284,12 +344,12 @@ module wedge_fillet (v_min, v_max, v2_min, v2_max
 //           1 = Rundung
 //           2 = Schräge
 //   extra   zusätzlichen Überstand abschneiden, wegen Z-Fighting
-module edge_fillet (h=1, r, angle=90, type=0, extra=extra)
+module edge_fillet (h=1, r, angle=90, type, extra=extra)
 {
-	if (type==1) edge_rounded (h, r, angle, extra);
-	if (type==2) edge_chamfer (h, r, angle, extra);
+	Type = is_num(type) ? type : 0;
+	if (Type==1) edge_rounded (h, r, angle, extra);
+	if (Type==2) edge_chamfer (h, r, angle, extra);
 }
-
 
 // erzeugt eine abgerundete Ecke zum auschneiden oder ankleben
 // Argumente:
@@ -306,7 +366,7 @@ module edge_rounded (h=1, r, angle=90, extra=extra, d)
 	linear_extrude(height=h, convexity=2)
 	polygon( concat(
 		translate_list(
-			circle_curve(r=R, angle=180-angle, angle_begin=90+angle, piece=0)
+			circle_curve(r=R, angle=180-angle, angle_begin=90+angle, piece=0, slices="x")
 			,[R*t_factor,R]
 		)
 		,[
@@ -344,3 +404,29 @@ module edge_chamfer (h=1, c, angle=90, extra=extra)
 		,circle_point(r=t, angle=angle)
 	]);
 }
+
+// erzeugt eine gefaste Ecke aus den Daten Linie der Kante und 2 Eckpunkten der angrenzenden Flächen
+module edge_fillet_to (line, point1, point2, r, type, extra=extra, extra_h=0)
+{
+	base_vector = [1,0];
+	origin      = line[0];
+	line_vector = line[1] - line[0];
+	up_to_z     = rotate_backwards_to_vector ( translate ([point1,point2], -origin), line_vector);
+	plane       = projection_list (up_to_z);
+	angle_base  = rotation_vector (base_vector, plane[0]);
+	angle_fillet= rotation_vector (plane[0]   , plane[1]);
+	//
+	translate (origin)
+	rotate_to_vector (line_vector, angle_base)
+	translate_z (-extra_h)
+	edge_fillet (h=norm(line_vector)+extra_h*2, r=r, angle=angle_fillet, type=type, extra=extra);
+}
+module edge_rounded_to (line, point1, point2, r, extra=extra, extra_h=0)
+{
+	edge_fillet_to (line, point1, point2, r, type=1, extra=extra, extra_h=extra_h);
+}
+module edge_chamfer_to (line, point1, point2, c, extra=extra, extra_h=0)
+{
+	edge_fillet_to (line, point1, point2, c, type=1, extra=extra, extra_h=extra_h);
+}
+

@@ -234,3 +234,9 @@ function get_circle_fudge (fn, scale=1) = scale/cos(180/fn) + 1-scale;
 // gibt einen Wert in der z-Achse zurück, wenn center gesetzt ist (true)
 function get_center_z (center, z_true=0, z_false=0) = (center) ? z_true : z_false;
 
+// function returns value and echo a message if version of OpenSCAD is 2019.05 or greater
+function do_echo (value, message) =
+	version_num()<20190500 ? value
+	: echo(message) + value
+;
+

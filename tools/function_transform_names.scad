@@ -3,10 +3,11 @@
 // Wandelt die Namen der Funktionen zum Transformieren von Punktlisten
 // in Namen um wie die entsprechenden Module ohne die Endung _list
 
-function translate (list, v)    = translate_list (list, v);
-function rotate    (list, a, v) = rotate_list    (list, a, v);
-function mirror    (list, v)    = mirror_list    (list, v);
-function scale     (list, v)    = scale_list     (list, v);
+function translate  (list, v)    = translate_list (list, v);
+function rotate     (list, a, v) = rotate_list    (list, a, v);
+function mirror     (list, v)    = mirror_list    (list, v);
+function scale      (list, v)    = scale_list     (list, v);
+function projection (list, cut, plane) = projection_list (list, cut, plane);
 //
 function rotate_backwards              (list, a, v)    = rotate_backwards_list             (list, a, v);
 function rotate_at                     (list, a, p, v) = rotate_at_list                    (list, a, p, v);
