@@ -14,6 +14,11 @@ extra=0.02;
 //epsilon=0.00005;
 epsilon=  0.000075;
 
+// Wert unendlich
+inf = 1e200 * 1e200;
+// Wert keine gültige Zahl
+nan = 0 / 0;
+
 // Konstante PI = 3.14159265359 ist in OpenSCAD integriert
 tau = 2*PI;
 // Eulersche Zahl = 2.71828182846

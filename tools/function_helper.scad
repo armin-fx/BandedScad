@@ -58,6 +58,13 @@ function extract_list (list, begin, last, range) =
 		]) list[i]]
 ;
 
+// testet eine numerische Variable auf eine gültige Zahl (Not A Number)
+function is_nan(value) = value!=value;
+// testet eine numerische Variable auf unendlich
+function is_inf (value) = value==1e200*1e200;
+// testet eine numerische Variable unendlich oder -unendlich
+function is_inf_abs(value) = abs(value)==1e200*1e200;
+
 // testet eine Variable, ob sie eine Liste enthält
 // dimension - Tiefe der verschachtelten Listen,
 //             ohne Angabe wird eine eindimensionale Liste getestet
