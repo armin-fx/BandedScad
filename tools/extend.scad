@@ -118,8 +118,8 @@ module cylinder_extend (h, r1, r2, center=false, r, d, d1, d2, angle=360, slices
 	//
 	module mirror_at_z_choice (p, choice)
 	{
-		if (choice==true) mirror_at_z(p) children(0);
-		else              children(0);
+		if (choice==true) mirror_at_z(p) children();
+		else              children();
 	}
 	
 	mirror_at_z_choice ([0,0,H/2], R[0]<R[1])

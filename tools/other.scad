@@ -19,13 +19,13 @@ module bounding_box (convexity=5, height=1000)
 			linear_extrude(height = height, center = true, convexity = convexity, twist = 0) 
 			projection(cut=false) 
 			rotate([0,-90,0]) 
-			children(0);
+			children();
 
 			rotate([90,0,0]) 
 			linear_extrude(height = height, center = true, convexity = convexity, twist = 0) 
 			projection(cut=false) 
 			rotate([-90,0,0]) 
-			children(0);
+			children();
 		}
 		rotate([90,0,0]) 
 		linear_extrude(height = height, center = true, convexity = convexity, twist = 0) 
@@ -37,13 +37,13 @@ module bounding_box (convexity=5, height=1000)
 			linear_extrude(height = height, center = true, convexity = convexity, twist = 0) 
 			projection(cut=false) 
 			rotate([0,-90,0]) 
-			children(0);
+			children();
 
 			rotate([0,0,0]) 
 			linear_extrude(height = height, center = true, convexity = convexity, twist = 0) 
 			projection(cut=false) 
 			rotate([0,0,0]) 
-			children(0);
+			children();
 		}
 	}
 }
@@ -61,7 +61,7 @@ module rotate_extrude_partial (angle, radius, convexity=10)
 {
 	intersection ()
 	{
-		rotate_extrude(convexity=convexity) translate([radius,0,0]) children(0);
+		rotate_extrude(convexity=convexity) translate([radius,0,0]) children();
 		pie_slice(radius*2, angle, angle/5);
 	}
 }
