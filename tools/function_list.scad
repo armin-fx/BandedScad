@@ -23,7 +23,7 @@ function erase_list (list, begin, count=1) =
 	)
 ;
 
-// fügt eine alle Elemente einer Liste in die Liste eine
+// fügt alle Elemente einer Liste in die Liste ein
 function insert_list (list, list_insert, position=-1, begin=0, count=-1) =
 	let (size=len(list), size_insert=len(list_insert))
 	concat(

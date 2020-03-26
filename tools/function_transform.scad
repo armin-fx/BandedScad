@@ -108,3 +108,8 @@ function mirror_at_z_list (list, p) = mirror_at_list (list, [0,0,1], p);
 function scale_x_list (list, f) = scale_list (list, [f,0,0]);
 function scale_y_list (list, f) = scale_list (list, [0,f,0]);
 function scale_z_list (list, f) = scale_list (list, [0,0,f]);
+//
+// verändert die Größe an der jeweiligen Achse wie die Hauptfunktion
+function resize_x_list (list, l) = resize_list (list, [l,0,0]);
+function resize_y_list (list, l) = resize_list (list, [0,l,0]);
+function resize_z_list (list, l) = resize_list (list, [0,0,l]);
