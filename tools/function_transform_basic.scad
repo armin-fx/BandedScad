@@ -10,7 +10,7 @@
 //  v    = Vektor
 function translate_list (list, v) =
 	let ( vector = !is_undef(v) ? v : [0,0,0] )
-	[for (e=list) e+vector]
+	[for (p=list) p+vector]
 ;
 
 // jeden Punkt in der Liste <list> rotieren
@@ -31,22 +31,22 @@ function rotate_list (list, a, v) =
 // jeden Punkt in der Liste <list> um die X-Achse um <a> drehen
 function rotate_x_list (list, a) =
 	!is_num(a) ? list :
-	[for (e=list)
+	[for (p=list)
 		[
-		 e[0]
-		,e[1]*cos(a) - e[2]*sin(a)
-		,e[1]*sin(a) + e[2]*cos(a)
+		 p[0]
+		,p[1]*cos(a) - p[2]*sin(a)
+		,p[1]*sin(a) + p[2]*cos(a)
 		]
 	]
 ;
 // jeden Punkt in der Liste <list> um die Y-Achse um <a> drehen
 function rotate_y_list (list, a) =
 	!is_num(a) ? list :
-	[for (e=list)
+	[for (p=list)
 		[
-		  e[0]*cos(a) + e[2]*sin(a)
-		, e[1]
-		,-e[0]*sin(a) + e[2]*cos(a)
+		  p[0]*cos(a) + p[2]*sin(a)
+		, p[1]
+		,-p[0]*sin(a) + p[2]*cos(a)
 		]
 	]
 ;
@@ -54,11 +54,11 @@ function rotate_y_list (list, a) =
 // auch für 2D-Listen
 function rotate_z_list (list, a) =
 	!is_num(a) ? list :
-	[for (e=list)
+	[for (p=list)
 		concat(
-			 e[0]*cos(a) - e[1]*sin(a)
-			,e[0]*sin(a) + e[1]*cos(a)
-			,(e[2]!=undef) ? e[2] : []
+			 p[0]*cos(a) - p[1]*sin(a)
+			,p[0]*sin(a) + p[1]*cos(a)
+			,(p[2]!=undef) ? p[2] : []
 		)
 	]
 ;
@@ -68,8 +68,8 @@ function rotate_vector_list (list, a, v) =
 	:!is_list(v) ? list
 	:
 	let (u=unit_vector(v), cosa=cos(-a), sina=sin(-a), x=u[0],y=u[1],z=u[2])
-	[ for (e=list)
-		e * [
+	[ for (p=list)
+		p * [
 		 [ x*x*(1-cosa)+  cosa, x*y*(1-cosa)-z*sina, x*z*(1-cosa)+y*sina ],
 		 [ y*x*(1-cosa)+z*sina, y*y*(1-cosa)+  cosa, y*z*(1-cosa)-x*sina ],
 		 [ z*x*(1-cosa)-y*sina, z*y*(1-cosa)+x*sina, z*z*(1-cosa)+  cosa ]
@@ -83,23 +83,23 @@ function rotate_vector_list (list, a, v) =
 //  v    = Vektor, in dieser Richtung wird gespiegelt
 function mirror_list (list, v) =
 	(!is_list(list) || !is_list(list[0])) ? undef
-	:len(list[0])==3 ? mirror_list_3d (list, v)
-	:len(list[0])==2 ? mirror_list_2d (list, v)
+	:len(list[0])==3 ? mirror_3d_list (list, v)
+	:len(list[0])==2 ? mirror_2d_list (list, v)
 	:len(list[0])==1 ? -list
 	:undef
 	
 ;
-function mirror_list_2d (list, v) =
+function mirror_2d_list (list, v) =
 	let (
 		v_std = [1,0],
 		V = (is_list(v) && len(v)>=2) ? v : v_std,
 		angle = atan2(V[1],V[0]) 
 	)
 	rotate_z_list(
-	[ for (e=rotate_backwards_z_list(list, angle)) [-e[0],e[1]] ]
+	[ for (p=rotate_backwards_z_list(list, angle)) [-p[0],p[1]] ]
 	, angle)
 ;
-function mirror_list_3d (list, v) =
+function mirror_3d_list (list, v) =
 	let (
 		v_std = [1,0,0],
 		V =
@@ -110,7 +110,7 @@ function mirror_list_3d (list, v) =
 		a = atan2(V[1],V[0])
 	)
 	rotate_to_vector_list(
-	[ for (e=rotate_backwards_to_vector_list(list, V,a)) [e[0],e[1],-e[2]] ]
+	[ for (p=rotate_backwards_to_vector_list(list, V,a)) [p[0],p[1],-p[2]] ]
 	, V,a)
 ;
 
@@ -119,14 +119,15 @@ function mirror_list_3d (list, v) =
 //  list = Punkt-Liste
 //  v    = Vektor mit den Vergrößerungsfaktoren
 function scale_list (list, v) =
+	(!is_list(list) || !is_list(list[0])) ? undef :
 	(!is_list(v) || len(v)==0) ? list :
 	let ( 
 		last = len(list[0])-1,
 		scale_factor = [ for (i=[0:last]) (len(v)>i && v[i]!=0 && is_num(v[i])) ? v[i] : 1 ]
 	)
-	[ for (e=list)
+	[ for (p=list)
 		[ for (i=[0:last])
-			e[i] * scale_factor[i]
+			p[i] * scale_factor[i]
 		]
 	]
 ;
@@ -176,7 +177,66 @@ function get_bounding_box_list_intern (list, min_pos, max_pos, i=0, n=0) =
 function projection_list (list, cut=false, plane) =
 	let (Plane=is_bool(plane) ? plane : true)
 	//
-	Plane==true ? [ for (e=list) [e[0],e[1]]   ]
-	:             [ for (e=list) [e[0],e[1],0] ]
+	Plane==true ? [ for (p=list) [p[0],p[1]]   ]
+	:             [ for (p=list) [p[0],p[1],0] ]
 ;
 
+// jeden Punkt in der Liste <list> mit der Matrix <m> multiplizieren
+// funktioniert wie multmatrix()
+//  list = Punkt-Liste
+//  m    = 4x3 oder 4x4 Matrix
+function multmatrix_list (list, m) =
+	(!is_list(list) || !is_list(list[0])) ? undef :
+	(!is_list(m)) ? list :
+	 (len(list[0]) == 3) ? multmatrix_3d_list (list, m)
+	:(len(list[0]) == 2) ? multmatrix_2d_list (list, m)
+	:undef
+;
+
+function multmatrix_2d_list (list, m) =
+	let (M = repair_matrix_2d(m))
+	[ for (p=list)
+		let (
+			a = [ p[0],p[1], 1 ],
+			c = M * a,
+			p_new = [ c[0],c[1] ]
+		)
+		p_new
+	]
+;
+function multmatrix_3d_list (list, m) =
+	let (M = repair_matrix_3d(m))
+	[ for (p=list)
+		let (
+			a = [ p[0],p[1],p[2], 1 ],
+			c = M * a,
+			p_new = [ c[0],c[1],c[2] ]
+		)
+		p_new
+	]
+;
+
+function repair_matrix_3d (m) =
+	fill_matrix_with (m, [
+		[1,0,0,0],
+		[0,1,0,0],
+		[0,0,1,0],
+		[0,0,0,1]
+	] )
+;
+function repair_matrix_2d (m) = 
+	fill_matrix_with (m, [
+		[1,0,0],
+		[0,1,0],
+		[0,0,1]
+	] )
+;
+
+function fill_matrix_with (m, c) =
+	!is_list(m) ? c :
+	[ for (i=[0:len(c)-1])
+		[ for (j=[0:len(c[i])-1])
+			is_num(m[i][j]) ? m[i][j] : c[i][j]
+		]
+	]
+;

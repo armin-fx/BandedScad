@@ -9,6 +9,7 @@ function mirror     (list, v)          = mirror_list     (list, v);
 function scale      (list, v)          = scale_list      (list, v);
 function resize     (list, newsize)    = resize_list     (list, newsize);
 function projection (list, cut, plane) = projection_list (list, cut, plane);
+function multmatrix (list, m)          = multmatrix_list (list, m);
 //
 function rotate_backwards              (list, a, v)    = rotate_backwards_list             (list, a, v);
 function rotate_at                     (list, a, p, v) = rotate_at_list                    (list, a, p, v);
