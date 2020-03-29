@@ -95,8 +95,8 @@ module ring_square (h, r, w, ri, ro, angle=360, center=false, d, di, do)
 	linear_extrude(height=h, convexity=4)
 	difference()
 	{
-		polygon(circle_curve(r = rx[1], angle=angle));
-		polygon(circle_curve(r = rx[0], angle=angle));
+		polygon(circle_curve(r = rx[1], angle=angle, slices="x"));
+		polygon(circle_curve(r = rx[0], angle=angle, slices="x"));
 	}
 }
 

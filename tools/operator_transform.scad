@@ -14,13 +14,15 @@ module mirror_copy_x () { mirror_copy([1,0,0]) children(); }
 module mirror_copy_y () { mirror_copy([0,1,0]) children(); }
 module mirror_copy_z () { mirror_copy([0,0,1]) children(); }
 //
-module mirror_at_x (p) { mirror_at([1,0,0], p) children(); }
-module mirror_at_y (p) { mirror_at([0,1,0], p) children(); }
-module mirror_at_z (p) { mirror_at([0,0,1], p) children(); }
+// p = Position als Vektor
+//     oder als Abstand auf der jeweiligen Achse vom Koordinatenursprung
+module mirror_at_x (p) { mirror_at([1,0,0], !is_num(p) ? p : [p,0,0]) children(); }
+module mirror_at_y (p) { mirror_at([0,1,0], !is_num(p) ? p : [0,p,0]) children(); }
+module mirror_at_z (p) { mirror_at([0,0,1], !is_num(p) ? p : [0,0,p]) children(); }
 //
-module mirror_copy_at_x (p) { mirror_copy_at([1,0,0], p) children(); }
-module mirror_copy_at_y (p) { mirror_copy_at([0,1,0], p) children(); }
-module mirror_copy_at_z (p) { mirror_copy_at([0,0,1], p) children(); }
+module mirror_copy_at_x (p) { mirror_copy_at([1,0,0], !is_num(p) ? p : [p,0,0]) children(); }
+module mirror_copy_at_y (p) { mirror_copy_at([0,1,0], !is_num(p) ? p : [0,p,0]) children(); }
+module mirror_copy_at_z (p) { mirror_copy_at([0,0,1], !is_num(p) ? p : [0,0,p]) children(); }
 
 // erzeugt ein Objekt und ein gespiegeltes Objekt
 module mirror_copy (v)

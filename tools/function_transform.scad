@@ -95,21 +95,25 @@ function mirror_at_list (list, v, p) =
 		mirror_list(list, V)
 ;
 
-// spigelt an der jeweiligen Achse wie die Hauptfunktion
+// spiegelt an der jeweiligen Achse wie die Hauptfunktion
 function mirror_x_list (list) = mirror_list (list, [1,0,0]);
 function mirror_y_list (list) = mirror_list (list, [0,1,0]);
 function mirror_z_list (list) = mirror_list (list, [0,0,1]);
-//
-function mirror_at_x_list (list, p) = mirror_at_list (list, [1,0,0], p);
-function mirror_at_y_list (list, p) = mirror_at_list (list, [0,1,0], p);
-function mirror_at_z_list (list, p) = mirror_at_list (list, [0,0,1], p);
+// spiegelt an der jeweiligen Achse bei gewählter Position
+// p = Position als Vektor
+//     oder als Abstand auf der jeweiligen Achse vom Koordinatenursprung
+function mirror_at_x_list (list, p) = mirror_at_list (list, [1,0,0], !is_num(p) ? p : [p,0,0]);
+function mirror_at_y_list (list, p) = mirror_at_list (list, [0,1,0], !is_num(p) ? p : [0,p,0]);
+function mirror_at_z_list (list, p) = mirror_at_list (list, [0,0,1], !is_num(p) ? p : [0,0,p]);
 
 // skaliert an der jeweiligen Achse wie die Hauptfunktion
+// f = Skalierfaktor
 function scale_x_list (list, f) = scale_list (list, [f,0,0]);
 function scale_y_list (list, f) = scale_list (list, [0,f,0]);
 function scale_z_list (list, f) = scale_list (list, [0,0,f]);
 //
 // verändert die Größe an der jeweiligen Achse wie die Hauptfunktion
+// l = neue Größe der jeweiligen Achse
 function resize_x_list (list, l) = resize_list (list, [l,0,0]);
 function resize_y_list (list, l) = resize_list (list, [0,l,0]);
 function resize_z_list (list, l) = resize_list (list, [0,0,l]);
