@@ -3,19 +3,20 @@
 // interne Hilfsfunktionen
 
 
-// extrahiert eine Dimension aus einer Liste
-// extract_dimension(list=[[x,y,z], [1,2,3], [11,12,13]], axis=1) => [y,2,12]
-//                            ^        ^          ^                   ^ ^  ^ 
-function extract_dimension (list, axis) = [ for (n=list) n[axis] ];
+// extrahiert eine feste Position aus einer Liste
+// extract_axis(list=[[x,y,z], [1,2,3], [11,12,13]], axis=1) => [y,2,12]
+//                       ^        ^          ^                   ^ ^  ^
+//                     0 1 2    0 1 2     0  1  2
+function extract_axis (list, axis) = [ for (n=list) n[axis] ];
 
 // gibt den größten Abstand der einzelnen Werte innerhalb einer Liste zurück
 function diff_list     (list) = max(list) - min(list);
-// gibt den größten Abstand der einzelnen Werte aller Dimensionen
-function diff_list_all (list) = [
-	for (axis=[0 : len(list[0])-1]) diff_list(extract_dimension(list, axis))
+// gibt den größten Abstand jeder einzelnen Achse in einer Vektoren-Liste
+function diff_axis_list (list) = [
+	for (axis=[0 : len(list[0])-1]) diff_list(extract_axis(list, axis))
 ];
 // gibt die maximal mögliche Raumdiagonale zurück
-function max_norm (list) = norm(diff_list_all(list));
+function max_norm (list) = norm(diff_axis_list(list));
 
 // gibt die echte Position innerhalb einer Liste zurück
 // Kodierung wie in python:
@@ -40,22 +41,6 @@ function get_position (list, position) =
 //     -5  -4  -3  -2  -1
 function get_position_insert (list, position) =
 	(position>=0) ? position : len(list)+position+1
-;
-
-// extrahiert eine Sequenz aus der Liste
-// Angaben:
-//     list  = Liste mit der enthaltenen Sequenz
-//     begin = erstes Element aus der Liste
-//     end   = letztes Element
-// oder
-//     range = [begin, last]
-// Kodierung wie in python
-function extract_list (list, begin, last, range) =
-	[for (i=[
-		get_position(list, get_first_good(begin,range[0], 0))
-		:1:
-		get_position(list, get_first_good(last ,range[1],-1))
-		]) list[i]]
 ;
 
 // testet eine numerische Variable auf eine gültige Zahl (Not A Number)
@@ -95,56 +80,70 @@ function get_list_depth_intern (list, i=0) =
 // gibt einen Wert für mehrere gleiche Parameter zurück
 // Sinnvoll, wenn z.B. der Parameter r oder d/2 für den Radius stehen sollen.
 // Sind mehrere Parameter gesetzt, wird der erste genommen, der gesetzt ist (und nicht undef ist).
-function get_first_good    (a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) =
+function get_first_good      (a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) =
 	 get_first_good_in_list ([a0, a1, a2, a3, a4, a5, a6, a7, a8, a9], 0)
+;
+// Parameter sind nur Zahlen
+function get_first_num      (a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) =
+	 get_first_num_in_list ([a0, a1, a2, a3, a4, a5, a6, a7, a8, a9], 0)
 ;
 
 // gibt einen Wert für mehrere gleiche Parameter zurück
 // Die Parameter sind hier 1-Dimensionale Vektoren
 // Alle einzelnen Parameter im Vektor müssen einen Wert haben, um akzeptiert zu werden.
 // Sind mehrere Parameter gesetzt, wird der erste genommen, der gesetzt ist.
-function get_first_good_1d (a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) =
+function get_first_good_1d   (a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) =
 	 get_first_good_in_list ([a0, a1, a2, a3, a4, a5, a6, a7, a8, a9], 1)
+;
+function get_first_num_1d   (a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) =
+	 get_first_num_in_list ([a0, a1, a2, a3, a4, a5, a6, a7, a8, a9], 1)
 ;
 
 // gibt einen Wert für mehrere gleiche Parameter zurück
 // Die Parameter sind hier 2-Dimensionale Vektoren
 // Alle 2 Parameter im Vektor müssen einen Wert haben, um akzeptiert zu werden.
 // Sind mehrere Parameter gesetzt, wird der erste genommen, der gesetzt ist.
-function get_first_good_2d (a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) =
+function get_first_good_2d   (a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) =
 	 get_first_good_in_list ([a0, a1, a2, a3, a4, a5, a6, a7, a8, a9], 2)
+;
+function get_first_num_2d   (a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) =
+	 get_first_num_in_list ([a0, a1, a2, a3, a4, a5, a6, a7, a8, a9], 2)
 ;
 
 // gibt einen Wert für mehrere gleiche Parameter zurück
 // Die Parameter sind hier 3-Dimensionale Vektoren
 // Alle 3 Parameter im Vektor müssen einen Wert haben, um akzeptiert zu werden.
 // Sind mehrere Parameter gesetzt, wird der erste genommen, der gesetzt ist.
-function get_first_good_3d (a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) =
+function get_first_good_3d   (a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) =
 	 get_first_good_in_list ([a0, a1, a2, a3, a4, a5, a6, a7, a8, a9], 3)
+;
+function get_first_num_3d   (a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) =
+	 get_first_num_in_list ([a0, a1, a2, a3, a4, a5, a6, a7, a8, a9], 3)
 ;
 
 // gibt das erste gültige Element in der Liste zurück
 // Es wird das erste Element genommen, das alle Bedingungen erfüllt.
 // Begingungen:
 //  - Element ist nicht undef
-//  - Element ist eine Liste mit (mindestens) <dimension> Elementen
+//  - Element ist eine Liste mit (mindestens) der Größe <size>
 //    mit gültigen Werten
-//  - wenn dimension==0 ist das Element eine gültiger Wert
-//  - ein gültiger Wert: -> nicht undef
+//  - wenn size==0 ist das Element ein gültiger Wert und keine Liste
+//  - ein gültiger Wert: -> jeder Datentyp, nur nicht undef
 // Argumente:
-//   list      - Liste mit den Elementen
-//   dimension - Element muss eine Liste sein mit dieser Größe
-//               wenn 0, dann muss das Element eine Zahl sein und keine Liste
-//   begin     - ab dieser Position wird getestet
-function get_first_good_in_list (list, dimension=0, begin=0) =
+//   list    - Liste mit den Elementen
+//   size    - Element muss eine Liste sein mit dieser Größe
+//             wenn 0, dann muss das Element ein gültiger Wert sein und keine Liste
+//   begin   - ab dieser Position wird getestet
+function get_first_good_in_list (list, size=0, begin=0) =
 	 (len(list)  ==undef) ? undef
 	:(len(list)-1 <begin) ? undef
-	:(dimension==0) ?
-		(list[begin]==undef) ? get_first_good_in_list(list, dimension, begin+1)
+	:(size==0) ?
+		(list[begin]==undef) ?
+			get_first_good_in_list(list, size, begin+1)
 		:	list[begin]
 	  :
-		 (list[begin]==undef)                           ? get_first_good_in_list(list, dimension, begin+1)
-		:(!is_good_value_list(list[begin],0,dimension)) ? get_first_good_in_list(list, dimension, begin+1)
+		 (list[begin]==undef || !is_good_list(list[begin],0,size)) ?
+			get_first_good_in_list(list, size, begin+1)
 		:	list[begin]
 ;
 
@@ -154,101 +153,42 @@ function get_first_good_in_list (list, dimension=0, begin=0) =
 //  - list    - Liste mit den Werten
 //  - begin   - das erste Element das getestet wird
 //  - end     - das erste Element das nicht mehr getestet wird
-function is_good_value_list (list, begin=0, end=undef) =
+function is_good_list (list, begin=0, end=undef) =
 	 (list==undef)   ? false
 	:(begin==undef)  ? false
-	:(end==undef)    ? is_good_value_list (list, begin, len(list))
+	:(end==undef)    ? is_good_list (list, begin, len(list))
 	:(len(list)<end) ? false
 	:(begin>=end)    ? true
-	:(list[begin]==undef) ? false
+	:(is_undef(list[begin])) ? false
 	:(len(list)<end) ? false
-	:is_good_value_list (list, begin+1, end)
+	:is_good_list (list, begin+1, end)
 ;
 
-
-// gibt [Innenradius, Außenradius] zurück
-// Argumente:
-//   r, d   - mittlerer Radius oder Durchmesser
-//   r1, d1 - Innenradius oder Innendurchmesser
-//   r2, d2 - Außenradius oder Außendurchmesser
-//   w      - Breite des Rings
-// Angegeben müssen:
-//   genau 2 Angaben von r oder r1 oder r2 oder w
-// Regeln in Anlehnung von OpenSCAD
-// - Durchmesser geht vor Radius
-// - ohne Angabe: r1=1, r2=2
-function parameter_ring_2r (r, w, r1, r2, d, d1, d2) =
-	parameter_ring_2r_basic (
-		r =get_first_good(d /2,  r),
-		w =w,
-		r1=get_first_good(d1/2, r1),
-		r2=get_first_good(d2/2, r2)
-	)
+// wie get_first_good_in_list () aber
+//  - ein gültiger Wert: -> eine Zahl
+function get_first_num_in_list (list, size=0, begin=0) =
+	 (len(list)  ==undef) ? undef
+	:(len(list)-1 <begin) ? undef
+	:(size==0) ?
+		(! is_num(list[begin])) ?
+			get_first_num_in_list(list, size, begin+1)
+		:	list[begin]
+	  :
+		 (list[begin]==undef || !is_num_list(list[begin],0,size)) ?
+			get_first_num_in_list(list, size, begin+1)
+		:	list[begin]
 ;
-function parameter_ring_2r_basic (r, w, r1, r2) =
-	 (r !=undef && w !=undef) ? [r-w/2   , r+w/2]
-	:(r1!=undef && r2!=undef) ? [r1      , r2]
-	:(r !=undef && r1!=undef) ? [r1      , 3*r-2*r1]
-	:(r !=undef && r2!=undef) ? [3*r-2*r2, r2]
-	:(r1!=undef && w !=undef) ? [r1      , r1+w]
-	:(r2!=undef && w !=undef) ? [r2-w    , r2]
-	:[1, 2]
+function is_num_list (list, begin=0, end=undef) =
+	 (list==undef)   ? false
+	:(begin==undef)  ? false
+	:(end==undef)    ? is_num_list (list, begin, len(list))
+	:(len(list)<end) ? false
+	:(begin>=end)    ? true
+	:(! is_num(list[begin])) ? false
+	:(len(list)<end) ? false
+	:is_num_list (list, begin+1, end)
 ;
 
-// gibt [radius_unten, radius_oben] zurück
-// Argumente:
-//   r  - Radius oben und unten
-//   r1 - Radius unten
-//   r2 - Radius oben
-//   d  - Durchmesser oben und unten 
-//   d1 - Durchmesser unten
-//   d2 - Durchmesser oben
-// Regeln wie bei cylinder() von OpenSCAD
-// - Durchmesser geht vor Radius
-// - spezielle Angaben (r1, r2) gehen vor allgemeine Angaben (r)
-// - ohne Angabe: r=1
-function parameter_cylinder_r (r, r1, r2, d, d1, d2) =
-	parameter_cylinder_r_basic (
-		get_first_good(d /2, r),
-		get_first_good(d1/2, r1),
-		get_first_good(d2/2, r2))
-;
-function parameter_cylinder_r_basic (r, r1, r2) =
-	get_first_good_2d (
-		[r1,r2],
-		[r1,r ],
-		[r, r2],
-		[r, r ],
-		[1,1])
-;
-
-// gibt den Radius zurück
-// Argumente:
-//   r  - Radius
-//   d  - Durchmesser
-// Regeln wie bei circle() von OpenSCAD
-// - Durchmesser geht vor Radius
-// - ohne Angabe: r=1
-function parameter_circle_r (r, d) = get_first_good (d/2, r, 1);
-
-// wandelt das Argument um in einen Tupel [1,2,3]
-// aus size=3       wird   [3,3,3]
-// aus size=[1,2,3] bleibt [1,2,3]
-function parameter_size_3d (size) =
-	 (size   ==undef) ?	[1,1,1] // f(undef)
-	:(size[2]==undef) ?
-	 (size[1]==undef) ?
-	 (size[0]==undef) ?
-	 [size   ,    size, size] // f(1)
-	:[size[0],       0,    0] // f([1])
-	:[size[0], size[1],    0] // f([1,2])
-	:size                     // f([1,2,3])
-;
-
-function get_circle_fudge (fn, scale=1) = scale/cos(180/fn) + 1-scale;
-
-// gibt einen Wert in der z-Achse zurück, wenn center gesetzt ist (true)
-function get_center_z (center, z_true=0, z_false=0) = (center) ? z_true : z_false;
 
 // function returns value and echo a message if version of OpenSCAD is 2019.05 or greater
 function do_echo (value, message) =

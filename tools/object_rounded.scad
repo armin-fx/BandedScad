@@ -187,19 +187,19 @@ module cylinder_rounded (h=3, r, center=false, d)
 {
 	R = parameter_circle_r (r, d);
 	//
-	translate([0,0, get_center_z(center,-h/2)])
+	translate_z(center ? -h/2 : 0)
 	union ()
 	{
-		if (h <= 2*R) scale([1,1,h/(2*R)]) translate([0,0,R]) sphere (R);
+		if (h <= 2*R) scale([1,1,h/(2*R)]) translate_z(R) sphere_extend (R);
 		else union()
 			{
-				fn      = get_fn_circle_current (R);
+				fn      = get_fn_circle_current_x (R);
 				fn_polar= ceil(fn / 2) * 2;
-				r_polar = (fn_polar/2 % 2) ? R : R * 1/cos(180/fn_polar);
+				r_polar = (fn_polar/2 % 2 != 0) ? R : R * 1/cos(180/fn_polar);
 				//
-				translate([0,0,R])   sphere   (r_polar);
-				translate([0,0,R])   cylinder (r=R, h=h-2*R);
-				translate([0,0,h-R]) sphere   (r_polar);
+				translate_z(R)   sphere_extend   (r_polar);
+				translate_z(R)   cylinder_extend (r=R, h=h-2*R);
+				translate_z(h-R) sphere_extend   (r_polar);
 			}
 	}
 }
@@ -208,35 +208,37 @@ module cylinder_rounded (h=3, r, center=false, d)
 module cylinder_edges_rounded (h=1, r, r_bottom=0, r_top=0, center=false, d)
 {
 	R = parameter_circle_r (r, d);
-	fn=get_fn_circle_current (R);
+	R_bottom = min (R, r_bottom);
+	R_top    = min (R, r_top);
+	fn = get_fn_circle_current_x (R);
 	segment_angle = (fn % 2) ? 180/fn : 0;
 	//
-	translate([0,0, get_center_z(center,-h/2) ])
+	translate_z(center ? -h/2 : 0)
 	difference()
 	{
-		cylinder (r=R, h=h);
+		cylinder_extend (r=R, h=h);
 		union()
 		{
-			if (r_bottom > 0)
+			if (R_bottom > 0)
 			{
-				fn_ring=ceil((get_fn_circle_current(r_bottom) - 1) / 4) * 4;
+				fn_ring=ceil((get_fn_circle_current_x(R_bottom) - 1) / 4) * 4;
 				//
 				difference()
 				{
-					translate([0,0,-extra])  ring_square (ro=R+extra, ri=R-r_bottom, h=r_bottom+extra, $fn=fn);
-					translate([0,0,r_bottom]) rotate([0,0,segment_angle])
-						torus (r=R-r_bottom, w=r_bottom*2-epsilon, center=true, fn_ring=fn_ring);
+					translate_z(-extra)  ring_square (ro=R+extra, ri=R-R_bottom, h=R_bottom+extra, $fn=fn);
+					translate_z(R_bottom) rotate_z(segment_angle)
+						torus (r=R-R_bottom, w=R_bottom*2-epsilon, center=true, fn_ring=fn_ring);
 				}
 			}
-			if (r_top > 0)
+			if (R_top > 0)
 			{
-				fn_ring=ceil((get_fn_circle_current(r_top) - 1) / 4) * 4;
+				fn_ring=ceil((get_fn_circle_current_x(R_top) - 1) / 4) * 4;
 				//
 				difference()
 				{
-					translate([0,0,h-r_top]) ring_square (ro=R+extra, ri=R-r_top, h=r_top+extra, $fn=fn);
-					translate([0,0,h-r_top]) rotate([0,0,segment_angle])
-						torus (r=R-r_top, w=r_top*2-epsilon, center=true, fn_ring=fn_ring);
+					translate_z(h-R_top) ring_square (ro=R+extra, ri=R-R_top, h=R_top+extra, $fn=fn);
+					translate_z(h-R_top) rotate_z(segment_angle)
+						torus (r=R-R_top, w=R_top*2-epsilon, center=true, fn_ring=fn_ring);
 				}
 			}
 		}

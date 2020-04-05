@@ -39,6 +39,23 @@ function insert_list (list, list_insert, position=-1, begin=0, count=-1) =
 	)
 ;
 
+// extrahiert eine Sequenz aus der Liste
+// Angaben:
+//     list  = Liste mit der enthaltenen Sequenz
+//     begin = erstes Element aus der Liste
+//     end   = letztes Element
+// oder
+//     range = [begin, last]
+// Kodierung wie in python
+function extract_list (list, begin, last, range) =
+	[for (i=[
+		get_position(list, get_first_good(begin,range[0], 0))
+		:1:
+		get_position(list, get_first_good(last ,range[1],-1))
+		]) list[i]]
+;
+
+
 // Listenfunktionen
 
 // gibt den Wert eines angegebenen Typs zurück

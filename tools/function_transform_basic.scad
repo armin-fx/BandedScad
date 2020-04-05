@@ -9,7 +9,7 @@
 //  list = Punkt-Liste
 //  v    = Vektor
 function translate_list (list, v) =
-	let ( vector = !is_undef(v) ? v : [0,0,0] )
+	let ( vector = is_list(v) ? v : [0,0,0] )
 	[for (p=list) p+vector]
 ;
 
@@ -20,33 +20,44 @@ function translate_list (list, v) =
 //  v    = Vektor
 function rotate_list (list, a, v) =
 	 is_list(a) ?
-		rotate_z_list( rotate_y_list( rotate_x_list( list, a[0]), a[1]), a[2])
+		rotate_z_list(a=a[2], list=
+		rotate_y_list(a=a[1], list=
+		rotate_x_list(a=a[0], list=
+		list )))
 	:is_num(a)  ?
 		is_list(v) ?
-			rotate_vector_list(list, a, v)
-		:	rotate_z_list     (list, a)
+			rotate_v_list(list, a, v)
+		:	rotate_z_list(list, a)
 	:list
 ;
 
 // jeden Punkt in der Liste <list> um die X-Achse um <a> drehen
 function rotate_x_list (list, a) =
 	!is_num(a) ? list :
+	let (
+		sina  = sin(a),
+		cosa  = cos(a)
+	)
 	[for (p=list)
 		[
 		 p[0]
-		,p[1]*cos(a) - p[2]*sin(a)
-		,p[1]*sin(a) + p[2]*cos(a)
+		,p[1]*cosa - p[2]*sina
+		,p[1]*sina + p[2]*cosa
 		]
 	]
 ;
 // jeden Punkt in der Liste <list> um die Y-Achse um <a> drehen
 function rotate_y_list (list, a) =
 	!is_num(a) ? list :
+	let (
+		sina  = sin(a),
+		cosa  = cos(a)
+	)
 	[for (p=list)
 		[
-		  p[0]*cos(a) + p[2]*sin(a)
+		  p[0]*cosa + p[2]*sina
 		, p[1]
-		,-p[0]*sin(a) + p[2]*cos(a)
+		,-p[0]*sina + p[2]*cosa
 		]
 	]
 ;
@@ -54,26 +65,37 @@ function rotate_y_list (list, a) =
 // auch für 2D-Listen
 function rotate_z_list (list, a) =
 	!is_num(a) ? list :
+	let (
+		sina  = sin(a),
+		cosa  = cos(a)
+	)
 	[for (p=list)
 		concat(
-			 p[0]*cos(a) - p[1]*sin(a)
-			,p[0]*sin(a) + p[1]*cos(a)
+			 p[0]*cosa - p[1]*sina
+			,p[0]*sina + p[1]*cosa
 			,(p[2]!=undef) ? p[2] : []
 		)
 	]
 ;
 // jeden Punkt in der Liste <list> um einen Vektor <v> herum um <a> drehen
-function rotate_vector_list (list, a, v) =
+function rotate_v_list (list, a, v) =
 	 !is_num (a) ? list
 	:!is_list(v) ? list
 	:
-	let (u=unit_vector(v), cosa=cos(-a), sina=sin(-a), x=u[0],y=u[1],z=u[2])
-	[ for (p=list)
-		p * [
-		 [ x*x*(1-cosa)+  cosa, x*y*(1-cosa)-z*sina, x*z*(1-cosa)+y*sina ],
-		 [ y*x*(1-cosa)+z*sina, y*y*(1-cosa)+  cosa, y*z*(1-cosa)-x*sina ],
-		 [ z*x*(1-cosa)-y*sina, z*y*(1-cosa)+x*sina, z*z*(1-cosa)+  cosa ]
+	let (
+		u=unit_vector(v),
+		x=u[0], y=u[1], z=u[2],
+		sina=sin(-a),
+		cosa=cos(-a),
+		matrix=
+		[
+			[ x*x*(1-cosa)+  cosa, x*y*(1-cosa)-z*sina, x*z*(1-cosa)+y*sina ],
+			[ y*x*(1-cosa)+z*sina, y*y*(1-cosa)+  cosa, y*z*(1-cosa)-x*sina ],
+			[ z*x*(1-cosa)-y*sina, z*y*(1-cosa)+x*sina, z*z*(1-cosa)+  cosa ]
 		]
+	)
+	[ for (p=list)
+		p * matrix
 	]
 ;
 
@@ -91,9 +113,8 @@ function mirror_list (list, v) =
 ;
 function mirror_2d_list (list, v) =
 	let (
-		v_std = [1,0],
-		V = (is_list(v) && len(v)>=2) ? v : v_std,
-		angle = atan2(V[1],V[0]) 
+		V = parameter_mirror_vector_2d(v),
+		angle = atan2(V[1],V[0])
 	)
 	rotate_z_list(
 	[ for (p=rotate_backwards_z_list(list, angle)) [-p[0],p[1]] ]
@@ -101,17 +122,12 @@ function mirror_2d_list (list, v) =
 ;
 function mirror_3d_list (list, v) =
 	let (
-		v_std = [1,0,0],
-		V =
-			!is_list(v) ? v_std
-			:len(v)==3 ? v
-			:len(v)==2 ? [v[0],v[1],0]
-			:v_std,
-		a = atan2(V[1],V[0])
+		V = parameter_mirror_vector_3d(v),
+		angle = atan2(V[1],V[0])
 	)
 	rotate_to_vector_list(
-	[ for (p=rotate_backwards_to_vector_list(list, V,a)) [p[0],p[1],-p[2]] ]
-	, V,a)
+	[ for (p=rotate_backwards_to_vector_list(list, V,angle)) [p[0],p[1],-p[2]] ]
+	, V,angle)
 ;
 
 // jeden Punkt in der Liste <list> an der jeweiligen Achse vergrößern
@@ -121,7 +137,7 @@ function mirror_3d_list (list, v) =
 function scale_list (list, v) =
 	(!is_list(list) || !is_list(list[0])) ? undef :
 	(!is_list(v) || len(v)==0) ? list :
-	let ( 
+	let (
 		last = len(list[0])-1,
 		scale_factor = [ for (i=[0:last]) (len(v)>i && v[i]!=0 && is_num(v[i])) ? v[i] : 1 ]
 	)
@@ -174,7 +190,7 @@ function get_bounding_box_list_intern (list, min_pos, max_pos, i=0, n=0) =
 //          TODO nicht implementiert
 //  plane = true  = eine 2D-Liste machen - Standart
 //          false = 3D-Liste behalten, alle Punkte auf xy-Ebene
-function projection_list (list, cut=false, plane) =
+function projection_list (list, plane) =
 	let (Plane=is_bool(plane) ? plane : true)
 	//
 	Plane==true ? [ for (p=list) [p[0],p[1]]   ]
@@ -216,27 +232,3 @@ function multmatrix_3d_list (list, m) =
 	]
 ;
 
-function repair_matrix_3d (m) =
-	fill_matrix_with (m, [
-		[1,0,0,0],
-		[0,1,0,0],
-		[0,0,1,0],
-		[0,0,0,1]
-	] )
-;
-function repair_matrix_2d (m) = 
-	fill_matrix_with (m, [
-		[1,0,0],
-		[0,1,0],
-		[0,0,1]
-	] )
-;
-
-function fill_matrix_with (m, c) =
-	!is_list(m) ? c :
-	[ for (i=[0:len(c)-1])
-		[ for (j=[0:len(c[i])-1])
-			is_num(m[i][j]) ? m[i][j] : c[i][j]
-		]
-	]
-;

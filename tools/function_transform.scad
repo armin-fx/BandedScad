@@ -7,23 +7,32 @@
 // funktioniert wie rotate_backwards()
 function rotate_backwards_list (list, a, v) =
 	 is_list(a) ?
-		rotate_x_list( rotate_y_list( rotate_z_list( list, -a[2]), -a[1]), -a[0])
+		rotate_x_list( a=-a[0], list=
+		rotate_y_list( a=-a[1], list=
+		rotate_z_list( a=-a[2], list=
+		list )))
 	:is_num(a)  ?
 		is_list(v) ?
-			rotate_vector_list(list, -a, v)
-		:	rotate_z_list     (list, -a)
+			rotate_v_list(list, -a, v)
+		:	rotate_z_list(list, -a)
 	:list
 ;
 
 // jeden Punkt in der Liste <list> rotieren an der angegebenen Position p
 // funktioniert wie rotate_at()
 function rotate_at_list (list, a, p, v) =
-	translate_list( rotate_list( translate_list( list, -p), a, v), p)
+	translate_list( v=p,      list=
+	rotate_list    (a=a, v=v, list=
+	translate_list( v=-p,     list=
+	list )))
 ;
 // jeden Punkt in der Liste <list> rückwärts rotieren an der angegebenen Position p
 // funktioniert wie rotate_at()
 function rotate_backwards_at_list (list, a, p, v) =
-	translate_list( rotate_backwards_list( translate_list( list, -p), a, v), p)
+	translate_list       ( v=p,      list=
+	rotate_backwards_list( a=a, v=v, list=
+	translate_list       ( v=-p,     list=
+	list )))
 ;
 
 // jeden Punkt in der Liste <list> von in Richtung Z-Achse in Richtung Vektor v drehen
@@ -35,7 +44,9 @@ function rotate_to_vector_list (list, v, a) =
 	b     = acos(V[2]/norm(V)), // inclination angle
 	c     = atan2(V[1],V[0])    // azimuthal angle
 	)
-	rotate_list( rotate_z_list( list, angle), [0, b, c])
+	rotate_list  ( a=[0, b, c], list=
+	rotate_z_list( a=angle,     list=
+	list ))
 ;
 // jeden Punkt in der Liste <list> von in Richtung Z-Achse in Richtung Vektor v rückwärts drehen
 function rotate_backwards_to_vector_list (list, v, a) =
@@ -45,18 +56,26 @@ function rotate_backwards_to_vector_list (list, v, a) =
 	b     = acos(V[2]/norm(V)), // inclination angle
 	c     = atan2(V[1],V[0])    // azimuthal angle
 	)
-	rotate_backwards_z_list( rotate_backwards_list( list, [0, b, c]), angle)
+	rotate_backwards_z_list( a=angle,     list=
+	rotate_backwards_list  ( a=[0, b, c], list=
+	list ))
 ;
 
 // jeden Punkt in der Liste <list> von in Richtung Z-Achse in Richtung Vektor v
 // drehen an der angegebenen Position
 function rotate_to_vector_at_list (list, v, p, a) =
-	translate_list( rotate_to_vector_list( translate_list( list, -p), v, a), p)
+	translate_list       ( v=p,      list=
+	rotate_to_vector_list( v=v, a=a, list=
+	translate_list       ( v=-p,     list=
+	list )))
 ;
 // jeden Punkt in der Liste <list> von in Richtung Z-Achse in Richtung Vektor v
 // rückwärts drehen an der angegebenen Position
 function rotate_backwards_to_vector_at_list (list, v, p, a) =
-	translate_list( rotate_backwards_to_vector_list( translate_list( list, -p), v, a), p)
+	translate_list                 ( v=p,      list=
+	rotate_backwards_to_vector_list( v=v, a=a, list=
+	translate_list                 ( v=-p,     list=
+	list )))
 ;
 
 // rotiert um die jeweilige Achse wie die Hauptfunktion
@@ -84,15 +103,13 @@ function translate_xy_list (list, t) =
 // jeden Punkt in der Liste <list> spiegeln entlang dem Vektor <v>
 // Spiegel an Position p
 function mirror_at_list (list, v, p) =
-	let (
-	V = !is_undef(v) ? v : [1,0,0]
-	)
 	!is_undef(p) ?
-		translate_list(
-		mirror_list(
-		translate_list(list, -p), V), p)
+		translate_list( v=p,  list=
+		mirror_list   ( v=v,  list=
+		translate_list( v=-p, list=
+		list )))
 	:
-		mirror_list(list, V)
+		mirror_list(list, v)
 ;
 
 // spiegelt an der jeweiligen Achse wie die Hauptfunktion

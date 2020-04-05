@@ -82,3 +82,5 @@ module sphere_outer (r, d)
 		sphere (r=rx, $fn=fn);
 }
 
+function get_circle_fudge (fn, scale=1) = scale/cos(180/fn) + 1-scale;
+

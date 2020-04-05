@@ -15,19 +15,23 @@ module empty () {}
 //   w  - Breite des Rings
 // Angegeben müssen:
 //   genau 2 Angaben von r oder r1 oder r2 oder w
-module torus (r, w, ri, ro, center=false, fn_ring=undef)
+// weitere Argumente:
+//   angle   - Öffnungswinkel des Torus, Standart=360°. Benötigt Version 2019.05
+//   center  - Torus in der Mitte (Z-Achse) zentrieren (bei center=true)
+//   fn_ring - optionale Anzahl der Segmente des Rings
+module torus (r, w, ri, ro, angle=360, center=false, fn_ring=undef)
 {
 	rx = parameter_ring_2r(r, w, ri, ro);
 	rm = (rx[1] + rx[0]) / 2;
 	rw = (rx[1] - rx[0]) / 2;
+	fn_Ring = is_num(fn_ring) ? fn_ring : get_fn_circle_current_x(rw);
 	//
-	translate([0,0,get_center_z(center,0,rw)])
-	rotate_extrude()
+	translate_z(center ? 0 : rw)
+	rotate_extrude(angle=angle, $fn=get_fn_circle_current_x(rm+rw))
 	difference()
 	{
-		$fn = (fn_ring!=undef) ? fn_ring : $fn;
-		translate([ rm,  0, 0]) circle(r = rw); 
-		translate([-rw,-rw, 0]) square([rw, 2*rw]);   
+		translate([ rm,  0]) circle(r=rw, $fn=fn_Ring); 
+		translate([-rw,-rw]) square([rw, 2*rw]);   
 	}
 }
 
@@ -91,7 +95,7 @@ module wedge (v_min, v_max, v2_min, v2_max)
 module ring_square (h, r, w, ri, ro, angle=360, center=false, d, di, do)
 {
 	rx = parameter_ring_2r(r, w, ri, ro, d, di, do);
-	translate([0,0, get_center_z(center,-h/2) ])
+	translate_z(center ? -h/2 : 0)
 	linear_extrude(height=h, convexity=4)
 	difference()
 	{
@@ -106,15 +110,16 @@ module ring_square (h, r, w, ri, ro, angle=360, center=false, d, di, do)
 //   ri1, ri2 - Innenradius unten, oben
 //   ro1, ro2 - Außenradius unten, oben
 //   w        - Breite der Wand. Optional
-//   angle    - Winkel des Trichters. Standard=360°. Benötigt Version 2019.05
+//   angle    - Öffnungswinkel des Trichters. Standard=360°. Benötigt Version 2019.05
 module funnel (h=1, ri1, ri2, ro1, ro2, w, angle=360, di1, di2, do1, do2)
 {
-	_ri1 = get_first_good (ri1, ro1-w, di1/2, do1/2-w, 1);
-	_ri2 = get_first_good (ri2, ro2-w, di2/2, do2/2-w, 1);
-	_ro1 = get_first_good (ro1, ri1+w, do1/2, di1/2+w, 2);
-	_ro2 = get_first_good (ro2, ri2+w, do2/2, di2/2+w, 2);
+	_ri1 = get_first_num (ri1, ro1-w, di1/2, do1/2-w, 1);
+	_ri2 = get_first_num (ri2, ro2-w, di2/2, do2/2-w, 1);
+	_ro1 = get_first_num (ro1, ri1+w, do1/2, di1/2+w, 2);
+	_ro2 = get_first_num (ro2, ri2+w, do2/2, di2/2+w, 2);
+	fn = get_fn_circle_current_x( max(_ri1, _ri2, _ro1, _ro2) );
 	//
-	rotate_extrude(angle=angle)
+	rotate_extrude(angle=angle, $fn=fn)
 	{
 		polygon([
 			[_ri1,0], [_ro1,0],
@@ -129,16 +134,16 @@ module funnel (h=1, ri1, ri2, ro1, ro2, w, angle=360, di1, di2, do1, do2)
 // barrelbase=true - barrel begins on orgin
 module cylinder_bind (r=2, r1=1, r2=1, h=2, h1=1.5, h2=1.5, center=false, barrelbase=false)
 {
-	if      (center==false && barrelbase==false)                               cylinder_bind_basic (r, r1, r2, h, h1, h2);
-	else if (center==true  && barrelbase==false) translate([0,0,(-h-h1-h2)/2]) cylinder_bind_basic (r, r1, r2, h, h1, h2);
-	else if (center==false && barrelbase==true)  translate([0,0,-h1])          cylinder_bind_basic (r, r1, r2, h, h1, h2);
-	else if (center==true  && barrelbase==true)  translate([0,0,-h1-h/2])      cylinder_bind_basic (r, r1, r2, h, h1, h2);
+	if      (center==false && barrelbase==false)                           cylinder_bind_basic (r, r1, r2, h, h1, h2);
+	else if (center==true  && barrelbase==false) translate_z((-h-h1-h2)/2) cylinder_bind_basic (r, r1, r2, h, h1, h2);
+	else if (center==false && barrelbase==true)  translate_z(-h1)          cylinder_bind_basic (r, r1, r2, h, h1, h2);
+	else if (center==true  && barrelbase==true)  translate_z(-h1-h/2)      cylinder_bind_basic (r, r1, r2, h, h1, h2);
 }
 
 module cylinder_bind_basic (r=2, r1=1, r2=1, h=2, h1=1.5, h2=1.5)
 {
-	                      cylinder (r1=r1, r2=r, h=h1);
-	translate([0,0,h1])   cylinder (r=r,         h=h);
-	translate([0,0,h1+h]) cylinder (r1=r, r2=r2, h=h2);
+	                  cylinder_extend (r1=r1, r2=r, h=h1);
+	translate_z(h1)   cylinder_extend (r=r,         h=h);
+	translate_z(h1+h) cylinder_extend (r1=r, r2=r2, h=h2);
 }
 
