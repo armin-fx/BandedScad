@@ -20,15 +20,15 @@ function matrix_rotate_backwards (a, v, d=3) =
 
 // gibt die Matrix zurück zum rotieren an der angegebenen Position p
 function matrix_rotate_at (a, p, v, d=3) =
-	matrix_translate (p,    d=d) *
-	matrix_rotate    (a, v, d=d) *
-	matrix_translate (-p,   d=d)
+	matrix_translate ( p,    d=d) *
+	matrix_rotate    ( a, v, d=d) *
+	matrix_translate (-p,    d=d)
 ;
 // gibt die Matrix zurück zum rückwärts rotieren an der angegebenen Position p
 function matrix_rotate_backwards_at (a, p, v, d=3) =
-	matrix_translate        (p,    d=d) *
-	matrix_rotate_backwards (a, v, d=d) *
-	matrix_translate        (-p,   d=d)
+	matrix_translate        ( p,    d=d) *
+	matrix_rotate_backwards ( a, v, d=d) *
+	matrix_translate        (-p,    d=d)
 ;
 
 // gibt die Matrix zurück zum von in Richtung Z-Achse in Richtung Vektor v drehen
@@ -61,7 +61,7 @@ function matrix_rotate_backwards_to_vector (v, a) =
 function matrix_rotate_to_vector_at (v, p, a) =
 	let( d = 3 )
 	matrix_translate       ( p, d=d) *
-	matrix_rotate_to_vector( v, a) *
+	matrix_rotate_to_vector( v, a)   *
 	matrix_translate       (-p, d=d)
 ;
 // gibt die Matrix zurück zum rückwärts drehen von in Richtung Z-Achse in Richtung Vektor v
@@ -69,7 +69,7 @@ function matrix_rotate_to_vector_at (v, p, a) =
 function matrix_rotate_backwards_to_vector_at (v, p, a) =
 	let( d = 3 )
 	matrix_translate                 ( p, d=d) *
-	matrix_rotate_backwards_to_vector( v, a) *
+	matrix_rotate_backwards_to_vector( v, a)   *
 	matrix_translate                 (-p, d=d)
 ;
 
@@ -99,9 +99,9 @@ function matrix_translate_xy (t, d=3) =
 // Spiegel an Position p
 function matrix_mirror_at (v, p, d=3) =
 	!is_undef(p) ?
-		matrix_translate( p,  d=d) *
-		matrix_mirror   ( v,  d=d) *
-		matrix_translate( -p, d=d)
+		matrix_translate( p, d=d) *
+		matrix_mirror   ( v, d=d) *
+		matrix_translate(-p, d=d)
 	:
 		matrix_mirror(v, d=d)
 ;

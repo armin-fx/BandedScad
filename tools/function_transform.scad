@@ -7,10 +7,11 @@
 // funktioniert wie rotate_backwards()
 function rotate_backwards_list (list, a, v) =
 	 is_list(a) ?
-		rotate_x_list( a=-a[0], list=
-		rotate_y_list( a=-a[1], list=
-		rotate_z_list( a=-a[2], list=
-		list )))
+		multmatrix_list (list,
+			matrix_rotate_x(-a[0], d=3) *
+			matrix_rotate_y(-a[1], d=3) *
+			matrix_rotate_z(-a[2], d=3)
+		)
 	:is_num(a)  ?
 		is_list(v) ?
 			rotate_v_list(list, -a, v)
@@ -44,9 +45,10 @@ function rotate_to_vector_list (list, v, a) =
 	b     = acos(V[2]/norm(V)), // inclination angle
 	c     = atan2(V[1],V[0])    // azimuthal angle
 	)
-	rotate_list  ( a=[0, b, c], list=
-	rotate_z_list( a=angle,     list=
-	list ))
+	multmatrix_list (list,
+		matrix_rotate  ([0, b, c], d=3) *
+		matrix_rotate_z(angle,     d=3)
+	)
 ;
 // jeden Punkt in der Liste <list> von in Richtung Z-Achse in Richtung Vektor v rückwärts drehen
 function rotate_backwards_to_vector_list (list, v, a) =
@@ -56,32 +58,35 @@ function rotate_backwards_to_vector_list (list, v, a) =
 	b     = acos(V[2]/norm(V)), // inclination angle
 	c     = atan2(V[1],V[0])    // azimuthal angle
 	)
-	rotate_backwards_z_list( a=angle,     list=
-	rotate_backwards_list  ( a=[0, b, c], list=
-	list ))
+	multmatrix_list (list,
+		matrix_rotate_backwards_z(angle,     d=3) *
+		matrix_rotate_backwards  ([0, b, c], d=3)
+	)
 ;
 
 // jeden Punkt in der Liste <list> von in Richtung Z-Achse in Richtung Vektor v
 // drehen an der angegebenen Position
 function rotate_to_vector_at_list (list, v, p, a) =
-	translate_list       ( v=p,      list=
-	rotate_to_vector_list( v=v, a=a, list=
-	translate_list       ( v=-p,     list=
-	list )))
+	multmatrix_list (list,
+		matrix_translate       ( p, d=3) *
+		matrix_rotate_to_vector( v, a)   *
+		matrix_translate       (-p, d=3)
+	)
 ;
 // jeden Punkt in der Liste <list> von in Richtung Z-Achse in Richtung Vektor v
 // rückwärts drehen an der angegebenen Position
 function rotate_backwards_to_vector_at_list (list, v, p, a) =
-	translate_list                 ( v=p,      list=
-	rotate_backwards_to_vector_list( v=v, a=a, list=
-	translate_list                 ( v=-p,     list=
-	list )))
+	multmatrix_list (list,
+		matrix_translate                 ( p, d=3) *
+		matrix_rotate_backwards_to_vector( v, a)   *
+		matrix_translate                 (-p, d=3)
+	)
 ;
 
 // rotiert um die jeweilige Achse wie die Hauptfunktion
-function rotate_backwards_x_list (list, a) = !is_num(a) ? list : rotate_backwards_list(list, [a,0,0]);
-function rotate_backwards_y_list (list, a) = !is_num(a) ? list : rotate_backwards_list(list, [0,a,0]);
-function rotate_backwards_z_list (list, a) = !is_num(a) ? list : rotate_backwards_list(list, a);
+function rotate_backwards_x_list (list, a) = !is_num(a) ? list : rotate_x_list(list, -a);
+function rotate_backwards_y_list (list, a) = !is_num(a) ? list : rotate_y_list(list, -a);
+function rotate_backwards_z_list (list, a) = !is_num(a) ? list : rotate_z_list(list, -a);
 //
 function rotate_at_x_list (list, a, p) = !is_num(a) ? list : rotate_at_list(list, [a,0,0], p);
 function rotate_at_y_list (list, a, p) = !is_num(a) ? list : rotate_at_list(list, [0,a,0], p);
@@ -103,11 +108,14 @@ function translate_xy_list (list, t) =
 // jeden Punkt in der Liste <list> spiegeln entlang dem Vektor <v>
 // Spiegel an Position p
 function mirror_at_list (list, v, p) =
+	(!is_list(list) || !is_list(list[0])) ? undef :
 	!is_undef(p) ?
-		translate_list( v=p,  list=
-		mirror_list   ( v=v,  list=
-		translate_list( v=-p, list=
-		list )))
+		let (d=len(list[0]))
+		multmatrix_list (list,
+			matrix_translate( p, d=d) *
+			matrix_mirror   ( v, d=d) *
+			matrix_translate(-p, d=d)
+		)
 	:
 		mirror_list(list, v)
 ;

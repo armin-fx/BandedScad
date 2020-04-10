@@ -20,10 +20,11 @@ function translate_list (list, v) =
 //  v    = Vektor
 function rotate_list (list, a, v) =
 	 is_list(a) ?
-		rotate_z_list(a=a[2], list=
-		rotate_y_list(a=a[1], list=
-		rotate_x_list(a=a[0], list=
-		list )))
+		multmatrix_list (list,
+			matrix_rotate_z(a[2], d=3) *
+			matrix_rotate_y(a[1], d=3) *
+			matrix_rotate_x(a[0], d=3)
+		)
 	:is_num(a)  ?
 		is_list(v) ?
 			rotate_v_list(list, a, v)
@@ -70,14 +71,17 @@ function rotate_z_list (list, a) =
 		cosa  = cos(a)
 	)
 	[for (p=list)
-		concat(
+		(p[2]==undef) ?
+		[
 			 p[0]*cosa - p[1]*sina
 			,p[0]*sina + p[1]*cosa
-			,(p[2]!=undef) ? p[2] : []
-		)
+		] : [
+			 p[0]*cosa - p[1]*sina
+			,p[0]*sina + p[1]*cosa
+			,p[2]
+		]
 	]
-;
-// jeden Punkt in der Liste <list> um einen Vektor <v> herum um <a> drehen
+;// jeden Punkt in der Liste <list> um einen Vektor <v> herum um <a> drehen
 function rotate_v_list (list, a, v) =
 	 !is_num (a) ? list
 	:!is_list(v) ? list
@@ -105,8 +109,8 @@ function rotate_v_list (list, a, v) =
 //  v    = Vektor, in dieser Richtung wird gespiegelt
 function mirror_list (list, v) =
 	(!is_list(list) || !is_list(list[0])) ? undef
-	:len(list[0])==3 ? mirror_3d_list (list, v)
-	:len(list[0])==2 ? mirror_2d_list (list, v)
+	:len(list[0])==3 ? multmatrix_list (list, matrix_mirror_3d (v))
+	:len(list[0])==2 ? multmatrix_list (list, matrix_mirror_2d (v))
 	:len(list[0])==1 ? -list
 	:undef
 	
@@ -172,15 +176,11 @@ function resize_list (list, newsize) =
 //   - max_pos = Punkt am Ende der Box
 function get_bounding_box_list (list) =
 	(!is_list(list) || len(list)==0) ? [[0,0,0],[0,0,0]] :
-	get_bounding_box_list_intern(list, list[0], list[0], 1, len(list))
-;
-function get_bounding_box_list_intern (list, min_pos, max_pos, i=0, n=0) =
-	(i>=n) ? [ max_pos - min_pos, min_pos, max_pos ] :
-	get_bounding_box_list_intern (list
-		,min_pos = [ for (j=[0:len(list[i])-1]) min (list[i][j], min_pos[j]) ]
-		,max_pos = [ for (j=[0:len(list[i])-1]) max (list[i][j], max_pos[j]) ]
-		,i=i+1, n=n
+	let (
+		min_pos = [ for (i=[ 0:len(list[0])-1 ]) min ([for(e=list) e[i]]) ],
+		max_pos = [ for (i=[ 0:len(list[0])-1 ]) max ([for(e=list) e[i]]) ]
 	)
+	[ max_pos - min_pos, min_pos, max_pos ]
 ;
 
 
@@ -224,7 +224,8 @@ function multmatrix_3d_list (list, m) =
 	let (M = repair_matrix_3d(m))
 	[ for (p=list)
 		let (
-			a = [ p[0],p[1],p[2], 1 ],
+			//a = [ p[0],p[1],p[2], 1 ],
+			a = concat (p, 1),
 			c = M * a,
 			p_new = [ c[0],c[1],c[2] ]
 		)

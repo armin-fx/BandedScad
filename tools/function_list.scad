@@ -67,11 +67,11 @@ function extract_list (list, begin, last, range) =
 function get_value (data, type=0) = (type==0) ? data : data[type-1];
 
 // Gibt eine Liste des gewählten Typs zurück aus einer Liste
-function value_list (list, type=0) = [for (e=list) get_value(e, type)];
+function value_list (list, type=0) = (type==0) ? list : let(i=type-1) [ for (e=list) e[i] ];
 
 // Maximum oder Minimum einer Liste gemäß des Typs
-function min_list(list, type=0) = (type==0) ? min(list) : min(value_list(list, type));
-function max_list(list, type=0) = (type==0) ? max(list) : max(value_list(list, type));
+function min_list(list, type=0) = min (value_list(list, type));
+function max_list(list, type=0) = max (value_list(list, type));
 
 // Listen sortieren
 function sort_list (list, type=0) = sort_list_quicksort (list, type);

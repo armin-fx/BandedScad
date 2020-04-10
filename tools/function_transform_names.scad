@@ -37,6 +37,8 @@ function translate_y  (list, l) = translate_y_list  (list, l);
 function translate_z  (list, l) = translate_z_list  (list, l);
 function translate_xy (list, t) = translate_xy_list (list, t);
 //
+function mirror_at (list, v, p) = mirror_at_list (list, v, p);
+//
 function mirror_x (list) = mirror_x_list (list);
 function mirror_y (list) = mirror_y_list (list);
 function mirror_z (list) = mirror_z_list (list);
