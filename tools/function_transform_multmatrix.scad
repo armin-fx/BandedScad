@@ -15,7 +15,7 @@ function matrix_rotate_backwards (a, v, d=3) =
 		is_list(v) ?
 			matrix_rotate_v (-a, v, d=d)
 		:	matrix_rotate_z (-a,    d=d)
-	:unit_matrix(d+1)
+	:identity_matrix(d+1)
 ;
 
 // gibt die Matrix zurück zum rotieren an der angegebenen Position p
@@ -74,24 +74,24 @@ function matrix_rotate_backwards_to_vector_at (v, p, a) =
 ;
 
 // gibt die Matrix zurück zum rotieren um die jeweilige Achse wie die Hauptfunktion
-function matrix_rotate_backwards_x (a) = let(d=3) !is_num(a) ? unit_matrix(d+1) : matrix_rotate_backwards([a,0,0], d=d);
-function matrix_rotate_backwards_y (a) = let(d=3) !is_num(a) ? unit_matrix(d+1) : matrix_rotate_backwards([0,a,0], d=d);
-function matrix_rotate_backwards_z (a, d=3) =     !is_num(a) ? unit_matrix(d+1) : matrix_rotate_backwards(a,       d=d);
+function matrix_rotate_backwards_x (a) = let(d=3) !is_num(a) ? identity_matrix(d+1) : matrix_rotate_backwards([a,0,0], d=d);
+function matrix_rotate_backwards_y (a) = let(d=3) !is_num(a) ? identity_matrix(d+1) : matrix_rotate_backwards([0,a,0], d=d);
+function matrix_rotate_backwards_z (a, d=3) =     !is_num(a) ? identity_matrix(d+1) : matrix_rotate_backwards(a,       d=d);
 //
-function matrix_rotate_at_x (a, p) = let(d=3) !is_num(a) ? unit_matrix(d+1) : matrix_rotate_at([a,0,0], p, d=d);
-function matrix_rotate_at_y (a, p) = let(d=3) !is_num(a) ? unit_matrix(d+1) : matrix_rotate_at([0,a,0], p, d=d);
-function matrix_rotate_at_z (a, p, d=3) =     !is_num(a) ? unit_matrix(d+1) : matrix_rotate_at(a      , p, d=d);
+function matrix_rotate_at_x (a, p) = let(d=3) !is_num(a) ? identity_matrix(d+1) : matrix_rotate_at([a,0,0], p, d=d);
+function matrix_rotate_at_y (a, p) = let(d=3) !is_num(a) ? identity_matrix(d+1) : matrix_rotate_at([0,a,0], p, d=d);
+function matrix_rotate_at_z (a, p, d=3) =     !is_num(a) ? identity_matrix(d+1) : matrix_rotate_at(a      , p, d=d);
 //
-function matrix_rotate_backwards_at_x (a, p) = let(d=3) !is_num(a) ? unit_matrix(d+1) : matrix_rotate_backwards_at([a,0,0], p, d=d);
-function matrix_rotate_backwards_at_y (a, p) = let(d=3) !is_num(a) ? unit_matrix(d+1) : matrix_rotate_backwards_at([0,a,0], p, d=d);
-function matrix_rotate_backwards_at_z (a, p, d=3) =     !is_num(a) ? unit_matrix(d+1) : matrix_rotate_backwards_at(a,       p, d=d);
+function matrix_rotate_backwards_at_x (a, p) = let(d=3) !is_num(a) ? identity_matrix(d+1) : matrix_rotate_backwards_at([a,0,0], p, d=d);
+function matrix_rotate_backwards_at_y (a, p) = let(d=3) !is_num(a) ? identity_matrix(d+1) : matrix_rotate_backwards_at([0,a,0], p, d=d);
+function matrix_rotate_backwards_at_z (a, p, d=3) =     !is_num(a) ? identity_matrix(d+1) : matrix_rotate_backwards_at(a,       p, d=d);
 //
 // gibt die Matrix zurück zum verschieben in der jeweiligen Achse wie die Hauptfunktion
-function matrix_translate_x  (l, d=3) =     !is_num(l) ? unit_matrix(d+1) : matrix_translate([l,0,0], d=d);
-function matrix_translate_y  (l, d=3) =     !is_num(l) ? unit_matrix(d+1) : matrix_translate([0,l,0], d=d);
-function matrix_translate_z  (l) = let(d=3) !is_num(l) ? unit_matrix(d+1) : matrix_translate([0,0,l], d=d);
+function matrix_translate_x  (l, d=3) =     !is_num(l) ? identity_matrix(d+1) : matrix_translate([l,0,0], d=d);
+function matrix_translate_y  (l, d=3) =     !is_num(l) ? identity_matrix(d+1) : matrix_translate([0,l,0], d=d);
+function matrix_translate_z  (l) = let(d=3) !is_num(l) ? identity_matrix(d+1) : matrix_translate([0,0,l], d=d);
 function matrix_translate_xy (t, d=3) =
-	!(is_list(t) && len(t)>=2 && is_num(t[0]) && is_num(t[1])) ? unit_matrix(d+1) :
+	!(is_list(t) && len(t)>=2 && is_num(t[0]) && is_num(t[1])) ? identity_matrix(d+1) :
 	matrix_translate([t[0],t[1],0], d=d)
 ;
 

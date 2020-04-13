@@ -12,7 +12,7 @@
 //
 
 // Gibt die Einheitsmatrix zurück in der Dimension n*n
-function unit_matrix (n) =
+function identity_matrix (n) =
 	(!is_num(n)) ? undef :
 	(n<1)        ? undef :
 	[ for (i=[0:n-1])
@@ -21,12 +21,12 @@ function unit_matrix (n) =
 	] ]
 ;
 // die wichtigsten Einheitsmatritzen vordefiniert
-unit_matrix = [
-	unit_matrix(0),
-	unit_matrix(1),
-	unit_matrix(2),
-	unit_matrix(3),
-	unit_matrix(4)
+identity_matrix = [
+	identity_matrix(0),
+	identity_matrix(1),
+	identity_matrix(2),
+	identity_matrix(3),
+	identity_matrix(4)
 ];
 
 

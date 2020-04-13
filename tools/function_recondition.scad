@@ -4,10 +4,10 @@
 
 
 function repair_matrix_3d (m) =
-	fill_matrix_with (m, unit_matrix(4))
+	fill_matrix_with (m, identity_matrix(4))
 ;
 function repair_matrix_2d (m) =
-	fill_matrix_with (m, unit_matrix(3))
+	fill_matrix_with (m, identity_matrix(3))
 ;
 
 function fill_matrix_with (m, c) =

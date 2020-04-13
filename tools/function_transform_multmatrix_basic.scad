@@ -40,7 +40,7 @@ function matrix_rotate (a, v, d=3) =
 		is_list(v) ?
 			matrix_rotate_v(a, v, d=d)
 		:	matrix_rotate_z(a,    d=d)
-	:unit_matrix(d+1)
+	:identity_matrix(d+1)
 ;
 
 // gibt die Matrix zum rotieren von Objekten um die X-Achse um <a> zurück
@@ -150,7 +150,7 @@ function matrix_mirror_3d (v) =
 // gibt die Matrix zum an der jeweiligen Achse vergrößern zurück
 //  v    = Vektor mit den Vergrößerungsfaktoren
 function matrix_scale (v, d=3) =
-	(!is_list(v) || len(v)==0) ? unit_matrix(d+1) :
+	(!is_list(v) || len(v)==0) ? identity_matrix(d+1) :
 	let (
 		scale_factor  = [ for (i=[0:d-1]) (len(v)>i && v[i]!=0 && is_num(v[i])) ? v[i] : 1 ],
 		scale_entries = concat( scale_factor, 1)
