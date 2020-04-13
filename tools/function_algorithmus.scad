@@ -77,30 +77,71 @@ function summation_intern_auto (number, k, value, value_old) =
 			debug)
 ;
 //
-function summation_list (l, n, k=0) =
-	(n==undef) ?
-	 summation_list_intern(l, len(l)-1,         k+1, l[k])
-	:summation_list_intern(l, min(n, len(l)-1), k)
+function summation_list (list, n, k=0) =
+	let (
+	last = (n==undef) ? len(list)-1
+	       :            min(n, len(list)-1)
+	)
+	(k>last) ? undef :
+	summation_list_intern(list, last, k)
 ;
-function summation_list_intern (l, n, k, value=0) =
-	 (k>n) ? value
-	:summation_list_intern(l, n, k+1, value + l[k])
+function summation_list_intern (list, n, k) =
+	(k==n) ? list[k]
+	:is_split_block(8,n,k) ?
+		let (mid_n = split_block(8,n,k))
+		summation_list_intern_8(list, mid_n, k) +
+		summation_list_intern  (list, n,     mid_n+1)
+	:
+		summation_list_intern_1(list, n, k)
+;
+function summation_list_intern_1 (list, n, k, value=0) =
+	(k>n) ? value :
+	summation_list_intern_1(list, n, k+1, value + list[k])
+;
+function summation_list_intern_8 (list, n, k) =
+    let (
+	new_list = [ for (i=[k:8:n-7])
+		list[i]   + list[i+1] + list[i+2] + list[i+3] +
+		list[i+4] + list[i+5] + list[i+6] + list[i+7]
+	] )
+	summation_list_intern (new_list, len(new_list)-1, 0)
 ;
 
 function product (number, n, k=0) = product_intern (number, n, k);
-function product_intern (number, n, k, value=0) =
+function product_intern (number, n, k, value=1) =
 	 (k>n) ? value
 	:product_intern(number, n, k+1,
 		value * select_function(number, k))
 ;
-function product_list (l, n, k=0) =
-	(n==undef) ?
-	 product_list_intern(l, len(l)-1,         k+1, l[k])
-	:product_list_intern(l, min(n, len(l)-1), k)
+//
+function product_list (list, n, k=0) =
+	let (
+	last = (n==undef) ? len(list)-1
+	       :            min(n, len(list)-1)
+	)
+	(k>last) ? undef :
+	product_list_intern(list, last, k)
 ;
-function product_list_intern (l, n, k, value=0) =
-	 (k>n) ? value
-	:product_list_intern(l, n, k+1, value * l[k])
+function product_list_intern (list, n, k) =
+	(k==n) ? list[k]
+	:is_split_block(8,n,k) ?
+		let (mid_n = split_block(8,n,k))
+		product_list_intern_8(list, mid_n, k) *
+		product_list_intern  (list, n,     mid_n+1)
+	:
+		product_list_intern_1(list, n, k)
+;
+function product_list_intern_1 (list, n, k, value=1) =
+	(k>n) ? value :
+	product_list_intern_1(list, n, k+1, value * list[k])
+;
+function product_list_intern_8 (list, n, k) =
+    let (
+	new_list = [ for (i=[k:8:n-7])
+		list[i]   * list[i+1] * list[i+2] * list[i+3] *
+		list[i+4] * list[i+5] * list[i+6] * list[i+7]
+	] )
+	product_list_intern (new_list, len(new_list)-1, 0)
 ;
 
 function taylor        (number, x, n=0, k=0) = taylor_intern(number, x, n, k);
@@ -123,12 +164,12 @@ function taylor_auto_intern (number, x, n, k, value, value_old) =
 			debug)
 ;
 
-dx = 0.001;
+delta_std = 0.001;
 
-function integrate (number, begin, end, delta=dx, constant=0) =
+function integrate (number, begin, end, constant=0, delta=delta_std) =
 	integrate_simpson (number, begin, end, delta, constant)
 ;
-function integrate_midpoint (number, begin, end, delta=dx, constant=0) =
+function integrate_midpoint (number, begin, end, constant=0, delta=delta_std) =
 	 (begin>end) ? undef
 	:(delta<=0)  ? undef
 	:integrate_midpoint_intern (number, begin, end, (end-begin)/ceil((end-begin)/delta)) + constant
@@ -139,7 +180,7 @@ function integrate_midpoint_intern (number, begin, end, delta, value=0) =
 		value + select_function(number, begin+delta/2) * delta
 		)
 ;
-function integrate_simpson (number, begin, end, delta=dx, constant=0) =
+function integrate_simpson (number, begin, end, constant=0, delta=delta_std) =
 	 (begin>end) ? undef
 	:(delta<=0)  ? undef
 	:integrate_simpson_intern (number, begin, end, ceil((end-begin)/2/delta)) + constant
@@ -152,7 +193,7 @@ function integrate_simpson_intern (number, begin, end, count, position=0, value=
 			begin+(end-begin)*(position+1)/count)
 		)
 ;
-function integrate_simpson_2 (number, begin, end, delta=dx, constant=0) =
+function integrate_simpson_2 (number, begin, end, constant=0, delta=delta_std) =
 	 (begin>end) ? undef
 	:(delta<=0)  ? undef
 	:integrate_simpson_2_intern (number, begin, end, ceil((end-begin)/4/delta)) + constant
@@ -177,10 +218,10 @@ function area_simpson_2 (number, begin, end) =
 	) / 15
 ;
 
-function derivation (number, value, delta=dx) =
+function derivation (number, value, delta=delta_std) =
 	derivation_symmetric_2(number, value, delta)
 ;
-function derivation_symmetric (number, value, delta=dx) =
+function derivation_symmetric (number, value, delta=delta_std) =
 	(select_function(number, value+delta) - select_function(number, value-delta)) / (2*delta)
 ;
 function derivation_symmetric_2 (number, value, delta=dx) =

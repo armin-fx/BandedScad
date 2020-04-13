@@ -18,10 +18,10 @@ function fill_matrix_with (m, c) =
 		]
 	]
 ;
-function fill_list_with (l, c) =
-	!is_list(l) ? c :
+function fill_list_with (list, c) =
+	!is_list(list) ? c :
 	[ for (i=[0:len(c)-1])
-		is_num(l[i]) ? l[i] : c[i]
+		is_num(list[i]) ? list[i] : c[i]
 	]
 ;
 

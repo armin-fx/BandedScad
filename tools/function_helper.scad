@@ -189,6 +189,8 @@ function is_num_list (list, begin=0, end=undef) =
 	:is_num_list (list, begin+1, end)
 ;
 
+function is_split_block (block, last, first=0) = last-first > block*2;
+function    split_block (block, last, first=0) = last - (last-first)%block - block - 1;
 
 // function returns value and echo a message if version of OpenSCAD is 2019.05 or greater
 function do_echo (value, message) =
