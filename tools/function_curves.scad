@@ -14,7 +14,7 @@
 //       ohne Angabe von n wird der Grad anhand der Größe des Arrays genommen
 //                   
 function bezier_point (t, p, n) =
-	 (len(p)==undef) ? undef
+	 (!is_list(p)) ? undef
 	:(n==undef) ?
 		(len(p)<1) ? undef
 		:bezier_point_intern (t, p, len(p)-1, len(p)-1)
@@ -42,16 +42,14 @@ function bezier_point_intern (t, p, n, j) =
 //       ohne Angabe werden die Anzahl der Punkte von $fn, $fa, $fs ermittelt (grob implementiert)
 //                   
 function bezier_curve (p, n, slices) =
-	 (slices==undef) ?
-		bezier_curve_intern(p, n, max(2, get_fn_circle_current  (max_norm(p)/4) ))
-	:(slices=="x") ?
-		bezier_curve_intern(p, n, max(2, get_fn_circle_current_x(max_norm(p)/4) ))
-	:(slices< 2)     ?
-		bezier_curve_intern(p, n, 2)
-	:	bezier_curve_intern(p, n, slices)
-;
-function bezier_curve_intern (p, n, slices) =
-	[for (i = [0 : slices-1]) bezier_point(i/(slices-1),p,n)]
+	let (
+	Slices =
+		slices==undef ? max(2, get_fn_circle_current  (max_norm(p)/4) ) :
+		slices=="x"   ? max(2, get_fn_circle_current_x(max_norm(p)/4) ) :
+		slices< 2     ? 2 :
+		slices
+	)
+	[for (i = [0 : Slices-1]) bezier_point(i/(Slices-1),p,n)]
 ;
 
 // ermittelt den Punkt einer Bezierkurve 1. Grades (linear) abhängig von den Parametern
@@ -97,7 +95,7 @@ function bezier_4 (t, p) =
 	+ p[1] * 4*(t     * (1-t)*(1-t)*(1-t))
 	+ p[2] * 6*(t*t   * (1-t)*(1-t))
 	+ p[3] * 4*(t*t*t * (1-t))
-	+ p[3] *   (t*t*t*t)
+	+ p[4] *   (t*t*t*t)
 ;
 
 
@@ -130,7 +128,7 @@ function circle_curve (r, angle=360, angle_begin=0, slices, piece=true, outer=0,
 			:slices
 		,r_outer =
 			(angle==0) ? R
-			:            R * get_circle_factor(slices*360/angle, outer)
+			:            R * get_circle_factor(Slices*360/angle, outer)
 		,circle_list =
 			circle_curve_intern(r_outer, angle, angle_begin, Slices)
 	)
@@ -140,7 +138,7 @@ function circle_curve (r, angle=360, angle_begin=0, slices, piece=true, outer=0,
 ;
 function circle_curve_intern (r, angle, angle_begin, slices) =
 	[for (i = [0 : (angle==0 ? 0 : slices)])
-		circle_point_r(R, angle_begin + angle*i/slices )
+		circle_point_r(r, angle_begin + angle*i/slices )
 	]
 ;
 
@@ -173,17 +171,15 @@ function superellipse_point (t, n, r, a, s) =
 ;
 function superellipse_point_n (t=0, n=[2,2], r=1, a=[1,1]) =
 	let(
-		A = r * a,
 		e = 2/n
 	)
-	superellipse_point_intern (t, e, A)
+	superellipse_point_intern (t, e, r*a)
 ;
 function superellipse_point_s (t=0, s=[1/sqrt(2),1/sqrt(2)], r=1, a=[1,1]) =
 	let(
-		A = r * a,
 		e = (-2/ln(2)) * [ln(s[0]),ln(s[1])]
 	)
-	superellipse_point_intern (t, e, A)
+	superellipse_point_intern (t, e, r*a)
 ;
 // e - calculated exponent
 function superellipse_point_intern (t, e, a) =
@@ -222,13 +218,10 @@ function superellipse_curve (interval, n, r, a, s, slices, piece=true) =
 			slices<2 ?
 				(piece==true || piece==0) ? 1 : 2
 			:slices
-		,superellipse_list =
-			(S==undef) ?
-				let (e = 2/N)
-				superellipse_curve_intern (I, e, A*R, Slices)
-			:
-				let (e = (-2/ln(2)) * [ln(S[0]),ln(S[1])] )
-				superellipse_curve_intern (I, e, A*R, Slices)
+		,e =
+			S==undef ? 2/N
+			:          (-2/ln(2)) * [ln(S[0]),ln(S[1])]
+		,superellipse_list = superellipse_curve_intern (I, e, A*R, Slices)
 	)
 	(piece==true && (I[1]-I[0])!=360) ?
 		concat( superellipse_list, [[0,0]])
@@ -249,8 +242,10 @@ function superellipse_curve_intern (interval, e, a, slices) =
 // n - Grad des Polynoms, es werden nur so viele Koeffizienten genommen wie angegeben
 //     ohne Angabe wird der Grad entsprechend der Größe des Arrays der Koeffizienten genommen
 function polynom (x, a, n=undef) =
-	(n==undef) ? polynom_intern(x, a, len(a))
-	:            polynom_intern(x, a, min(len(a),n) )
+	let (
+		N = n==undef ? len(a) : min(len(a),n)
+	)
+	polynom_intern(x, a, N)
 ;
 function polynom_intern (x, a, n, i=0, x_i=1, value=0) =
 	(i >= n) ? value
@@ -262,15 +257,14 @@ function polynom_intern (x, a, n, i=0, x_i=1, value=0) =
 // interval - Intervallgrenze von x. [Anfang, Ende]
 // slices   - Anzahl der Punkte im Intervall
 function polynom_curve (interval, a, n=undef, slices) =
-	 (slices==undef) ?
-		polynom_curve_intern (interval, a, n, 5)
-	:(slices< 2)     ?
-		polynom_curve_intern (interval, a, n, 2)
-	:	polynom_curve_intern (interval, a, n, slices)
-;
-function polynom_curve_intern (interval, a, n, slices) =
-	[for (i = [0 : slices])
-		let (x = bezier_1(i/slices, interval))
+	let (
+		Slices =
+			slices==undef ? 5 :
+			slices<2      ? 2 :
+			slices
+	)
+	[for (i = [0 : Slices])
+		let (x = bezier_1(i/Slices, interval))
 		[x, polynom(x, a, n)]
 	]
 ;
