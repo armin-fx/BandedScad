@@ -119,27 +119,126 @@ function circle_point_r (r, angle=0) =
 //          false = Enden des Kreises verbinden
 //          0     = zum weiterverarbeiten, Enden nicht verbinden, keine zusätzlichen Kanten
 // outer  - 0...1 = 0 - Ecken auf der Kreislinie ... 1 - Tangenten auf der Kreislinie
-function circle_curve   (r, angle=360, slices, piece=true, angle_begin=0, outer=0, d) = circle_curve_r(parameter_circle_r(r,d), angle, slices, piece, angle_begin, outer);
-function circle_curve_r (r, angle=360, slices, piece=true, angle_begin=0, outer=0)    =
-	 (slices==undef) ?
-		circle_curve_p_intern(r, angle, get_fn_circle_current(r,angle,piece), piece, angle_begin, outer)
-	:(slices=="x") ?
-		circle_curve_p_intern(r, angle, get_fn_circle_current_x(r,angle,piece), piece, angle_begin, outer)
-	:(slices< 2) ?
-		(piece==true || pierce==0) ?
-			circle_curve_p_intern(r, angle, 1     , piece, angle_begin, outer)
-		:	circle_curve_p_intern(r, angle, 2     , piece, angle_begin, outer)
-	:		circle_curve_p_intern(r, angle, slices, piece, angle_begin, outer)
+function circle_curve (r, angle=360, angle_begin=0, slices, piece=true, outer=0, d) =
+	let(
+		 R = parameter_circle_r(r,d)
+		,Slices =
+			slices==undef ? get_fn_circle_current  (R,angle,piece) :
+			slices=="x"   ? get_fn_circle_current_x(R,angle,piece) :
+			slices<2 ?
+				(piece==true || piece==0) ? 1 : 2
+			:slices
+		,r_outer =
+			(angle==0) ? R
+			:            R * get_circle_factor(slices*360/angle, outer)
+		,circle_list =
+			circle_curve_intern(r_outer, angle, angle_begin, Slices)
+	)
+	(piece==true && angle!=360) ?
+		concat( circle_list, [[0,0]])
+	:	circle_list
 ;
-function circle_curve_p_intern (r, angle, slices, piece, angle_begin, outer) =
-	(piece==true && angle!=360) ? concat(
-		circle_curve_intern(r, angle, slices, angle_begin, outer)
-		,[[0,0]])
-	:
-		circle_curve_intern(r, angle, slices, angle_begin, outer)
+function circle_curve_intern (r, angle, angle_begin, slices) =
+	[for (i = [0 : (angle==0 ? 0 : slices)])
+		circle_point_r(R, angle_begin + angle*i/slices )
+	]
 ;
-function circle_curve_intern (r, angle, slices, angle_begin, outer) =
-	[for (i = [0 : (angle==0) ? 0 : slices]) circle_point_r(r, angle_begin + angle*i/(slices) )]
+
+// ermittelt den Punkt einer Superellipse
+// t  - Position des Punkts von 0...360
+// n  - Grad der Kurve, steuert die Kurvenform
+// s  - Parameter "Superness", steuert die Kurvenform, optional
+//      Wurde n angegeben, wird s ignoriert
+// r  - Radius
+// a  - steuert die Breitenverhältnisse der jeweiligen Achsen
+//        als Zahl  = jede Achse enthält den gleichen Faktor
+//        als Liste = jede Achse enthält ihren eigenen Faktor [X,Y]
+//        Standart  = [1,1]
+function superellipse_point (t, n, r, a, s) =
+	let (
+		 T = is_num(t) ? t : 0
+		,N = is_list(n) ? n :
+		    is_num(n)  ? [n,n] :
+		    [2,2]
+		,R = is_num(r) ? r : 1,
+		,A = is_list(a) ? a :
+		     is_num (a) ? [a,a] :
+		     [1,1]
+		,S = is_list(s) ? s :
+		     is_num(s)  ? [s,s] :
+		     undef
+	)
+	(S==undef) ? superellipse_point_n (T, N, R, A)
+	:            superellipse_point_s (T, S, R, A)
+;
+function superellipse_point_n (t=0, n=[2,2], r=1, a=[1,1]) =
+	let(
+		A = r * a,
+		e = 2/n
+	)
+	superellipse_point_intern (t, e, A)
+;
+function superellipse_point_s (t=0, s=[1/sqrt(2),1/sqrt(2)], r=1, a=[1,1]) =
+	let(
+		A = r * a,
+		e = (-2/ln(2)) * [ln(s[0]),ln(s[1])]
+	)
+	superellipse_point_intern (t, e, A)
+;
+// e - calculated exponent
+function superellipse_point_intern (t, e, a) =
+	let (
+		sint = sin(t),
+		cost = cos(t)
+	)
+	[ a[0] * pow( abs(cost), e[0]) * sign(cost),
+	  a[1] * pow( abs(sint), e[1]) * sign(sint)
+	]
+;
+
+// Argumente:
+// interval - Intervallgrenze von t. [Anfang, Ende]
+// slices   - Anzahl der Punkte im Intervall
+// piece    - true  = wie ein Tortenstück
+//            false = Enden des Kreises verbinden
+//            0     = zum weiterverarbeiten, Enden nicht verbinden, keine zusätzlichen Kanten
+function superellipse_curve (interval, n, r, a, s, slices, piece=true) =
+	let (
+		 I = is_list(interval) ? interval :
+		     [0,360]
+		,N = is_list(n) ? n :
+		     is_num(n)  ? [n,n] :
+		     [2,2]
+		,R = is_num(r) ? r : 1
+		,A = is_list(a) ? a :
+		     is_num (a) ? [a,a] :
+		     [1,1]
+		,S = is_list(s) ? s :
+		     is_num(s)  ? [s,s] :
+		     undef
+		,Slices =
+			slices==undef ? get_fn_circle_current  (R*max(A),I[1]-I[0],piece) :
+			slices=="x"   ? get_fn_circle_current_x(R*max(A),I[1]-I[0],piece) :
+			slices<2 ?
+				(piece==true || piece==0) ? 1 : 2
+			:slices
+		,superellipse_list =
+			(S==undef) ?
+				let (e = 2/N)
+				superellipse_curve_intern (I, e, A*R, Slices)
+			:
+				let (e = (-2/ln(2)) * [ln(S[0]),ln(S[1])] )
+				superellipse_curve_intern (I, e, A*R, Slices)
+	)
+	(piece==true && (I[1]-I[0])!=360) ?
+		concat( superellipse_list, [[0,0]])
+	:	superellipse_list
+;
+function superellipse_curve_intern (interval, e, a, slices) =
+	[ for (i = [0 : slices])
+		let (t = bezier_1(i/slices, interval))
+		superellipse_point_intern (t, e, a)
+	]
 ;
 
 // Polynomfunktion
@@ -160,17 +259,20 @@ function polynom_intern (x, a, n, i=0, x_i=1, value=0) =
 
 // gibt ein Array mit den Punkten eines Polynomintervalls zurück
 // Argumente:
-// x_interval - Intervallgrenze von x. [Anfang, Ende]
-// slices     - Anzahl der Punkte im Intervall
-function polynom_curve (x_interval, a, n=undef, slices) =
+// interval - Intervallgrenze von x. [Anfang, Ende]
+// slices   - Anzahl der Punkte im Intervall
+function polynom_curve (interval, a, n=undef, slices) =
 	 (slices==undef) ?
-		polynom_curve_intern (x_interval, a, n, 5)
+		polynom_curve_intern (interval, a, n, 5)
 	:(slices< 2)     ?
-		polynom_curve_intern (x_interval, a, n, 2)
-	:	polynom_curve_intern (x_interval, a, n, slices)
+		polynom_curve_intern (interval, a, n, 2)
+	:	polynom_curve_intern (interval, a, n, slices)
 ;
-function polynom_curve_intern (x_interval, a, n, slices) =
-	[for (i = [0 : slices]) [bezier_1(i/slices, x_interval), polynom(bezier_1(i/slices, x_interval), a, n)]]
+function polynom_curve_intern (interval, a, n, slices) =
+	[for (i = [0 : slices])
+		let (x = bezier_1(i/slices, interval))
+		[x, polynom(x, a, n)]
+	]
 ;
 
 // gibt ein 2D-Quadrat als Punkteliste zurück
@@ -179,7 +281,12 @@ function square_curve(size, center=false) =
 	square_curve_intern(get_first_good_2d(size+[0,0],[size+0,size+0], [1,1]), center)
 ;
 function square_curve_intern(size, center) =
-	(center==false) ? [[0,0], [size[0],0], [size[0],size[1]], [0,size[1]]]
-	:translate_list(  [[0,0], [size[0],0], [size[0],size[1]], [0,size[1]]], [-size[0]/2,-size[0]/2])
+	let (
+		x=size[0],
+		y=size[1],
+		square_list=[[0,0], [x,0], [x,y], [0,y]]
+	)
+	(center==false) ? square_list
+	:translate_list(  square_list, [-x/2,-y/2])
 ;
 

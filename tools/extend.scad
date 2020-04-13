@@ -101,9 +101,9 @@ function get_angle_from_percent (value) =
 // Erzeugt einen Kreis
 // Argumente wie function circle_curve()
 // Kompatibel mit OpenSCAD Modul circle()
-module circle_extend (r, angle=360, slices="x", piece=true, angle_begin=0, d)
+module circle_extend (r, angle=360, angle_begin=0, slices="x", piece=true, d)
 {
-	polygon(circle_curve (r=r, angle=angle, slices=slices, piece=piece, angle_begin=angle_begin, d=d),
+	polygon(circle_curve (r=r, angle=angle, angle_begin=angle_begin, slices=slices, piece=piece, d=d),
 	        convexity=(piece==true && angle>180) ? 4 : 2);
 }
 
