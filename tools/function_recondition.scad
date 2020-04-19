@@ -91,7 +91,7 @@ function parameter_cylinder_r_basic (r, r1, r2) =
 // - ohne Angabe: r=1
 function parameter_circle_r (r, d) = get_first_good (d/2, r, 1);
 
-// wandelt das Argument um in einen Tupel [1,2,3]
+// wandelt das Argument 'size' um in einen Tupel [1,2,3]
 // aus size=3       wird   [3,3,3]
 // aus size=[1,2,3] bleibt [1,2,3]
 function parameter_size_3d (size) =
@@ -105,6 +105,25 @@ function parameter_size_3d (size) =
 		 [size, size, size]    // f(1)
 	:	 [1,1,1]               // f(undef)
 
+;
+function parameter_size_2d (size) =
+	get_first_good_2d (size+[0,0], [size+0,size+0], [1,1])
+;
+
+// gibt den Winkel zurück
+// Rückgabe:
+//   [Öffnungswinkel, Anfangswinkel]
+// Argumente:
+//   angle     - Als Zahl  = Angabe Öffnungswinkel, Anfangswinkel wird auf 0 gesetzt
+//             - Als Liste = [Öffnungswinkel, Anfangswinkel]
+//   angle_std - Standartangabe des Winkels, wenn angle nicht gesetzt wurde
+//               (Standart = [360, 0])
+function parameter_angle (angle, angle_std) =
+	(is_num (angle))                  ? [angle   , 0] :
+	(is_list(angle) && len(angle)==2) ? angle         :
+	(is_list(angle) && len(angle)==1) ? [angle[0], 0] :
+	(is_list(angle) && len(angle) >2) ? [angle[0], angle[1]] :
+	parameter_angle (angle_std, [360,0])
 ;
 
 function parameter_mirror_vector_2d (v, v_std=[1,0]) =

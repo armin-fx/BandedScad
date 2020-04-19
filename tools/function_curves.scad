@@ -111,34 +111,40 @@ function circle_point_r (r, angle=0) =
 // gibt ein Array mit den Punkten eines Kreisbogens zurück
 // Argumente:
 // r, (d) - Radius oder Durchmesser
-// angle  - gezeichneter Winkel in Grad
+// angle  - gezeichneter Winkel in Grad, Standart=360
+//          als Zahl  = Winkel von 0 bis 'angle' = Öffnungswinkel
+//          als Liste = [Öffnungswinkel, Anfangswinkel]
 // slices - Anzahl der Segmente, ohne Angabe wird wie bei circle() gerechnet
 // piece  - true  = wie ein Tortenstück
 //          false = Enden des Kreises verbinden
 //          0     = zum weiterverarbeiten, Enden nicht verbinden, keine zusätzlichen Kanten
 // outer  - 0...1 = 0 - Ecken auf der Kreislinie ... 1 - Tangenten auf der Kreislinie
-function circle_curve (r, angle=360, angle_begin=0, slices, piece=true, outer=0, d) =
+function circle_curve (r, angle=360, slices, piece=true, outer=0, d) =
 	let(
 		 R = parameter_circle_r(r,d)
+		,angles      = parameter_angle (angle, [360,0])
+		,angle_begin = angles[1]
+		,Angle       = angles[0]
 		,Slices =
-			slices==undef ? get_fn_circle_current  (R,angle,piece) :
-			slices=="x"   ? get_fn_circle_current_x(R,angle,piece) :
+			slices==undef ? get_fn_circle_current  (R,Angle,piece) :
+			slices=="x"   ? get_fn_circle_current_x(R,Angle,piece) :
 			slices<2 ?
 				(piece==true || piece==0) ? 1 : 2
 			:slices
 		,r_outer =
-			(angle==0) ? R
-			:            R * get_circle_factor(Slices*360/angle, outer)
+			(Angle==0) ? R
+			:            R * get_circle_factor(Slices*360/Angle, outer)
 		,circle_list =
-			circle_curve_intern(r_outer, angle, angle_begin, Slices)
+			circle_curve_intern(r_outer, Angle, angle_begin, Slices)
 	)
-	(piece==true && angle!=360) ?
+	(piece==true && Angle!=360) ?
 		concat( circle_list, [[0,0]])
 	:	circle_list
 ;
 function circle_curve_intern (r, angle, angle_begin, slices) =
+	let (angle_pie = angle/slices)
 	[for (i = [0 : (angle==0 ? 0 : slices)])
-		circle_point_r(r, angle_begin + angle*i/slices )
+		circle_point_r(r, angle_begin + i*angle_pie )
 	]
 ;
 
@@ -272,12 +278,10 @@ function polynom_curve (interval, a, n=undef, slices) =
 // gibt ein 2D-Quadrat als Punkteliste zurück
 // Argumente wie von square() von OpenSCAD
 function square_curve(size, center=false) =
-	square_curve_intern(get_first_good_2d(size+[0,0],[size+0,size+0], [1,1]), center)
-;
-function square_curve_intern(size, center) =
 	let (
-		x=size[0],
-		y=size[1],
+		Size = parameter_size_2d(size),
+		x=Size[0],
+		y=Size[1],
 		square_list=[[0,0], [x,0], [x,y], [0,y]]
 	)
 	(center==false) ? square_list

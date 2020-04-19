@@ -89,6 +89,9 @@ module wedge (v_min, v_max, v2_min, v2_max)
 //   ri, di - Innenradius, Innendurchmesser
 //   ro, do - Außenradius, Außendurchmesser
 //   w      - Breite des Rings
+//   angle  - gezeichneter Winkel in Grad, Standart=360
+//            als Zahl  = Winkel von 0 bis 'angle' = Öffnungswinkel
+//            als Liste = [Öffnungswinkel, Anfangswinkel]
 // Angegeben müssen:
 //   h
 //   genau 2 Angaben von r oder ri oder ro oder w

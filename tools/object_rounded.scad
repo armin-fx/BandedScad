@@ -1,6 +1,6 @@
 // object_rounded.scad
 //
-// Enthält einige Objekte mit abgerundeten Ecken
+// Enthält einige Objekte mit abgerundeten Ecken und Kanten
 
 
 // Quader mit abgerundeten Kanten, alle Kanten mit gleichen Radius/Durchmesser
@@ -336,11 +336,13 @@ module wedge_chamfer (v_min, v_max, v2_min, v2_max, c,
 	);
 }
 
-// erzeugt eine gefaste Ecke zum auschneiden oder ankleben, wahlweise abgerundet oder angeschrägt
+// erzeugt eine gefaste Kante zum auschneiden oder ankleben, wahlweise abgerundet oder angeschrägt
 // Argumente:
 //   h       Höhe der Kante
 //   r       Radius r der Rundung oder Breite der Schräge
-//   angle   Winkel der Ecke, Standart=90° (rechter Winkel)
+//   angle   Winkel der Kante
+//           als Zahlwert, Standart=90° (rechter Winkel)
+//           als Liste von-bis [Startwinkel, Endwinkel]
 //   type    allgemein, welcher Fasentyp für alle Kanten verwendet werden sollen
 //           0 = keine Fase (Standart)
 //           1 = Rundung
@@ -349,33 +351,82 @@ module wedge_chamfer (v_min, v_max, v2_min, v2_max, c,
 module edge_fillet (h=1, r, angle=90, type, extra=extra)
 {
 	Type = is_num(type) ? type : 0;
-	if (Type==1) edge_rounded (h, r, angle, extra);
-	if (Type==2) edge_chamfer (h, r, angle, extra);
+	if (Type==1) edge_rounded (h, r, angle, extra=extra);
+	if (Type==2) edge_chamfer (h, r, angle, extra=extra);
+}
+// erzeugt eine gefaste Kante eines Zylinders zum auschneiden oder ankleben, wahlweise abgerundet oder angeschrägt
+// Argumente:
+//   r_ring      Radius der Kante des Zylinders
+//   angle_ring  Winkel des Zylinders, Standart=360°
+module edge_ring_fillet (r_ring, r, angle=90, angle_ring=360, type, extra=extra)
+{
+	Type = is_num(type) ? type : 0;
+	if (Type==1) edge_ring_rounded (r_ring, r, angle, angle_ring, extra=extra);
+	if (Type==2) edge_ring_chamfer (r_ring, r, angle, angle_ring, extra=extra);
+}
+// erzeugt einen Umriss einer gefaste Kante als 2D-Objekt
+module edge_fillet_plane (r, angle=90, type, extra=extra)
+{
+	Type = is_num(type) ? type : 0;
+	if (Type==1) edge_rounded_plane (r, angle, extra=extra);
+	if (Type==2) edge_chamfer_plane (r, angle, extra=extra);
 }
 
-// erzeugt eine abgerundete Ecke zum auschneiden oder ankleben
+// erzeugt eine abgerundete Kante zum auschneiden oder ankleben
 // Argumente:
 //   h       Höhe der Kante
 //   r, d    Radius oder Durchmesser der Rundung
-//   angle   Winkel der Ecke, Standart=90° (rechter Winkel)
+//   angle   Winkel der Kante, Standart=90° (rechter Winkel)
 //   extra   zusätzlichen Überstand abschneiden, wegen Z-Fighting
 module edge_rounded (h=1, r, angle=90, extra=extra, d)
 {
 	R        = parameter_circle_r(r, d);
-	t_factor = sin(90-angle/2) / sin(angle/2);
+	//
+	if (R>0 && h>0)
+		linear_extrude (height=h, convexity=2)
+		edge_rounded_plane (R, angle, extra=extra);
+}
+// erzeugt eine abgerundete Kante eines Zylinders zum auschneiden oder ankleben
+// Argumente:
+//   r_ring      Radius der Kante des Zylinders
+//   angle_ring  Winkel des Zylinders, Standart=360°
+module edge_ring_rounded (r_ring, r, angle=90, angle_ring=360, extra=extra, d, d_ring)
+{
+	R        = parameter_circle_r(r, d);
+	R_ring   = parameter_circle_r(r_ring, d_ring);
+	angles_ring = parameter_angle(angle_ring, 360);
+	fn      = get_fn_circle_current_x(R);
+	fn_ring = get_fn_circle_current_x(R_ring) + floor(360/angles_ring[0]);
+	//
+	if (R>0 && R_ring>0)
+	{
+		rotate_z (angles_ring[1])
+		rotate_extrude (angle=angles_ring[0], convexity=4, $fn=fn_ring)
+		translate_x (R_ring)
+		edge_rounded_plane (R, angle, extra=extra, $fn=fn);
+	}
+}
+// erzeugt einen Umriss einer abgerundeten Kante als 2D-Objekt
+module edge_rounded_plane (r, angle, extra=extra, d)
+{
+	R        = parameter_circle_r(r, d);
+	angles   = parameter_angle (angle, 90);
+	Angle    = angles[0];
+	rotation = angles[1];
+	t_factor = sin(90-Angle/2) / sin(Angle/2);
 	//
 	if (R>0)
-	linear_extrude(height=h, convexity=2)
+	rotate_z(rotation)
 	polygon( concat(
 		translate_list(
-			circle_curve(r=R, angle=180-angle, angle_begin=90+angle, piece=0, slices="x")
+			circle_curve(r=R, angle=[180-Angle, 90+Angle], piece=0, slices="x")
 			,[R*t_factor,R]
 		)
 		,[
 			 [ R    *t_factor,-extra]
 			,[-extra*t_factor,-extra]
 			,translate_list(
-				[circle_point(r=R+extra, angle=90+angle)]
+				[circle_point(r=R+extra, angle=90+Angle)]
 				,[R*t_factor,R]
 			)[0]
 		]
@@ -386,28 +437,56 @@ module edge_rounded (h=1, r, angle=90, extra=extra, d)
 // Argumente:
 //   h       Höhe der Kante
 //   c       Breite der Schräge
-//   angle   Winkel der Ecke, Standart=90° (rechter Winkel)
+//   angle   Winkel der Kante, Standart=90° (rechter Winkel)
 //   extra   zusätzlichen Überstand abschneiden, wegen Z-Fighting
 module edge_chamfer (h=1, c, angle=90, extra=extra)
 {
-	t       = c/2 / sin(angle/2);
-	h_extra = extra * cot(angle/2);
+	if (c>0 && h>0)
+		linear_extrude (height=h, convexity=2)
+		edge_chamfer_plane (c, angle, extra=extra);
+}
+// erzeugt eine abgerundete Kante eines Zylinders zum auschneiden oder ankleben
+// Argumente:
+//   r_ring      Radius der Kante des Zylinders
+//   angle_ring  Winkel des Zylinders, Standart=360°
+module edge_ring_chamfer (r_ring, c, angle=90, angle_ring=360, extra=extra, d_ring)
+{
+	R_ring   = parameter_circle_r(r_ring, d_ring);
+	angles_ring = parameter_angle(angle_ring, 360);
+	fn_ring = get_fn_circle_current_x(R_ring) + floor(360/angles_ring[0]);
+	//
+	if (c>0 && R_ring>0)
+	{
+		rotate_z (angles_ring[1])
+		rotate_extrude (angle=angles_ring[0], convexity=2, $fn=fn_ring)
+		translate_x (R_ring)
+		edge_chamfer_plane (c, angle, extra=extra);
+	}
+}
+// erzeugt einen Umriss einer abgeschrägten Kante als 2D-Objekt
+module edge_chamfer_plane (c, angle=90, extra=extra)
+{
+	angles   = parameter_angle (angle, 90);
+	Angle    = angles[0];
+	rotation = angles[1];
+	t       = c/2 / sin(Angle/2);
+	h_extra = extra * cot(Angle/2);
 	//
 	if (c>0)
-	linear_extrude(height=h, convexity=2)
+	rotate_z(rotation)
 	polygon([
 		 [ t,       0]
 		,[ t      ,-extra]
 		,[-h_extra,-extra]
 		,translate_list(
-			[circle_point(r=t+h_extra, angle=angle)]
+			[circle_point(r=t+h_extra, angle=Angle)]
 			,[-h_extra,-extra]
 		)[0]
-		,circle_point(r=t, angle=angle)
+		,circle_point(r=t, angle=Angle)
 	]);
 }
 
-// erzeugt eine gefaste Ecke aus den Daten Linie der Kante und 2 Eckpunkten der angrenzenden Flächen
+// erzeugt eine gefaste Kante aus den Daten Linie der Kante und 2 Eckpunkten der angrenzenden Flächen
 module edge_fillet_to (line, point1, point2, r, type, extra=extra, extra_h=0)
 {
 	base_vector = [1,0];
@@ -429,6 +508,6 @@ module edge_rounded_to (line, point1, point2, r, extra=extra, extra_h=0)
 }
 module edge_chamfer_to (line, point1, point2, c, extra=extra, extra_h=0)
 {
-	edge_fillet_to (line, point1, point2, c, type=1, extra=extra, extra_h=extra_h);
+	edge_fillet_to (line, point1, point2, c, type=2, extra=extra, extra_h=extra_h);
 }
 

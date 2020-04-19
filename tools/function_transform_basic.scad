@@ -66,22 +66,28 @@ function rotate_y_list (list, a) =
 // auch für 2D-Listen
 function rotate_z_list (list, a) =
 	!is_num(a) ? list :
+	(!is_list(list) || len(list)==0) ? list :
 	let (
 		sina  = sin(a),
 		cosa  = cos(a)
 	)
-	[for (p=list)
-		(p[2]==undef) ?
-		[
+	len(list[0])==2 ?
+		[for (p=list)
+			[
 			 p[0]*cosa - p[1]*sina
 			,p[0]*sina + p[1]*cosa
-		] : [
+			]
+		]
+	:
+		[for (p=list)
+			[
 			 p[0]*cosa - p[1]*sina
 			,p[0]*sina + p[1]*cosa
 			,p[2]
+			]
 		]
-	]
-;// jeden Punkt in der Liste <list> um einen Vektor <v> herum um <a> drehen
+;
+// jeden Punkt in der Liste <list> um einen Vektor <v> herum um <a> drehen
 function rotate_v_list (list, a, v) =
 	 !is_num (a) ? list
 	:!is_list(v) ? list

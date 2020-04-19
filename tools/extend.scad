@@ -101,20 +101,22 @@ function get_angle_from_percent (value) =
 // Erzeugt einen Kreis
 // Argumente wie function circle_curve()
 // Kompatibel mit OpenSCAD Modul circle()
-module circle_extend (r, angle=360, angle_begin=0, slices="x", piece=true, d)
+module circle_extend (r, angle, slices="x", piece=true, d)
 {
-	polygon(circle_curve (r=r, angle=angle, angle_begin=angle_begin, slices=slices, piece=piece, d=d),
-	        convexity=(piece==true && angle>180) ? 4 : 2);
+	angles = parameter_angle (angle, [360,0]);
+	polygon(circle_curve (r=r, angle=angle, slices=slices, piece=piece, d=d),
+	        convexity=(piece==true && angles[0]>180) ? 4 : 2);
 }
 
 // Erzeugt einen Zylinder
 // Kompatibel mit OpenSCAD Modul cylinder()
 // Argumente des Kreisbodens wie circle_extend()
-module cylinder_extend (h, r1, r2, center=false, r, d, d1, d2, angle=360, slices="x", piece=true, angle_begin=0)
+module cylinder_extend (h, r1, r2, center=false, r, d, d1, d2, angle, slices="x", piece=true)
 {
 	R        = parameter_cylinder_r (r, r1, r2, d, d1, d2);
 	R_sorted = R[0]>R[1] ? R : [R[1],R[0]]; // erster Radius muss größer oder gleich sein
 	H        = get_first_good (h, 1);
+	angles = parameter_angle (angle, [360,0]);
 	//
 	module mirror_at_z_choice (p, choice)
 	{
@@ -125,8 +127,8 @@ module cylinder_extend (h, r1, r2, center=false, r, d, d1, d2, angle=360, slices
 	mirror_at_z_choice ([0,0,H/2], R[0]<R[1])
 	linear_extrude(height=H, center=center
 		,scale=R_sorted[1]/R_sorted[0]
-		,convexity=(piece==true && angle>180) ? 4 : 2)
-	circle_extend (r=R_sorted[0], angle=angle, slices=slices, piece=piece, angle_begin=angle_begin);
+		,convexity=(piece==true && angles[0]>180) ? 4 : 2)
+	circle_extend (r=R_sorted[0], angle=angle, slices=slices, piece=piece);
 }
 /*
 module cylinder_extend (h, r1, r2, center=false, r, d, d1, d2)
