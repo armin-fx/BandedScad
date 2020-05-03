@@ -135,3 +135,38 @@ function parameter_mirror_vector_3d (v, v_std=[1,0,0]) =
 	:len(v)==2   ? [v[0],v[1],0]
 	:v_std
 ;
+
+// Wertet die Parameter edges_xxx vom Module cube_fillet() aus,
+// gibt eine 4 elementige Liste zurück
+// Argumente:
+//   r         - Radius oder Breite
+//   edge_list - 4-elementige Auswahlliste der jeweiligen Kanten,
+//               wird mit r multipliziert
+//             - als Zahl werden alle Elemente mit diesen Wert gesetzt
+//             - andernfalls wird der Wert auf 0 gesetzt = nicht gefaste Kante
+function parameter_edges_radius (edge_list, r) =
+	is_list(edge_list) ?
+		[ for (i=[0:3]) parameter_edge_radius (edge_list[i], r) ]
+	:is_num(edge_list) ?
+		[ for (i=[0:3]) parameter_edge_radius (edge_list,    r) ]
+	:	[ for (i=[0:3]) 0 ]
+;
+function parameter_edge_radius (edge, r) =
+	is_num(edge) ?
+		is_num(r) ? edge * r
+		:           edge
+	: 0
+;
+
+// Wertet die Parameter type_xxx vom Module cube_fillet() aus,
+// gibt eine 4 elementige Liste zurück
+function parameter_types (type_list, type) =
+	is_list(type_list) ?
+		[ for (i=[0:3]) parameter_type (type_list[i], type) ]
+	:	[ for (i=[0:3]) parameter_type (type_list,    type) ]
+;
+function parameter_type (type_x, type) =
+	 (type_x == undef) ? parameter_type (type, 0)
+	:(type_x < 0     ) ? parameter_type (type, 0)
+	: type_x
+;
