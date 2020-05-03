@@ -537,7 +537,7 @@ module edge_fillet_to (line, point1, point2, r, type, extra=extra, extra_h=0)
 	base_vector = [1,0];
 	origin      = line[0];
 	line_vector = line[1] - line[0];
-	up_to_z     = rotate_backwards_to_vector ( translate ([point1,point2], -origin), line_vector);
+	up_to_z     = rotate_backwards_to_vector_list ( translate_list ([point1,point2], -origin), line_vector);
 	plane       = projection_list (up_to_z);
 	angle_base  = rotation_vector (base_vector, plane[0]);
 	angle_fillet= rotation_vector (plane[0]   , plane[1]);
