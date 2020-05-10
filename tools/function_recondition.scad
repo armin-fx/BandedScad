@@ -109,6 +109,38 @@ function parameter_size_3d (size) =
 function parameter_size_2d (size) =
 	get_first_good_2d (size+[0,0], [size+0,size+0], [1,1])
 ;
+// Wandelt das Argument 'value' in eine Liste mit 'dimension' Elementen
+// Falls das nicht geht, wird der Standartwert 'preset' genommen
+// Argumente:
+//   dimension - Gewünschte Größe der Liste
+//   value     - Argument, welches bearbeitet wird
+//                - Als Liste = wird übernommen und auf 'dimension' Elemente gesetzt
+//                - Als Wert  = es wird eine Liste mit 'dimension' Elementen mit diesen Wert erzeugt
+//   preset    - Standartwert, wenn die Umwandlung nicht gelingt
+//   fill      - Behandlung, wenn die Liste kleiner als 'dimension' ist
+//                - true  = fehlende Werte werden mit preset aufgefüllt
+//                - false = es wird 'preset' genommen
+//                - undef = value so lassen (Standart)
+//                - Zahl  = mit den Wert aus dieser Position in 'value' auffüllen
+//                          geht das nicht, wird 'preset' genommen
+//                - Liste = mit den Werten aus der Liste 'fill' auffüllen
+function parameter_numlist (dimension, value, preset, fill) =
+	 is_num(value)  ? [for (i=[0:dimension-1]) value]
+	:is_list(value) ?
+		 len(value)> dimension ? [for (i=[0:dimension-1]) value[i]]
+		:len(value)< dimension ?
+			 fill==true   ? concat( value, [for (i=[len(value):dimension-1]) preset[i]] )
+			:fill==false  ? preset
+			:is_num(fill) ?
+				fill>len(value)-1 ? preset
+				: concat( value, [for (i=[len(value):dimension-1]) value[fill]] )
+			:is_list(fill) ? concat( value, [for (i=[len(value):dimension-1]) fill[i]] )
+			:value
+		:value
+	:preset
+;
+
+
 
 // gibt den Winkel zurück
 // Rückgabe:

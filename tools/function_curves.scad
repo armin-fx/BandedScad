@@ -150,45 +150,43 @@ function circle_curve_intern (r, angle, angle_begin, slices) =
 
 // ermittelt den Punkt einer Superellipse
 // t  - Position des Punkts von 0...360
-// n  - Grad der Kurve, steuert die Kurvenform
-// s  - Parameter "Superness", steuert die Kurvenform, optional
-//      Wurde n angegeben, wird s ignoriert
 // r  - Radius
 // a  - steuert die Breitenverhältnisse der jeweiligen Achsen
 //        als Zahl  = jede Achse enthält den gleichen Faktor
 //        als Liste = jede Achse enthält ihren eigenen Faktor [X,Y]
 //        Standart  = [1,1]
-function superellipse_point (t, n, r, a, s) =
+// n  - Grad der Kurve, steuert die Kurvenform
+//        als Zahl  = jede Achse enthält den gleichen Parameter
+//        als Liste = jede Achse enthält ihren eigenen Parameter [X,Y]
+// s  - Parameter "Superness", steuert die Kurvenform, optional
+//      Wurde n angegeben, wird s ignoriert
+//        als Zahl  = jede Achse enthält den gleichen Parameter
+//        als Liste = jede Achse enthält ihren eigenen Parameter [X,Y]
+function superellipse_point (t, r, a, n, s) =
 	let (
 		 T = is_num(t) ? t : 0
-		,N = is_list(n) ? n :
-		    is_num(n)  ? [n,n] :
-		    [2,2]
 		,R = is_num(r) ? r : 1,
-		,A = is_list(a) ? a :
-		     is_num (a) ? [a,a] :
-		     [1,1]
-		,S = is_list(s) ? s :
-		     is_num(s)  ? [s,s] :
-		     undef
+		,A = parameter_numlist(2, a, [1,1])
+		,N = parameter_numlist(2, n, [2,2])
+		,S = parameter_numlist(2, s, undef)
 	)
-	(S==undef) ? superellipse_point_n (T, N, R, A)
-	:            superellipse_point_s (T, S, R, A)
+	(S==undef) ? superellipse_point_n (T, R, A, N)
+	:            superellipse_point_s (T, R, A, S)
 ;
-function superellipse_point_n (t=0, n=[2,2], r=1, a=[1,1]) =
+function superellipse_point_n (t=0, r=1, a=[1,1], n=[2,2]) =
 	let(
 		e = 2/n
 	)
-	superellipse_point_intern (t, e, r*a)
+	superellipse_point_intern (t, r*a, e)
 ;
-function superellipse_point_s (t=0, s=[1/sqrt(2),1/sqrt(2)], r=1, a=[1,1]) =
+function superellipse_point_s (t=0, r=1, a=[1,1], s=[1/sqrt(2),1/sqrt(2)]) =
 	let(
 		e = (-2/ln(2)) * [ln(s[0]),ln(s[1])]
 	)
-	superellipse_point_intern (t, e, r*a)
+	superellipse_point_intern (t, r*a, e)
 ;
 // e - calculated exponent
-function superellipse_point_intern (t, e, a) =
+function superellipse_point_intern (t, a, e) =
 	let (
 		sint = sin(t),
 		cost = cos(t)
@@ -204,20 +202,14 @@ function superellipse_point_intern (t, e, a) =
 // piece    - true  = wie ein Tortenstück
 //            false = Enden des Kreises verbinden
 //            0     = zum weiterverarbeiten, Enden nicht verbinden, keine zusätzlichen Kanten
-function superellipse_curve (interval, n, r, a, s, slices, piece=true) =
+function superellipse_curve (interval, r, a, n, s, slices, piece=true) =
 	let (
 		 I = is_list(interval) ? interval :
 		     [0,360]
-		,N = is_list(n) ? n :
-		     is_num(n)  ? [n,n] :
-		     [2,2]
 		,R = is_num(r) ? r : 1
-		,A = is_list(a) ? a :
-		     is_num (a) ? [a,a] :
-		     [1,1]
-		,S = is_list(s) ? s :
-		     is_num(s)  ? [s,s] :
-		     undef
+		,A = parameter_numlist(2, a, [1,1])
+		,N = parameter_numlist(2, n, [2,2])
+		,S = parameter_numlist(2, s, undef)
 		,Slices =
 			slices==undef ? get_fn_circle_current  (R*max(A),I[1]-I[0],piece) :
 			slices=="x"   ? get_fn_circle_current_x(R*max(A),I[1]-I[0],piece) :
@@ -227,16 +219,74 @@ function superellipse_curve (interval, n, r, a, s, slices, piece=true) =
 		,e =
 			S==undef ? 2/N
 			:          (-2/ln(2)) * [ln(S[0]),ln(S[1])]
-		,superellipse_list = superellipse_curve_intern (I, e, A*R, Slices)
+		,curve_list = superellipse_curve_intern (I, A*R, e, Slices)
 	)
 	(piece==true && (I[1]-I[0])!=360) ?
-		concat( superellipse_list, [[0,0]])
-	:	superellipse_list
+		concat( curve_list, [[0,0]])
+	:	curve_list
 ;
-function superellipse_curve_intern (interval, e, a, slices) =
+function superellipse_curve_intern (interval, a, e, slices) =
 	[ for (i = [0 : slices])
 		let (t = bezier_1(i/slices, interval))
-		superellipse_point_intern (t, e, a)
+		superellipse_point_intern (t, a, e)
+	]
+;
+
+// ermittelt einen Punkt der Superformel
+// t  - Position (Winkel) des Punkts von 0...360
+// a  - steuert die Ausdehnung der jeweiligen Achsen
+//        als Zahl  = jede Achse enthält den gleichen Faktor
+//        als Liste = jede Achse enthält ihren eigenen Faktor [X,Y]
+//        Standart  = [1,1]
+// m  - Symmetrie
+//        als Zahl  = jede Achse enthält den gleichen Faktor
+//        als Liste = jede Achse enthält ihren eigenen Faktor [X,Y]
+// n  - Kurve, steuert die Kurvenform
+//      Liste mit 3 Parametern [n1, n2, n3]
+function superformula_point (t, a, m, n) =
+	let (
+		 T = is_num(t) ? t : 0
+		,A = parameter_numlist(2, a, [1,1]  , fill=true)
+		,M = parameter_numlist(2, m, [1,1]  , fill=true)
+		,N = parameter_numlist(3, n, [1,1,1], fill=true)
+	)
+	superformula_point_intern (T, A, M, N)
+;
+function superformula_point_intern (t, a, m, n) =
+	let (
+		 t4 = t/4
+		,r  =
+			pow(
+				pow( abs(cos( m[0]*t4 ) / a[0]), n[1]) +
+				pow( abs(sin( m[1]*t4 ) / a[1]), n[2])
+				, -1/n[0])
+	)
+	circle_point_r (r, t)
+;
+//
+function superformula_curve (interval, a, m, n, slices, piece=true) =
+	let (
+		 I = is_list(interval) ? interval :
+		     [0,360]
+		,A = parameter_numlist(2, a, [1,1]  , fill=true)
+		,M = parameter_numlist(2, m, [1,1]  , fill=true)
+		,N = parameter_numlist(3, n, [1,1,1], fill=true)
+		,Slices = // TODO An die Funktion anpassen
+			slices==undef ? get_fn_circle_current  (max(A),I[1]-I[0],piece) :
+			slices=="x"   ? get_fn_circle_current_x(max(A),I[1]-I[0],piece) :
+			slices<2 ?
+				(piece==true || piece==0) ? 1 : 2
+			:slices
+		,curve_list = superformula_curve_intern (I, A, M, N, Slices)
+	)
+	(piece==true && (I[1]-I[0])!=360) ?
+		concat( curve_list, [[0,0]])
+	:	curve_list
+;
+function superformula_curve_intern (interval, a, m, n, slices) =
+	[ for (i = [0 : slices])
+		let (t = bezier_1(i/slices, interval))
+		superformula_point_intern (t, a, m, n)
 	]
 ;
 
@@ -284,7 +334,7 @@ function square_curve(size, center=false) =
 		y=Size[1],
 		square_list=[[0,0], [x,0], [x,y], [0,y]]
 	)
-	(center==false) ? square_list
-	:translate_list(  square_list, [-x/2,-y/2])
+	(center!=true) ? square_list
+	:translate_list( square_list, [-x/2,-y/2])
 ;
 
