@@ -1,4 +1,4 @@
-// function.scad
+// function_math.scad
 //
 // Enthält einige zusätzliche mathematische Funktionen
 
@@ -182,3 +182,5 @@ function gcd (a, b=0) = ggt (a, b); // english name
 function kgv (a, b=1) = a/ggt(a,b) * b; // deutscher Name
 function lcm (a, b=1) = kgv (a, b);     // english name
 
+// bildet das 'exklusive oder'
+function xor (bool, bool2) = bool==bool2 ? false : true;

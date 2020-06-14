@@ -55,6 +55,11 @@ function extract_list (list, begin, last, range) =
 		]) list[i]]
 ;
 
+// Erzeugt eine Liste mit 'count' Elementen gefüllt mit 'value'
+function fill_list (count, value) =
+	(!is_num(count) || count<1) ? [] :
+	[ for (i=[0:count-1]) value ]
+;
 
 // Listenfunktionen
 

@@ -39,10 +39,10 @@ function fill_list_with (list, c) =
 // - ohne Angabe: r1=1, r2=2
 function parameter_ring_2r (r, w, r1, r2, d, d1, d2) =
 	parameter_ring_2r_basic (
-		r =get_first_good(d /2,  r),
+		r =get_first_num(d /2,  r),
 		w =w,
-		r1=get_first_good(d1/2, r1),
-		r2=get_first_good(d2/2, r2)
+		r1=get_first_num(d1/2, r1),
+		r2=get_first_num(d2/2, r2)
 	)
 ;
 function parameter_ring_2r_basic (r, w, r1, r2) =
@@ -53,6 +53,21 @@ function parameter_ring_2r_basic (r, w, r1, r2) =
 	:(r1!=undef && w !=undef) ? [r1      , r1+w]
 	:(r2!=undef && w !=undef) ? [r2-w    , r2]
 	:[1, 2]
+;
+
+// gibt [rotations, pitch] einer Helix zurück
+// Argumente:
+//   rotations - Anzahl der Umdrehungen
+//   pitch     - Höhenunterschied je Umdrehung
+//   height    - Höhe der Helix
+function parameter_helix_to_rp (rotations, pitch, height) =
+	 (is_num(pitch)  && is_num(rotations)) ? [rotations,    pitch]
+	:(is_num(pitch)  && is_num(height))    ? [height/pitch, pitch]
+	:(is_num(height) && is_num(rotations)) ? [rotations,    height/rotations]
+	:(is_num(pitch))     ? [1,         pitch]
+	:(is_num(height))    ? [1,         height]
+	:(is_num(rotations)) ? [rotations, 0]
+	:[1, 0]
 ;
 
 // gibt [radius_unten, radius_oben] zurück
@@ -67,18 +82,20 @@ function parameter_ring_2r_basic (r, w, r1, r2) =
 // - Durchmesser geht vor Radius
 // - spezielle Angaben (r1, r2) gehen vor allgemeine Angaben (r)
 // - ohne Angabe: r=1
-function parameter_cylinder_r (r, r1, r2, d, d1, d2) =
+function parameter_cylinder_r (r, r1, r2, d, d1, d2, preset) =
 	parameter_cylinder_r_basic (
-		get_first_good(d /2, r),
-		get_first_good(d1/2, r1),
-		get_first_good(d2/2, r2))
+		get_first_num(d /2, r),
+		get_first_num(d1/2, r1),
+		get_first_num(d2/2, r2),
+		preset)
 ;
-function parameter_cylinder_r_basic (r, r1, r2) =
-	get_first_good_2d (
+function parameter_cylinder_r_basic (r, r1, r2, preset) =
+	get_first_num_2d (
 		[r1,r2],
 		[r1,r ],
 		[r, r2],
 		[r, r ],
+		preset,
 		[1,1])
 ;
 
@@ -109,6 +126,7 @@ function parameter_size_3d (size) =
 function parameter_size_2d (size) =
 	get_first_good_2d (size+[0,0], [size+0,size+0], [1,1])
 ;
+
 // Wandelt das Argument 'value' in eine Liste mit 'dimension' Elementen
 // Falls das nicht geht, wird der Standartwert 'preset' genommen
 // Argumente:
@@ -123,7 +141,7 @@ function parameter_size_2d (size) =
 //                - undef = value so lassen (Standart)
 //                - Zahl  = mit den Wert aus dieser Position in 'value' auffüllen
 //                          geht das nicht, wird 'preset' genommen
-//                - Liste = mit den Werten aus der Liste 'fill' auffüllen
+//                - Liste = mit den Werten aus der Liste 'fill' an den entsprechenden Positionen auffüllen
 function parameter_numlist (dimension, value, preset, fill) =
 	 is_num(value)  ? [for (i=[0:dimension-1]) value]
 	:is_list(value) ?

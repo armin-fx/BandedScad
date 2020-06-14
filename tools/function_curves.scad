@@ -101,8 +101,8 @@ function bezier_4 (t, p) =
 
 // ermittelt einen Punkt eines Kreises
 // Argumente:
-// r, (d) - Radius oder Durchmesser
-// angle  - Winkel in Grad
+//   r, (d) - Radius oder Durchmesser
+//   angle  - Winkel in Grad
 function circle_point   (r, angle=0, d) = circle_point_r(parameter_circle_r(r,d), angle);
 function circle_point_r (r, angle=0) =
 	r * [cos(angle), sin(angle)]
@@ -110,15 +110,17 @@ function circle_point_r (r, angle=0) =
 
 // gibt ein Array mit den Punkten eines Kreisbogens zurück
 // Argumente:
-// r, (d) - Radius oder Durchmesser
-// angle  - gezeichneter Winkel in Grad, Standart=360
-//          als Zahl  = Winkel von 0 bis 'angle' = Öffnungswinkel
-//          als Liste = [Öffnungswinkel, Anfangswinkel]
-// slices - Anzahl der Segmente, ohne Angabe wird wie bei circle() gerechnet
-// piece  - true  = wie ein Tortenstück
-//          false = Enden des Kreises verbinden
-//          0     = zum weiterverarbeiten, Enden nicht verbinden, keine zusätzlichen Kanten
-// outer  - 0...1 = 0 - Ecken auf der Kreislinie ... 1 - Tangenten auf der Kreislinie
+//   r, (d) - Radius oder Durchmesser
+//   angle  - gezeichneter Winkel in Grad, Standart=360
+//            als Zahl  = Winkel von 0 bis 'angle' = Öffnungswinkel
+//            als Liste = [Öffnungswinkel, Anfangswinkel]
+//   slices - Anzahl der Segmente, ohne Angabe wird wie bei circle() gerechnet
+//   piece  - true  = wie ein Tortenstück
+//            false = Enden des Kreises verbinden
+//            0     = zum weiterverarbeiten, Enden nicht verbinden,
+//                    keine zusätzlichen Kanten
+//   outer  - 0...1 = 0 - Ecken auf der Kreislinie ...
+//                    1 - Tangenten auf der Kreislinie
 function circle_curve (r, angle=360, slices, piece=true, outer=0, d) =
 	let(
 		 R = parameter_circle_r(r,d)
@@ -310,8 +312,8 @@ function polynom_intern (x, a, n, i=0, x_i=1, value=0) =
 
 // gibt ein Array mit den Punkten eines Polynomintervalls zurück
 // Argumente:
-// interval - Intervallgrenze von x. [Anfang, Ende]
-// slices   - Anzahl der Punkte im Intervall
+//   interval - Intervallgrenze von x. [Anfang, Ende]
+//   slices   - Anzahl der Punkte im Intervall
 function polynom_curve (interval, a, n=undef, slices) =
 	let (
 		Slices =
@@ -327,7 +329,7 @@ function polynom_curve (interval, a, n=undef, slices) =
 
 // gibt ein 2D-Quadrat als Punkteliste zurück
 // Argumente wie von square() von OpenSCAD
-function square_curve(size, center=false) =
+function square_curve (size, center=false) =
 	let (
 		Size = parameter_size_2d(size),
 		x=Size[0],
@@ -336,5 +338,38 @@ function square_curve(size, center=false) =
 	)
 	(center!=true) ? square_list
 	:translate_list( square_list, [-x/2,-y/2])
+;
+
+// gibt eine Helix als Punkteliste zurück
+// Argumente:
+//   r         - Radius als Zahl oder [r1, r2]
+//               r1 = unterer Radius, r2 = oberer Radius
+//   pitch     - Höhenunterschied je Umdrehung
+//   rotations - Anzahl der Umdrehungen
+//   height    - Höhe der Helix
+//   slices    - Anzahl der Segmente je Umdrehung
+// benötigte Argumente:
+//   radius
+//   je 2 Argumente: pitch, rotations oder height
+function helix_curve (r, rotations, pitch, height, slices) =
+	let(
+		 R         = parameter_cylinder_r_basic (r, r[0], r[1])
+		,pr        = parameter_helix_to_pr (rotations, pitch, height)
+		,Rotations = pr[0]
+		,Pitch     = pr[1]
+		,Height    = pr[0] * pr[1]
+		,Slices =
+			slices==undef ? get_fn_circle_current  (max(R), 360*Rotations) :
+			slices=="x"   ? get_fn_circle_current_x(max(R), 360*Rotations) :
+			max(2, ceil(slices * Rotations))
+	)
+	[ for (i=[0:Slices])
+		let (
+			 t     = i / Slices
+			,r_    = bezier_1 (t, R)
+			,angle = t*360 * Rotations
+		)
+		[r_ * cos(angle), r_ * sin(angle), t * Height]
+	]
 ;
 

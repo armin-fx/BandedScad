@@ -72,9 +72,29 @@ module object_pane (thickness=epsilon*2, size=[1000,1000])
 	}
 }
 
+// extrudiert und dreht das 2D-Objekt die Linie 'line' entlang
+// Die X-Achse ist die Rotationsrichtung, wird um die Pfeilrichtung nach den Punkt 'rotational' gedreht
+module extrude_line (line, rotational=[1,0,0], convexity, extra_h=0)
+{
+	base_vector = [1,0];
+	origin      = line[0];
+	line_vector = line[1] - line[0];
+	up_to_z     = rotate_backwards_to_vector_list ( [rotational], line_vector);
+	plane       = projection_list (up_to_z);
+	angle_base  = rotation_vector (base_vector, plane[0]);
+	//
+	translate (origin)
+	rotate_to_vector (line_vector, angle_base)
+	translate_z (-extra_h)
+	linear_extrude (height=norm(line_vector)+extra_h*2, convexity=convexity)
+	children();
+}
+
 
 function get_trace_connect(trace) =
-	concat ( [trace[len(trace)-1]], trace, [trace[0],trace[1]] )
+	trace[0]==trace[len(trace)-1] ?
+		get_trace_connect(extract_list(trace, range=[0,-2]))
+	:	concat ( [trace[len(trace)-1]], trace, [trace[0],trace[1]] )
 ;
 range_connect=[1,-2];
 //
@@ -83,10 +103,8 @@ function get_angle_between (ratio, a, b) =
 ;
 
 //
-module plain_trace_extrude (trace, range=[0,-1], convexity, lenght=1000, test=false)
+module plain_trace_extrude (trace, range=[0,-1], convexity, lenght=1000)
 {
-	if (test) children();
-	//
 	begin = get_position(trace, range[0]);
 	last  = get_position(trace, range[1]) - 1;
 	overlap=epsilon;
@@ -96,32 +114,32 @@ module plain_trace_extrude (trace, range=[0,-1], convexity, lenght=1000, test=fa
 		difference()
 		{
 			translate(trace[i])
-			rotate([0,0,rotation_vector([0,-1], trace[i+1]-trace[i])])
-			rotate([90,0,0]) linear_extrude(height=lenght, center=true, convexity=convexity) children();
+			rotate_z(rotation_vector([0,1], trace[i+1]-trace[i]))
+			rotate_x(90) linear_extrude(height=lenght, center=true, convexity=convexity) children();
 			//
 			translate(trace[i])
-			rotate([0,0,
+			rotate_z(
 				(i==0) ?
 					rotation_vector([0,-1], trace[i+1]-trace[i])
 				:	get_angle_between(0.5, rotation_vector([0,-1], trace[i+1]-trace[i]), rotation_vector([0,-1], trace[i]-trace[i-1]))
-			])
+			)
 			translate([-lenght/2,overlap,-lenght/2]) cube([lenght,lenght,lenght]);
 			//
 			translate(trace[i+1])
-			rotate([0,0,
+			rotate_z(
 				(i>=len(trace)-2) ?
 					rotation_vector([0,-1], trace[i+1]-trace[i])
 				:	get_angle_between(0.5, rotation_vector([0,-1], trace[i+1]-trace[i]), rotation_vector([0,-1], trace[i+2]-trace[i+1]))
-			])
+			)
 			translate([-lenght/2,-lenght-overlap,-lenght/2]) cube([lenght,lenght,lenght]);
 		}
 	}
 }
-module plain_trace_connect_extrude (trace, range=[0,-1], convexity, lenght=1000, test=false)
+module plain_trace_connect_extrude (trace, range=[0,-1], convexity, lenght=1000)
 {
 	plain_trace_extrude (
 		trace=get_trace_connect(extract_list(trace, range=range))
-		,range=range_connect, convexity=convexity, lenght=lenght, test=test
+		,range=range_connect, convexity=convexity, lenght=lenght
 	) children();
 }
 
