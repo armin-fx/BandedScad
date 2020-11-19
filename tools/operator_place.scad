@@ -19,10 +19,42 @@ module connect (point=[0,0,0], direction=[0,0,1], rotational=[1,0,0])
 	children();
 }
 
-// Platziert ein Objekt an den angegebenen Punkten
+// Platziert ein Objekt an den angegebenen Punkten in der Liste
 module place (points)
 {
 	for (p=points)
 		translate (p)
+		children();
+}
+// Platziert ein Objekt entlang der angegebenen Richtung an den angegebenen Entfernungen
+module place_line(direction, distances)
+{
+	Direction = unit_vector(
+		(is_list(direction) && len(direction)>1) ?
+			direction
+		:	[0,0,1]
+	);
+	//
+	for (l=distances)
+		translate (l*Direction)
+		children();
+}
+// Platziert ein Objekt entlang der entsprechenden Achse an den angegebenen Entfernungen
+module place_x (distances)
+{
+	for (l=distances)
+		translate_x (l)
+		children();
+}
+module place_y (distances)
+{
+	for (l=distances)
+		translate_y (l)
+		children();
+}
+module place_z (distances)
+{
+	for (l=distances)
+		translate_z (l)
 		children();
 }

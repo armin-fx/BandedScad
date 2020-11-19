@@ -344,32 +344,41 @@ function square_curve (size, center=false) =
 // Argumente:
 //   r         - Radius als Zahl oder [r1, r2]
 //               r1 = unterer Radius, r2 = oberer Radius
-//   pitch     - Höhenunterschied je Umdrehung
 //   rotations - Anzahl der Umdrehungen
+//   angle     - Anzahl der Umdrehungen als Winkel in Grad
+//               ersetzt rotations, wenn angegeben
+//   pitch     - Höhenunterschied je Umdrehung
 //   height    - Höhe der Helix
+//   opposite  - wenn 'true' wird die engegengesetzte Drehrichtung genommen
 //   slices    - Anzahl der Segmente je Umdrehung
 // benötigte Argumente:
 //   radius
 //   je 2 Argumente: pitch, rotations oder height
-function helix_curve (r, rotations, pitch, height, slices) =
+function helix_curve (r, rotations, pitch, height, opposite, slices, angle) =
 	let(
 		 R         = parameter_cylinder_r_basic (r, r[0], r[1])
-		,pr        = parameter_helix_to_pr (rotations, pitch, height)
-		,Rotations = pr[0]
-		,Pitch     = pr[1]
-		,Height    = pr[0] * pr[1]
+		,rp        = parameter_helix_to_rp (
+			get_first_num (angle/360, rotations),
+			pitch,
+			height
+		)
+		,Rotations = abs(rp[0])
+		,Pitch     = rp[1]
+		,Height    = Rotations * Pitch
+		,Opposite  = xor( (is_bool(opposite) ? opposite : false), rp[0]<0 )
 		,Slices =
 			slices==undef ? get_fn_circle_current  (max(R), 360*Rotations) :
 			slices=="x"   ? get_fn_circle_current_x(max(R), 360*Rotations) :
 			max(2, ceil(slices * Rotations))
+		,angle_direction = 360 * Rotations * (Opposite==true ? -1 : 1)
 	)
 	[ for (i=[0:Slices])
 		let (
 			 t     = i / Slices
 			,r_    = bezier_1 (t, R)
-			,angle = t*360 * Rotations
+			,Angle = t * angle_direction
 		)
-		[r_ * cos(angle), r_ * sin(angle), t * Height]
+		[r_ * cos(Angle), r_ * sin(Angle), t * Height]
 	]
 ;
 

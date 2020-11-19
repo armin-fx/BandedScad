@@ -574,7 +574,7 @@ module corner_rounded_cube (r=[1,1,1])
 	b = parameter_circle_r (R[1]);
 	c = parameter_circle_r (R[2]);
 	//
-	if (c==max(a,b,c))  render(convexity=4) intersection()
+	if (c==max(a,b,c))  render(convexity=8) intersection()
 	{
 		fn_c = get_fn_circle_current_x (c, 90);
 		//

@@ -46,6 +46,23 @@ module build ()
 		}
 }
 
+// Experimentell,
+// funktioniert mit 2 Objekte, bei weitere treten Probleme auf
+module xor()
+{
+	difference()
+	{
+		children();
+		
+		minkowski()
+		{
+			intersection_for (i = [0 : $children-1])
+				children(i);
+			sphere(0.0000000001);
+		}
+	}
+}
+
 // Schneidet eine Scheibe aus einem Objekt, geeignet um testweise versteckte Details eines Objekts ansehen zu können
 module object_slice (axis=[0,1,0], position=0, thickness=1, height=1000)
 {
@@ -61,13 +78,13 @@ module object_slice (axis=[0,1,0], position=0, thickness=1, height=1000)
 }
 
 // create a small pane of an object at given height (Z-axis)
-module object_pane (thickness=epsilon*2, size=[1000,1000])
+module object_pane (pos=0, thickness=epsilon*2, size=[1000,1000])
 {
 	intersection()
 	{
 		children();
 		//
-		translate([-size[0]/2,-size[1]/2,-thickness/2])
+		translate([-size[0]/2,-size[1]/2, -thickness/2 + pos])
 			cube([size[0],size[1],thickness]);
 	}
 }
@@ -109,6 +126,7 @@ module plain_trace_extrude (trace, range=[0,-1], convexity, lenght=1000)
 	last  = get_position(trace, range[1]) - 1;
 	overlap=epsilon;
 	//
+	if (is_list(trace) && len(trace)>1)
 	for (i=[begin:last])
 	{
 		difference()
@@ -137,6 +155,7 @@ module plain_trace_extrude (trace, range=[0,-1], convexity, lenght=1000)
 }
 module plain_trace_connect_extrude (trace, range=[0,-1], convexity, lenght=1000)
 {
+	if (is_list(trace) && len(trace)>1)
 	plain_trace_extrude (
 		trace=get_trace_connect(extract_list(trace, range=range))
 		,range=range_connect, convexity=convexity, lenght=lenght
