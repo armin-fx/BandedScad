@@ -31,18 +31,18 @@ module build ()
 			children(1);
 		}
 	if ($children==4)
-		union()
+		intersection()
 		{
-			difference()
+			union()
 			{
-				intersection()
-					{
-						children(0);
-						children(3);
-					}
-				children(2);
+				difference()
+				{
+					children(0);
+					children(2);
+				}
+				children(1);
 			}
-			children(1);
+			children(3);
 		}
 }
 

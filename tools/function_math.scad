@@ -19,6 +19,19 @@ function constrain_bidirectional (value, a, b) =
 		: value
 	: constrain(value, b, a)
 ;
+// testet zwei Werte oder zwei Listen mit Werten ob sie näherungsweise übereinstimmen
+// deviation - maximale Abweichung der Werte
+function is_nearly (a, b, deviation=1e-14) =
+	 is_num (a)&&is_num(b) ? min(a,b)+abs(deviation) >= max(a,b)
+	:is_list(a) ? min( [ for (e=[0:len(a)-1]) is_nearly(a[e],b[e],deviation) ] )
+	:a==b
+;
+
+// Quantisiert einen Wert innerhalb eines Rasters
+// Voreinstellung = auf ganze Zahl runden
+function quantize (value, raster=1, offset=0.5) =
+	raster * floor( (value/raster) + offset )
+;
 
 // Test: die Zahl ist eine ungerade Zahl? 
 function is_odd  (n) = (abs(n%2)==1);
@@ -29,12 +42,6 @@ function positiv_if_odd  (n) = (is_odd (n)) ?  1 : -1;
 function positiv_if_even (n) = (is_even(n)) ?  1 : -1;
 function negativ_if_odd  (n) = (is_odd (n)) ? -1 :  1;
 function negativ_if_even (n) = (is_even(n)) ? -1 :  1;
-
-// Quantisiert einen Wert innerhalb eines Rasters
-// Voreinstellung = auf ganze Zahl runden
-function quantize (value, raster=1, offset=0.5) =
-	raster * floor( (value/raster) + offset )
-;
 
 // Zum Quadrat nehmen
 function sqr (x) = x*x;
@@ -184,3 +191,10 @@ function lcm (a, b=1) = kgv (a, b);     // english name
 
 // bildet das 'exklusive oder'
 function xor (bool, bool2) = bool==bool2 ? false : true;
+
+// Fibonacci-Folge errechnen, geht auch mit reelle Zahlen
+function fibonacci (n) =
+//	( pow(golden,n) - pow(-1/golden,n) ) / sqrt(5)
+//	( pow(golden,n) - pow(1-golden ,n) ) / sqrt(5)
+	( pow(golden,n) - cos(180*n)*pow(golden,-n) ) / sqrt(5)
+;
