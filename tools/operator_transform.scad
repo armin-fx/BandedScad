@@ -1,4 +1,5 @@
-// operator_transform.scad
+// Copyright (c) 2020 Armin Frenzel
+// License: LGPL-2.1-or-later
 //
 // Enthält zusätzliche Operatoren zum Transformieren von Objekten
 //

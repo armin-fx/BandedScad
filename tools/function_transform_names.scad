@@ -1,4 +1,5 @@
-// function_transform_names.scad
+// Copyright (c) 2020 Armin Frenzel
+// License: LGPL-2.1-or-later
 //
 // Wandelt die Namen der Funktionen zum Transformieren von Punktlisten
 // in Namen um wie die entsprechenden Module ohne die Endung _list

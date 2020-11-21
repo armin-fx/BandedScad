@@ -1,4 +1,5 @@
-// function_transform_multmatrix.scad
+// Copyright (c) 2020 Armin Frenzel
+// License: LGPL-2.1-or-later
 //
 // Gibt die Matritzen zur Verwendung für multmatrix zurück.
 // Diese können mit Matritzenmultiplikation verknüpft werden.

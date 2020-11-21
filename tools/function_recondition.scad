@@ -1,4 +1,5 @@
-// function_recondition.scad
+// Copyright (c) 2020 Armin Frenzel
+// License: LGPL-2.1-or-later
 //
 // Enthält Funktionen zum Bearbeiten, Auswählen und Reparieren von Argumenten
 

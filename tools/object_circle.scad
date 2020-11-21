@@ -1,4 +1,5 @@
-// object_circle.scad
+// Copyright (c) 2020 Armin Frenzel
+// License: LGPL-2.1-or-later
 //
 // Problem beschrieben von dieser Seite
 // https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/undersized_circular_objects

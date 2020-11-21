@@ -1,3 +1,6 @@
+// Copyright (c) 2020 Armin Frenzel
+// License: LGPL-2.1-or-later
+//
 // defines functions and modules to keep compatibility
 // with older versions than 2019.05
 // and newer than 2015.03

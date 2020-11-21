@@ -1,4 +1,5 @@
-// function_transform_basic.scad
+// Copyright (c) 2020 Armin Frenzel
+// License: LGPL-2.1-or-later
 //
 // Enthält übertragene Funktionen von OpenSCAD-Modulen
 // zum Transformieren von Punktlisten

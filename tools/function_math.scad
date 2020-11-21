@@ -1,4 +1,5 @@
-// function_math.scad
+// Copyright (c) 2020 Armin Frenzel
+// License: LGPL-2.1-or-later
 //
 // Enthält einige zusätzliche mathematische Funktionen
 

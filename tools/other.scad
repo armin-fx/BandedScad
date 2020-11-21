@@ -1,3 +1,6 @@
+// Copyright (c) 2020 Armin Frenzel
+// License: various
+//
 // other.scad
 //
 // Enthält verschiedene Module, die ich im Internet gefunden habe.

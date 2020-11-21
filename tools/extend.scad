@@ -1,4 +1,5 @@
-// extend.scad
+// Copyright (c) 2020 Armin Frenzel
+// License: LGPL-2.1-or-later
 //
 // erweitert einige eingebaute Module um weitere Eigenschaften
 //
