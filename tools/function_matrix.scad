@@ -12,6 +12,9 @@
 // cross()  - Kreuzprodukt (Vektorielles Produkt)
 //
 
+use <tools/function_list_algorithmus.scad>
+use <tools/function_math.scad>
+
 // Gibt die Einheitsmatrix zurück in der Dimension n*n
 function identity_matrix (n) =
 	(!is_num(n)) ? undef :

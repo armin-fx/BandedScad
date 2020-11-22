@@ -3,6 +3,7 @@
 //
 // Hilfsfunktionen, um Konstanten zu berechnen
 
+use <tools/function_math.scad>
 
 function calculate_pi (num=21) =
 	4/continued_fraction(

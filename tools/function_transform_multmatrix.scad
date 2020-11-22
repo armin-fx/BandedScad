@@ -6,6 +6,9 @@
 //
 // es werden weitere Funktionen zum Transformieren definiert
 
+use <tools/function_matrix.scad>
+use <tools/function_transform_multmatrix_basic.scad>
+
 // gibt die Matrix zurück zum rückwärts rotieren von Objekten
 function matrix_rotate_backwards (a, v, d=3) =
 	 is_list(a) ?

@@ -18,6 +18,10 @@
 //      $fa_enabled - für $fa = kleinster Winkel pro Fragmente
 //      $fs_enabled - für $fs = kleinste Größe eines Fragments in mm
 
+use <tools/function_math.scad>
+use <tools/function_helper.scad>
+use <tools/function_recondition.scad>
+use <tools/function_curves.scad>
 
 $fn_min=0;
 $fn_max=0;

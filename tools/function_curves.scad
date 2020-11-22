@@ -3,6 +3,11 @@
 //
 // Enthält Funktionen, die Kurven beschreiben
 
+use <tools/extend.scad>
+use <tools/function_helper.scad>
+use <tools/function_recondition.scad>
+use <tools/function_math.scad>
+use <tools/function_transform_basic.scad>
 
 // ermittelt den Punkt einer Bezierkurve n. Grades abhängig von den Parametern
 // Argumente:
@@ -150,6 +155,7 @@ function circle_curve_intern (r, angle, angle_begin, slices) =
 		circle_point_r(r, angle_begin + i*angle_pie )
 	]
 ;
+function get_circle_factor (slices, outer=0) = outer/cos(180/slices) + 1-outer;
 
 // ermittelt den Punkt einer Superellipse
 // t  - Position des Punkts von 0...360

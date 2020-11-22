@@ -3,6 +3,11 @@
 //
 // Enthält einige zusätzliche Objekte
 
+use <tools/extend.scad>
+use <tools/function_recondition.scad>
+use <tools/function_helper.scad>
+use <tools/function_curves.scad>
+use <tools/operator_transform.scad>
 
 // leeres Modul
 module empty () {}

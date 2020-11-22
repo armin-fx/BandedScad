@@ -1,6 +1,8 @@
 // Copyright (c) 2020 Armin Frenzel
 // License: LGPL-2.1-or-later
 
+//use <tools/function_helper.scad>
+use <tools/function_list_algorithmus.scad>
 
 //
 function select_function (number, argument, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9) =
@@ -77,72 +79,12 @@ function summation_intern_auto (number, k, value, value_old) =
 			value,
 			debug)
 ;
-//
-function summation_list (list, n, k=0) =
-	let (
-	last = (n==undef) ? len(list)-1
-	       :            min(n, len(list)-1)
-	)
-	(k>last) ? undef :
-	summation_list_intern(list, last, k)
-;
-function summation_list_intern (list, n, k) =
-	(k==n) ? list[k]
-	:is_split_block(8,n,k) ?
-		let (mid_n = split_block(8,n,k))
-		summation_list_intern_8(list, mid_n, k) +
-		summation_list_intern  (list, n,     mid_n+1)
-	:
-		summation_list_intern_1(list, n, k)
-;
-function summation_list_intern_1 (list, n, k, value=0) =
-	(k>n) ? value :
-	summation_list_intern_1(list, n, k+1, value + list[k])
-;
-function summation_list_intern_8 (list, n, k) =
-    let (
-	new_list = [ for (i=[k:8:n-7])
-		list[i]   + list[i+1] + list[i+2] + list[i+3] +
-		list[i+4] + list[i+5] + list[i+6] + list[i+7]
-	] )
-	summation_list_intern (new_list, len(new_list)-1, 0)
-;
 
 function product (number, n, k=0) = product_intern (number, n, k);
 function product_intern (number, n, k, value=1) =
 	 (k>n) ? value
 	:product_intern(number, n, k+1,
 		value * select_function(number, k))
-;
-//
-function product_list (list, n, k=0) =
-	let (
-	last = (n==undef) ? len(list)-1
-	       :            min(n, len(list)-1)
-	)
-	(k>last) ? undef :
-	product_list_intern(list, last, k)
-;
-function product_list_intern (list, n, k) =
-	(k==n) ? list[k]
-	:is_split_block(8,n,k) ?
-		let (mid_n = split_block(8,n,k))
-		product_list_intern_8(list, mid_n, k) *
-		product_list_intern  (list, n,     mid_n+1)
-	:
-		product_list_intern_1(list, n, k)
-;
-function product_list_intern_1 (list, n, k, value=1) =
-	(k>n) ? value :
-	product_list_intern_1(list, n, k+1, value * list[k])
-;
-function product_list_intern_8 (list, n, k) =
-    let (
-	new_list = [ for (i=[k:8:n-7])
-		list[i]   * list[i+1] * list[i+2] * list[i+3] *
-		list[i+4] * list[i+5] * list[i+6] * list[i+7]
-	] )
-	product_list_intern (new_list, len(new_list)-1, 0)
 ;
 
 function taylor        (number, x, n=0, k=0) = taylor_intern(number, x, n, k);

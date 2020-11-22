@@ -14,6 +14,8 @@
 //    <Basisobjekt>        - Das erzeugte Objekt ist immer kleiner als das reale Objekt
 //                           Die Ecken stoßen von innan an das reale Objekt
 
+use <tools/extend.scad>
+use <tools/function_recondition.scad>
 
 // 2D
 
@@ -82,6 +84,4 @@ module sphere_outer (r, d)
 	scale ([fudge_all,fudge_all,fudge_pol])
 		sphere (r=rx, $fn=fn);
 }
-
-function get_circle_factor (slices, scale=0) = scale/cos(180/slices) + 1-scale;
 

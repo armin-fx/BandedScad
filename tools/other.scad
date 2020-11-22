@@ -6,6 +6,11 @@
 // Enthält verschiedene Module, die ich im Internet gefunden habe.
 // Die Quelle und die Lizenz ist mit angegeben und sollte berücksichtigt werden
 
+include <tools/constants.scad>
+use <tools/extend.scad>
+use <tools/function_helper.scad>
+use <tools/operator_transform.scad>
+
 
 // from https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Commented_Example_Projects
 //

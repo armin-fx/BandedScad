@@ -4,6 +4,11 @@
 // Wandelt die Namen der Funktionen zum Transformieren von Punktlisten
 // in Namen um wie die entsprechenden Module ohne die Endung _list
 
+use <tools/function_transform.scad>
+use <tools/function_transform_basic.scad>
+use <tools/function_transform_multmatrix.scad>
+use <tools/function_transform_multmatrix_basic.scad>
+
 function translate  (list, v)          = translate_list  (list, v);
 function rotate     (list, a, v)       = rotate_list     (list, a, v);
 function mirror     (list, v)          = mirror_list     (list, v);

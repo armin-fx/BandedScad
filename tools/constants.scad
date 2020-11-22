@@ -3,7 +3,7 @@
 //
 // definiert einige Konstanten
 
-include <tools/constants_helper.scad>
+//include <tools/constants_helper.scad>
 
 
 // Zahl zum addieren/subtrahieren,

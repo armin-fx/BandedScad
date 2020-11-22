@@ -3,6 +3,7 @@
 //
 // Enthält Funktionen zum Bearbeiten von Listen und Punktlisten
 
+use <tools/function_helper.scad>
 
 // verbindet einzelne Listen innerhalb einer Liste miteinander
 // aus z.B  [ [1,2,3], [4,5] ]  wird  [1,2,3,4,5]
