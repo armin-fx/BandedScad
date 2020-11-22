@@ -28,7 +28,7 @@ module mirror_copy_at_z (p) { mirror_copy_at([0,0,1], !is_num(p) ? p : [0,0,p]) 
 // erzeugt ein Objekt und ein gespiegeltes Objekt
 module mirror_copy (v)
 {
-	V = !is_undef(v) ? v : [1,0,0];
+	V = v!=undef ? v : [1,0,0];
 	children();
 	mirror(V)
 	children();
@@ -38,8 +38,8 @@ module mirror_copy (v)
 // Spiegel an Position p
 module mirror_at (v, p)
 {
-	V = !is_undef(v) ? v : [1,0,0];
-	if (!is_undef(p))
+	V = v!=undef ? v : [1,0,0];
+	if (p!=undef)
 		translate(p)
 		mirror(V)
 		translate(-p)
@@ -73,8 +73,8 @@ module mirror_repeat_copy (v=[1,0,0], v2=undef, v3=undef)
 
 module mirror_check (v)
 {
-	if (is_undef(v)) children();
-	else mirror(v)   children();
+	if (v==undef)  children();
+	else mirror(v) children();
 }
 
 // rotiert ein Objekt rückwärts

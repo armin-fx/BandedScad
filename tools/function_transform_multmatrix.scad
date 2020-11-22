@@ -102,7 +102,7 @@ function matrix_translate_xy (t, d=3) =
 // gibt die Matrix zurück zum spiegeln entlang dem Vektor <v>
 // Spiegel an Position p
 function matrix_mirror_at (v, p, d=3) =
-	!is_undef(p) ?
+	p!=undef ?
 		matrix_translate( p, d=d) *
 		matrix_mirror   ( v, d=d) *
 		matrix_translate(-p, d=d)

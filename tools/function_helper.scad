@@ -52,7 +52,7 @@ function is_inf (value) = value==1e200*1e200;
 function is_inf_abs (value) = is_num(value) && abs(value)==1e200*1e200;
 // testet eine Variable ob sie eine Bereichsangabe enthält (z.B. [0:1:10])
 function is_range (value) =
-	   !is_undef (value)
+	   value!=undef
 	&& !is_num   (value)
 	&& !is_bool  (value)
 	&& !is_list  (value)
@@ -160,7 +160,7 @@ function is_good_list (list, begin=0, end=undef) =
 	:(end==undef)    ? is_good_list (list, begin, len(list))
 	:(len(list)<end) ? false
 	:(begin>=end)    ? true
-	:(is_undef(list[begin])) ? false
+	:(list[begin]==undef) ? false
 	:(len(list)<end) ? false
 	:is_good_list (list, begin+1, end)
 ;

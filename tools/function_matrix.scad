@@ -90,8 +90,8 @@ function matrix_replace_column (m, x, j) = [ for (I=[0:len(m)-1]) matrix_replace
 
 // an Matrix a in jeder Zeile Matrix b anhängen
 function concat_matrix (a,b) =
-	is_undef(a[0][0]) ? undef :
-	is_undef(b[0][0]) ? a     :
+	a[0][0]==undef ? undef :
+	b[0][0]==undef ? a     :
 	[ for (i=[0:len(a)-1]) concat (a[i],b[i]) ]
 ;
 

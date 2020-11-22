@@ -1,7 +1,8 @@
 // Copyright (c) 2020 Armin Frenzel
 // License: LGPL-2.1-or-later
 //
-// erweitert einige eingebaute Module um weitere Eigenschaften
+// erweitert einige eingebaute Module um weitere Eigenschaften,
+// steuert die Auflösungsgenauigkeit der kurvigen Objekte
 //
 // Aufbau:
 //     <Modulname>_extend
@@ -11,6 +12,8 @@
 //      $fn_min  - Objekte werden in mindestens so viele Fragmente gebaut wie angegeben,
 //      $fn_max  - Objekte werden in höchstens so viele Fragmente gebaut wie angegeben,
 //      $fd      - maximale Abweichung des Modells in mm
+//      $fq      - Fragmenteanzahl quantisieren = durch diese Zahl teilbar, wenn angegeben
+//                 TODO - noch nicht implementiert -
 //      $fn_safe - Anzahl der Fragmente, wenn alle Begrenzungen deaktiviert wurden. Standardwert = 12
 // veränderte Eigenschaften:
 //  - interne Variablen können deaktiviert werden mit entsprechende Schalter.
@@ -23,12 +26,12 @@ use <tools/function_helper.scad>
 use <tools/function_recondition.scad>
 use <tools/function_curves.scad>
 
-$fn_min=0;
-$fn_max=0;
-$fd=0;
-$fn_safe=0;
-$fa_enabled=true;
-$fs_enabled=true;
+//$fn_min=0;
+//$fn_max=0;
+//$fd=0;
+//$fn_safe=0;
+//$fa_enabled=true;
+//$fs_enabled=true;
 
 // gibt die Anzahl der Segmente eines Kreises zurück
 // originale Funktion von OpenScad
@@ -45,8 +48,8 @@ function get_fn_circle (r, angle=360, piece=true, fn, fa, fs) =
 
 // gibt die Anzahl der Segmente eines geschlossenen Kreises zurück
 // erweiterte Funktion
-function get_fn_circle_closed_x (r, fn, fa, fs, fn_min, fn_max, fd, fa_enabled=true, fs_enabled=true) = 
-	sf_is_activated(fn) ? get_fn_circle_closed(r, fn, fa, fs)
+function get_fn_circle_closed_x (r, fn, fa, fs, fn_min, fn_max, fd, fa_enabled, fs_enabled) = 
+	is_sfx_activated(fn) ? get_fn_circle_closed(r, fn, fa, fs)
 	:
 		let (
 			fa_value = 360/fa,
@@ -55,45 +58,56 @@ function get_fn_circle_closed_x (r, fn, fa, fs, fn_min, fn_max, fd, fa_enabled=t
 		)
 		sf_minmax(fn_min, fn_max,
 		ceil(max (5
-			,	(  fa_enabled!=false && !fs_enabled!=false) ? fa_value
-				:( fs_enabled!=false && !fa_enabled!=false) ? fs_value
-				:(!fs_enabled!=false && !fa_enabled!=false) ? sf_value(fd, fd_value)
+			,	(  (fa_enabled!=false) && !(fs_enabled!=false)) ? fa_value
+				:( (fs_enabled!=false) && !(fa_enabled!=false)) ? fs_value
+				:(!(fs_enabled!=false) && !(fa_enabled!=false)) ? if_sfx_value(fd, fd_value)
 				:min (fa_value, fs_value)
-			,	!(!fs_enabled!=false && !fa_enabled!=false) ? sf_value(fd, fd_value, 0) : 0
+			,	(  (fs_enabled!=false) ||  (fa_enabled!=false)) ? if_sfx_value(fd, fd_value, 0) : 0
 		)))
 ;
-function get_fn_circle_x (r, angle=360, piece=true, fn, fa, fs, fn_min, fn_max, fd, fa_enabled=true, fs_enabled=true) = 
+function get_fn_circle_x (r, angle=360, piece=true, fn, fa, fs, fn_min, fn_max, fd, fa_enabled, fs_enabled) = 
 	max( ceil(get_fn_circle_closed_x(r, fn, fa, fs, fn_min, fn_max, fd, fa_enabled, fs_enabled) * angle/360),
 	     (piece==true || piece==0) ? 1 : 2)
 ;
 
 // aktuelle Fragmentanzahl gemäß den Angaben in $fxxx zurückgeben bei angegeben Radius, optional Winkel
 function get_fn_circle_current   (r, angle=360, piece=true) = get_fn_circle   (r, angle, piece, $fn, $fa, $fs);
-function get_fn_circle_current_x (r, angle=360, piece=true) = get_fn_circle_x (r, angle, piece, $fn, $fa, $fs, $fn_min, $fn_max, $fd, $fa_enabled, $fs_enabled);
+function get_fn_circle_current_x (r, angle=360, piece=true) = get_fn_circle_x (r, angle, piece, $fn, $fa, $fs,
+	is_undef($fn_min)     ? undef : $fn_min,
+	is_undef($fn_max)     ? undef : $fn_max,
+	is_undef($fd)         ? undef : $fd,
+	is_undef($fa_enabled) ? undef : $fa_enabled,
+	is_undef($fs_enabled) ? undef : $fs_enabled
+);
 
 // gibt die Begrenzung für $fn_min und $fn_max zurück
 function sf_minmax(fn_min, fn_max, v) =
-	  (sf_is_activated(fn_min) && sf_is_activated(fn_max)) ? constrain(v, fn_min, fn_max)
-	: (sf_is_activated(fn_min)) ? max(fn_min, v)
-	: (sf_is_activated(fn_max)) ? min(fn_max, v)
+	  (is_sfx_activated(fn_min) && is_sfx_activated(fn_max)) ? constrain(v, fn_min, fn_max)
+	: (is_sfx_activated(fn_min)) ? max(fn_min, v)
+	: (is_sfx_activated(fn_max)) ? min(fn_max, v)
 	: v
 ;
 
 // gibt zurück, ob eine Variable $fxxx aktiviert ist
-function sf_is_activated (fn_base) =
+function is_sfx_activated (fn_base) =
 	  (fn_base == undef)       ? false
 	: (fn_base <= 0)           ? false
 	: (fn_base == 1e200*1e200) ? false // inf
 	: true
 ;
+// gibt zurück, ob eine Variable $fxxx_enabled aktiviert ist
+// Alternative: (fn_base_enabled!=false)
+function is_sfx_enabled (fn_base_enabled) =
+	  (is_bool(fn_base_enabled)) ? fn_base_enabled
+	: true
+;
 
 // gibt den Wert v zurück, wenn $fxxx aktiviert ist, sonst wird ein Sicherheitswert zurückgegeben
-function sf_value (base, v, safe=sf_safe()) = sf_is_activated(base) ? v : safe;
+function if_sfx_value (base, v, safe=sf_safe()) = is_sfx_activated(base) ? v : safe;
 //
-function sf_max   (base, v1, v2, safe=sf_safe()) = sf_is_activated(base) ? max(v1, v2) : safe;
-function sf_min   (base, v1, v2, safe=sf_safe()) = sf_is_activated(base) ? min(v1, v2) : safe;
-//
-function sf_safe () = sf_is_activated($fn_safe) ? $fn_safe : 12;
+function sf_safe () =
+	is_sfx_activated( is_undef($fn_safe) ? undef : $fn_safe)
+	? $fn_safe : 12;
 
 // gibt den Winkel eines Kreisfragments zurück, bei welcher die Abweichung
 // der Sehne zum Kreisbogen in Prozent erreicht ist

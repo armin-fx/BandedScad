@@ -113,7 +113,7 @@ function translate_xy_list (list, t) =
 // Spiegel an Position p
 function mirror_at_list (list, v, p) =
 	(!is_list(list) || !is_list(list[0])) ? undef :
-	!is_undef(p) ?
+	p!=undef ?
 		let (d=len(list[0]))
 		multmatrix_list (list,
 			matrix_translate( p, d=d) *
