@@ -12,9 +12,9 @@ use <tools/function_transform_multmatrix_basic.scad>
 // gibt die Matrix zurück zum rückwärts rotieren von Objekten
 function matrix_rotate_backwards (a, v, d=3) =
 	 is_list(a) ?
-		matrix_rotate_x (-a[0], d=d) *
-		matrix_rotate_y (-a[1], d=d) *
-		matrix_rotate_z (-a[2], d=d)
+		matrix_rotate_x (-a.x, d=d) *
+		matrix_rotate_y (-a.y, d=d) *
+		matrix_rotate_z (-a.z, d=d)
 	:is_num(a)  ?
 		is_list(v) ?
 			matrix_rotate_v (-a, v, d=d)
@@ -41,8 +41,8 @@ function matrix_rotate_to_vector (v, a) =
 	d     = 3,
 	V     = (is_list(v) && len(v)==3) ? v : [0,0,1],
 	angle = is_num(a) ? a : 0,
-	b     = acos(V[2]/norm(V)), // inclination angle
-	c     = atan2(V[1],V[0])    // azimuthal angle
+	b     = acos(V.z/norm(V)), // inclination angle
+	c     = atan2(V.y,V.x)     // azimuthal angle
 	)
 	matrix_rotate  ([0, b, c], d=d) *
 	matrix_rotate_z(angle,     d=d)
@@ -53,8 +53,8 @@ function matrix_rotate_backwards_to_vector (v, a) =
 	d     = 3,
 	V     = (is_list(v) && len(v)==3) ? v : [0,0,1],
 	angle = is_num(a) ? a : 0,
-	b     = acos(V[2]/norm(V)), // inclination angle
-	c     = atan2(V[1],V[0])    // azimuthal angle
+	b     = acos(V.z/norm(V)), // inclination angle
+	c     = atan2(V.y,V.x)     // azimuthal angle
 	)
 	matrix_rotate_backwards_z(angle,     d=d) *
 	matrix_rotate_backwards  ([0, b, c], d=d)
@@ -95,8 +95,8 @@ function matrix_translate_x  (l, d=3) =     !is_num(l) ? identity_matrix(d+1) : 
 function matrix_translate_y  (l, d=3) =     !is_num(l) ? identity_matrix(d+1) : matrix_translate([0,l,0], d=d);
 function matrix_translate_z  (l) = let(d=3) !is_num(l) ? identity_matrix(d+1) : matrix_translate([0,0,l], d=d);
 function matrix_translate_xy (t, d=3) =
-	!(is_list(t) && len(t)>=2 && is_num(t[0]) && is_num(t[1])) ? identity_matrix(d+1) :
-	matrix_translate([t[0],t[1],0], d=d)
+	!(is_list(t) && len(t)>=2 && is_num(t.x) && is_num(t.y)) ? identity_matrix(d+1) :
+	matrix_translate([t.x,t.y,0], d=d)
 ;
 
 // gibt die Matrix zurück zum spiegeln entlang dem Vektor <v>

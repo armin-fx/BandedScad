@@ -12,9 +12,9 @@ use <tools/function_transform_multmatrix_basic.scad>
 function rotate_backwards_list (list, a, v) =
 	 is_list(a) ?
 		multmatrix_list (list,
-			matrix_rotate_x(-a[0], d=3) *
-			matrix_rotate_y(-a[1], d=3) *
-			matrix_rotate_z(-a[2], d=3)
+			matrix_rotate_x(-a.x, d=3) *
+			matrix_rotate_y(-a.y, d=3) *
+			matrix_rotate_z(-a.z, d=3)
 		)
 	:is_num(a)  ?
 		is_list(v) ?
@@ -105,8 +105,8 @@ function translate_x_list  (list, l) = !is_num(l) ? list : translate_list(list, 
 function translate_y_list  (list, l) = !is_num(l) ? list : translate_list(list, [0,l,0]);
 function translate_z_list  (list, l) = !is_num(l) ? list : translate_list(list, [0,0,l]);
 function translate_xy_list (list, t) =
-	!(is_list(t) && len(t)>=2 && is_num(t[0]) && is_num(t[1])) ? list :
-	translate_list(list, [t[0],t[1],0])
+	!(is_list(t) && len(t)>=2 && is_num(t.x) && is_num(t.y)) ? list :
+	translate_list(list, [t.x,t.y,0])
 ;
 
 // jeden Punkt in der Liste <list> spiegeln entlang dem Vektor <v>

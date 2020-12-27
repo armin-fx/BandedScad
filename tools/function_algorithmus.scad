@@ -56,35 +56,43 @@ function function_benchmark_intern_2 (count) =
 
 debug=false;
 
-function summation (number, n, k=0) =
+function summation_fn (number, n, k=0) =
 	(n==undef) ?
-	 summation_intern_auto(number, k+1, select_function(number, k), debug=debug)
-	:summation_intern_big(number, n, k)
+	 summation_auto_fn (number, k, debug=debug)
+	:summation_fn_intern_big(number, n, k)
 ;
-function summation_intern_big (number, n, k, slice=100000) =
-	(n > slice) ?
-	 summation_list([ for (i=[k:slice:n]) summation_intern(number, min(i+slice,n), max(i,k)) ])
-	:summation_intern(number, n, k)
-;
-function summation_intern (number, n, k, value=0) =
+function summation_fn_intern (number, n, k, value=0) =
 	 (k>n) ? value
-	:summation_intern(number, n, k+1,
+	:summation_fn_intern(number, n, k+1,
 		value + select_function(number, k))
 ;
-function summation_intern_auto (number, k, value, value_old) =
+function summation_fn_intern_big (number, n, k, slice=100000) =
+	(n > slice) ?
+	 summation_list([ for (i=[k:slice:n]) summation_fn_intern(number, min(i+slice,n), max(i,k)) ])
+	:summation_fn_intern(number, n, k)
+;
+function summation_auto_fn (number, k=0) =
+	summation_fn_intern_auto(number, k+1, select_function(number, k), debug=debug)
+;
+function summation_auto_fn_intern (number, k, value, value_old) =
 	(value==value_old) ?
 		(debug) ? [value,k] : value
-	:	summation_intern_auto (number, x, k+1,
+	:	summation_auto_fn_intern (number, k+1,
 			value + select_function(number, k),
 			value,
-			debug)
+			debug=debug)
 ;
 
-function product (number, n, k=0) = product_intern (number, n, k);
-function product_intern (number, n, k, value=1) =
+function product_fn (number, n, k=0) = product_fn_intern_big (number, n, k);
+function product_fn_intern (number, n, k, value=1) =
 	 (k>n) ? value
-	:product_intern(number, n, k+1,
+	:product_fn_intern(number, n, k+1,
 		value * select_function(number, k))
+;
+function product_fn_intern_big (number, n, k, slice=100000) =
+	(n > slice) ?
+	 product_list([ for (i=[k:slice:n]) product_fn_intern(number, min(i+slice,n), max(i,k)) ])
+	:product_fn_intern(number, n, k)
 ;
 
 function taylor        (number, x, n=0, k=0) = taylor_intern(number, x, n, k);
@@ -104,7 +112,7 @@ function taylor_auto_intern (number, x, n, k, value, value_old) =
 	:	taylor_auto_intern (number, x, n, k+1,
 			value + select_function(number, x, k),
 			value,
-			debug)
+			debug=debug)
 ;
 
 delta_std = 0.001;
@@ -177,10 +185,10 @@ function derivation_symmetric_2 (number, value, delta=dx) =
 
 
 // funktion(argument) muss value zurückgeben
-function function_find_first (number, value, begin, end, step=1) =
+function find_first_fn (number, value, begin, end, step=1) =
 	(sign(step)*begin>=sign(step)*end) ? undef
 	:(select_function(number, begin) == value) ?
 		 begin
-		:function_find_first(number, value, begin+step, end)
+		:find_first_fn(number, value, begin+step, end)
 ;
 

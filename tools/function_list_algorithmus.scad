@@ -64,3 +64,8 @@ function product_list_intern_8 (list, n, k) =
 	] )
 	product_list_intern (new_list, len(new_list)-1, 0)
 ;
+
+// Ergebnis: summation(list)==1
+function unit_summation (list) =
+	list / summation_list(list)
+;

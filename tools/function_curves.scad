@@ -3,7 +3,7 @@
 //
 // Enthält Funktionen, die Kurven beschreiben
 
-use <tools/extend.scad>
+use <tools/extend_logic.scad>
 use <tools/function_helper.scad>
 use <tools/function_recondition.scad>
 use <tools/function_math.scad>
@@ -18,7 +18,7 @@ use <tools/function_transform_basic.scad>
 //   n - Angabe des Grades der Bezierkurve
 //       es werden nur die Punkte bis p[n] genommen
 //       ohne Angabe von n wird der Grad anhand der Größe des Arrays genommen
-//                   
+//
 function bezier_point (t, p, n) =
 	 (!is_list(p)) ? undef
 	:(n==undef) ?
@@ -46,7 +46,7 @@ function bezier_point_intern (t, p, n, j) =
 //       ohne Angabe von n wird der Grad anhand der Größe des Arrays genommen
 //   slices - Bezierkurve wird in diese Anzahl an Punkten aufgeteilt, mindestens 2 Punkte
 //       ohne Angabe werden die Anzahl der Punkte von $fn, $fa, $fs ermittelt (grob implementiert)
-//                   
+//
 function bezier_curve (p, n, slices) =
 	let (
 	Slices =

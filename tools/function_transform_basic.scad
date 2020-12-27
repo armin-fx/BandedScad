@@ -26,9 +26,9 @@ function translate_list (list, v) =
 function rotate_list (list, a, v) =
 	 is_list(a) ?
 		multmatrix_list (list,
-			matrix_rotate_z(a[2], d=3) *
-			matrix_rotate_y(a[1], d=3) *
-			matrix_rotate_x(a[0], d=3)
+			matrix_rotate_z(a.z, d=3) *
+			matrix_rotate_y(a.y, d=3) *
+			matrix_rotate_x(a.x, d=3)
 		)
 	:is_num(a)  ?
 		is_list(v) ?
@@ -46,9 +46,9 @@ function rotate_x_list (list, a) =
 	)
 	[for (p=list)
 		[
-		 p[0]
-		,p[1]*cosa - p[2]*sina
-		,p[1]*sina + p[2]*cosa
+		 p.x
+		,p.y*cosa - p.z*sina
+		,p.y*sina + p.z*cosa
 		]
 	]
 ;
@@ -61,9 +61,9 @@ function rotate_y_list (list, a) =
 	)
 	[for (p=list)
 		[
-		  p[0]*cosa + p[2]*sina
-		, p[1]
-		,-p[0]*sina + p[2]*cosa
+		  p.x*cosa + p.z*sina
+		, p.y
+		,-p.x*sina + p.z*cosa
 		]
 	]
 ;
@@ -79,16 +79,16 @@ function rotate_z_list (list, a) =
 	len(list[0])==2 ?
 		[for (p=list)
 			[
-			 p[0]*cosa - p[1]*sina
-			,p[0]*sina + p[1]*cosa
+			 p.x*cosa - p.y*sina
+			,p.x*sina + p.y*cosa
 			]
 		]
 	:
 		[for (p=list)
 			[
-			 p[0]*cosa - p[1]*sina
-			,p[0]*sina + p[1]*cosa
-			,p[2]
+			 p.x*cosa - p.y*sina
+			,p.x*sina + p.y*cosa
+			,p.z
 			]
 		]
 ;
@@ -99,7 +99,7 @@ function rotate_v_list (list, a, v) =
 	:
 	let (
 		u=unit_vector(v),
-		x=u[0], y=u[1], z=u[2],
+		x=u.x, y=u.y, z=u.z,
 		sina=sin(-a),
 		cosa=cos(-a),
 		matrix=
@@ -129,19 +129,19 @@ function mirror_list (list, v) =
 function mirror_2d_list (list, v) =
 	let (
 		V = parameter_mirror_vector_2d(v),
-		angle = atan2(V[1],V[0])
+		angle = atan2(V.y,V.x)
 	)
 	rotate_z_list(
-	[ for (p=rotate_backwards_z_list(list, angle)) [-p[0],p[1]] ]
+	[ for (p=rotate_backwards_z_list(list, angle)) [-p.x,p.y] ]
 	, angle)
 ;
 function mirror_3d_list (list, v) =
 	let (
 		V = parameter_mirror_vector_3d(v),
-		angle = atan2(V[1],V[0])
+		angle = atan2(V.y,V.x)
 	)
 	rotate_to_vector_list(
-	[ for (p=rotate_backwards_to_vector_list(list, V,angle)) [p[0],p[1],-p[2]] ]
+	[ for (p=rotate_backwards_to_vector_list(list, V,angle)) [p.x,p.y,-p.z] ]
 	, V,angle)
 ;
 
@@ -204,8 +204,8 @@ function get_bounding_box_list (list) =
 function projection_list (list, plane) =
 	let (Plane=is_bool(plane) ? plane : true)
 	//
-	Plane==true ? [ for (p=list) [p[0],p[1]]   ]
-	:             [ for (p=list) [p[0],p[1],0] ]
+	Plane==true ? [ for (p=list) [p.x,p.y]   ]
+	:             [ for (p=list) [p.x,p.y,0] ]
 ;
 
 // jeden Punkt in der Liste <list> mit der Matrix <m> multiplizieren
@@ -224,9 +224,9 @@ function multmatrix_2d_list (list, m) =
 	let (M = repair_matrix_2d(m))
 	[ for (p=list)
 		let (
-			a = [ p[0],p[1], 1 ],
+			a = [ p.x,p.y, 1 ],
 			c = M * a,
-			p_new = [ c[0],c[1] ]
+			p_new = [ c.x,c.y ]
 		)
 		p_new
 	]
@@ -235,10 +235,10 @@ function multmatrix_3d_list (list, m) =
 	let (M = repair_matrix_3d(m))
 	[ for (p=list)
 		let (
-			//a = [ p[0],p[1],p[2], 1 ],
+			//a = [ p.x,p.y,p.z, 1 ],
 			a = concat (p, 1),
 			c = M * a,
-			p_new = [ c[0],c[1],c[2] ]
+			p_new = [ c.x,c.y,c.z ]
 		)
 		p_new
 	]

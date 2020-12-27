@@ -40,9 +40,9 @@ function matrix_translate (v, d=3) =
 //       - 2 = flächig  (2D)
 function matrix_rotate (a, v, d=3) =
 	 is_list(a) ?
-		matrix_rotate_z(a[2], d=d) *
-		matrix_rotate_y(a[1], d=d) *
-		matrix_rotate_x(a[0], d=d)
+		matrix_rotate_z(a.z, d=d) *
+		matrix_rotate_y(a.y, d=d) *
+		matrix_rotate_x(a.x, d=d)
 	:is_num(a)  ?
 		is_list(v) ?
 			matrix_rotate_v(a, v, d=d)
@@ -104,7 +104,7 @@ function matrix_rotate_z (a, d=3) =
 function matrix_rotate_v (a, v, d=3) =
 	let (
 		u=unit_vector(v),
-		x=u[0], y=u[1], z=u[2],
+		x=u.x, y=u.y, z=u.z,
 		angle = is_num(a) ? a : 0,
 		sina  = sin(angle),
 		cosa  = cos(angle)
@@ -131,7 +131,7 @@ function matrix_mirror_2d (v) =
 	let (
 		d=2,
 		V = parameter_mirror_vector_2d(v),
-		angle = atan2(V[1],V[0])
+		angle = atan2(V.y,V.x)
 	)
 	matrix_rotate_z(angle, d=d) *
 	[[-1,0,0]
@@ -143,7 +143,7 @@ function matrix_mirror_2d (v) =
 function matrix_mirror_3d (v) =
 	let (
 		V = parameter_mirror_vector_3d(v),
-		angle = atan2(V[1],V[0])
+		angle = atan2(V.y,V.x)
 	)
 	matrix_rotate_to_vector(V, angle) *
 	[[1,0, 0,0]
