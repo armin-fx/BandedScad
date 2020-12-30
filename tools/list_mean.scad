@@ -1,8 +1,8 @@
 // Copyright (c) 2020 Armin Frenzel
 // License: LGPL-2.1-or-later
 
-use <tools/function_list_algorithmus.scad>
-use <tools/function_list_math.scad>
+use <tools/list_algorithmus.scad>
+use <tools/list_math.scad>
 use <tools/function_math.scad>
 
 // Ermittelt das Arithmetische Mittel (Durchschnitt) einer Liste

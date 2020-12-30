@@ -12,7 +12,7 @@
 // cross()  - Kreuzprodukt (Vektorielles Produkt)
 //
 
-use <tools/function_list_algorithmus.scad>
+use <tools/list_algorithmus.scad>
 use <tools/function_math.scad>
 
 // Gibt die Einheitsmatrix zurück in der Dimension n*n
@@ -102,8 +102,8 @@ function transpose (m) = [ for (i=[0:len(m[0])-1]) [ for(j=[0:len(m)-1]) m[j][i]
 // Matrix invertieren
 function inverse (m) =
 	let (
-		identity = identity_matrix(len(a)),
-		m1 = concat_matrix (a, identity),
+		identity = identity_matrix(len(m)),
+		m1 = concat_matrix (m, identity),
 		m2 = reduced_row_echelon_form  (m1)
 	)
 	!if_complete_main_diagonal(m2) ? undef : // matrix is not invertible

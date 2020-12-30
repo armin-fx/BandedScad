@@ -74,8 +74,9 @@ function bezier_1 (t, p) =
 //   p - [p0, p1, p2] -> Array mit Kontrollpunkte
 //       p0 = Anfangspunkt der Kurve, p2 = Endpunkt der Kurve
 function bezier_2 (t, p) =
-	  p[0] *   (    (1-t)*(1-t))
-	+ p[1] * 2*(t * (1-t))
+	let (T = 1-t)
+	  p[0] *   (    T*T)
+	+ p[1] * 2*(t * T)
 	+ p[2] *   (t*t)
 ;
 
@@ -85,9 +86,10 @@ function bezier_2 (t, p) =
 //   p - [p0, ..., p3] -> Array mit Kontrollpunkte
 //       p0 = Anfangspunkt der Kurve, p3 = Endpunkt der Kurve
 function bezier_3 (t, p) =
-	  p[0] *   (      (1-t)*(1-t)*(1-t))
-	+ p[1] * 3*(t   * (1-t)*(1-t))
-	+ p[2] * 3*(t*t * (1-t))
+	let (T = 1-t)
+	  p[0] *   (      T*T*T)
+	+ p[1] * 3*(t   * T*T)
+	+ p[2] * 3*(t*t * T)
 	+ p[3] *   (t*t*t)
 ;
 
@@ -97,10 +99,11 @@ function bezier_3 (t, p) =
 //   p - [p0, ..., p4] -> Array mit Kontrollpunkte
 //       p0 = Anfangspunkt der Kurve, p4 = Endpunkt der Kurve
 function bezier_4 (t, p) =
-	  p[0] *   (        (1-t)*(1-t)*(1-t)*(1-t))
-	+ p[1] * 4*(t     * (1-t)*(1-t)*(1-t))
-	+ p[2] * 6*(t*t   * (1-t)*(1-t))
-	+ p[3] * 4*(t*t*t * (1-t))
+	let (T = 1-t)
+	  p[0] *   (        T*T*T*T)
+	+ p[1] * 4*(t     * T*T*T)
+	+ p[2] * 6*(t*t   * T*T)
+	+ p[3] * 4*(t*t*t * T)
 	+ p[4] *   (t*t*t*t)
 ;
 

@@ -82,7 +82,7 @@ module mirror_check (v)
 module rotate_backwards (a, v)
 {
 	if (is_list(a))
-		rotate_x(-a[0]) rotate_y(-a[1]) rotate_z(-a[2]) children();
+		rotate_x(-a.x) rotate_y(-a.y) rotate_z(-a.z) children();
 	else if (is_num(a))
 		rotate(-a,v) children();
 	else
@@ -119,8 +119,8 @@ module rotate_to_vector (v, a)
 {
 	V     = (is_list(v) && len(v)==3) ? v : [0,0,1];
 	angle = is_num(a) ? a : 0;
-	b     = acos(V[2]/norm(V)); // inclination angle
-	c     = atan2(V[1],V[0]);   // azimuthal angle
+	b     = acos(V.z/norm(V)); // inclination angle
+	c     = atan2(V.y,V.x);    // azimuthal angle
 	//
 	rotate([0, b, c]) rotate_z(angle) children();
 }
@@ -129,8 +129,8 @@ module rotate_backwards_to_vector (v, a)
 {
 	V     = (is_list(v) && len(v)==3) ? v : [0,0,1];
 	angle = is_num(a) ? a : 0;
-	b     = acos(V[2]/norm(V)); // inclination angle
-	c     = atan2(V[1],V[0]);   // azimuthal angle
+	b     = acos(V.z/norm(V)); // inclination angle
+	c     = atan2(V.y,V.x);    // azimuthal angle
 	//
 	rotate_backwards_z(angle) rotate_backwards([0, b, c]) children();
 }
@@ -175,8 +175,8 @@ module translate_y (l) { if (!is_num(l)) children(); else  translate([0,l,0]) ch
 module translate_z (l) { if (!is_num(l)) children(); else  translate([0,0,l]) children(); }
 module translate_xy (t)
 {
-	if (is_list(t) && len(t)>=2 && is_num(t[0]) && is_num(t[1]))
-		translate([t[0],t[1],0]) children();
+	if (is_list(t) && len(t)>=2 && is_num(t.x) && is_num(t.y))
+		translate([t.x,t.y,0]) children();
 	else
 		children();
 }

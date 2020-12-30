@@ -2,7 +2,7 @@
 // License: LGPL-2.1-or-later
 
 //use <tools/function_helper.scad>
-use <tools/function_list_algorithmus.scad>
+use <tools/list_algorithmus.scad>
 
 //
 function select_function (number, argument, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9) =

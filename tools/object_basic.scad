@@ -42,7 +42,7 @@ module torus (r, w, ri, ro, angle=360, center=false, fn_ring=undef)
 }
 
 
-function pick_vector (vx, vy, vz) = [vx[0], vy[1], vz[2]] ;
+function pick_vector (vx, vy, vz) = [vx.x, vy.y, vz.z] ;
 
 // Erzeugt einen Keil mit den Parametern von FreeCAD
 // v_min  = [Xmin, Ymin, Zmin]
