@@ -7,6 +7,7 @@ include <tools/constants.scad>
 //
 use <tools/function_helper.scad>
 use <tools/function_algorithmus.scad>
+use <tools/function_select.scad>
 
 // setzt einen Wert innerhalb eines Bereiches
 // zwischen Minimum <min> und Maximum <max>

@@ -3,6 +3,7 @@
 //
 // interne Hilfsfunktionen
 
+use <tools/function_math.scad>
 
 // extrahiert eine feste Position aus einer Liste
 // extract_axis(list=[[x,y,z], [1,2,3], [11,12,13]], axis=1) => [y,2,12]
@@ -30,6 +31,11 @@ function max_norm (list) = norm(diff_axis_list(list));
 function get_position (list, position) =
 	(position>=0) ? position : len(list)+position
 ;
+// Positionen außerhalb der Liste werden an den Anfang oder das Ende gesetzt
+function get_position_safe (list, position) =
+	let( real = (position>=0) ? position : len(list)+position )
+	constrain (real, 0, len(list)-1)
+;
 // gibt die echte Position innerhalb einer Liste zurück
 // Kodierung sinnvoll für Einfügepositionen:
 //     positive Angaben = Liste vom Anfang
@@ -42,6 +48,10 @@ function get_position (list, position) =
 //     -5  -4  -3  -2  -1
 function get_position_insert (list, position) =
 	(position>=0) ? position : len(list)+position+1
+;
+function get_position_insert_safe (list, position) =
+	let( real = (position>=0) ? position : len(list)+position+1 )
+	constrain (real, 0, len(list))
 ;
 
 // testet eine numerische Variable auf eine gültige Zahl (Not A Number)

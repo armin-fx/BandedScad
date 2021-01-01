@@ -28,6 +28,28 @@ function fill_list_with (list, c) =
 	]
 ;
 
+// gibt einen Bereich für eine Liste aus
+// Kodierung wie in python (z.B. -1 = letztes Element)
+//     begin = erstes Element aus der Liste
+//     last  = letztes Element
+// oder
+//     range = [begin, last]
+// Ergebnis:
+//     [begin, last]
+function parameter_range (list, begin, last, range) =
+	let(
+		Begin = get_position(list, get_first_good(begin,range[0], 0)),
+		Last  = get_position(list, get_first_good(last ,range[1],-1))
+	)
+	[Begin, Last]
+;
+function parameter_range_safe (list, begin, last, range) =
+	let(
+		Begin = get_position_safe(list, get_first_good(begin,range[0], 0)),
+		Last  = get_position_safe(list, get_first_good(last ,range[1],-1))
+	)
+	[Begin, Last]
+;
 
 // gibt [Innenradius, Außenradius] zurück
 // Argumente:

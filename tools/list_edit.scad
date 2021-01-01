@@ -45,16 +45,18 @@ function insert_list (list, list_insert, position=-1, begin=0, count=-1) =
 // Angaben:
 //     list  = Liste mit der enthaltenen Sequenz
 //     begin = erstes Element aus der Liste
-//     end   = letztes Element
+//     last  = letztes Element
 // oder
 //     range = [begin, last]
 // Kodierung wie in python
 function extract_list (list, begin, last, range) =
-	[for (i=[
-		get_position(list, get_first_good(begin,range[0], 0))
-		:1:
-		get_position(list, get_first_good(last ,range[1],-1))
-		]) list[i]]
+	let(
+		Range = parameter_range_safe (list, begin, last, range),
+		Begin = Range[0],
+		Last  = Range[1]
+	)
+	(Begin==0) && (Last==len(list)-1) ? list :
+	[for (i=[Begin:1:Last]) list[i]]
 ;
 
 // Erzeugt eine Liste mit 'count' Elementen gefüllt mit 'value'
@@ -69,8 +71,10 @@ function fill_list (count, value) =
 // Typen:
 //     0     = normaler Wert
 //     1...n = Liste mit Position [1,2,3]
+//
 // Wird in den folgenden Listenfunktionen verwendet,
 // um zwischen den Daten umschalten zu können von außerhalb der Funktion
+// = Angabe Argument 'type'
 function get_value (data, type=0) = (type==0) ? data : data[type-1];
 
 // Gibt eine Liste des gewählten Typs zurück aus einer Liste
@@ -85,7 +89,8 @@ function sort_list (list, type=0) = sort_list_quicksort (list, type);
 
 // stabiles sortieren mit Quicksort
 function sort_list_quicksort (list, type=0) =
-	!(len(list)>0) ? [] : let(
+	!(len(list)>1) ? list :
+	let(
 		pivot   = get_value( list[floor(len(list)/2)] ,type),
 		lesser  = [ for (e = list) if (get_value(e,type)  < pivot) e ],
 		equal   = [ for (e = list) if (get_value(e,type) == pivot) e ],
@@ -97,7 +102,10 @@ function sort_list_quicksort (list, type=0) =
 
 // stabiles sortierten mit Mergesort
 function sort_list_mergesort (list, type=0) =
-	(len(list)<=1) ? list :
+	!(len(list)>1) ? list :
+	(len(list)==2) ?
+		get_value(list[0],type)<get_value(list[1],type) ?
+			[list[0],list[1]] : [list[1],list[0]] :
 	let(end=len(list)-1, middle=floor((len(list)-1)/2))
 	merge_list(
 		 sort_list_mergesort([for (i=[0:middle])     list[i]], type)
@@ -108,8 +116,8 @@ function sort_list_mergesort (list, type=0) =
 
 // 2 sortierte Listen miteinander verschmelzen
 // sehr langsame Implementierung
-function merge_list        (list1, list2, type=0) = merge_list_intern (list1, list2, type);
-function merge_list_intern (list1, list2, type, i1=0, i2=0) =
+function merge_list        (list1, list2, type=0) = merge_list_intern_2 (list1, list2, type);
+function merge_list_intern (list1, list2, type=0, i1=0, i2=0) =
 	(i1>=len(list1) || i2>=len(list2)) ?
 		(i1>=len(list1)) ? [ for (e=[i2:len(list2)-1]) list2[e] ]
 	:	(i2>=len(list2)) ? [ for (e=[i1:len(list1)-1]) list1[e] ]
@@ -117,6 +125,30 @@ function merge_list_intern (list1, list2, type, i1=0, i2=0) =
 	:(get_value(list1[i1],type) <= get_value(list2[i2],type)) ?
 		 concat([list1[i1]], merge_list_intern (list1, list2, type, i1+1, i2))
 		:concat([list2[i2]], merge_list_intern (list1, list2, type, i1,   i2+1))
+;
+function merge_list_intern_2 (list1, list2, type=0) =
+	let(
+		enda=len(list1),
+		endb=len(list2)
+	)
+	!(enda>0) ? list2 :
+	!(endb>0) ? list1 :
+	let (
+		a=list1,
+		b=list2,
+		end=enda+endb - 1
+	)
+	[for (
+		i=0,j=0,
+			A=get_value(a[i],type),
+			B=get_value(b[j],type),
+			q=j>=endb?true:A<B, v=q?a[i]:b[j]
+		;i+j<=end;
+		i=q?i+1:i, j=q?j:j+1,
+			A=get_value(a[i],type),
+			B=get_value(b[j],type),
+			q=j>=endb?true:A<B, v=q?a[i]:b[j]
+	) v ]
 ;
 
 function binary_search_list        (list, value, type=0) = (len(list)<=1) ? 0 : binary_search_list_intern (list, value, type, 0, len(list)-1);
@@ -142,6 +174,29 @@ function find_first_list_intern (list, value, index,   type, n=0) =
 		:	find_first_list_intern (list, value, index-1, type, n+1)
 	:		find_first_list_intern (list, value, index,   type, n+1)
 ;
+
+// Zählt das Vorkommen eines Wertes in der Liste
+// Argumente:
+//   list    -Liste
+//   value   -gesuchter Wert
+// Optionale Angabe des Bereichs:
+//     begin = erstes Element aus der Liste
+//     last  = letztes Element
+// oder
+//     range = [begin, last]
+// Kodierung wie in python
+function count_list        (list, value, type=0, begin, last, range) =
+	let (Range = parameter_range_safe (list, begin, last, range))
+	count_list_intern (list, value, type, Range[0], Range[1])
+;
+function count_list_intern (list, value, type, n=0, k=-1, count=0) =
+	n>k ? count :
+	count_list_intern (list, value, type
+		, n+1, k,
+		, count + ( get_value(list[n],type)==value ? 1 : 0 )
+	)
+;
+
 
 // pair-Funktionen
 //
