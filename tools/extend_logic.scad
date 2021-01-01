@@ -4,7 +4,7 @@
 // stellt Funktionen bereit,
 // steuern die Auflösungsgenauigkeit der kurvigen Objekte
 
-use <tools/function_math.scad>
+use <tools/math_common.scad>
 
 // gibt die Anzahl der Segmente eines Kreises zurück
 // originale Funktion von OpenScad

@@ -12,10 +12,10 @@
 //                           Die Kanten stoßen von außen an das reale Objekt
 //    <Basisobjekt>_middle - Das erzeugte Objekt ist im Mittel so groß wie das reale Objekt
 //    <Basisobjekt>        - Das erzeugte Objekt ist immer kleiner als das reale Objekt
-//                           Die Ecken stoßen von innan an das reale Objekt
+//                           Die Ecken stoßen von innen an das reale Objekt
 
 use <tools/extend.scad>
-use <tools/function_recondition.scad>
+use <tools/helper_recondition.scad>
 
 // 2D
 

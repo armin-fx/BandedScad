@@ -4,10 +4,10 @@
 // Enthält Funktionen, die Kurven beschreiben
 
 use <tools/extend_logic.scad>
-use <tools/function_helper.scad>
-use <tools/function_recondition.scad>
-use <tools/function_math.scad>
-use <tools/function_transform_basic.scad>
+use <tools/helper_native.scad>
+use <tools/helper_recondition.scad>
+use <tools/math_common.scad>
+use <tools/draft_transform_basic.scad>
 
 // ermittelt den Punkt einer Bezierkurve n. Grades abhängig von den Parametern
 // Argumente:

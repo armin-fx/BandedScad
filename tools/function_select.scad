@@ -30,17 +30,18 @@ function select_function_intern (label, argument, arg2, arg3, arg4, arg5, arg6, 
 		:select_function_extern(label, argument, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9)
 	:	 select_function_extern(label, argument, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9)
 ;
-fn_0=str("fn_0");
-fn_1=str("fn_1");
-fn_2=str("fn_2");
-fn_3=str("fn_3");
-fn_4=str("fn_4");
-fn_5=str("fn_5");
-fn_6=str("fn_6");
-fn_7=str("fn_7");
-fn_8=str("fn_8");
-fn_9=str("fn_9");
+
+fn_0="fn_0";
+fn_1="fn_1";
+fn_2="fn_2";
+fn_3="fn_3";
+fn_4="fn_4";
+fn_5="fn_5";
+fn_6="fn_6";
+fn_7="fn_7";
+fn_8="fn_8";
+fn_9="fn_9";
 
 // leere Funktion fuer Benchmark-Zwecke
-fn_empty=str("fn_empty");
+fn_empty="fn_empty";
 function fn_empty () = undef;

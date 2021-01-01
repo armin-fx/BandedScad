@@ -4,10 +4,10 @@
 // Enthält übertragene Funktionen von OpenSCAD-Modulen
 // zum Transformieren von Punktlisten
 
-use <tools/function_recondition.scad>
-use <tools/function_vector.scad>
-use <tools/function_transform.scad>
-use <tools/function_transform_multmatrix_basic.scad>
+use <tools/helper_recondition.scad>
+use <tools/math_vector.scad>
+use <tools/draft_transform_common.scad>
+use <tools/draft_multmatrix_basic.scad>
 
 // jeden Punkt in der Liste <list> um <v> verschieben
 // funktioniert wie translate()

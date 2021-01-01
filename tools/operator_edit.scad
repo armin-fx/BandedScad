@@ -7,10 +7,10 @@
 
 include <tools/constants.scad>
 //
-use <tools/function_helper.scad>
-use <tools/function_vector.scad>
-use <tools/function_transform.scad>
-use <tools/function_transform_basic.scad>
+use <tools/helper_native.scad>
+use <tools/math_vector.scad>
+use <tools/draft_transform_common.scad>
+use <tools/draft_transform_basic.scad>
 use <tools/operator_transform.scad>
 
 // Setzt ein Objekt mit anderen Objekten zusammen

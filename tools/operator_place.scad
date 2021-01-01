@@ -3,9 +3,9 @@
 //
 // Enthält einige zusätzliche Operatoren zum Platzieren von Objekten
 
-use <tools/function_vector.scad>
-use <tools/function_transform.scad>
-use <tools/function_transform_basic.scad>
+use <tools/math_vector.scad>
+use <tools/draft_transform_common.scad>
+use <tools/draft_transform_basic.scad>
 use <tools/operator_transform.scad>
 
 // bewegt und dreht das Objekt zum angegebenen Ort

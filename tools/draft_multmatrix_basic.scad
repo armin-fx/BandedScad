@@ -6,11 +6,11 @@
 //
 // es werden die Funktionen von OpenSCAD-Modulen zum Transformieren nachgebildet
 
-use <tools/function_helper.scad>
-use <tools/function_recondition.scad>
-use <tools/function_vector.scad>
-use <tools/function_matrix.scad>
-use <tools/function_transform_multmatrix.scad>
+use <tools/helper_native.scad>
+use <tools/helper_recondition.scad>
+use <tools/math_vector.scad>
+use <tools/math_matrix.scad>
+use <tools/draft_multmatrix_common.scad>
 
 // gibt die Matrix zum verschieben von Objekten zurück
 //  v = Vektor
