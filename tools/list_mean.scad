@@ -72,6 +72,35 @@ function median (list) =
 	:           (s[l/2-1] + s[l/2]) / 2
 ;
 
+// sortiert und beschneidet eine Liste mit Daten an den Enden
+// so werden Ausreißer am Anfang und am Ende entfernt
+// Argumente:
+//     list  = Datenliste
+//     ratio = als Verhältnis, wie viel abgeschnitten wird
+//             Voreingestellt sind 0.5
+//             entspricht 50% = 25% je am Anfang und am Ende abschneiden
+// Es wird nie mehr als 'ratio' abgeschnitten, eher wird abgerundet.
+// Es bleiben immer mindestens 1 (ungerade Größe der Liste) oder 2 (gerade Listengröße)
+// Datenelemente in der Mitte stehen.
+function truncate_outlier (list, ratio=0.5) =
+	!(ratio>0)     ? list :
+	!(len(list)>1) ? list :
+	truncate( sort_list (list), ratio )
+;
+// beschneidet eine Liste mit Daten an den Enden ohne die Liste vorher zu sortieren
+function truncate (list, ratio=0.5) =
+	!(ratio>0)     ? list :
+	!(len(list)>2) ? list :
+	let (
+		size     = len(list),
+		cut_ends = floor( size*ratio / 2 ),
+		cut_real = (size-2*cut_ends)>0 ? cut_ends
+		         : floor( (size-1)/2 )
+	)
+    cut_real==0 ? list :
+	[ for (i=[cut_real:1:size-1-cut_real]) list[i] ]
+;
+
 function mid_range (list) =
 	(min(list) + max(list)) / 2
 ;
