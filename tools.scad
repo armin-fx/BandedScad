@@ -1,15 +1,14 @@
 // Copyright (c) 2020 Armin Frenzel
 // License: LGPL-2.1-or-later
-// Version: 2020.11.22
+// Version: 2021.01.05
 //
-// tools.scad
 //
-// load the entire tools-bibliothek
+// load the entire ScadTools-bibliothek
 //
 // bind: include <tools.scad>
 //
 
-/* [bibliothek tools] */
+/* [bibliothek ScadTools] */
 
 include <tools/constants.scad>
 include <tools/math.scad>

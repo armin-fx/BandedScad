@@ -9,9 +9,10 @@ if [ -d "$OpenSCAD_lib" ]; then
 	else
 		mkdir -p "$OpenSCAD_lib/tools"
 	fi
-	cp "$tools/tools/"*            "$OpenSCAD_lib/tools"
-	cp "$tools/tools.scad"         "$OpenSCAD_lib"
-	cp "$tools/compatibility.scad" "$OpenSCAD_lib"
+	cp "$tools/tools/"*                   "$OpenSCAD_lib/tools"
+	cp "$tools/tools.scad"                "$OpenSCAD_lib"
+	cp "$tools/compatibility.scad"        "$OpenSCAD_lib"
+	cp "$tools/compatibility_assert.scad" "$OpenSCAD_lib"
 else
 	echo "OpenSCAD libraries folder not found."
 fi

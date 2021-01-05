@@ -1,7 +1,7 @@
-Tools
-=====
+ScadTools
+=========
 
-Tools is a OpenScad library.
+ScadTools is a OpenScad library.
 It contains functions and modules to make OpenScad easier to use.
 
 
