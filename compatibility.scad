@@ -5,6 +5,8 @@
 // with older versions than 2019.05
 // and newer than 2015.03
 
+if (version_num()>=20190500) echo ("\nWARNING: this version of OpenScad don\'t need \'compatibility.scad\'\n");
+
 // emulate new testing functions
 function is_undef  (value) = (undef==value);
 function is_bool   (value) = (value==true || value==false);
