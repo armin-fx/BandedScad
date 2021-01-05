@@ -37,20 +37,21 @@ identity_matrix = [
 // Determinante berechnen
 // Determinante einer  quadratischen Matrix mit den Laplaceschen Entwicklungssatz ausrechnen
 // ab Größe 8x8 sehr langsam
-function det (m) =
+function determinant (m) =
 	let (size=len(m))
 	(size>3) ?
 		let (j=0)
 		summation_list([ for (i=[0:size-1])
 			(m[i][j]==0) ? 0 :
 			m[i][j] * positiv_if_even(i+j)
-			* det( matrix_minor(m, i, j) )
+			* determinant( matrix_minor(m, i, j) )
 		])
 	:(size==3) ? det_3x3(m)
 	:(size==2) ? det_2x2(m)
 	:(size==1) ? m[0][0]
 	:undef
 ;
+function det (m) = determinant (m);
 // Determinante einer quadratischen 2x2 - Matrix
 function det_2x2 (m) = m[0][0]*m[1][1] - m[0][1]*m[1][0];
 // Determinante einer quadratischen 3x3 - Matrix über das Spatprodukt ausrechnen
