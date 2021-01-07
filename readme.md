@@ -8,7 +8,8 @@ It contains functions and modules to make OpenScad easier to use.
 What is does
 ------------
 
-- extend the control of number of facets used to generate an arc
+- [more control of the level of detail for a mesh](doc/extend.md),
+    extend the control of number of facets used to generate an arc
 - contains some math and helper functions
 - contains some functions for editing lists
 - contains some functions and modules transform and edit objects
@@ -18,10 +19,10 @@ What is does
 Installation
 ------------
 
-You must extract archive 'tools.scad' and folder 'tools/' into a directory
+You must extract archive and copy 'tools.scad' and folder 'tools/' into a directory
 and now you can use it here.
   
-Or you can copy this into the library folder from OpenScad for global use
+Or you can copy this into the library folder from OpenScad for global use.
 The path for this directory depends on your system:
 
 | OS       | Path |
@@ -29,7 +30,7 @@ The path for this directory depends on your system:
 | Windows: | My Documents\OpenSCAD\libraries       |
 | Linux:   | $HOME/.local/share/OpenSCAD/libraries |
 | MacOS:   | $HOME/Documents/OpenSCAD/libraries    |
-  
+
 You can reach this from OpenScad menu File->Show Library Folder.
 
 
@@ -58,4 +59,3 @@ you can include file 'compatibility.scad'.
 ```OpenSCAD
 include <compatibility.scad>
 ```
-
