@@ -44,14 +44,17 @@ function insert_list (list, list_insert, position=-1, begin=0, count=-1) =
 // extrahiert eine Sequenz aus der Liste
 // Angaben:
 //     list  = Liste mit der enthaltenen Sequenz
+//
+// 2 benötigte Angaben von:
 //     begin = erstes Element aus der Liste
 //     last  = letztes Element
+//     count = Anzahl der Elemente
 // oder
 //     range = [begin, last]
 // Kodierung wie in python
-function extract_list (list, begin, last, range) =
+function extract_list (list, begin, last, count, range) =
 	let(
-		Range = parameter_range_safe (list, begin, last, range),
+		Range = parameter_range_safe (list, begin, last, count, range),
 		Begin = Range[0],
 		Last  = Range[1]
 	)
@@ -185,8 +188,8 @@ function find_first_list_intern (list, value, index,   type, n=0) =
 // oder
 //     range = [begin, last]
 // Kodierung wie in python
-function count_list        (list, value, type=0, begin, last, range) =
-	let (Range = parameter_range_safe (list, begin, last, range))
+function count_list        (list, value, type=0, begin, last, count, range) =
+	let (Range = parameter_range_safe (list, begin, last, count, range))
 	count_list_intern (list, value, type, Range[0], Range[1])
 ;
 function count_list_intern (list, value, type, n=0, k=-1, count=0) =

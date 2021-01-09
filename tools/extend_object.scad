@@ -22,7 +22,7 @@ module circle_extend (r, angle, slices="x", piece=true, d)
 
 // Erzeugt einen Zylinder
 // Kompatibel mit OpenSCAD Modul cylinder()
-// Argumente des Kreisbodens wie circle_extend()
+// Argumente des Kreisbogens wie circle_extend()
 module cylinder_extend (h, r1, r2, center=false, r, d, d1, d2, angle, slices="x", piece=true)
 {
 	R        = parameter_cylinder_r (r, r1, r2, d, d1, d2);

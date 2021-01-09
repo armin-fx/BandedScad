@@ -36,17 +36,19 @@ function fill_list_with (list, c) =
 //     range = [begin, last]
 // Ergebnis:
 //     [begin, last]
-function parameter_range (list, begin, last, range) =
+function parameter_range (list, begin, last, count, range) =
 	let(
-		Begin = get_position(list, get_first_good(begin,range[0], 0)),
-		Last  = get_position(list, get_first_good(last ,range[1],-1))
+		Count = !is_num(count) ? undef : count<0 ? 0 : count,
+		Begin = get_position(list, get_first_good(begin,range[0],last -Count  ,range[1]-Count  , 0)),
+		Last  = get_position(list, get_first_good(last ,range[1],begin+Count-1,range[0]+Count-1,-1))
 	)
 	[Begin, Last]
 ;
-function parameter_range_safe (list, begin, last, range) =
+function parameter_range_safe (list, begin, last, count, range) =
 	let(
-		Begin = get_position_safe(list, get_first_good(begin,range[0], 0)),
-		Last  = get_position_safe(list, get_first_good(last ,range[1],-1))
+		Count = !is_num(count) ? undef : count<0 ? 0 : count,
+		Begin = get_position_safe(list, get_first_good(begin,range[0],last -Count  ,range[1]-Count  , 0)),
+		Last  = get_position_safe(list, get_first_good(last ,range[1],begin+Count-1,range[0]+Count-1,-1))
 	)
 	[Begin, Last]
 ;

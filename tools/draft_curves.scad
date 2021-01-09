@@ -124,13 +124,15 @@ function circle_point_r (r, angle=0) =
 //            als Zahl  = Winkel von 0 bis 'angle' = Öffnungswinkel
 //            als Liste = [Öffnungswinkel, Anfangswinkel]
 //   slices - Anzahl der Segmente, ohne Angabe wird wie bei circle() gerechnet
+//            mit Angabe "x" werden die erweiterten Variablen zum steuern der
+//            Auflösunsgenauigket mit herangezogen
 //   piece  - true  = wie ein Tortenstück
 //            false = Enden des Kreises verbinden
 //            0     = zum weiterverarbeiten, Enden nicht verbinden,
 //                    keine zusätzlichen Kanten
 //   outer  - 0...1 = 0 - Ecken auf der Kreislinie ...
 //                    1 - Tangenten auf der Kreislinie
-function circle_curve (r, angle=360, slices, piece=true, outer=0, d) =
+function circle_curve (r, angle=360, slices, piece=0, outer=0, d) =
 	let(
 		 R = parameter_circle_r(r,d)
 		,angles      = parameter_angle (angle, [360,0])

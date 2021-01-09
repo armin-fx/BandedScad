@@ -35,8 +35,8 @@ function atan2_each (list_y,list_x) =
 	: atan2(list_y,list_x)
 ;
 function floor_each (list) = [for (a=list) floor(a)];
-function round_each (list) = [for (a=list) round(a)];
 function ceil_each  (list) = [for (a=list) ceil(a)];
+function round_each (list) = [for (a=list) round(a)];
 function abs_each   (list) = [for (a=list) abs(a)];
 
 function reciprocal_each (list) = [for (a=list) 1/a];
