@@ -5,11 +5,12 @@ ScadTools is a OpenScad library.
 It contains functions and modules to make OpenScad easier to use.
 
 ### Contents
-[What it does](#what-it-does)<br>
-[Installation](#installation)<br>
-[Use](#use)<br>
+[contents]: #contents "Up to Contents"
+[What it does](#what-it-does-)\
+[Installation](#installation-)\
+[Use](#use-)
 
-What is does
+What is does [^][contents]
 ------------
 
 - [More control of the level of detail for a mesh][extend],
@@ -31,7 +32,7 @@ What is does
 [multmatrix]: doc/draft.md#multmatrix
 [list]:       doc/list.md
 
-Installation
+Installation [^][contents]
 ------------
 
 You must extract archive and copy 'tools.scad' and folder 'tools/' into a directory
@@ -49,7 +50,7 @@ The path for this directory depends on your system:
 You can reach this from OpenScad menu File->Show Library Folder.
 
 
-Use
+Use [^][contents]
 ---
 
 You can include the whole library with
