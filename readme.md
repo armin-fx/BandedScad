@@ -1,3 +1,4 @@
+
 ScadTools
 =========
 
@@ -10,6 +11,7 @@ It contains functions and modules to make OpenScad easier to use.
 [Installation](#installation-)\
 [Use](#use-)
 
+
 What is does [^][contents]
 ------------
 
@@ -17,13 +19,16 @@ What is does [^][contents]
     extend the control of number of facets used to generate an arc
 - Contains functions to [draft objects in a point list][draft]
   - Create [curves][curves] in a point list with functions.
-    These can load with ```polygon()```
-  - [Transform][transform] objects in a point list
+    These can load with `polygon()`
+  - [Transform][transform] objects in a point list with affine transformations.
+    Like transformation operator in OpenScad for object modules.
   - Contains functions for working with [multmatrix][multmatrix]
 - Contains some functions for [editing lists][list]
 - Contains some math and helper functions
 - Contains some functions and modules transform and edit objects
 - Contains some configurable object modules
+
+[file overview -->](file_overview.md)
 
 [extend]:     doc/extend.md
 [draft]:      doc/draft.md

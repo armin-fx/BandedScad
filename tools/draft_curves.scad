@@ -216,7 +216,7 @@ function superellipse_point_intern (t, a, e) =
 // piece    - true  = wie ein Tortenstück
 //            false = Enden des Kreises verbinden
 //            0     = zum weiterverarbeiten, Enden nicht verbinden, keine zusätzlichen Kanten
-function superellipse_curve (interval, r, a, n, s, slices, piece=true) =
+function superellipse_curve (interval, r, a, n, s, slices, piece=0) =
 	let (
 		 I = is_list(interval) ? interval :
 		     [0,360]
@@ -305,28 +305,28 @@ function superformula_curve_intern (interval, a, m, n, slices) =
 ;
 
 // Polynomfunktion
-// P(x) = a[0] + a[1]*x + a[2]*x^2 + ... a[n]*x^n
+// P(x) = a[0] + a[1]*x + a[2]*x^2 + ... + a[n]*x^n
 // Argumente:
 // x - Variable
 // a - Array mit den Koeffizienten
 // n - Grad des Polynoms, es werden nur so viele Koeffizienten genommen wie angegeben
 //     ohne Angabe wird der Grad entsprechend der Größe des Arrays der Koeffizienten genommen
-function polynom (x, a, n=undef) =
+function polynomial (x, a, n) =
 	let (
 		N = n==undef ? len(a) : min(len(a),n)
 	)
-	polynom_intern(x, a, N)
+	polynomial_intern(x, a, N)
 ;
-function polynom_intern (x, a, n, i=0, x_i=1, value=0) =
+function polynomial_intern (x, a, n, i=0, x_i=1, value=0) =
 	(i >= n) ? value
-	:polynom_intern(x, a, n, i+1, x_i*x, value + a[i]*x_i)
+	:polynomial_intern(x, a, n, i+1, x_i*x, value + a[i]*x_i)
 ;
 
 // gibt ein Array mit den Punkten eines Polynomintervalls zurück
 // Argumente:
 //   interval - Intervallgrenze von x. [Anfang, Ende]
 //   slices   - Anzahl der Punkte im Intervall
-function polynom_curve (interval, a, n=undef, slices) =
+function polynomial_curve (interval, a, n, slices) =
 	let (
 		Slices =
 			slices==undef ? 5 :
@@ -335,7 +335,7 @@ function polynom_curve (interval, a, n=undef, slices) =
 	)
 	[for (i = [0 : Slices])
 		let (x = bezier_1(i/Slices, interval))
-		[x, polynom(x, a, n)]
+		[x, polynomial(x, a, n)]
 	]
 ;
 
