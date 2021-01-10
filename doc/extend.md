@@ -20,7 +20,7 @@ Special variables [^][contents]
 
 The buildin special variables in OpenScad ```$fa```, ```$fs``` and ```$fn``` special variables
 control the number of facets used to generate an arc.
-This contains extra special variables and functions to control the level of detail
+This library contains extra special variables and functions to control the level of detail
 and defines modules to extend the buildin objects like ```circle()``` and ```cylinder()```.
 
 | variable  | description
@@ -56,10 +56,10 @@ with extra special variables, some modules have extra arguments
  | ```sphere()```   | ```sphere_extend()```
 
 #### ```circle_extend()```
-Creates a circle with [options of ```circle_curve()```](doc/draft.md#circle)
+Creates a circle with [options of ```circle_curve()```](draft.md#circle-)
 
 #### ```cylinder_extend()```
-Creates a cylinder with ground circle [options of ```circle_curve()```](doc/draft.md#circle)
+Creates a cylinder with ground circle [options of ```circle_curve()```](draft.md#circle-)
 
 #### ```sphere_extend()```
 Creates a sphere at moment only control with extra special variables.
