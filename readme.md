@@ -27,9 +27,9 @@ What is does [^][contents]
 
 [extend]:     doc/extend.md
 [draft]:      doc/draft.md
-[curves]:     doc/draft.md#curves
-[transform]:  doc/draft.md#transform-functions
-[multmatrix]: doc/draft.md#multmatrix
+[curves]:     doc/draft.md#curves-
+[transform]:  doc/draft.md#transform-functions-
+[multmatrix]: doc/draft.md#multmatrix-
 [list]:       doc/list.md
 
 Installation [^][contents]
