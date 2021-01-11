@@ -12,11 +12,11 @@ Overview of scad files
 ` `| . . . +--> `tools/math_matrix.scad`\
 ` `| . . . +--> `tools/math_formula.scad`\
 ` `|\
-` `+--> [`tools/list.scad`](list.md "Functions for editing lists")\
-` `| . . . +--> `tools/list_edit.scad`\
-` `| . . . +--> `tools/list_algorithmus.scad`\
-` `| . . . +--> `tools/list_math.scad`\
-` `| . . . +--> `tools/list_mean.scad`\
+` `+--> [`tools/list.scad`](list.md "Functions for work with lists")\
+` `| . . . +--> [`tools/list_edit.scad`](list.md#editing-lists- "Editing lists")\
+` `| . . . +--> [`tools/list_algorithmus.scad`](list.md#algorithm-on-lists- "Algorithm on lists")\
+` `| . . . +--> [`tools/list_math.scad`](list.md#math-on-lists- "Math on lists")\
+` `| . . . +--> [`tools/list_mean.scad`](list.md#calculating-mean- "Calculating mean")\
 ` `|\
 ` `+--> `tools/function.scad`\
 ` `| . . . +--> `tools/function_select.scad`\

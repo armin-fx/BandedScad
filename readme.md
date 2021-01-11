@@ -23,12 +23,12 @@ What is does [^][contents]
   - [Transform][transform] objects in a point list with affine transformations.
     Like transformation operator in OpenScad for object modules.
   - Contains functions for working with [multmatrix][multmatrix]
-- Contains some functions for [editing lists][list]
+- Contains some functions for [edit and work with lists][list]
 - Contains some math and helper functions
 - Contains some functions and modules transform and edit objects
 - Contains some configurable object modules
 
-[file overview -->](file_overview.md)
+[file overview -->](doc/file_overview.md)
 
 [extend]:     doc/extend.md
 [draft]:      doc/draft.md

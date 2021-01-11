@@ -281,7 +281,7 @@ __Additional options:__
 
 
 ### Polynomial function [^][contents]
-`P(x) = a[0] + a[1]*x + a[2]*x^2 + ... + a[n]*x^n`
+`P(x) = a[0] + a[1]*x + a[2]*x^2 + ... + a[n]*x^n`\
 [=> Wikipedia - Polynomial](https://en.wikipedia.org/wiki/Polynomial)
 
 #### `polynomial (x, a, n)` [^][contents]
@@ -485,14 +485,14 @@ Returns matrices for use with `multmatrix()`.
 These can linked with matrix multiplication.
 ```OpenScad
 multmatrix( matrix_translate() * matrix_rotate() * matrix_scale() )
-	object();
+    object();
 
 // same order as
 translate() rotate() scale()
-	object();
+    object();
 ```
-The functions of OpenSCAD modules for transformation are reproduced.
-[=> Wikipedia - Transformation_matrix](https://en.wikipedia.org/wiki/Transformation_matrix)
+The functions of OpenSCAD modules for transformation are reproduced.\
+[=> Wikipedia - Transformation matrix](https://en.wikipedia.org/wiki/Transformation_matrix)
 
 ### Basic multmatrix functions [^][contents]
 

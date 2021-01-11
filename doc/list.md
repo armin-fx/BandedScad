@@ -1,5 +1,5 @@
-Functions for editing lists
-===========================
+Functions for working with lists
+================================
 
 ### defined in file
 `tools/list.scad`\
@@ -221,38 +221,38 @@ Calculating mean [^][contents]
 
 #### `mean_arithmetic (list, weight, normalize)`
 Calculates the arithmetic mean of a list\
-[=> Wikipedia](https://en.wikipedia.org/wiki/Arithmetic_mean)
+[=> Wikipedia - Arithmetic mean](https://en.wikipedia.org/wiki/Arithmetic_mean)
 
 #### `mean_geometric(list, weight, normalize)`
 Calculates the geometic mean of a list\
-[=> Wikipedia](https://en.wikipedia.org/wiki/Geometric_mean)
+[=> Wikipedia - Geometric mean](https://en.wikipedia.org/wiki/Geometric_mean)
 
 #### `mean_harmonic(list, weight, normalize)`
 Calculates the harmonic mean of a list\
-[=> Wikipedia](<https://en.wikipedia.org/wiki/Harmonic_mean)
+[=> Wikipedia - Harmonic mean](<https://en.wikipedia.org/wiki/Harmonic_mean)
 
 #### `root_mean_square(list, weight, normalize)`
 Calculates the root mean square of a list\
-[=> Wikipedia](https://en.wikipedia.org/wiki/Root_mean_square)
+[=> Wikipedia - Root mean square](https://en.wikipedia.org/wiki/Root_mean_square)
 
 #### `mean_cubic(list, weight, normalize)`
 Calculates the cubic mean of a list\
-[=> Wikipedia](https://en.wikipedia.org/wiki/Cubic_mean)
+[=> Wikipedia - Cubic mean](https://en.wikipedia.org/wiki/Cubic_mean)
 
 #### `mean_generalized(list, weight, normalize)`
 Calculates the generalized mean (or power mean, or Hölder mean) of a list\
-[=> Wikipedia](https://en.wikipedia.org/wiki/Generalized_mean)
+[=> Wikipedia - Generalized mean](https://en.wikipedia.org/wiki/Generalized_mean)
 
 
 ### Other mean functions [^][contents]
 
 #### `median (list)`
 Calculates the median of a list\
-[=> Wikipedia](https://en.wikipedia.org/wiki/Median)
+[=> Wikipedia - Median](https://en.wikipedia.org/wiki/Median)
 
 #### `mid_range(list)`
 Calculates the mid-range or mid-extreme of a list\
-[=> Wikipedia](<https://en.wikipedia.org/wiki/Mid-range)
+[=> Wikipedia - Mid-range](<https://en.wikipedia.org/wiki/Mid-range)
 
 #### `truncate_outlier (list, ratio)`
 - Sort a list and remove a given ratio of elements from the ends.
