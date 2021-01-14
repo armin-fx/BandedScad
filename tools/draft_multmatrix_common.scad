@@ -6,8 +6,8 @@
 //
 // es werden weitere Funktionen zum Transformieren definiert
 
-use <tools/math_matrix.scad>
-use <tools/draft_multmatrix_basic.scad>
+use <banded/math_matrix.scad>
+use <banded/draft_multmatrix_basic.scad>
 
 // gibt die Matrix zurück zum rückwärts rotieren von Objekten
 function matrix_rotate_backwards (a, v, d=3) =

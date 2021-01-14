@@ -3,10 +3,10 @@
 //
 // Enthält einige zusätzliche Operatoren zum Platzieren von Objekten
 
-use <tools/math_vector.scad>
-use <tools/draft_transform_common.scad>
-use <tools/draft_transform_basic.scad>
-use <tools/operator_transform.scad>
+use <banded/math_vector.scad>
+use <banded/draft_transform_common.scad>
+use <banded/draft_transform_basic.scad>
+use <banded/operator_transform.scad>
 
 // bewegt und dreht das Objekt zum angegebenen Ort
 // Der Punkt im Koordinatenursprung wird nach point bewegt

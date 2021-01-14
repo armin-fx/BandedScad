@@ -1,9 +1,9 @@
 // Copyright (c) 2020 Armin Frenzel
 // License: LGPL-2.1-or-later
 
-use <tools/list_algorithmus.scad>
-use <tools/list_math.scad>
-use <tools/math_common.scad>
+use <banded/list_algorithmus.scad>
+use <banded/list_math.scad>
+use <banded/math_common.scad>
 
 // Ermittelt das Arithmetische Mittel (Durchschnitt) einer Liste
 function mean_arithmetic (list, weight, normalize=true) =

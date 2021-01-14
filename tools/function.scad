@@ -4,6 +4,6 @@
 // lädt die Bibliothek für auswählbare Funktionen
 //
 
-include <tools/function_select.scad>
-include <tools/function_algorithmus.scad>
-include <tools/function_list_edit.scad>
+include <banded/function_select.scad>
+include <banded/function_algorithmus.scad>
+include <banded/function_list_edit.scad>

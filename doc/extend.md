@@ -4,10 +4,10 @@ Control the level of detail of a mesh
 
 ### defined in file
 
-`tools/extend.scad`\
+`banded/extend.scad`\
 ` `| \
-` `+--> `tools/extend_logic.scad`\
-` `+--> `tools/extend_object.scad`
+` `+--> `banded/extend_logic.scad`\
+` `+--> `banded/extend_object.scad`
 
 [<-- file overview](file_overview.md)
 

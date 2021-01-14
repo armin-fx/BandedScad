@@ -3,17 +3,17 @@
 //
 // Enthält einige Objekte mit abgerundeten Ecken und Kanten
 
-include <tools/constants.scad>
+include <banded/constants.scad>
 //
-use <tools/extend.scad>
-use <tools/helper_native.scad>
-use <tools/helper_recondition.scad>
-use <tools/math_vector.scad>
-use <tools/draft_curves.scad>
-use <tools/draft_transform_common.scad>
-use <tools/draft_transform_basic.scad>
-use <tools/operator_transform.scad>
-use <tools/object_basic.scad>
+use <banded/extend.scad>
+use <banded/helper_native.scad>
+use <banded/helper_recondition.scad>
+use <banded/math_vector.scad>
+use <banded/draft_curves.scad>
+use <banded/draft_transform_common.scad>
+use <banded/draft_transform_basic.scad>
+use <banded/operator_transform.scad>
+use <banded/object_basic.scad>
 
 // Quader mit abgerundeten Kanten, alle Kanten mit gleichen Radius/Durchmesser
 // Argumente:

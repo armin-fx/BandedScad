@@ -3,7 +3,7 @@
 //
 // lädt die Funktionen-Bibliothek für Listen
 
-include <tools/list_edit.scad>
-include <tools/list_algorithmus.scad>
-include <tools/list_math.scad>
-include <tools/list_mean.scad>
+include <banded/list_edit.scad>
+include <banded/list_algorithmus.scad>
+include <banded/list_math.scad>
+include <banded/list_mean.scad>

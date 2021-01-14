@@ -3,9 +3,9 @@
 //
 // Enthält zusätzliche Funktionen zum Transformieren von Punktlisten
 
-use <tools/draft_transform_basic.scad>
-use <tools/draft_multmatrix_common.scad>
-use <tools/draft_multmatrix_basic.scad>
+use <banded/draft_transform_basic.scad>
+use <banded/draft_multmatrix_common.scad>
+use <banded/draft_multmatrix_basic.scad>
 
 // jeden Punkt in der Liste <list> rückwärts rotieren
 // funktioniert wie rotate_backwards()

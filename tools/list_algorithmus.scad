@@ -1,7 +1,7 @@
 // Copyright (c) 2020 Armin Frenzel
 // License: LGPL-2.1-or-later
 
-use <tools/helper_native.scad>
+use <banded/helper_native.scad>
 
 //
 function summation_list (list, n, k=0) =

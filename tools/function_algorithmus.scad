@@ -1,7 +1,7 @@
 // Copyright (c) 2020 Armin Frenzel
 // License: LGPL-2.1-or-later
 
-use <tools/list_algorithmus.scad>
+use <banded/list_algorithmus.scad>
 
 debug=false;
 

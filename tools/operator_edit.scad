@@ -5,13 +5,13 @@
 //
 // Aufbau: modul() {Objekt(); <Objekt2; ...>}
 
-include <tools/constants.scad>
+include <banded/constants.scad>
 //
-use <tools/helper_native.scad>
-use <tools/math_vector.scad>
-use <tools/draft_transform_common.scad>
-use <tools/draft_transform_basic.scad>
-use <tools/operator_transform.scad>
+use <banded/helper_native.scad>
+use <banded/math_vector.scad>
+use <banded/draft_transform_common.scad>
+use <banded/draft_transform_basic.scad>
+use <banded/operator_transform.scad>
 
 // Setzt ein Objekt mit anderen Objekten zusammen
 //

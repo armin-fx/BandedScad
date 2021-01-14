@@ -21,5 +21,5 @@
 //      $fa_enabled - für $fa = kleinster Winkel pro Fragmente
 //      $fs_enabled - für $fs = kleinste Größe eines Fragments in mm
 
-include <tools/extend_logic.scad>
-include <tools/extend_object.scad>
+include <banded/extend_logic.scad>
+include <banded/extend_object.scad>

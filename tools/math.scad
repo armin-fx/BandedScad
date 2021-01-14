@@ -4,7 +4,7 @@
 // lädt alle mathematischen Funktionen
 //
 
-include <tools/math_common.scad>
-include <tools/math_vector.scad>
-include <tools/math_matrix.scad>
-include <tools/math_formula.scad>
+include <banded/math_common.scad>
+include <banded/math_vector.scad>
+include <banded/math_matrix.scad>
+include <banded/math_formula.scad>

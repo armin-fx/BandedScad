@@ -1,8 +1,8 @@
 
-ScadTools
+BandedScad
 =========
 
-ScadTools is a OpenScad library.
+BandedScad is a OpenScad library.
 It contains functions and modules to make OpenScad easier to use.
 
 ### Contents
@@ -40,7 +40,7 @@ What is does [^][contents]
 Installation [^][contents]
 ------------
 
-You must extract archive and copy 'tools.scad' and folder 'tools/' into a directory
+You must extract archive and copy 'banded.scad' and folder 'banded/' into a directory
 and now you can use it here.
   
 Or you can copy this into the library folder from OpenScad for global use.
@@ -60,19 +60,19 @@ Use [^][contents]
 
 You can include the whole library with
 ```OpenSCAD
-include <tools.scad>
+include <banded.scad>
 ```
   
 You can load a specify libraries with
 ```OpenSCAD
-include <tools. *** .scad>
+include <banded. *** .scad>
 ```
 Or even with `use`. But if you need this defined constants
 you must include the file separately.
 So you can keep the namespace clean.
 ```OpenSCAD
-use <tools. *** .scad>
-include <tools/constants.scad>
+use <banded. *** .scad>
+include <banded/constants.scad>
 ```
   
 If you want to use some new functions from OpenScad from version 2019.05 in version 2015.03

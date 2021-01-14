@@ -3,8 +3,8 @@
 //
 // Enthält Funktionen zum Bearbeiten, Auswählen und Reparieren von Argumenten
 
-use <tools/helper_native.scad>
-use <tools/math_matrix.scad>
+use <banded/helper_native.scad>
+use <banded/math_matrix.scad>
 
 function repair_matrix_3d (m) =
 	fill_matrix_with (m, identity_matrix(4))

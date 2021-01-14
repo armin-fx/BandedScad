@@ -14,8 +14,8 @@
 //    <Basisobjekt>        - Das erzeugte Objekt ist immer kleiner als das reale Objekt
 //                           Die Ecken stoßen von innen an das reale Objekt
 
-use <tools/extend.scad>
-use <tools/helper_recondition.scad>
+use <banded/extend.scad>
+use <banded/helper_recondition.scad>
 
 // 2D
 

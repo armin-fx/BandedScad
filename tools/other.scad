@@ -4,11 +4,11 @@
 // Enthält verschiedene Module, die ich im Internet gefunden habe.
 // Die Quelle und die Lizenz ist mit angegeben und sollte berücksichtigt werden
 
-include <tools/constants.scad>
+include <banded/constants.scad>
 //
-use <tools/extend.scad>
-use <tools/helper_native.scad>
-use <tools/operator_transform.scad>
+use <banded/extend.scad>
+use <banded/helper_native.scad>
+use <banded/operator_transform.scad>
 
 
 // from https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Commented_Example_Projects

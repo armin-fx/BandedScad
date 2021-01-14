@@ -1,18 +1,18 @@
 #!/bin/bash
 
 OpenSCAD_lib=~/.local/share/OpenSCAD/libraries
-tools=.
+folder=.
 
 if [ -d "$OpenSCAD_lib" ]; then
-	if [ -d 	 "$OpenSCAD_lib/tools" ]; then
-		rm -r    "$OpenSCAD_lib/tools/"*
+	if [ -d 	 "$OpenSCAD_lib/banded" ]; then
+		rm -r    "$OpenSCAD_lib/banded/"*
 	else
-		mkdir -p "$OpenSCAD_lib/tools"
+		mkdir -p "$OpenSCAD_lib/banded"
 	fi
-	cp "$tools/tools/"*                   "$OpenSCAD_lib/tools"
-	cp "$tools/tools.scad"                "$OpenSCAD_lib"
-	cp "$tools/compatibility.scad"        "$OpenSCAD_lib"
-	cp "$tools/compatibility_assert.scad" "$OpenSCAD_lib"
+	cp "$folder/banded/"*                  "$OpenSCAD_lib/banded"
+	cp "$folder/banded.scad"               "$OpenSCAD_lib"
+	cp "$folder/compatibility.scad"        "$OpenSCAD_lib"
+	cp "$folder/compatibility_assert.scad" "$OpenSCAD_lib"
 else
 	echo "OpenSCAD libraries folder not found."
 fi

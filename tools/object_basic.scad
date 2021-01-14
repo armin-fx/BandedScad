@@ -3,11 +3,11 @@
 //
 // Enthält einige zusätzliche Objekte
 
-use <tools/extend.scad>
-use <tools/helper_native.scad>
-use <tools/helper_recondition.scad>
-use <tools/draft_curves.scad>
-use <tools/operator_transform.scad>
+use <banded/extend.scad>
+use <banded/helper_native.scad>
+use <banded/helper_recondition.scad>
+use <banded/draft_curves.scad>
+use <banded/operator_transform.scad>
 
 // leeres Modul
 module empty () {}

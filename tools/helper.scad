@@ -4,5 +4,5 @@
 // lädt alle Hilfsfunktionen
 //
 
-include <tools/helper_native.scad>
-include <tools/helper_recondition.scad>
+include <banded/helper_native.scad>
+include <banded/helper_recondition.scad>

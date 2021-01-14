@@ -6,6 +6,6 @@
 // Aufbau: modul() {Objekt(); <Objekt2; ...>}
 //
 
-include <tools/operator_edit.scad>
-include <tools/operator_transform.scad>
-include <tools/operator_place.scad>
+include <banded/operator_edit.scad>
+include <banded/operator_transform.scad>
+include <banded/operator_place.scad>

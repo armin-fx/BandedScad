@@ -2,12 +2,12 @@ Functions for working with lists
 ================================
 
 ### defined in file
-`tools/list.scad`\
+`banded/list.scad`\
 ` `| \
-` `+--> `tools/list_edit.scad`\
-` `+--> `tools/list_algorithm.scad`\
-` `+--> `tools/list_math.scad`\
-` `+--> `tools/list_mean.scad`
+` `+--> `banded/list_edit.scad`\
+` `+--> `banded/list_algorithm.scad`\
+` `+--> `banded/list_math.scad`\
+` `+--> `banded/list_mean.scad`
 
 [<-- file overview](file_overview.md)
 
@@ -229,7 +229,7 @@ Calculates the geometic mean of a list\
 
 #### `mean_harmonic(list, weight, normalize)`
 Calculates the harmonic mean of a list\
-[=> Wikipedia - Harmonic mean](<https://en.wikipedia.org/wiki/Harmonic_mean)
+[=> Wikipedia - Harmonic mean](https://en.wikipedia.org/wiki/Harmonic_mean)
 
 #### `root_mean_square(list, weight, normalize)`
 Calculates the root mean square of a list\
@@ -252,7 +252,7 @@ Calculates the median of a list\
 
 #### `mid_range(list)`
 Calculates the mid-range or mid-extreme of a list\
-[=> Wikipedia - Mid-range](<https://en.wikipedia.org/wiki/Mid-range)
+[=> Wikipedia - Mid-range](https://en.wikipedia.org/wiki/Mid-range)
 
 #### `truncate_outlier (list, ratio)`
 - Sort a list and remove a given ratio of elements from the ends.
@@ -267,7 +267,7 @@ Options:
 
 Sample:
 ```OpenScad
-include <tools.scad>
+include <banded.scad>
 
 data  = [1,9,4,2,15];
 trunc = truncate_outlier (data, 0.5);

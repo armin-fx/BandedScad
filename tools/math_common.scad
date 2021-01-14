@@ -3,11 +3,11 @@
 //
 // Enthält einige zusätzliche mathematische Funktionen
 
-include <tools/constants.scad>
+include <banded/constants.scad>
 //
-use <tools/helper_native.scad>
-use <tools/function_algorithmus.scad>
-use <tools/function_select.scad>
+use <banded/helper_native.scad>
+use <banded/function_algorithmus.scad>
+use <banded/function_select.scad>
 
 // setzt einen Wert innerhalb eines Bereiches
 // zwischen Minimum <min> und Maximum <max>

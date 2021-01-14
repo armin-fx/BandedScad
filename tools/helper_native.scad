@@ -3,7 +3,7 @@
 //
 // interne Hilfsfunktionen
 
-use <tools/math_common.scad>
+use <banded/math_common.scad>
 
 // extrahiert eine feste Position aus einer Liste
 // extract_axis(list=[[x,y,z], [1,2,3], [11,12,13]], axis=1) => [y,2,12]

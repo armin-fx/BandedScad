@@ -4,8 +4,8 @@
 // lädt alle Funktionen zum Bearbeiten von Objekten in Listen
 //
 
-include <tools/draft_curves.scad>
-include <tools/draft_transform.scad>
-include <tools/draft_multmatrix.scad>
+include <banded/draft_curves.scad>
+include <banded/draft_transform.scad>
+include <banded/draft_multmatrix.scad>
 //
-include <tools/draft_transform_names.scad>
+include <banded/draft_transform_names.scad>

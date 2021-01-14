@@ -4,10 +4,10 @@
 // stellt die Module bereit, die um weitere Eigenschaften ergänzt werden
 // kann einzeln geladen werden
 
-use <tools/extend_logic.scad>
-use <tools/helper_native.scad>
-use <tools/helper_recondition.scad>
-use <tools/draft_curves.scad>
+use <banded/extend_logic.scad>
+use <banded/helper_native.scad>
+use <banded/helper_recondition.scad>
+use <banded/draft_curves.scad>
 
 
 // Erzeugt einen Kreis

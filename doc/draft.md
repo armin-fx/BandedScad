@@ -3,17 +3,17 @@ Draft objects in a point list
 =============================
 
 ### defined in file
-`tools/draft.scad`\
+`banded/draft.scad`\
 ` `| \
-` `+--> `tools/draft_curves.scad`\
+` `+--> `banded/draft_curves.scad`\
 ` `| \
-` `+--> `tools/draft_transform.scad`\
-` `| . . . . +--> `tools/draft_transform_basic.scad`\
-` `| . . . . +--> `tools/draft_transform_common.scad`\
+` `+--> `banded/draft_transform.scad`\
+` `| . . . . +--> `banded/draft_transform_basic.scad`\
+` `| . . . . +--> `banded/draft_transform_common.scad`\
 ` `| \
-` `+--> `tools/draft_multmatrix.scad`\
-` `. . . . . +--> `tools/draft_multmatrix_basic.scad`\
-` `. . . . . +--> `tools/draft_multmatrix_common.scad`
+` `+--> `banded/draft_multmatrix.scad`\
+` `. . . . . +--> `banded/draft_multmatrix_basic.scad`\
+` `. . . . . +--> `banded/draft_multmatrix_common.scad`
 
 [<-- file overview](file_overview.md)
 
@@ -77,7 +77,7 @@ There is a name convention of functions from curves:
   such as `circle_curve()`
 
 ### defined in file
-`tools/draft_curves.scad`
+`banded/draft_curves.scad`
 
 ### Bezier curve [^][contents]
 Generates a Bézier curve.\
@@ -190,7 +190,7 @@ Generates a Superellipse curve.\
 
 Example of Piet Hein's Superegg:
 ```OpenSCAD
-include <tools.scad>
+include <banded.scad>
 
 $fn=60;
 

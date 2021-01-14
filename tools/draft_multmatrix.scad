@@ -4,5 +4,5 @@
 // lädt alle multmatrix Funktionen
 //
 
-include <tools/draft_multmatrix_basic.scad>
-include <tools/draft_multmatrix_common.scad>
+include <banded/draft_multmatrix_basic.scad>
+include <banded/draft_multmatrix_common.scad>

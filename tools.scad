@@ -3,23 +3,23 @@
 // Version: 2021.01.05
 //
 //
-// load the entire ScadTools-bibliothek
+// load the entire BandedScad-bibliothek
 //
-// bind: include <tools.scad>
+// bind: include <banded.scad>
 //
 
-/* [bibliothek ScadTools] */
+/* [bibliothek BandedScad] */
 
-include <tools/constants.scad>
-include <tools/math.scad>
-include <tools/list.scad>
-include <tools/function.scad>
-include <tools/helper.scad>
-include <tools/extend.scad>
-include <tools/draft.scad>
-include <tools/object.scad>
-include <tools/operator.scad>
+include <banded/constants.scad>
+include <banded/math.scad>
+include <banded/list.scad>
+include <banded/function.scad>
+include <banded/helper.scad>
+include <banded/extend.scad>
+include <banded/draft.scad>
+include <banded/object.scad>
+include <banded/operator.scad>
 //
-include <tools/other.scad>
+include <banded/other.scad>
 //
-include <tools/benchmark.scad>
+include <banded/benchmark.scad>

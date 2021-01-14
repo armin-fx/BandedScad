@@ -2,56 +2,56 @@
 Overview of scad files
 ======================
 
-`tools.scad`\
+`banded.scad`\
 ` `|\
-` `+--> `tools/constants.scad`\
+` `+--> `banded/constants.scad`\
 ` `|\
-` `+--> `tools/math.scad`\
-` `| . . . +--> `tools/math_common.scad`\
-` `| . . . +--> `tools/math_vector.scad`\
-` `| . . . +--> `tools/math_matrix.scad`\
-` `| . . . +--> `tools/math_formula.scad`\
+` `+--> `banded/math.scad`\
+` `| . . . +--> `banded/math_common.scad`\
+` `| . . . +--> `banded/math_vector.scad`\
+` `| . . . +--> `banded/math_matrix.scad`\
+` `| . . . +--> `banded/math_formula.scad`\
 ` `|\
-` `+--> [`tools/list.scad`](list.md "Functions for work with lists")\
-` `| . . . +--> [`tools/list_edit.scad`](list.md#editing-lists- "Editing lists")\
-` `| . . . +--> [`tools/list_algorithmus.scad`](list.md#algorithm-on-lists- "Algorithm on lists")\
-` `| . . . +--> [`tools/list_math.scad`](list.md#math-on-lists- "Math on lists")\
-` `| . . . +--> [`tools/list_mean.scad`](list.md#calculating-mean- "Calculating mean")\
+` `+--> [`banded/list.scad`](list.md "Functions for work with lists")\
+` `| . . . +--> [`banded/list_edit.scad`](list.md#editing-lists- "Editing lists")\
+` `| . . . +--> [`banded/list_algorithmus.scad`](list.md#algorithm-on-lists- "Algorithm on lists")\
+` `| . . . +--> [`banded/list_math.scad`](list.md#math-on-lists- "Math on lists")\
+` `| . . . +--> [`banded/list_mean.scad`](list.md#calculating-mean- "Calculating mean")\
 ` `|\
-` `+--> `tools/function.scad`\
-` `| . . . +--> `tools/function_select.scad`\
-` `| . . . +--> `tools/function_algorithmus.scad`\
-` `| . . . +--> `tools/function_list_edit.scad`\
+` `+--> `banded/function.scad`\
+` `| . . . +--> `banded/function_select.scad`\
+` `| . . . +--> `banded/function_algorithmus.scad`\
+` `| . . . +--> `banded/function_list_edit.scad`\
 ` `|\
-` `+--> `tools/helper.scad`\
-` `| . . . +--> `tools/helper_native.scad`\
-` `| . . . +--> `tools/helper_recondition.scad`\
+` `+--> `banded/helper.scad`\
+` `| . . . +--> `banded/helper_native.scad`\
+` `| . . . +--> `banded/helper_recondition.scad`\
 ` `|\
-` `+--> [`tools/extend.scad`](extend.md "Control the level of detail of a mesh")\
-` `| . . . +--> [`tools/extend_logic.scad`](extend.md#functions-)\
-` `| . . . +--> [`tools/extend_object.scad`](extend.md#defined-modules-)\
+` `+--> [`banded/extend.scad`](extend.md "Control the level of detail of a mesh")\
+` `| . . . +--> [`banded/extend_logic.scad`](extend.md#functions-)\
+` `| . . . +--> [`banded/extend_object.scad`](extend.md#defined-modules-)\
 ` `|\
-` `+--> [`tools/draft.scad`](draft.md "Draft objects in a point list")\
-` `| . . . +--> [`tools/draft_curves.scad`](draft.md#curves- "Creates curves in a list")\
-` `| . . . +--> [`tools/draft_transform.scad`](draft.md#transform-functions- "Transform functions for affine transformations")\
-` `| . . . | . . . . +--> `tools/draft_transform_basic.scad`\
-` `| . . . | . . . . +--> `tools/draft_transform_common.scad`\
-` `| . . . +--> [`tools/draft_multmatrix.scad`](draft.md#multmatrix- "Multmatrix functions")\
-` `| . . . | . . . . +--> `tools/draft_multmatrix_basic.scad`\
-` `| . . . | . . . . +--> `tools/draft_multmatrix_common.scad`\
+` `+--> [`banded/draft.scad`](draft.md "Draft objects in a point list")\
+` `| . . . +--> [`banded/draft_curves.scad`](draft.md#curves- "Creates curves in a list")\
+` `| . . . +--> [`banded/draft_transform.scad`](draft.md#transform-functions- "Transform functions for affine transformations")\
+` `| . . . | . . . . +--> `banded/draft_transform_basic.scad`\
+` `| . . . | . . . . +--> `banded/draft_transform_common.scad`\
+` `| . . . +--> [`banded/draft_multmatrix.scad`](draft.md#multmatrix- "Multmatrix functions")\
+` `| . . . | . . . . +--> `banded/draft_multmatrix_basic.scad`\
+` `| . . . | . . . . +--> `banded/draft_multmatrix_common.scad`\
 ` `| . . . |
-` `| . . . +--> `tools/draft_transform_names.scad`\
+` `| . . . +--> `banded/draft_transform_names.scad`\
 ` `|\
-` `+--> `tools/object.scad`\
-` `| . . . +--> `tools/object_basic.scad`\
-` `| . . . +--> `tools/object_circle.scad`\
-` `| . . . +--> `tools/object_rounded.scad`\
+` `+--> `banded/object.scad`\
+` `| . . . +--> `banded/object_basic.scad`\
+` `| . . . +--> `banded/object_circle.scad`\
+` `| . . . +--> `banded/object_rounded.scad`\
 ` `|\
-` `+--> `tools/operator.scad`\
-` `| . . . +--> `tools/operator_edit.scad`\
-` `| . . . +--> `tools/operator_transform.scad`\
-` `| . . . +--> `tools/operator_place.scad`\
+` `+--> `banded/operator.scad`\
+` `| . . . +--> `banded/operator_edit.scad`\
+` `| . . . +--> `banded/operator_transform.scad`\
+` `| . . . +--> `banded/operator_place.scad`\
 ` `|\
-` `+--> `tools/benchmark.scad`\
+` `+--> `banded/benchmark.scad`\
 ` `|\
-` `+--> `tools/other.scad`\
+` `+--> `banded/other.scad`\
