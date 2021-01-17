@@ -37,3 +37,43 @@ percent = 0.01;
 // Lichtgeschwindigkeit in m/s
 lightspeed = 299792458;
 
+
+// Meldung ausgeben, wenn die Konstanten überschrieben worden sind
+message_constants = test_message_constants();
+function test_message_constants () =
+	version_num()<20190500 ? false :
+	is_undef(message_constants) ?
+		let( s = test_message_constants_str() )
+		s!="" ?
+			test_message_constants_echo( test_message_constants_console(s) )
+		:	true
+	:	false
+;
+function test_message_constants_echo (s) = echo(s) + false;
+function test_message_constants_console (s) =
+	str (
+		"<span style=\"background-color:yellow\">\n",
+		s,
+		"</span>"
+	)
+;
+function test_message_constants_str() = str (
+	inf == 1e200 * 1e200 ? "" : "WARNING: Constant 'inf' has changed.\n",
+	nan != nan           ? "" : "WARNING: Constant 'nan' has changed.\n",
+	tau == 2*PI          ? "" : "WARNING: Constant 'tau' has changed.\n",
+	euler == exp(1)      ? "" : "WARNING: Constant 'euler' has changed.\n",
+	euler_mascheroni == 0.577215664901 ? "" :
+		"WARNING: Constant 'euler_mascheroni' has changed.\n",
+	golden == (1 + sqrt(5)) / 2 ? "" : "WARNING: Constant 'golden' has changed.\n",
+	mm_per_inch == 25.4         ? "" : "WARNING: Constant 'mm_per_inch' has changed.\n",
+	degree_per_radian == 180/PI ? "" : "WARNING: Constant 'degree_per_radian' has changed.\n",
+	percent == 0.01             ? "" : "WARNING: Constant 'percent' has changed.\n",
+	lightspeed == 299792458     ? "" : "WARNING: Constant 'lightspeed' has changed. Welcome to a different world!\n",
+	"")
+;
+
+if (version_num()<20190500)
+{
+	s = test_message_constants_str();
+	if (s!="") echo( test_message_constants_console(s) );
+}
