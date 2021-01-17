@@ -15,6 +15,7 @@ use <banded/draft_multmatrix_basic.scad>
 //  v    = Vektor
 function translate_list (list, v) =
 	let ( vector = is_list(v) ? v : [0,0,0] )
+	(v==[0,0] || v==[0,0,0]) ? list :
 	[for (p=list) p+vector]
 ;
 

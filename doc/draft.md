@@ -39,11 +39,8 @@ Draft objects in a point list
   - [More transformation](#more-transformation-)
     - [`rotate_backwards_list()`](#rotate_backwards_list-list-a-v-)
     - [`rotate_at_list()`](#rotate_at_list-list-a-p-v-)
-    - [`rotate_backwards_at_list()`](#rotate_backwards_at_list-list-a-p-v-)
     - [`rotate_to_vector_list()`](#rotate_to_vector_list-list-v-a-)
-    - [`rotate_backwards_to_vector_list()`](#rotate_backwards_to_vector_list-list-v-a-)
     - [`rotate_to_vector_at_list()`](#rotate_to_vector_at_list-list-v-p-a-)
-    - [`rotate_backwards_to_vector_at_list()`](#rotate_backwards_to_vector_at_list-list-v-p-a-)
     - [`mirror_at_list()`](#mirror_at_list-list-v-p-)
   - [Transformation at a fixed axis](#transformation-at-a-fixed-axis-)
 - [Multmatrix](#multmatrix-)
@@ -55,11 +52,8 @@ Draft objects in a point list
   - [More multmatrix functions](#more-multmatrix-functions-)
     - [`matrix_rotate_backwards()`](#matrix_rotate_backwards-a-v-d-)
     - [`matrix_rotate_at()`](#matrix_rotate_at-a-p-v-d-)
-    - [`matrix_rotate_backwards_at()`](#matrix_rotate_backwards_at-a-p-v-d-)
     - [`matrix_rotate_to_vector()`](#matrix_rotate_to_vector-v-a-)
-    - [`matrix_rotate_backwards_to_vector()`](#matrix_rotate_backwards_to_vector-v-a-)
     - [`matrix_rotate_to_vector_at()`](#matrix_rotate_to_vector_at-v-p-a-)
-    - [`matrix_rotate_backwards_to_vector_at()`](#matrix_rotate_backwards_to_vector_at-v-p-a-)
     - [`matrix_mirror_at()`](#matrix_mirror_at-v-p-d-)
   - [Multmatrix on a fixed axis](#multmatrix-on-a-fixed-axis-)
     - [Basic multmatrix at fixed axis](#basic-multmatrix-at-fixed-axis-)
@@ -403,11 +397,14 @@ Options like `rotate()`.
 - `a` - angle
 - `v` - vector where rotating around
 
-#### `rotate_at_list (list, a, p, v)` [^][contents]
+#### `rotate_at_list (list, a, p, v, backwards)` [^][contents]
 Rotate every point in `list` at position `p`.
 - `a` - angle
 - `v` - vector where it rotates around
 - `p` - position at where it rotates
+- `backwards`
+  - `false` - standard, normal forward rotate
+  - `true`  - rotate backwards, undo forward rotate
 
 #### `rotate_backwards_at_list (list, a, p, v)` [^][contents]
 Rotate backwards every point in `list` at position `p`.
@@ -415,11 +412,14 @@ Rotate backwards every point in `list` at position `p`.
 - `v` - vector where it rotates around
 - `p` - position at where it rotates
 
-#### `rotate_to_vector_list (list, v, a)` [^][contents]
+#### `rotate_to_vector_list (list, v, a, backwards)` [^][contents]
 Rotate every point in `list` from direction Z axis to direction at vector `v`.
 Rotate previous angle `a` around Z axis.
 - `p` - direction as vector
 - `a` - angle in degree
+- `backwards`
+  - `false` - standard, normal forward rotate
+  - `true`  - rotate backwards, undo forward rotate
 
 #### `rotate_backwards_to_vector_list (list, v, a)` [^][contents]
 Rotate backwards every point in `list` from direction Z axis to direction at vector `v`.
@@ -428,13 +428,16 @@ Rotate afterwards angle `a` around Z axis.
 - `p` - direction as vector
 - `a` - angle in degree
 
-#### `rotate_to_vector_at_list (list, v, p, a)` [^][contents]
+#### `rotate_to_vector_at_list (list, v, p, a, backwards)` [^][contents]
 Rotate every point in `list` from direction Z axis to direction at vector `v`.
 Rotate previous angle `a` around Z axis.
 Rotate at vector `v`.
 - `v` - vector where it rotates around
 - `p` - direction as vector
 - `a` - angle in degree
+- `backwards`
+  - `false` - standard, normal forward rotate
+  - `true`  - rotate backwards, undo forward rotate
 
 #### `rotate_backwards_to_vector_at_list (list, v, p, a)` [^][contents]
 Rotate backwards every point in `list` from direction Z axis to direction at vector `v`.
@@ -539,7 +542,7 @@ Generate a matrix to rotate backwards.
     - `3` - spatial (3D) - standard
     - `2` - flat (2D)
 
-#### `matrix_rotate_at (a, p, v, d)` [^][contents]
+#### `matrix_rotate_at (a, p, v, d, backwards)` [^][contents]
 Generate a matrix to rotate at position `p`.
 - `a` - angle
 - `v` - vector where it rotates around
@@ -548,6 +551,9 @@ Generate a matrix to rotate at position `p`.
   - dimensions of vector which will transformed with matrix
     - `3` - spatial (3D) - standard
     - `2` - flat (2D)
+- `backwards`
+  - `false` - standard, normal forward rotate
+  - `true`  - rotate backwards, undo forward rotate
 
 #### `matrix_rotate_backwards_at (a, p, v, d)` [^][contents]
 Generate a matrix to rotate backwards at position `p`.
@@ -559,11 +565,14 @@ Generate a matrix to rotate backwards at position `p`.
     - `3` - spatial (3D) - standard
     - `2` - flat (2D)
 
-#### `matrix_rotate_to_vector (v, a)` [^][contents]
+#### `matrix_rotate_to_vector (v, a, backwards)` [^][contents]
 Generate a matrix to rotate from direction Z axis to direction at vector `v`.
 Rotate previous angle `a` around Z axis.
 - `p` - direction as vector
 - `a` - angle in degree
+- `backwards`
+  - `false` - standard, normal forward rotate
+  - `true`  - rotate backwards, undo forward rotate
 
 #### `matrix_rotate_backwards_to_vector (v, a)` [^][contents]
 Generate a matrix to rotate backwards from direction Z axis to direction at vector `v`.
@@ -571,13 +580,16 @@ Rotate previous angle `a` around Z axis.
 - `p` - direction as vector
 - `a` - angle in degree
 
-#### `matrix_rotate_to_vector_at (v, p, a)` [^][contents]
+#### `matrix_rotate_to_vector_at (v, p, a, backwards)` [^][contents]
 Generate a matrix to rotate from direction Z axis to direction at vector `v`.
 Rotate previous angle `a` around Z axis.
 Rotate at vector `v`.
 - `v` - vector where it rotates around
 - `p` - direction as vector
 - `a` - angle in degree
+- `backwards`
+  - `false` - standard, normal forward rotate
+  - `true`  - rotate backwards, undo forward rotate
 
 #### `matrix_rotate_backwards_to_vector_at (v, p, a)` [^][contents]
 Generate a matrix to rotate backwards from direction Z axis to direction at vector `v`.

@@ -93,12 +93,16 @@ module rotate_backwards (a, v)
 // Argumente:
 // a, (v) - wie bei rotate()
 // p      - wie bei translate()
-module rotate_at (a, p, v)
+module rotate_at (a, p, v, backwards=false)
 {
-	translate(p)
-	rotate(a, v)
-	translate(-p)
-	children();
+	if (! (backwards==true))
+		translate(p)
+		rotate(a, v)
+		translate(-p)
+		children();
+	else
+		rotate_backwards_at (a, p, v)
+		children();
 }
 
 // rotiert ein Objekt rückwärts an der angegebenen Position
@@ -115,33 +119,35 @@ module rotate_backwards_at (a, p, v)
 
 // Objekt von in Richtung Z-Achse in Richtung Vektor v drehen
 // a = Objekt um die eigene Achse drehen
-module rotate_to_vector (v, a)
+module rotate_to_vector (v, a, backwards=false)
 {
 	V     = (is_list(v) && len(v)==3) ? v : [0,0,1];
 	angle = is_num(a) ? a : 0;
 	b     = acos(V.z/norm(V)); // inclination angle
 	c     = atan2(V.y,V.x);    // azimuthal angle
 	//
-	rotate([0, b, c]) rotate_z(angle) children();
+	if (! (backwards==true))
+		rotate([0, b, c]) rotate_z(angle) children();
+	else
+		rotate_backwards_z(angle) rotate_backwards([0, b, c]) children();
 }
 // Objekt von in Richtung Z-Achse in Richtung Vektor v rückwärts drehen
 module rotate_backwards_to_vector (v, a)
 {
-	V     = (is_list(v) && len(v)==3) ? v : [0,0,1];
-	angle = is_num(a) ? a : 0;
-	b     = acos(V.z/norm(V)); // inclination angle
-	c     = atan2(V.y,V.x);    // azimuthal angle
-	//
-	rotate_backwards_z(angle) rotate_backwards([0, b, c]) children();
+	rotate_to_vector (v, a, backwards=true);
 }
 
 // Objekt von in Richtung Z-Achse in Richtung Vektor v drehen an der angegebenen Position
-module rotate_to_vector_at (v, p, a)
+module rotate_to_vector_at (v, p, a, backwards=false)
 {
-	translate(p)
-	rotate_to_vector(v, a)
-	translate(-p)
-	children();
+	if (! (backwards==true))
+		translate(p)
+		rotate_to_vector(v, a)
+		translate(-p)
+		children();
+	else
+		rotate_backwards_to_vector_at (v, p, a)
+		children();
 }
 // Objekt von in Richtung Z-Achse in Richtung Vektor v rückwärts drehen an der angegebenen Position
 module rotate_backwards_to_vector_at (v, p, a)

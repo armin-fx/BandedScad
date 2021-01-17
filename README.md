@@ -65,13 +65,13 @@ include <banded.scad>
   
 You can load a specify libraries with
 ```OpenSCAD
-include <banded. *** .scad>
+include <banded/ *** .scad>
 ```
 Or even with `use`. But if you need this defined constants
 you must include the file separately.
 So you can keep the namespace clean.
 ```OpenSCAD
-use <banded. *** .scad>
+use <banded/ *** .scad>
 include <banded/constants.scad>
 ```
   

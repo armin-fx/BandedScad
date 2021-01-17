@@ -25,11 +25,14 @@ function rotate_backwards_list (list, a, v) =
 
 // jeden Punkt in der Liste <list> rotieren an der angegebenen Position p
 // funktioniert wie rotate_at()
-function rotate_at_list (list, a, p, v) =
-	translate_list( v=p,      list=
-	rotate_list    (a=a, v=v, list=
-	translate_list( v=-p,     list=
-	list )))
+function rotate_at_list (list, a, p, v, backwards=false) =
+	! (backwards==true) ?
+		translate_list( v=p,      list=
+		rotate_list    (a=a, v=v, list=
+		translate_list( v=-p,     list=
+		list )))
+	:
+		rotate_backwards_at_list (list, a, p, v)
 ;
 // jeden Punkt in der Liste <list> rückwärts rotieren an der angegebenen Position p
 // funktioniert wie rotate_at()
@@ -42,49 +45,27 @@ function rotate_backwards_at_list (list, a, p, v) =
 
 // jeden Punkt in der Liste <list> von in Richtung Z-Achse in Richtung Vektor v drehen
 // funktioniert wie rotate_to_vector()
-function rotate_to_vector_list (list, v, a) =
-	let(
-	V     = (is_list(v) && len(v)==3) ? v : [0,0,1],
-	angle = is_num(a) ? a : 0,
-	b     = acos(V[2]/norm(V)), // inclination angle
-	c     = atan2(V[1],V[0])    // azimuthal angle
-	)
+function rotate_to_vector_list (list, v, a, backwards=false) =
 	multmatrix_list (list,
-		matrix_rotate  ([0, b, c], d=3) *
-		matrix_rotate_z(angle,     d=3)
+		matrix_rotate_to_vector (v, a, backwards)
 	)
 ;
 // jeden Punkt in der Liste <list> von in Richtung Z-Achse in Richtung Vektor v rückwärts drehen
 function rotate_backwards_to_vector_list (list, v, a) =
-	let(
-	V     = (is_list(v) && len(v)==3) ? v : [0,0,1],
-	angle = is_num(a) ? a : 0,
-	b     = acos(V[2]/norm(V)), // inclination angle
-	c     = atan2(V[1],V[0])    // azimuthal angle
-	)
-	multmatrix_list (list,
-		matrix_rotate_backwards_z(angle,     d=3) *
-		matrix_rotate_backwards  ([0, b, c], d=3)
-	)
+	rotate_to_vector_list (list, v, a, backwards=true)
 ;
 
 // jeden Punkt in der Liste <list> von in Richtung Z-Achse in Richtung Vektor v
 // drehen an der angegebenen Position
-function rotate_to_vector_at_list (list, v, p, a) =
+function rotate_to_vector_at_list (list, v, p, a, backwards=false) =
 	multmatrix_list (list,
-		matrix_translate       ( p, d=3) *
-		matrix_rotate_to_vector( v, a)   *
-		matrix_translate       (-p, d=3)
+		matrix_rotate_to_vector_at (v, p, a, backwards)
 	)
 ;
 // jeden Punkt in der Liste <list> von in Richtung Z-Achse in Richtung Vektor v
 // rückwärts drehen an der angegebenen Position
 function rotate_backwards_to_vector_at_list (list, v, p, a) =
-	multmatrix_list (list,
-		matrix_translate                 ( p, d=3) *
-		matrix_rotate_backwards_to_vector( v, a)   *
-		matrix_translate                 (-p, d=3)
-	)
+	rotate_to_vector_at_list (list, v, p, a, backwards=true)
 ;
 
 // rotiert um die jeweilige Achse wie die Hauptfunktion

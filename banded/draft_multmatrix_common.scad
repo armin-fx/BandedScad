@@ -6,6 +6,7 @@
 //
 // es werden weitere Funktionen zum Transformieren definiert
 
+use <banded/helper_recondition.scad>
 use <banded/math_matrix.scad>
 use <banded/draft_multmatrix_basic.scad>
 
@@ -23,20 +24,23 @@ function matrix_rotate_backwards (a, v, d=3) =
 ;
 
 // gibt die Matrix zurück zum rotieren an der angegebenen Position p
-function matrix_rotate_at (a, p, v, d=3) =
-	matrix_translate ( p,    d=d) *
-	matrix_rotate    ( a, v, d=d) *
-	matrix_translate (-p,    d=d)
+function matrix_rotate_at (a, p, v, d=3, backwards=false) =
+	! (backwards==true) ?
+		matrix_translate ( p,    d=d) *
+		matrix_rotate    ( a, v, d=d) *
+		matrix_translate (-p,    d=d)
+	:
+		matrix_rotate_backwards_at (a, p, v, d=d)
 ;
 // gibt die Matrix zurück zum rückwärts rotieren an der angegebenen Position p
-function matrix_rotate_backwards_at (a, p, v, d=3) =
+function matrix_rotate_backwards_at (a, p, v, d=3) = 
 	matrix_translate        ( p,    d=d) *
 	matrix_rotate_backwards ( a, v, d=d) *
 	matrix_translate        (-p,    d=d)
 ;
 
 // gibt die Matrix zurück zum von in Richtung Z-Achse in Richtung Vektor v drehen
-function matrix_rotate_to_vector (v, a) =
+function matrix_rotate_to_vector (v, a, backwards=false) =
 	let(
 	d     = 3,
 	V     = (is_list(v) && len(v)==3) ? v : [0,0,1],
@@ -44,37 +48,42 @@ function matrix_rotate_to_vector (v, a) =
 	b     = acos(V.z/norm(V)), // inclination angle
 	c     = atan2(V.y,V.x)     // azimuthal angle
 	)
-	matrix_rotate  ([0, b, c], d=d) *
-	matrix_rotate_z(angle,     d=d)
+	! (backwards==true) ?
+		matrix_rotate  ([0, b, c], d=d) *
+		matrix_rotate_z(angle,     d=d)
+	:
+		matrix_rotate_backwards_z(angle,     d=d) *
+		matrix_rotate_backwards  ([0, b, c], d=d)
 ;
 // gibt die Matrix zurück zum von in Richtung Z-Achse in Richtung Vektor v rückwärts drehen
 function matrix_rotate_backwards_to_vector (v, a) =
-	let(
-	d     = 3,
-	V     = (is_list(v) && len(v)==3) ? v : [0,0,1],
-	angle = is_num(a) ? a : 0,
-	b     = acos(V.z/norm(V)), // inclination angle
-	c     = atan2(V.y,V.x)     // azimuthal angle
-	)
-	matrix_rotate_backwards_z(angle,     d=d) *
-	matrix_rotate_backwards  ([0, b, c], d=d)
+	matrix_rotate_to_vector (v, a, backwards=true)
 ;
 
 // gibt die Matrix zurück zum drehen von in Richtung Z-Achse in Richtung Vektor v
 // an der angegebenen Position
-function matrix_rotate_to_vector_at (v, p, a) =
+function matrix_rotate_to_vector_at (v, p, a, backwards=false) =
 	let( d = 3 )
-	matrix_translate       ( p, d=d) *
-	matrix_rotate_to_vector( v, a)   *
-	matrix_translate       (-p, d=d)
+	! (backwards==true) ?
+		parameter_numlist(d,p,[0,0,0],true) != [0,0,0] ?
+			matrix_translate       ( p, d=d) *
+			matrix_rotate_to_vector( v, a)   *
+			matrix_translate       (-p, d=d)
+		:
+			matrix_rotate_to_vector( v, a)
+	:
+		matrix_rotate_backwards_to_vector_at (v, p, a)
 ;
 // gibt die Matrix zurück zum rückwärts drehen von in Richtung Z-Achse in Richtung Vektor v
 // an der angegebenen Position
 function matrix_rotate_backwards_to_vector_at (v, p, a) =
 	let( d = 3 )
-	matrix_translate                 ( p, d=d) *
-	matrix_rotate_backwards_to_vector( v, a)   *
-	matrix_translate                 (-p, d=d)
+	parameter_numlist(d,p,[0,0,0],true) != [0,0,0] ?
+		matrix_translate                 ( p, d=d) *
+		matrix_rotate_backwards_to_vector( v, a)   *
+		matrix_translate                 (-p, d=d)
+	:
+		matrix_rotate_backwards_to_vector( v, a)
 ;
 
 // gibt die Matrix zurück zum rotieren um die jeweilige Achse wie die Hauptfunktion
