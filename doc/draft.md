@@ -414,39 +414,50 @@ Rotate backwards every point in `list` at position `p`.
 
 #### `rotate_to_vector_list (list, v, a, backwards)` [^][contents]
 Rotate every point in `list` from direction Z axis to direction at vector `v`.
-Rotate previous angle `a` around Z axis.
 - `p` - direction as vector
-- `a` - angle in degree
+- `a`
+  - angle in degree
+  - or rotational orientation vector
 - `backwards`
   - `false` - standard, normal forward rotate
   - `true`  - rotate backwards, undo forward rotate
 
+procedure 1, `a` as angle:
+- vector `v` will split in
+  - inclination angle, rotate around Y axis
+  - and azimuthal angle, rotate around Z axis
+- make rotation around Y axis with inclination angle
+- make rotation around Z axis with azimuthal angle
+- make rotation around vector `v` with angle `a`
+
+procedure 2, `a` as orientation vector:
+- make rotation from Z axis to vector `v`
+- make rotation around vector `v`, so that the originally X axis point to
+  orientation vector `a`
+
 #### `rotate_backwards_to_vector_list (list, v, a)` [^][contents]
 Rotate backwards every point in `list` from direction Z axis to direction at vector `v`.
-Rotate afterwards angle `a` around Z axis.
-(makes `rotate_to_vector_list()` undone)
+(can make `rotate_to_vector_list()` undone)
 - `p` - direction as vector
-- `a` - angle in degree
+- `a` - angle in degree or rotational orientation vector
 
 #### `rotate_to_vector_at_list (list, v, p, a, backwards)` [^][contents]
 Rotate every point in `list` from direction Z axis to direction at vector `v`.
-Rotate previous angle `a` around Z axis.
-Rotate at vector `v`.
+Rotate origin at vector `v`.
 - `v` - vector where it rotates around
 - `p` - direction as vector
-- `a` - angle in degree
+- `a` - angle in degree or rotational orientation vector
 - `backwards`
   - `false` - standard, normal forward rotate
   - `true`  - rotate backwards, undo forward rotate
 
 #### `rotate_backwards_to_vector_at_list (list, v, p, a)` [^][contents]
 Rotate backwards every point in `list` from direction Z axis to direction at vector `v`.
-Rotate afterwards angle `a` around Z axis.
-(makes `rotate_to_vector_at_list()` undone)
-Rotate at vector `v`.
+(can make `rotate_to_vector_at_list()` undone)
+Rotate origin at vector `v`.
 - `v` - vector where it rotates around
 - `p` - direction as vector
-- `a` - angle in degree
+- `a` - angle in degree or rotational orientation vector
 
 #### `mirror_at_list (list, v, p)` [^][contents]
 Mirror every point in `list` at origin along a vector `v` at position `p`.
@@ -567,38 +578,49 @@ Generate a matrix to rotate backwards at position `p`.
 
 #### `matrix_rotate_to_vector (v, a, backwards)` [^][contents]
 Generate a matrix to rotate from direction Z axis to direction at vector `v`.
-Rotate previous angle `a` around Z axis.
 - `p` - direction as vector
-- `a` - angle in degree
+- `a`
+  - angle in degree
+  - or rotational orientation vector
 - `backwards`
   - `false` - standard, normal forward rotate
   - `true`  - rotate backwards, undo forward rotate
 
+procedure 1, `a` as angle:
+- vector `v` will split in
+  - inclination angle, rotate around Y axis
+  - and azimuthal angle, rotate around Z axis
+- make rotation around Y axis with inclination angle
+- make rotation around Z axis with azimuthal angle
+- make rotation around vector `v` with angle `a`
+
+procedure 2, `a` as orientation vector:
+- make rotation from Z axis to vector `v`
+- make rotation around vector `v`, so that the originally X axis point to
+  orientation vector `a`
+
 #### `matrix_rotate_backwards_to_vector (v, a)` [^][contents]
 Generate a matrix to rotate backwards from direction Z axis to direction at vector `v`.
-Rotate previous angle `a` around Z axis.
 - `p` - direction as vector
-- `a` - angle in degree
+- `a` - angle in degree or rotational orientation vector
 
 #### `matrix_rotate_to_vector_at (v, p, a, backwards)` [^][contents]
 Generate a matrix to rotate from direction Z axis to direction at vector `v`.
-Rotate previous angle `a` around Z axis.
-Rotate at vector `v`.
+Rotate origin at vector `v`.
 - `v` - vector where it rotates around
 - `p` - direction as vector
-- `a` - angle in degree
+- `a` - angle in degree or rotational orientation vector
 - `backwards`
   - `false` - standard, normal forward rotate
   - `true`  - rotate backwards, undo forward rotate
 
 #### `matrix_rotate_backwards_to_vector_at (v, p, a)` [^][contents]
 Generate a matrix to rotate backwards from direction Z axis to direction at vector `v`.
-Rotate afterwards angle `a` around Z axis.
-(makes `matrix_rotate_to_vector_at()` undone)
-Rotate at vector `v`.
+(can make `matrix_rotate_to_vector_at()` undone)
+Rotate origin at vector `v`.
 - `v` - vector where it rotates around
 - `p` - direction as vector
-- `a` - angle in degree
+- `a` - angle in degree or rotational orientation vector
 
 #### `matrix_mirror_at (v, p, d)` [^][contents]
 Generate a matrix to  mirror at origin along a vector `v` at position `p`.

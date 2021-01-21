@@ -5,6 +5,7 @@
 //
 // Aufbau: modul() {Objekt();}
 
+use <banded/draft_multmatrix_common.scad>
 
 // Spiegelt an der jeweiligen Achse wie die Hauptfunktionen
 module mirror_x () { mirror([1,0,0]) children(); }
@@ -118,23 +119,38 @@ module rotate_backwards_at (a, p, v)
 }
 
 // Objekt von in Richtung Z-Achse in Richtung Vektor v drehen
-// a = Objekt um die eigene Achse drehen
+//
+// Argumente:
+// v         = Richtung als Vektor
+// a         = Winkel in Grad, Objekt um die eigene Achse drehen
+//           = Drehrichtung als Vektor, alternative Angabe
+// backwards = 'false': Standart, normale Drehung
+//             'true':  Drehung Rückwärts, kann normale Drehung rückgängig
+//                      machen mit gleichen Argumenten
+//
+// Arbeitsweise:
+// Fall 1, 'a' = Winkel:
+//  - Vektor 'v' wird aufgeteilt in
+//    - Neigungswinkel (inclination) gedreht um die Y-Achse
+//    - und Azimutwinkel (azimuthal) um die Z-Achse herum.
+//  - das Objekt wird um die Y-Achse zum Neigungswinkel rotiert,
+//  - das Objekt wird um die Z-Achse zum Azimutwinkel rotiert,
+//  - das Objekt wird um die eigene Achse 'v' um 'a' Grad gedreht.
+// Fall 2, 'a' = Richtung als Vektor:
+//  - das Objekt wird gedreht von Z-Achse nach Vektor 'v'
+//  - das Objekt wird um die eigene Achse 'v' gedreht, dass die
+//    ursprüngliche X-Achse in Richtung Vektor 'a' zeigt
+//
 module rotate_to_vector (v, a, backwards=false)
 {
-	V     = (is_list(v) && len(v)==3) ? v : [0,0,1];
-	angle = is_num(a) ? a : 0;
-	b     = acos(V.z/norm(V)); // inclination angle
-	c     = atan2(V.y,V.x);    // azimuthal angle
-	//
-	if (! (backwards==true))
-		rotate([0, b, c]) rotate_z(angle) children();
-	else
-		rotate_backwards_z(angle) rotate_backwards([0, b, c]) children();
+	multmatrix( matrix_rotate_to_vector (v, a, backwards) )
+	children();
 }
 // Objekt von in Richtung Z-Achse in Richtung Vektor v rückwärts drehen
 module rotate_backwards_to_vector (v, a)
 {
 	rotate_to_vector (v, a, backwards=true);
+	children();
 }
 
 // Objekt von in Richtung Z-Achse in Richtung Vektor v drehen an der angegebenen Position

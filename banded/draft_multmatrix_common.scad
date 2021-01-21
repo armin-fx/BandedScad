@@ -8,7 +8,9 @@
 
 use <banded/helper_recondition.scad>
 use <banded/math_matrix.scad>
+use <banded/math_vector.scad>
 use <banded/draft_multmatrix_basic.scad>
+use <banded/draft_transform_basic.scad>
 
 // gibt die Matrix zurück zum rückwärts rotieren von Objekten
 function matrix_rotate_backwards (a, v, d=3) =
@@ -41,19 +43,44 @@ function matrix_rotate_backwards_at (a, p, v, d=3) =
 
 // gibt die Matrix zurück zum von in Richtung Z-Achse in Richtung Vektor v drehen
 function matrix_rotate_to_vector (v, a, backwards=false) =
+	is_list(a) ?
+		matrix_rotate_to_vector_vo (v, a, backwards)
+	:	matrix_rotate_to_vector_yz (v, a, backwards)
+;
+function matrix_rotate_to_vector_vo (v, o, backwards=false) =
+	let(
+	d     = 3,
+	V     = (is_list(v) && len(v)==3) ? v : [0,0,1],
+	orientation = (is_list(o) && len(o)==3) ? o : [1,0,0],
+	//
+	base_vector = [1,0],
+	up_to_z     = multmatrix_list ( [orientation], matrix_rotate_to_vector_yz(V, backwards=true) ),
+	plane       = projection_list (up_to_z),
+	angle_base  = rotation_vector (base_vector, plane[0])
+	)
+	matrix_rotate_to_vector_yz (V, angle_base, backwards)
+;
+function matrix_rotate_to_vector_yz (v, a, backwards=false) =
 	let(
 	d     = 3,
 	V     = (is_list(v) && len(v)==3) ? v : [0,0,1],
 	angle = is_num(a) ? a : 0,
+	//
 	b     = acos(V.z/norm(V)), // inclination angle
 	c     = atan2(V.y,V.x)     // azimuthal angle
 	)
 	! (backwards==true) ?
-		matrix_rotate  ([0, b, c], d=d) *
-		matrix_rotate_z(angle,     d=d)
+		angle==0 ?
+			matrix_rotate  ([0, b, c], d=d)
+		:
+			matrix_rotate  ([0, b, c], d=d) *
+			matrix_rotate_z(angle,     d=d)
 	:
-		matrix_rotate_backwards_z(angle,     d=d) *
-		matrix_rotate_backwards  ([0, b, c], d=d)
+		angle==0 ?
+			matrix_rotate_backwards  ([0, b, c], d=d)
+		:
+			matrix_rotate_backwards_z(angle,     d=d) *
+			matrix_rotate_backwards  ([0, b, c], d=d)
 ;
 // gibt die Matrix zurück zum von in Richtung Z-Achse in Richtung Vektor v rückwärts drehen
 function matrix_rotate_backwards_to_vector (v, a) =

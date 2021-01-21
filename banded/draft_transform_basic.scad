@@ -38,7 +38,7 @@ function rotate_list (list, a, v) =
 	:list
 ;
 
-// jeden Punkt in der Liste <list> um die X-Achse um <a> drehen
+// jeden Punkt in der Liste <list> um die X-Achse um <a> Grad drehen
 function rotate_x_list (list, a) =
 	!is_num(a) ? list :
 	let (
@@ -53,7 +53,7 @@ function rotate_x_list (list, a) =
 		]
 	]
 ;
-// jeden Punkt in der Liste <list> um die Y-Achse um <a> drehen
+// jeden Punkt in der Liste <list> um die Y-Achse um <a> Grad drehen
 function rotate_y_list (list, a) =
 	!is_num(a) ? list :
 	let (
@@ -68,7 +68,7 @@ function rotate_y_list (list, a) =
 		]
 	]
 ;
-// jeden Punkt in der Liste <list> um die Z-Achse um <a> drehen
+// jeden Punkt in der Liste <list> um die Z-Achse um <a> Grad drehen
 // auch für 2D-Listen
 function rotate_z_list (list, a) =
 	!is_num(a) ? list :
@@ -93,7 +93,7 @@ function rotate_z_list (list, a) =
 			]
 		]
 ;
-// jeden Punkt in der Liste <list> um einen Vektor <v> herum um <a> drehen
+// jeden Punkt in der Liste <list> um einen Vektor <v> herum um <a> Grad drehen
 function rotate_v_list (list, a, v) =
 	 !is_num (a) ? list
 	:!is_list(v) ? list
