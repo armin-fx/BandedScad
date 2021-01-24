@@ -17,7 +17,7 @@ use <banded/operator_transform.scad>
 //
 // Reihenfolge: Hauptobjekt(); zugefuegtes_Objekt(); abzuschneidendes_Objekt(); gemeinsames_Objekt();
 //
-module build ()
+module combine ()
 {
 	if ($children==0);
 	if ($children==1)
