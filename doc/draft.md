@@ -29,35 +29,41 @@ Draft objects in a point list
   - [Helix](#helix-)
 - [Transform functions on list](#transform-functions-)
   - [Basic transformation](#basic-transformation-)
-    - [`translate_list()`](#translate_list-list-v-)
-    - [`rotate_list()`](#rotate_list-list-a-v-)
-    - [`mirror_list()`](#mirror_list-list-v-)
-    - [`scale_list()`](#scale_list-list-v-)
-    - [`resize_list()`](#resize_list-list-newsize-)
-    - [`projection_list()`](#projection_list-list-plane-)
-    - [`multmatrix_list()`](#multmatrix_list-list-m-)
+    - [`translate_list()`][translate_list]
+    - [`rotate_list()`][rotate_list]
+    - [`mirror_list()`][mirror_list]
+    - [`scale_list()`][scale_list]
+    - [`resize_list()`][resize_list]
+    - [`projection_list()`][projection_list]
+    - [`multmatrix_list()`][multmatrix_list]
   - [More transformation](#more-transformation-)
-    - [`rotate_backwards_list()`](#rotate_backwards_list-list-a-v-)
-    - [`rotate_at_list()`](#rotate_at_list-list-a-p-v-)
-    - [`rotate_to_vector_list()`](#rotate_to_vector_list-list-v-a-)
-    - [`rotate_to_vector_at_list()`](#rotate_to_vector_at_list-list-v-p-a-)
-    - [`mirror_at_list()`](#mirror_at_list-list-v-p-)
-  - [Transformation at a fixed axis](#transformation-at-a-fixed-axis-)
+    - [`rotate_backwards_list()`][rotate_backwards_list]
+    - [`rotate_at_list()`][rotate_at_list]
+    - [`rotate_to_vector_list()`][rotate_to_vector_list]
+    - [`rotate_to_vector_at_list()`][rotate_to_vector_at_list]
+    - [`mirror_at_list()`][mirror_at_list]
+    - [`skew_list()`][skew_list]
+    - [`skew_at_list()`][skew_at_list]
+  - [Transformation with preset defaults](#transformation-with-preset-defaults-)
+    - [Transformation function backwards](#transformation-function-backwards-)
+    - [Transformation at a fixed axis](#transformation-at-a-fixed-axis-)
 - [Multmatrix](#multmatrix-)
   - [Basic multmatrix functions](#basic-multmatrix-functions-)
-    - [`matrix_translate()`](#matrix_translate-v-d-)
-    - [`matrix_rotate()`](#matrix_rotate-a-v-d-)
-    - [`matrix_mirror()`](#matrix_mirror-v-d-)
-    - [`matrix_scale()`](#matrix_scale-v-d-)
+    - [`matrix_translate()`][matrix_translate]
+    - [`matrix_rotate()`][matrix_rotate]
+    - [`matrix_mirror()`][matrix_mirror]
+    - [`matrix_scale()`][matrix_scale]
   - [More multmatrix functions](#more-multmatrix-functions-)
-    - [`matrix_rotate_backwards()`](#matrix_rotate_backwards-a-v-d-)
-    - [`matrix_rotate_at()`](#matrix_rotate_at-a-p-v-d-)
-    - [`matrix_rotate_to_vector()`](#matrix_rotate_to_vector-v-a-)
-    - [`matrix_rotate_to_vector_at()`](#matrix_rotate_to_vector_at-v-p-a-)
-    - [`matrix_mirror_at()`](#matrix_mirror_at-v-p-d-)
-  - [Multmatrix on a fixed axis](#multmatrix-on-a-fixed-axis-)
-    - [Basic multmatrix at fixed axis](#basic-multmatrix-at-fixed-axis-)
-    - [More multmatrix at fixed axis](#more-multmatrix-at-fixed-axis-)
+    - [`matrix_rotate_backwards()`][matrix_rotate_backwards]
+    - [`matrix_rotate_at()`][matrix_rotate_at]
+    - [`matrix_rotate_to_vector()`][matrix_rotate_to_vector]
+    - [`matrix_rotate_to_vector_at()`][matrix_rotate_to_vector_at]
+    - [`matrix_mirror_at()`][matrix_mirror_at]
+    - [`matrix_skew()`][matrix_skew]
+    - [`matrix_skew_at()`][matrix_skew_at]
+  - [Multmatrix with preset defaults](#multmatrix-with-preset-defaults-)
+    - [Multmatrix function backwards](#multmatrix-function-backwards-)
+    - [Multmatrix on a fixed axis](#multmatrix-on-a-fixed-axis-)
 
 Curves [^][contents]
 --------------------
@@ -350,71 +356,78 @@ Works like transformation operator in OpenScad for object modules,
 result is the same.
 
 #### `translate_list (list, v)` [^][contents]
+[translate_list]: #translate_list-list-v- "translate_list (list, v)"
 Translate every point in `list` at `v`.
 Works like `translate()`.
 - `v` - vector
 
-#### `rotate_list (list, a, v)` [^][contents]
+#### `rotate_list (list, a, v, backwards)` [^][contents]
+[rotate_list]: #rotate_list-list-a-v-backwards- "rotate_list (list, a, v, backwards)"
 Rotate every point in `list`.
 Works like `rotate()`.
 - `a` - angle to rotate in degree
 - `v` - vector where rotating around
+- `backwards`
+  - `false` - standard, normal forward rotate
+  - `true`  - rotate backwards, undo forward rotate
 
 #### `mirror_list (list, v)` [^][contents]
+[mirror_list]: #mirror_list-list-v- "mirror_list (list, v)"
 Mirror every point at origin along a vector `v` in a `list`.
 Works like `mirror()`.
-- `v` - mirror along this direction
+- `v` - mirror along this direction, standard = X axis
 
 #### `scale_list (list, v)` [^][contents]
+[scale_list]: #scale_list-list-v- "scale_list (list, v)"
 Scale every point in `list` at given axis in vector `v`.
 Works like `scale()`.
+- `v` - vector with scale factor for each axis
 
 #### `resize_list (list, newsize)` [^][contents]
+[resize_list]: #resize_list-list-newsize- "resize_list (list, newsize)"
 Resize and scale every point in `list` that it fits in `newsize`
 Works like `resize()`.
 - `newsize` - Vector with new size
 
 #### `projection_list (list, plane)` [^][contents]
+[projection_list]: #projection_list-list-plane- "projection_list (list, plane)"
 Get projection of every point in `list` to xy-plane.
-- `cut`
-  - get only the hull wich goes throw the xy-plane
-  - **TODO** Not implemented jet
 - `plane`
   - `true`  - make a 2D-list, standard
   - `false` - make a 3D-list, keep points on xy-plane
 
 #### `multmatrix_list (list, m)` [^][contents]
+[multmatrix_list]: #multmatrix_list-list-m- "multmatrix_list (list, m)"
 Multiply every point in `list` with matrix `m`.
 Works like `multmatrix()`.
- - m - 4x3 or 4x4 matrix
+- `m`
+  - 3D: 4x3 or 4x4 matrix
+  - 2D: 3x2 or 3x3 matrix
 
 
 ### More transformation [^][contents]
 
 #### `rotate_backwards_list (list, a, v)` [^][contents]
+[rotate_backwards_list]: #rotate_backwards_list-list-a-v-
 Rotate backwards every point in `list`.
 Options like `rotate()`.
 - `a` - angle
 - `v` - vector where rotating around
 
 #### `rotate_at_list (list, a, p, v, backwards)` [^][contents]
+[rotate_at_list]: #rotate_at_list-list-a-p-v-backwards-
 Rotate every point in `list` at position `p`.
 - `a` - angle
 - `v` - vector where it rotates around
-- `p` - position at where it rotates
+- `p` - origin position at where it rotates
 - `backwards`
   - `false` - standard, normal forward rotate
   - `true`  - rotate backwards, undo forward rotate
 
-#### `rotate_backwards_at_list (list, a, p, v)` [^][contents]
-Rotate backwards every point in `list` at position `p`.
-- `a` - angle
-- `v` - vector where it rotates around
-- `p` - position at where it rotates
-
 #### `rotate_to_vector_list (list, v, a, backwards)` [^][contents]
+[rotate_to_vector_list]: #rotate_to_vector_list-list-v-a-backwards-
 Rotate every point in `list` from direction Z axis to direction at vector `v`.
-- `p` - direction as vector
+- `v` - direction as vector
 - `a`
   - angle in degree
   - or rotational orientation vector
@@ -435,13 +448,8 @@ procedure 2, `a` as orientation vector:
 - make rotation around vector `v`, so that the originally X axis point to
   orientation vector `a`
 
-#### `rotate_backwards_to_vector_list (list, v, a)` [^][contents]
-Rotate backwards every point in `list` from direction Z axis to direction at vector `v`.
-(can make `rotate_to_vector_list()` undone)
-- `p` - direction as vector
-- `a` - angle in degree or rotational orientation vector
-
 #### `rotate_to_vector_at_list (list, v, p, a, backwards)` [^][contents]
+[rotate_to_vector_at_list]: #rotate_to_vector_at_list-list-v-p-a-backwards-
 Rotate every point in `list` from direction Z axis to direction at vector `v`.
 Rotate origin at vector `v`.
 - `v` - vector where it rotates around
@@ -451,46 +459,79 @@ Rotate origin at vector `v`.
   - `false` - standard, normal forward rotate
   - `true`  - rotate backwards, undo forward rotate
 
-#### `rotate_backwards_to_vector_at_list (list, v, p, a)` [^][contents]
-Rotate backwards every point in `list` from direction Z axis to direction at vector `v`.
-(can make `rotate_to_vector_at_list()` undone)
-Rotate origin at vector `v`.
-- `v` - vector where it rotates around
-- `p` - direction as vector
-- `a` - angle in degree or rotational orientation vector
-
 #### `mirror_at_list (list, v, p)` [^][contents]
-Mirror every point in `list` at origin along a vector `v` at position `p`.
-- `p` - position at where it mirrors
-- `v` - mirror along this direction
+[mirror_at_list]: #mirror_at_list-list-v-p-
+Mirror every point in `list` along a vector `v` at origin position `p`.
+- `p` - origin position at where it mirrors
+- `v` - mirror along this direction, standard = X axis
+
+#### `skew_list (list, v, t, m, a)` [^][contents]
+[skew_list]: #skew_list-list-v-t-m-a-
+skew an object in a list.\
+standard 3D = shear X along Z\
+standard 2D = shear X along Y
+- `v` - vector, shear parallel to this axis
+  - 3D:
+    - as vector
+    - standard = Z axis
+  - 2D:
+    - as vector
+    - or as angle in degree
+    - same operation like [`rotate_to_vector()`][rotate_to_vector_list]
+    - standard = Y axis
+- `t` - target vector, shear direction to this vector
+  - 3D:
+    - as vector
+    - as angle in degree
+    - standard = X axis
+  - 2D:
+    - not needed, undefined
+- `m` - skew factor, standard = 0 
+- `a` - angle in degree inside (-90 ... 90), alternative to 'm'
+
+#### `skew_at_list (list, v, t, m, a, p)` [^][contents]
+[skew_at_list]: #skew_at_list-list-v-t-m-a-p-
+skew an object in a list at position `p`.\
+see [`skew_list()`][skew_list]
+- `p` - origin position at where it skews
 
 
-### Transformation at a fixed axis [^][contents]
+### Transformation with preset defaults [^][contents]
+
+#### Transformation function backwards [^][contents]
+Contains functions that define known functions with operation backwards.\
+Option `backwards` is removed and internally set to `true`.
+Name convention: 'base operation' + '_backwards' + 'additional operations'\
+
+| Base function                                            | operation backwards
+|----------------------------------------------------------|---------------------
+| [`rotate_list()`][rotate_list]                           | [`rotate_backwards_list (list, a, v, d)`][rotate_backwards_list]
+| [`rotate_at_list()`][rotate_at_list]                     | `rotate_backwards_at_list (list, a, p, v, d)`
+| [`rotate_to_vector_list()`][rotate_to_vector_list]       | `rotate_backwards_to_vector_list (list, v, a)`
+| [`rotate_to_vector_at_list()`][rotate_to_vector_at_list] | `rotate_backwards_to_vector_at_list (list, v, p, a)`
+
+#### Transformation at a fixed axis [^][contents]
 Contains functions that define known functions on a fixed axis.\
 Name convention: 'function operation name' + '_axis'\
 Axis = x, y or z. later named as '?'
 
+##### Basic transformation at fixed axis [^][contents]
+| Base function                        | with fixed axis               | description
+|--------------------------------------|-------------------------------|-------------
+| [`translate_list()`][translate_list] | `translate_?_list (list, l)`  | `l` - length to translate
+| .                                    | `translate_xy_list (list, t)` | `t` - 2D position at X and Y axis
+| [`rotate_list()`][rotate_list]       | `rotate_?_list (list, a)`     | `a` - angle to rotate in degree
+| [`mirror_list()`][mirror_list]       | `mirror_?_list (list)`        |
+| [`scale_list()`][scale_list]         | `scale_?_list (list, f)`      | `f` - scale factor as numeric value
+| [`resize_list()`][resize_list]       | `resize_?_list (list, l)`     | `l` - new size of axis
 
-#### Basic transformation at fixed axis [^][contents]
-
-| Base function      | with fixed axis               | description
-|--------------------|-------------------------------|-------------
-| `translate_list()` | `translate_?_list (list, l)`  | `l` - length to translate
-| `translate_list()` | `translate_xy_list (list, t)` | `t` - 2D position at X and Y axis
-| `rotate_list()`    | `rotate_?_list (list, a)`     | `a` - angle to rotate in degree
-| `mirror_list()`    | `mirror_?_list (list)`        |
-| `scale_list()`     | `scale_?_list (list, f)`      | `f` - scale factor as numeric value
-| `resize_list()`    | `resize_?_list (list, l)`     | `l` - new size of axis
-
-
-#### More at fixed axis [^][contents]
-
-| Base function                | with fixed axis                           | description
-|------------------------------|-------------------------------------------|-------------
-| `rotate_backwards_list()`    | `rotate_backwards_?_list (list, a)`       | `a` - angle
-| `rotate_at_list()`           | `rotate_at_?_list (list, a, p)`           | `a` - angle<br /> `p` - position
-| `rotate_backwards_at_list()` | `rotate_backwards_at_?_list (list, a, p)` | `a` - angle<br /> `p` - position
-| `mirror_at_list()`           | `mirror_at_?_list (list, p)`              | `p` - position
+##### More at fixed axis [^][contents]
+| Base function                                      | with fixed axis                           | description
+|----------------------------------------------------|-------------------------------------------|-------------
+| [`rotate_backwards_list()`][rotate_backwards_list] | `rotate_backwards_?_list (list, a)`       | `a` - angle
+| [`rotate_at_list()`][rotate_at_list]               | `rotate_at_?_list (list, a, p)`           | `a` - angle<br /> `p` - position
+| `rotate_backwards_at_list()`                       | `rotate_backwards_at_?_list (list, a, p)` | `a` - angle<br /> `p` - position
+| [`mirror_at_list()`][mirror_at_list]               | `mirror_at_?_list (list, p)`              | `p` - position
 
 
 Multmatrix [^][contents]
@@ -508,34 +549,44 @@ translate() rotate() scale()
 The functions of OpenSCAD modules for transformation are reproduced.\
 [=> Wikipedia - Transformation matrix](https://en.wikipedia.org/wiki/Transformation_matrix)
 
+
 ### Basic multmatrix functions [^][contents]
 
 #### `matrix_translate (v, d)` [^][contents]
-Generate a matrix to translate at `v`.
+[matrix_translate]: #matrix_translate-v-d-
+Generate a matrix to translate to `v`.
 - `v` - vector
 - `d`
   - dimensions of vector which will transformed with matrix
     - `3` - spatial (3D) - standard
     - `2` - flat (2D)
 
-#### `matrix_rotate (a, v, d)` [^][contents]
+#### `matrix_rotate (a, v, backwards, d)` [^][contents]
+[matrix_rotate]: #matrix_rotate-a-v-backwards-d-
 Generate a matrix to rotate.
 - `a` - angle
 - `v` - vector where rotating around
+- `backwards`
+  - `false` - standard, normal forward rotate
+  - `true`  - rotate backwards, undo forward rotate
 - `d`
   - dimensions of vector which will transformed with matrix
     - `3` - spatial (3D) - standard
     - `2` - flat (2D)
 
 #### `matrix_mirror (v, d)` [^][contents]
+[matrix_mirror]: #matrix_mirror-v-d-
 Generate a matrix to mirror at origin along a vector `v`.
+- `v` - mirror along this direction, standard = X axis
 - `d`
   - dimensions of vector which will transformed with matrix
     - `3` - spatial (3D) - standard
     - `2` - flat (2D)
 
 #### `matrix_scale (v, d)` [^][contents]
+[matrix_scale]: #matrix_scale-v-d-
 Generate a matrix to scale to a given axis in vector `v`.
+- `v` - vector with scale factor for each axis
 - `d`
   - dimensions of vector which will transformed with matrix
     - `3` - spatial (3D) - standard
@@ -545,19 +596,21 @@ Generate a matrix to scale to a given axis in vector `v`.
 ### More multmatrix functions [^][contents]
 
 #### `matrix_rotate_backwards (a, v, d)` [^][contents]
+[matrix_rotate_backwards]: #matrix_rotate_backwards-a-v-d-
 Generate a matrix to rotate backwards.
 - `a` - angle
-- `v` - vector where rotating around
+- `v` - vector where it rotating around
 - `d`
   - dimensions of vector which will transformed with matrix
     - `3` - spatial (3D) - standard
     - `2` - flat (2D)
 
-#### `matrix_rotate_at (a, p, v, d, backwards)` [^][contents]
+#### `matrix_rotate_at (a, p, v, backwards, d)` [^][contents]
+[matrix_rotate_at]: #matrix_rotate_at-a-p-v-backwards-d-
 Generate a matrix to rotate at position `p`.
 - `a` - angle
 - `v` - vector where it rotates around
-- `p` - position at where it rotates
+- `p` - origin position at where it rotates
 - `d`
   - dimensions of vector which will transformed with matrix
     - `3` - spatial (3D) - standard
@@ -566,19 +619,10 @@ Generate a matrix to rotate at position `p`.
   - `false` - standard, normal forward rotate
   - `true`  - rotate backwards, undo forward rotate
 
-#### `matrix_rotate_backwards_at (a, p, v, d)` [^][contents]
-Generate a matrix to rotate backwards at position `p`.
-- `a` - angle
-- `v` - vector where it rotates around
-- `p` - position at where it rotates
-- `d`
-  - dimensions of vector which will transformed with matrix
-    - `3` - spatial (3D) - standard
-    - `2` - flat (2D)
-
 #### `matrix_rotate_to_vector (v, a, backwards)` [^][contents]
+[matrix_rotate_to_vector]: #matrix_rotate_to_vector-v-a-backwards-
 Generate a matrix to rotate from direction Z axis to direction at vector `v`.
-- `p` - direction as vector
+- `v` - direction as vector
 - `a`
   - angle in degree
   - or rotational orientation vector
@@ -599,14 +643,10 @@ procedure 2, `a` as orientation vector:
 - make rotation around vector `v`, so that the originally X axis point to
   orientation vector `a`
 
-#### `matrix_rotate_backwards_to_vector (v, a)` [^][contents]
-Generate a matrix to rotate backwards from direction Z axis to direction at vector `v`.
-- `p` - direction as vector
-- `a` - angle in degree or rotational orientation vector
-
 #### `matrix_rotate_to_vector_at (v, p, a, backwards)` [^][contents]
+[matrix_rotate_to_vector_at]: #matrix_rotate_to_vector_at-v-p-a-backwards-
 Generate a matrix to rotate from direction Z axis to direction at vector `v`.
-Rotate origin at vector `v`.
+Rotate origin at vector `p`.
 - `v` - vector where it rotates around
 - `p` - direction as vector
 - `a` - angle in degree or rotational orientation vector
@@ -614,53 +654,91 @@ Rotate origin at vector `v`.
   - `false` - standard, normal forward rotate
   - `true`  - rotate backwards, undo forward rotate
 
-#### `matrix_rotate_backwards_to_vector_at (v, p, a)` [^][contents]
-Generate a matrix to rotate backwards from direction Z axis to direction at vector `v`.
-(can make `matrix_rotate_to_vector_at()` undone)
-Rotate origin at vector `v`.
-- `v` - vector where it rotates around
-- `p` - direction as vector
-- `a` - angle in degree or rotational orientation vector
-
 #### `matrix_mirror_at (v, p, d)` [^][contents]
-Generate a matrix to  mirror at origin along a vector `v` at position `p`.
-- `p` - position at where it mirrors
-- `v` - mirror along this direction
+[matrix_mirror_at]: #matrix_mirror_at-v-p-d-
+Generate a matrix to mirror along a vector `v` at origin position `p`.
+- `v` - mirror along this direction, standard = X axis
+- `p` - origin position at where it mirrors
 - `d`
   - dimensions of vector which will transformed with matrix
     - `3` - spatial (3D) - standard
     - `2` - flat (2D)
 
+#### `matrix_skew (v, t, m, a, d)` [^][contents]
+[matrix_skew]: #matrix_skew-v-t-m-a-d-
+Generate a matrix to skew an object.\
+standard 3D = shear X along Z\
+standard 2D = shear X along Y
+- `v` - vector, shear parallel to this axis
+  - 3D:
+    - as vector
+    - standard = Z axis
+  - 2D:
+    - as vector
+    - or as angle in degree
+    - same operation like rotate_to_vector()
+    - standard = Y axis
+- `t` - target vector, shear direction to this vector
+  - 3D:
+    - as vector
+    - as angle in degree
+    - standard = X axis
+  - 2D:
+    - not needed, undefined
+- `m` - skew factor, standard = 0 
+- `a` - angle in degree inside (-90 ... 90), alternative to 'm'
+- `d`
+  - dimensions of vector which will transformed with matrix
+    - `3` - spatial (3D) - standard
+    - `2` - flat (2D)
 
-### Multmatrix on a fixed axis [^][contents]
+#### `matrix_skew_at (v, t, m, a, p, d)` [^][contents]
+[matrix_skew_at]: #matrix_skew_at-v-t-m-a-d-
+Generate a matrix to skew an object at position `p`.\
+see [`matrix_skew()`][matrix_skew]
+- `p` - origin position at where it skews
+
+
+### Multmatrix with preset defaults [^][contents]
+
+#### Multmatrix function backwards [^][contents]
+Contains functions that define known functions with operation backwards.\
+Option `backwards` is removed and internally set to `true`.
+Name convention: 'base operation' + '_backwards' + 'additional operations'\
+
+| Base function                                                | operation backwards
+|--------------------------------------------------------------|---------------------
+| [`matrix_rotate()`][matrix_rotate]                           | [`matrix_rotate_backwards (a, v, d)`][matrix_rotate_backwards]
+| [`matrix_rotate_at()`][matrix_rotate_at]                     | `matrix_rotate_backwards_at (a, p, v, d)`
+| [`matrix_rotate_to_vector()`][matrix_rotate_to_vector]       | `matrix_rotate_backwards_to_vector (v, a)`
+| [`matrix_rotate_to_vector_at()`][matrix_rotate_to_vector_at] | `matrix_rotate_backwards_to_vector_at (v, p, a)`
+
+#### Multmatrix on a fixed axis [^][contents]
 Contains functions that define known functions on a fixed axis.\
 Name convention: 'function operation name' + '_axis'\
 Axis = x, y or z. later named as '?'
 
+##### Basic multmatrix at fixed axis [^][contents]
+| Base function                            | with fixed axis              | description
+|------------------------------------------|------------------------------|-------------
+| [`matrix_translate()`][matrix_translate] | `matrix_translate_?  (l, d)` | `l` - length to translate        <br> `d` - dimension
+| .                                        | `matrix_translate_z  (l)`    | only in 3 dimension
+| .                                        | `matrix_translate_xy (t, d)` | `t` - 2D position at X and Y axis<br> `d` - dimension
+| [`matrix_rotate()`][matrix_rotate]       | `matrix_rotate_? (a, d)`     | `a` - angle to rotate in degree  <br> `d` - dimension
+| [`matrix_mirror()`][matrix_mirror]       | `matrix_mirror_? (d)`        | `d` - dimension
+| .                                        | `matrix_mirror_z ()`         | only in 3 dimension
+| [`matrix_scale()`][matrix_scale]         | `matrix_scale_? (f, d)`      | `f` - scale factor               <br> `d` - dimension
+| .                                        | `matrix_scale_z (f)`         | only in 3 dimension
 
-#### Basic multmatrix at fixed axis [^][contents]
-| Base function        | with fixed axis              | description
-|----------------------|------------------------------|-------------
-| `matrix_translate()` | `matrix_translate_?  (l, d)` | `l` - length to translate        <br> `d` - dimension
-| .                    | `matrix_translate_z  (l)`    | only in 3 dimension
-| .                    | `matrix_translate_xy (t, d)` | `t` - 2D position at X and Y axis<br> `d` - dimension
-| `matrix_rotate()`    | `matrix_rotate_? (a, d)`     | `a` - angle to rotate in degree  <br> `d` - dimension
-| `matrix_mirror()`    | `matrix_mirror_? (d)`        | `d` - dimension
-| .                    | `matrix_mirror_z ()`         | only in 3 dimension
-| `matrix_scale()`     | `matrix_scale_? (f, d)`      | `f` - scale factor               <br> `d` - dimension
-| .                    | `matrix_scale_z (f)`         | only in 3 dimension
-
-
-#### More multmatrix at fixed axis [^][contents]
-
-| Base function                  | with fixed axis                          | description
-|--------------------------------|------------------------------------------|-------------
-| `matrix_rotate_backwards()`    | `matrix_rotate_backwards_? (a)`          | `a` - angle <br> only in 3 dimension
-| .                              | `matrix_rotate_backwards_z (a, d)`       | `d` - dimension
-| `matrix_rotate_at()`           | `matrix_rotate_at_?           (a, p)`    | `a` - angle <br> `p` - position <br> only in 3 dimension
-| .                              | `matrix_rotate_at_z           (a, p, d)` | `d` - dimension
-| `matrix_rotate_backwards_at()` | `matrix_rotate_backwards_at_? (a, p)`    | `a` - angle <br> `p` - position <br> only in 3 dimension
-| .                              | `matrix_rotate_backwards_at_z (a, p, d)` | `d` - dimension
-| `matrix_mirror_at()`           | `matrix_mirror_at_? (p, d)`              | `p` - position <br> `d` - dimension
-| .                              | `matrix_mirror_at_z (p)`                 | only in 3 dimension
+##### More multmatrix at fixed axis [^][contents]
+| Base function                            | with fixed axis                          | description
+|------------------------------------------|------------------------------------------|-------------
+| `matrix_rotate_backwards()`              | `matrix_rotate_backwards_? (a)`          | `a` - angle <br> only in 3 dimension
+| .                                        | `matrix_rotate_backwards_z (a, d)`       | `d` - dimension
+| [`matrix_rotate_at()`][matrix_rotate_at] | `matrix_rotate_at_?           (a, p)`    | `a` - angle <br> `p` - position <br> only in 3 dimension
+| .                                        | `matrix_rotate_at_z           (a, p, d)` | `d` - dimension
+| `matrix_rotate_backwards_at()`           | `matrix_rotate_backwards_at_? (a, p)`    | `a` - angle <br> `p` - position <br> only in 3 dimension
+| .                                        | `matrix_rotate_backwards_at_z (a, p, d)` | `d` - dimension
+| [`matrix_mirror_at()`][matrix_mirror_at] | `matrix_mirror_at_? (p, d)`              | `p` - position <br> `d` - dimension
+| .                                        | `matrix_mirror_at_z (p)`                 | only in 3 dimension
 

@@ -1,0 +1,285 @@
+Transform and edit objects
+==========================
+
+
+### defined in file
+
+`banded/operator.scad`\
+` `| \
+` `+--> `banded/operator_edit.scad`\
+` `+--> `banded/operator_operator.scad`\
+` `+--> `banded/operator_transform.scad`
+
+[<-- file overview](file_overview.md)
+
+### Contents
+[contents]: #contents "Contents"
+- [Transform operator](#transform-operator-)
+  - [Transformation modules](#transformation-modules-)
+    - [`rotate_new()`][rotate_new]
+    - [`rotate_backwards()`][rotate_backwards]
+    - [`rotate_at()`][rotate_at]
+    - [`rotate_to_vector()`][rotate_to_vector]
+    - [`rotate_to_vector_at()`][rotate_to_vector_at]
+    - [`mirror_at()`][mirror_at]
+    - [`mirror_copy()`][mirror_copy]
+    - [`mirror_copy_at()`][mirror_copy_at]
+    - [`mirror_repeat()`][mirror_repeat]
+    - [`mirror_repeat_copy()`][mirror_repeat]
+    - [`skew()`][skew]
+    - [`skew_at()`][skew_at]
+  - [Transformation with preset defaults](#transformation-with-preset-defaults-)
+    - [Transformation operator backwards](#transformation-operator-backwards-)
+    - [Transformation at a fixed axis](#transformation-at-a-fixed-axis-)
+  - [Comparison same transformation](#comparison-same-transformation-)
+    - [Buildin operator modules](#buildin-operator-modules-)
+    - [More operator modules](#more-operator-modules-)
+- [Place objects](#place-objects-)
+- [Edit and test objects](edit-and-test-objects-)
+
+
+Transform operator [^][contents]
+--------------------------------
+Contains modules which extend OpenScad buildin operator family
+and keep the same behavior and option names.
+
+### Transformation modules [^][contents]
+
+#### `rotate_new` (a, v, backwards)` [^][contents]
+[rotate_new]: #rotate_new-a-v-backwards-
+Rotate object with additional options.
+Works like `rotate()`.\
+You can replace buildin `rotate()` with:
+```OpenScad
+module rotate(a,v,backwards=false) { rotate_new(a,v,backwards) children(); }
+```
+- `a` - angle to rotate in degree
+- `v` - vector where rotating around
+- `backwards`
+  - `false` - standard, normal forward rotate
+  - `true`  - rotate backwards, undo forward rotate
+
+#### `rotate_backwards (a, v)` [^][contents]
+[rotate_backwards]: #rotate_backwards-a-v-
+Rotate object backwards.
+Options like `rotate()`.
+- `a` - angle
+- `v` - vector where rotating around
+
+#### `rotate_at (a, p, v, backwards)` [^][contents]
+[rotate_at]: #rotate_at-a-p-v-backwards-
+Rotate object at position `p`.
+- `a` - angle
+- `v` - vector where it rotates around
+- `p` - origin position at where it rotates
+- `backwards`
+  - `false` - standard, normal forward rotate
+  - `true`  - rotate backwards, undo forward rotate
+
+#### `rotate_to_vector (v, a, backwards)` [^][contents]
+[rotate_to_vector]: #rotate_to_vector-v-a-backwards-
+Rotate object from direction Z axis to direction at vector `v`.
+- `v` - direction as vector
+- `a`
+  - angle in degree
+  - or rotational orientation vector
+- `backwards`
+  - `false` - standard, normal forward rotate
+  - `true`  - rotate backwards, undo forward rotate
+
+procedure 1, `a` as angle:
+- vector `v` will split in
+  - inclination angle, rotate around Y axis
+  - and azimuthal angle, rotate around Z axis
+- make rotation around Y axis with inclination angle
+- make rotation around Z axis with azimuthal angle
+- make rotation around vector `v` with angle `a`
+
+procedure 2, `a` as orientation vector:
+- make rotation from Z axis to vector `v`
+- make rotation around vector `v`, so that the originally X axis point to
+  orientation vector `a`
+
+#### `rotate_to_vector_at (v, p, a, backwards)` [^][contents]
+[rotate_to_vector_at]: #rotate_to_vector_at-v-p-a-backwards-
+Rotate object from direction Z axis to direction at vector `v`.
+Rotate origin at vector `v`.
+- `v` - vector where it rotates around
+- `p` - direction as vector
+- `a` - angle in degree or rotational orientation vector
+- `backwards`
+  - `false` - standard, normal forward rotate
+  - `true`  - rotate backwards, undo forward rotate
+
+#### `mirror_at (v, p)` [^][contents]
+[mirror_at]: #mirror_at-v-p-
+Mirror an object along a vector `v` at origin position `p`.
+- `p` - origin position at where it mirrors
+- `v` - mirror along this direction, standard = X axis
+
+#### `mirror_copy (v)` [^][contents]
+[mirror_copy]: #mirror_copy-v-
+Mirror an object at origin along a vector `v`
+and keep original object.
+- `v` - mirror along this direction, standard = X axis
+
+#### `mirror_copy_at (v, p)` [^][contents]
+[mirror_copy_at]: #mirror_copy_at-v-p-
+Mirror an object along a vector `v` at origin position `p` and keep original object.
+- `p` - origin position at where it mirrors
+- `v` - mirror along this direction, standard = X axis
+
+#### `mirror_repeat (v, v2, v3)` [^][contents]
+[mirror_repeat]: #mirror_repeat-v-v2-v3-
+Mirror an object at origin up to 3 times along a vector `v`, then `v2`, `v3`.
+- `v`  - mirror along this direction, standard = X axis
+- `v2` - 2. mirror direction, optional
+- `v3` - 3. mirror direction, optional
+
+#### `mirror_repeat_copy (v, v2, v3)` [^][contents]
+[mirror_repeat_copy]: mirror_repeat_copy-v-v2-v3-
+Mirror an object at origin up to 3 times along a vector `v`, then `v2`, `v3`
+and keep original object.
+- `v`  - mirror along this direction, standard = X axis
+- `v2` - 2. mirror direction, optional
+- `v3` - 3. mirror direction, optional
+
+#### `skew (v, t, m, a)` [^][contents]
+[skew]: #skew-v-t-m-a-
+skew an object.\
+standard 3D = shear X along Z\
+standard 2D = shear X along Y
+- `v` - vector, shear parallel to this axis
+  - 3D:
+    - as vector
+    - standard = Z axis
+  - 2D:
+    - as vector
+    - or as angle in degree
+    - same operation like [`rotate_to_vector()`][rotate_to_vector]
+    - standard = Y axis
+- `t` - target vector, shear direction to this vector
+  - 3D:
+    - as vector
+    - as angle in degree
+    - standard = X axis
+  - 2D:
+    - not needed, undefined
+- `m` - skew factor, standard = 0 
+- `a` - angle in degree inside (-90 ... 90), alternative to 'm'
+
+#### `skew_at (v, t, m, a, p)` [^][contents]
+[skew_at]: #skew_at-v-t-m-a-p-
+skew an object in a list at position `p`.\
+see [`skew()`][skew]
+- `p` - origin position at where it skews
+
+
+### Transformation with preset defaults [^][contents]
+
+#### Transformation operator backwards [^][contents]
+Contains modules that define known operations with operation backwards.\
+Option `backwards` is removed and internally set to `true`.
+Name convention: 'base operation' + '_backwards' + 'additional operations'\
+
+| Base function                                  | operation backwards
+|------------------------------------------------|---------------------
+| `rotate()`, [`rotate_new()`][rotate_new]       | [`rotate_backwards (a, v, d)`][rotate_backwards]
+| [`rotate_at()`][rotate_at]                     | `rotate_backwards_at (a, p, v, d)`
+| [`rotate_to_vector()`][rotate_to_vector]       | `rotate_backwards_to_vector (v, a)`
+| [`rotate_to_vector_at()`][rotate_to_vector_at] | `rotate_backwards_to_vector_at (v, p, a)`
+
+#### Transformation at a fixed axis [^][contents]
+Contains modules that define known operations on a fixed axis.\
+Name convention: 'function operation name' + '_axis'\
+Axis = x, y or z. later named as '?'
+
+##### Basic transformation at fixed axis [^][contents]
+| Base module buildin | with fixed axis    | description
+|---------------------|--------------------|-------------
+| `translate()`       | `translate_? (l)`  | `l` - length to translate
+| .                   | `translate_xy (t)` | `t` - 2D position at X and Y axis
+| `rotate()`          | `rotate_? (a)`     | `a` - angle to rotate in degree
+| `mirror()`          | `mirror_? ()`      |
+| `scale()`           | `scale_? (f)`      | `f` - scale factor as numeric value
+| `resize()`          | `resize_? (l)`     | `l` - new size of axis
+
+##### More at fixed axis [^][contents]
+| Base module                              | with fixed axis                | description
+|------------------------------------------|--------------------------------|-------------
+| [`rotate_backwards()`][rotate_backwards] | `rotate_backwards_? (a)`       | `a` - angle
+| [`rotate_at()`][rotate_at]               | `rotate_at_? (a, p)`           | `a` - angle<br /> `p` - position
+| `rotate_backwards_at()`                  | `rotate_backwards_at_? (a, p)` | `a` - angle<br /> `p` - position
+| [`mirror_at()`][mirror_at]               | `mirror_at_? (p)`              | `p` - position
+
+
+### Comparison same transformation [^][contents]
+
+#### Buildin operator modules [^][contents]
+[=> OpenScad user manual, transformations](https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Transformations)
+
+| operator module        | function on lists                    | generating matrix
+|------------------------|--------------------------------------|-------------------
+| translate()            | [translate_list()][translate_list]   | [matrix_translate()][matrix_translate]
+| [rotate()][rotate_new] | [rotate_list()][rotate_list]         | [matrix_rotate()][matrix_rotate]
+| mirror()               | [mirror_list()][mirror_list]         | [matrix_mirror()][matrix_mirror]
+| scale()                | [scale_list()][scale_list]           | [matrix_scale()][matrix_scale]
+| resize()               | [resize_list()][resize_list]         | -
+| projection()           | [projection_list()][projection_list] | -
+| multmatrix()           | [multmatrix_list()][multmatrix_list] | -
+
+[translate_list]:  draft.md#translate_list-list-v-
+[rotate_list]:     draft.md#rotate_list-list-a-v-backwards-
+[mirror_list]:     draft.md#mirror_list-list-v-
+[scale_list]:      draft.md#scale_list-list-v-
+[resize_list]:     draft.md#resize_list-list-newsize-
+[projection_list]: draft.md#projection_list-list-plane-
+[multmatrix_list]: draft.md#multmatrix_list-list-m-
+
+[matrix_translate]: draft.md#matrix_translate-v-d-
+[matrix_rotate]:    draft.md#matrix_rotate-a-v-backwards-d-
+[matrix_mirror]:    draft.md#matrix_mirror-v-d-
+[matrix_scale]:     draft.md#matrix_scale-v-d-
+
+#### More operator modules [^][contents]
+
+| operator module                              | function on lists                                      | generating matrix
+|----------------------------------------------|--------------------------------------------------------|-------------------
+| [rotate_backwards()][rotate_backwards]       | [rotate_backwards_list()][rotate_backwards_list]       | [matrix_rotate_backwards()][matrix_rotate_backwards]
+| [rotate_at()][rotate_at]                     | [rotate_at_list()][rotate_at_list]                     | [matrix_rotate_at()][matrix_rotate_at]
+| [rotate_to_vector()][rotate_to_vector]       | [rotate_to_vector_list()][rotate_to_vector_list]       | [matrix_rotate_to_vector()][matrix_rotate_to_vector]
+| [rotate_to_vector_at()][rotate_to_vector_at] | [rotate_to_vector_at_list()][rotate_to_vector_at_list] | [matrix_rotate_to_vector_at()][matrix_rotate_to_vector_at]
+| [mirror_at()][mirror_at]                     | [mirror_at_list()][mirror_at_list]                     | [matrix_mirror_at()][matrix_mirror_at]
+| [mirror_copy()][mirror_copy]                 | -                                                      | -
+| [mirror_copy_at()][mirror_copy_at]           | -                                                      | -
+| [mirror_repeat()][mirror_repeat]             | -                                                      | -
+| [mirror_repeat_copy()][mirror_repeat_copy]   | -                                                      | -
+| [skew()][skew]                               | [skew_list()][skew_list]                               | [matrix_skew()][matrix_skew]
+| [skew_at()][skew_at]                         | [skew_at_list()][skew_at_list]                         | [matrix_skew_at()][matrix_skew_at]
+
+[rotate_backwards_list]:    draft.md#rotate_backwards_list-list-a-v-
+[rotate_at_list]:           draft.md#rotate_at_list-list-a-p-v-backwards-
+[rotate_to_vector_list]:    draft.md#rotate_to_vector_list-list-v-a-backwards-
+[rotate_to_vector_at_list]: draft.md#rotate_to_vector_at_list-list-v-p-a-backwards-
+[mirror_at_list]:           draft.md#mirror_at_list-list-v-p-
+[skew_list]:                draft.md#skew_list-list-v-t-m-a-
+[skew_at_list]:             draft.md#skew_at_list-list-v-t-m-a-p-
+
+[matrix_rotate_backwards]:    draft.md#matrix_rotate_backwards-a-v-d-
+[matrix_rotate_at]:           draft.md#matrix_rotate_at-a-p-v-backwards-d-
+[matrix_rotate_to_vector]:    draft.md#matrix_rotate_to_vector-v-a-backwards-
+[matrix_rotate_to_vector_at]: draft.md#matrix_rotate_to_vector_at-v-p-a-backwards-
+[matrix_mirror_at]:           draft.md#matrix_mirror_at-v-p-d-
+[matrix_skew]:                draft.md#matrix_skew-v-t-m-a-d-
+[matrix_skew_at]:             draft.md#matrix_skew_at-v-t-m-a-d-
+
+Place objects [^][contents]
+---------------------------
+
+...
+
+Edit and test objects [^][contents]
+-----------------------------------
+
+...
+

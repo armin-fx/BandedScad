@@ -10,28 +10,19 @@ use <banded/draft_multmatrix_basic.scad>
 // jeden Punkt in der Liste <list> rückwärts rotieren
 // funktioniert wie rotate_backwards()
 function rotate_backwards_list (list, a, v) =
-	 is_list(a) ?
-		multmatrix_list (list,
-			matrix_rotate_x(-a.x, d=3) *
-			matrix_rotate_y(-a.y, d=3) *
-			matrix_rotate_z(-a.z, d=3)
-		)
-	:is_num(a)  ?
-		is_list(v) ?
-			rotate_v_list(list, -a, v)
-		:	rotate_z_list(list, -a)
-	:list
+	rotate_list (list, a, v, backwards=true)
 ;
 
 // jeden Punkt in der Liste <list> rotieren an der angegebenen Position p
 // funktioniert wie rotate_at()
 function rotate_at_list (list, a, p, v, backwards=false) =
 	! (backwards==true) ?
+		// forward
 		translate_list( v=p,      list=
 		rotate_list    (a=a, v=v, list=
 		translate_list( v=-p,     list=
 		list )))
-	:
+	:	// backwards
 		rotate_backwards_at_list (list, a, p, v)
 ;
 // jeden Punkt in der Liste <list> rückwärts rotieren an der angegebenen Position p
@@ -127,3 +118,20 @@ function scale_z_list (list, f) = scale_list (list, [0,0,f]);
 function resize_x_list (list, l) = resize_list (list, [l,0,0]);
 function resize_y_list (list, l) = resize_list (list, [0,l,0]);
 function resize_z_list (list, l) = resize_list (list, [0,0,l]);
+
+// skew an object in a point list, see matrix_skew()
+function skew_list (list, v, t, m, a) =
+	(!is_list(list) || !is_list(list[0])) ? undef :
+	multmatrix_list (list,
+		matrix_skew (v, t, m, a, d=len(list[0]))
+	)
+;
+
+// skew an object in a point list at position 'p', see matrix_skew_at()
+function skew_list_at (list, v, t, m, a, p) =
+	(!is_list(list) || !is_list(list[0])) ? undef :
+	multmatrix_list (list,
+		matrix_skew_at (v, t, m, a, p, d=len(list[0]))
+	)
+;
+

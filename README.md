@@ -1,6 +1,6 @@
 
 BandedScad
-=========
+==========
 
 BandedScad is a OpenScad library.
 It contains functions and modules to make OpenScad easier to use.
@@ -13,7 +13,7 @@ It contains functions and modules to make OpenScad easier to use.
 
 
 What is does [^][contents]
-------------
+--------------------------
 
 - [More control of the level of detail for a mesh][extend],
     extend the control of number of facets used to generate an arc
@@ -25,7 +25,7 @@ What is does [^][contents]
   - Contains functions for working with [multmatrix][multmatrix]
 - Contains some functions for [edit and work with lists][list]
 - Contains some math and helper functions
-- Contains some functions and modules transform and edit objects
+- Contains modules to [transform and edit objects][operator]
 - Contains some configurable object modules
 
 [file overview -->](doc/file_overview.md)
@@ -36,9 +36,10 @@ What is does [^][contents]
 [transform]:  doc/draft.md#transform-functions-
 [multmatrix]: doc/draft.md#multmatrix-
 [list]:       doc/list.md
+[operator]:   doc/operator.md
 
 Installation [^][contents]
-------------
+--------------------------
 
 You must extract archive and copy 'banded.scad' and folder 'banded/' into a directory
 and now you can use it here.
@@ -56,7 +57,7 @@ You can reach this from OpenScad menu File->Show Library Folder.
 
 
 Use [^][contents]
----
+-----------------
 
 You can include the whole library with
 ```OpenSCAD

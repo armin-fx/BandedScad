@@ -24,18 +24,35 @@ function translate_list (list, v) =
 //  list = Punkt-Liste
 //  a    = Winkel (a)
 //  v    = Vektor
-function rotate_list (list, a, v) =
-	 is_list(a) ?
-		multmatrix_list (list,
-			matrix_rotate_z(a.z, d=3) *
-			matrix_rotate_y(a.y, d=3) *
-			matrix_rotate_x(a.x, d=3)
-		)
-	:is_num(a)  ?
-		is_list(v) ?
-			rotate_v_list(list, a, v)
-		:	rotate_z_list(list, a)
-	:list
+//  backwards = 'false' - Standard, vorwärts rotieren
+//              'true'  - rückwärts rotieren, macht Rotation rückgängig
+function rotate_list (list, a, v, backwards=false) =
+	! (backwards==true) ?
+		// forward
+		is_list(a) ?
+			multmatrix_list (list,
+				matrix_rotate_z(a.z, d=3) *
+				matrix_rotate_y(a.y, d=3) *
+				matrix_rotate_x(a.x, d=3)
+			)
+		:is_num(a)  ?
+			is_list(v) ?
+				rotate_v_list(list, a, v)
+			:	rotate_z_list(list, a)
+		:list
+	:
+		// backwards
+		is_list(a) ?
+			multmatrix_list (list,
+				matrix_rotate_x(-a.x, d=3) *
+				matrix_rotate_y(-a.y, d=3) *
+				matrix_rotate_z(-a.z, d=3)
+			)
+		:is_num(a)  ?
+			is_list(v) ?
+				rotate_v_list(list, -a, v)
+			:	rotate_z_list(list, -a)
+		:list
 ;
 
 // jeden Punkt in der Liste <list> um die X-Achse um <a> Grad drehen

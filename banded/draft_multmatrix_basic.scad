@@ -35,19 +35,34 @@ function matrix_translate (v, d=3) =
 // gibt die Matrix zum rotieren von Objekten zurück
 //  a    = Winkel (a)
 //  v    = Vektor
+//  backwards = 'false' - Standard, vorwärts rotieren
+//              'true'  - rückwärts rotieren, macht Rotation rückgängig
 //  d = Dimension der Vektoren, die mit der Matrix bearbeitet werden
-//       - 3 = räumlich (3D) = Standart
-//       - 2 = flächig  (2D)
-function matrix_rotate (a, v, d=3) =
-	 is_list(a) ?
-		matrix_rotate_z(a.z, d=d) *
-		matrix_rotate_y(a.y, d=d) *
-		matrix_rotate_x(a.x, d=d)
-	:is_num(a)  ?
-		is_list(v) ?
-			matrix_rotate_v(a, v, d=d)
-		:	matrix_rotate_z(a,    d=d)
-	:identity_matrix(d+1)
+//      - 3 = räumlich (3D) = Standart
+//      - 2 = flächig  (2D)
+function matrix_rotate (a, v, backwards=false, d=3) =
+	! (backwards==true) ?
+		// forward
+		is_list(a) ?
+			matrix_rotate_z(a.z, d=d) *
+			matrix_rotate_y(a.y, d=d) *
+			matrix_rotate_x(a.x, d=d)
+		:is_num(a)  ?
+			is_list(v) ?
+				matrix_rotate_v(a, v, d=d)
+			:	matrix_rotate_z(a,    d=d)
+		:identity_matrix(d+1)
+	:
+		// backwards
+		is_list(a) ?
+			matrix_rotate_x (-a.x, d=d) *
+			matrix_rotate_y (-a.y, d=d) *
+			matrix_rotate_z (-a.z, d=d)
+		:is_num(a)  ?
+			is_list(v) ?
+				matrix_rotate_v (-a, v, d=d)
+			:	matrix_rotate_z (-a,    d=d)
+		:identity_matrix(d+1)
 ;
 
 // gibt die Matrix zum rotieren von Objekten um die X-Achse um <a> zurück
@@ -114,7 +129,8 @@ function matrix_rotate_v (a, v, d=3) =
 		,[ y*x*(1-cosa)+z*sina, y*y*(1-cosa)+  cosa, y*z*(1-cosa)-x*sina, 0 ]
 		,[ z*x*(1-cosa)-y*sina, z*y*(1-cosa)+x*sina, z*z*(1-cosa)+  cosa, 0 ]
 		,[ 0, 0, 0, 1 ]
-		]	: undef
+		]
+	: undef
 ;
 
 // gibt die Matrix zum spiegeln von Objekten zurück

@@ -34,11 +34,11 @@ Overview of scad files
 ` `+--> [`banded/draft.scad`](draft.md "Draft objects in a point list")\
 ` `| . . . +--> [`banded/draft_curves.scad`](draft.md#curves- "Creates curves in a list")\
 ` `| . . . +--> [`banded/draft_transform.scad`](draft.md#transform-functions- "Transform functions for affine transformations")\
-` `| . . . | . . . . +--> `banded/draft_transform_basic.scad`\
-` `| . . . | . . . . +--> `banded/draft_transform_common.scad`\
+` `| . . . | . . . . +--> [`banded/draft_transform_basic.scad`](draft.md#basic-multmatrix-functions- "OpenScad buildin transformation on point lists")\
+` `| . . . | . . . . +--> [`banded/draft_transform_common.scad](draft.md#more-multmatrix-functions- "More functions for affine transformations")`\
 ` `| . . . +--> [`banded/draft_multmatrix.scad`](draft.md#multmatrix- "Multmatrix functions")\
-` `| . . . | . . . . +--> `banded/draft_multmatrix_basic.scad`\
-` `| . . . | . . . . +--> `banded/draft_multmatrix_common.scad`\
+` `| . . . | . . . . +--> [`banded/draft_multmatrix_basic.scad`](draft.md#basic-multmatrix-functions- "Generate matrix like OpenScad buildin affine transformation")\
+` `| . . . | . . . . +--> [`banded/draft_multmatrix_common.scad`](draft.md##more-multmatrix-functions- "Generate matrix for more affine transformations")\
 ` `| . . . |
 ` `| . . . +--> `banded/draft_transform_names.scad`\
 ` `|\
@@ -47,9 +47,9 @@ Overview of scad files
 ` `| . . . +--> `banded/object_circle.scad`\
 ` `| . . . +--> `banded/object_rounded.scad`\
 ` `|\
-` `+--> `banded/operator.scad`\
+` `+--> [`banded/operator.scad`](operator.md "Transform and edit objects")\
 ` `| . . . +--> `banded/operator_edit.scad`\
-` `| . . . +--> `banded/operator_transform.scad`\
+` `| . . . +--> [`banded/operator_transform.scad`](operator.md#transform-operator- "Transform operator for affine transformations")\
 ` `| . . . +--> `banded/operator_place.scad`\
 ` `|\
 ` `+--> `banded/benchmark.scad`\

@@ -26,15 +26,6 @@ module mirror_copy_at_x (p) { mirror_copy_at([1,0,0], !is_num(p) ? p : [p,0,0]) 
 module mirror_copy_at_y (p) { mirror_copy_at([0,1,0], !is_num(p) ? p : [0,p,0]) children(); }
 module mirror_copy_at_z (p) { mirror_copy_at([0,0,1], !is_num(p) ? p : [0,0,p]) children(); }
 
-// erzeugt ein Objekt und ein gespiegeltes Objekt
-module mirror_copy (v)
-{
-	V = v!=undef ? v : [1,0,0];
-	children();
-	mirror(V)
-	children();
-}
-
 // erzeugt ein gespiegeltes Objekt
 // Spiegel an Position p
 module mirror_at (v, p)
@@ -47,6 +38,15 @@ module mirror_at (v, p)
 		children();
 	else
 		mirror(V) children();
+}
+
+// erzeugt ein Objekt und ein gespiegeltes Objekt
+module mirror_copy (v)
+{
+	V = v!=undef ? v : [1,0,0];
+	children();
+	mirror(V)
+	children();
 }
 
 // erzeugt ein Objekt und ein gespiegeltes Objekt
@@ -78,12 +78,27 @@ module mirror_check (v)
 	else mirror(v) children();
 }
 
+// rotiert ein Objekt
+// Argumente wie bei rotate()
+//  backwards = 'false' - Standard, vorwärts rotieren
+//              'true'  - rückwärts rotieren, macht Rotation rückgängig
+module rotate_new (a, v, backwards=false)
+{
+	multmatrix ( matrix_rotate_to_vector (v, a, backwards) )
+	children();
+}
+
 // rotiert ein Objekt rückwärts
 // Argumente wie bei rotate()
 module rotate_backwards (a, v)
 {
 	if (is_list(a))
-		rotate_x(-a.x) rotate_y(-a.y) rotate_z(-a.z) children();
+		multmatrix (
+			matrix_rotate_x(-a.x) *
+			matrix_rotate_y(-a.y) *
+			matrix_rotate_z(-a.z)
+		)
+		children();
 	else if (is_num(a))
 		rotate(-a,v) children();
 	else
@@ -207,4 +222,20 @@ module translate_xy (t)
 module scale_x (f) { if (!is_num(f)) children(); else  scale([l,0,0]) children(); }
 module scale_y (f) { if (!is_num(f)) children(); else  scale([0,l,0]) children(); }
 module scale_z (f) { if (!is_num(f)) children(); else  scale([0,0,l]) children(); }
+
+// skew an object, see matrix_skew()
+// only 3D object
+module skew (v, t, m, a)
+{
+	multmatrix( matrix_skew(v,t,m,a) )
+	children();
+}
+
+// skew an object at position 'p', see matrix_skew_at()
+// only 3D object
+module skew_at (v, t, m, a, p)
+{
+	multmatrix( matrix_skew_at(v,t,m,a,p) )
+	children();
+}
 

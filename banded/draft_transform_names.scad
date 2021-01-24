@@ -59,4 +59,7 @@ function scale_z (list, f) = scale_z_list (list, f);
 function resize_x (list, l) = resize_x_list (list, l);
 function resize_y (list, l) = resize_y_list (list, l);
 function resize_z (list, l) = resize_z_list (list, l);
+//
+function skew    (list, v, t, m, a)    = skew_list (list, v, t, m, a);
+function skew_at (list, v, t, m, a, p) = skew_list (list, v, t, m, a, p);
 
