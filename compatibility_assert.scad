@@ -9,7 +9,7 @@
 
 // Assert evaluates a logical expression,
 // but it can not stop the process like new real assert in OpenScad
-module assert_ (condition, string)
+module assert (condition, string)
 {
 	if (! condition)
 	{
