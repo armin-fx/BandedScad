@@ -21,7 +21,7 @@ function summation_fn_intern_big (label, n, k, slice=100000) =
 	:summation_fn_intern(label, n, k)
 ;
 function summation_auto_fn (label, k=0) =
-	summation_fn_intern_auto(label, k+1, select_function(label, k), debug=debug)
+	summation_auto_fn_intern(label, k+1, select_function(label, k), debug=debug)
 ;
 function summation_auto_fn_intern (label, k, value, value_old) =
 	(value==value_old) ?

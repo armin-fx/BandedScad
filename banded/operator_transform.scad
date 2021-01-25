@@ -224,18 +224,34 @@ module scale_y (f) { if (!is_num(f)) children(); else  scale([0,l,0]) children()
 module scale_z (f) { if (!is_num(f)) children(); else  scale([0,0,l]) children(); }
 
 // skew an object, see matrix_skew()
-// only 3D object
-module skew (v, t, m, a)
+// 'd' - dimension: 2 = 2D,
+//                  3 = 3D
+//       It is not possible to get this information from the object.
+//       Not set - Try to get this value from the other options.
+//                 Otherwise use 3D.
+module skew (v, t, m, a, d)
 {
-	multmatrix( matrix_skew(v,t,m,a) )
+	D =	is_num(d) ? d :
+		is_list(v) ? len(v) :
+		is_num(v)  ? 2 :
+	//	is_list(t)&&len(t)==3 ? 3 :
+		3
+	;
+	multmatrix( matrix_skew(v,t,m,a, d=D) )
 	children();
 }
 
 // skew an object at position 'p', see matrix_skew_at()
 // only 3D object
-module skew_at (v, t, m, a, p)
+module skew_at (v, t, m, a, p, d)
 {
-	multmatrix( matrix_skew_at(v,t,m,a,p) )
+	D =	is_num(d) ? d :
+		is_list(v) ? len(v) :
+		is_num(v)  ? 2 :
+	//	is_list(t)&&len(t)==3 ? 3 :
+		3
+	;
+	multmatrix( matrix_skew_at(v,t,m,a,p, d=D) )
 	children();
 }
 

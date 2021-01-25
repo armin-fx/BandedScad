@@ -7,8 +7,8 @@ Transform and edit objects
 `banded/operator.scad`\
 ` `| \
 ` `+--> `banded/operator_edit.scad`\
-` `+--> `banded/operator_operator.scad`\
 ` `+--> `banded/operator_transform.scad`
+` `+--> `banded/operator_place.scad`\
 
 [<-- file overview](file_overview.md)
 
@@ -35,7 +35,7 @@ Transform and edit objects
     - [Buildin operator modules](#buildin-operator-modules-)
     - [More operator modules](#more-operator-modules-)
 - [Place objects](#place-objects-)
-- [Edit and test objects](edit-and-test-objects-)
+- [Edit and test objects](#edit-and-test-objects-)
 
 
 Transform operator [^][contents]
@@ -144,8 +144,8 @@ and keep original object.
 - `v2` - 2. mirror direction, optional
 - `v3` - 3. mirror direction, optional
 
-#### `skew (v, t, m, a)` [^][contents]
-[skew]: #skew-v-t-m-a-
+#### `skew (v, t, m, a, d)` [^][contents]
+[skew]: #skew-v-t-m-a-d-
 skew an object.\
 standard 3D = shear X along Z\
 standard 2D = shear X along Y
@@ -167,9 +167,15 @@ standard 2D = shear X along Y
     - not needed, undefined
 - `m` - skew factor, standard = 0 
 - `a` - angle in degree inside (-90 ... 90), alternative to 'm'
+- `d` - dimensions of object
+  - `3` - spatial (3D)
+  - `2` - flat (2D)
+  - not set - Try to get this value from the other options.
+    Otherwise use 3D.
+    It is not possible to get this information from the object.
 
-#### `skew_at (v, t, m, a, p)` [^][contents]
-[skew_at]: #skew_at-v-t-m-a-p-
+#### `skew_at (v, t, m, a, p, d)` [^][contents]
+[skew_at]: #skew_at-v-t-m-a-p-d-
 skew an object in a list at position `p`.\
 see [`skew()`][skew]
 - `p` - origin position at where it skews
@@ -271,7 +277,7 @@ Axis = x, y or z. later named as '?'
 [matrix_rotate_to_vector_at]: draft.md#matrix_rotate_to_vector_at-v-p-a-backwards-
 [matrix_mirror_at]:           draft.md#matrix_mirror_at-v-p-d-
 [matrix_skew]:                draft.md#matrix_skew-v-t-m-a-d-
-[matrix_skew_at]:             draft.md#matrix_skew_at-v-t-m-a-d-
+[matrix_skew_at]:             draft.md#matrix_skew_at-v-t-m-a-p-d-
 
 Place objects [^][contents]
 ---------------------------

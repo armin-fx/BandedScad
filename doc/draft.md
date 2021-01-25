@@ -693,7 +693,7 @@ standard 2D = shear X along Y
     - `2` - flat (2D)
 
 #### `matrix_skew_at (v, t, m, a, p, d)` [^][contents]
-[matrix_skew_at]: #matrix_skew_at-v-t-m-a-d-
+[matrix_skew_at]: #matrix_skew_at-v-t-m-a-p-d-
 Generate a matrix to skew an object at position `p`.\
 see [`matrix_skew()`][matrix_skew]
 - `p` - origin position at where it skews
