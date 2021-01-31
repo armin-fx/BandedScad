@@ -37,6 +37,7 @@ function is_nearly (a, b, deviation=1e-14) =
 // Voreinstellung = auf ganze Zahl runden
 function quantize (value, raster=1, offset=0.5) =
 	raster * floor( (value/raster) + offset )
+//	value+offset - ((value+offset)%raster+raster)%raster
 ;
 
 // Test: die Zahl ist eine ungerade Zahl? 
