@@ -18,8 +18,8 @@
 // Wird eine Reelle Zahl übergeben, wird daraus eine Komplexe Zahl erzeugt
 //
 
-complex_undef = undef;
-
+// Get complex number
+//
 function get_cartesian (c) =
 	is_num(c) ? [c, 0] // get_cartesian_from_number (c)
 	:
@@ -27,29 +27,13 @@ function get_cartesian (c) =
 	: // get_cartesian_from_polar (c)
 		c[0] * [cos(c[1]), sin(c[1])]
 ;
-function get_cartesian_safe (c) =
-	is_list(c) ?
-		 len(c)==2 ? c
-		:len(c)==3 ? get_cartesian_from_polar (c)
-		:complex_undef
-	:is_num(c) ? [c, 0]
-	:complex_undef
-;
-
+//
 function get_polar (c) =
 	is_num(c) ? [c, 0, 0] // get_polar_from_number (c)
 	:
 	c[2]==undef ? // get_polar_from_cartesian (c)
 		[norm(c), atan2(c[1],c[0]), 0]
 	:	c
-;
-function get_polar_safe (c) =
-	is_list(c) ?
-		 len(c)==2 ? get_polar_from_cartesian (c)
-		:len(c)==3 ? c
-		:complex_undef
-	:is_num(c) ? [c, 0, 0]
-	:complex_undef
 ;
 function get_cartesian_from_polar  (c) = c[0] * [cos(c[1]), sin(c[1])];
 function get_cartesian_from_number (n) = [n, 0];
@@ -64,14 +48,6 @@ function get_real (c) =
 	:             // get_real_from_polar     (c)
 		c[0] * cos(c[1])
 ;
-function get_real_safe (c) =
-	is_list(c) ?
-		 len(c)==2 ? c[0]
-		:len(c)==3 ? c[0] * cos(c[1])
-		:complex_undef
-	:is_num(c) ? c
-	:complex_undef
-;
 function get_imaginary (c) =
 	is_num(c) ? 0 // get_imaginary_from_number    (c)
 	:
@@ -80,14 +56,6 @@ function get_imaginary (c) =
 	:             // get_imaginary_from_polar     (c)
 		c[0] * sin(c[1])
 ;
-function get_imaginary_safe (c) =
-	is_list(c) ?
-		 len(c)==2 ? c[1]
-		:len(c)==3 ? c[0] * sin(c[1])
-		:complex_undef
-	:is_num(c) ? 0
-	:complex_undef
-;
 function get_real_from_cartesian      (c) = c[0];
 function get_real_from_polar          (c) = c[0] * cos(c[1]);
 function get_real_from_number         (n) = n;
@@ -95,6 +63,7 @@ function get_imaginary_from_cartesian (c) = c[1];
 function get_imaginary_from_polar     (c) = c[0] * sin(c[1]);
 function get_imaginary_from_number    (n) = 0;
 
+// Complex conjugate
 function c_conjugate (c) =
 	is_num(c) ? [c, 0]
 	:
@@ -103,17 +72,10 @@ function c_conjugate (c) =
 	:             // c_conjugate_polar     (c)
 		[c[0], -c[1], 0]
 ;
-function c_conjugate_safe (c) =
-	is_list(c) ?
-		 len(c)==2 ? [c[0], -c[1]]
-		:len(c)==3 ? [c[0], -c[1], 0]
-		:complex_undef
-	:is_num(c) ? [c, 0]
-	:complex_undef
-;
 function c_conjugate_cartesian (c) = [c[0], -c[1]];
 function c_conjugate_polar     (c) = [c[0], -c[1], 0];
 
+// Absolute value
 function c_abs (c) =
 	is_num(c) ? abs(c)
 	:
@@ -122,17 +84,10 @@ function c_abs (c) =
 	:             // c_abs_polar     (c)
 		c[0]
 ;
-function c_abs_safe (c) =
-	is_list(c) ?
-		 len(c)==2 ? norm(c)
-		:len(c)==3 ? c[0]
-		:complex_undef
-	:is_num(c) ? abs(c)
-	:complex_undef
-;
 function c_abs_cartesian (c) = norm(c);
 function c_abs_polar     (c) = c[0];
 
+// Addition, Subtraction
 function c_add (c, d) =
 	// get_cartesian(c) + get_cartesian(d);
 	 is_num(c)   ? [c, 0]
@@ -168,7 +123,7 @@ function c_sub_cartesian_number (c, n) =
 function c_add_number_cartesian (n, d) =
 	[n+d[0], d[1]]
 ;
-function c_sub_cartesian_number (n, d) =
+function c_sub_number_cartesian (n, d) =
 	[n-d[0], -d[1]]
 ;
 function c_add_polar (c, d) =
@@ -212,7 +167,7 @@ function c_sub_polar_to_cartesian (c, d) =
 		- d[0] * [cos(d[1]), sin(d[1])]
 ;
 
-
+// Multiplication
 function c_mul (c, d) =
 	is_num(c) ?
 		is_num(d) ? [c*d, 0] :
@@ -238,32 +193,6 @@ function c_mul (c, d) =
 		:             // c_mul_polar (c, get_polar_from_cartesian(d))
 			[ c[0]*norm(d), c[1]+atan2(d[1],d[0]), 0 ]
 ;
-function c_mul_safe (c, d) =
-	is_list(c) ?
-		is_list(d) ?
-			 len(c)==2 ?
-				 len(d)==2 ? c_mul_cartesian (c, d)
-				:len(d)==3 ? c_mul_polar     (get_polar_from_cartesian(c), d)
-				:complex_undef
-			:len(c)==3 ?
-				 len(d)==3 ? c_mul_polar (c, d)
-				:len(d)==2 ? c_mul_polar (c, get_polar_from_cartesian(d))
-				:complex_undef
-			:complex_undef
-		:is_num(d) ?
-			 len(c)==2 ? c_mul_cartesian_number (c, d)
-			:len(c)==3 ? c_mul_polar_number     (c, d)
-			:complex_undef
-		:complex_undef
-	:is_num(c) ?
-		is_list(d) ?
-			 len(d)==2 ? c_mul_cartesian_number (d, c)
-			:len(d)==3 ? c_mul_polar_number     (d, c)
-			:complex_undef
-		:is_num(d) ? [c*d, 0]
-		:complex_undef
-	:complex_undef
-;
 function c_mul_cartesian (c, d) =
 	[ c[0]*d[0]-c[1]*d[1]
 	, c[0]*d[1]+c[1]*d[0] ]
@@ -282,6 +211,7 @@ function c_mul_polar_to_cartesian (c, d) =
 	c[0]*d[0] * [cos(a), sin(a)]
 ;
 
+// Division
 function c_div (c, d) =
 	is_num(c) ?
 		is_num(d) ? [c/d, 0] :
@@ -307,32 +237,6 @@ function c_div (c, d) =
 			[ c[0]/d[0], c[1]-d[1], 0 ]
 		:             // c_div_polar (c, get_polar_from_cartesian(d))
 			[ c[0]/norm(d), c[1]-atan2(d[1],d[0]), 0 ]
-;
-function c_div_safe (c, d) =
-	is_list(c) ?
-		is_list(d) ?
-			 len(c)==2 ?
-				 len(d)==2 ? c_div_cartesian (c, d)
-				:len(d)==3 ? c_div_polar     (get_polar_from_cartesian(c), d)
-				:complex_undef
-			:len(c)==3 ?
-				 len(d)==3 ? c_div_polar (c, d)
-				:len(d)==2 ? c_div_polar (c, get_polar_from_cartesian(d))
-				:complex_undef
-			:complex_undef
-		:is_num(d) ?
-			 len(c)==2 ? c_div_cartesian_number (c, d)
-			:len(c)==3 ? c_div_polar_number     (c, d)
-			:complex_undef
-		:complex_undef
-	:is_num(c) ?
-		is_list(d) ?
-			 len(d)==2 ? c_div_number_cartesian (c, d)
-			:len(d)==3 ? c_div_number_polar     (c, d)
-			:complex_undef
-		:is_num(d) ? [c/d, 0]
-		:complex_undef
-	:complex_undef
 ;
 function c_div_cartesian (c, d) =
 	[ c[0]*d[0]+c[1]*d[1]
@@ -378,16 +282,6 @@ function c_sqrt (c) =
 		let( s = [ sqrt(c[0]), c[1]/2, 0 ] )
 		[s, -s]
 ;
-function c_sqrt_safe (c) =
-	is_list(c) ?
-		 len(c)==2 ? c_sqrt_cartesian (c)
-		:len(c)==3 ? c_sqrt_polar (c)
-		:complex_undef
-	:is_num(c) ?
-		let( s = [sqrt(c), 0] )
-		[s, -s]
-	:complex_undef
-;
 function c_sqrt_cartesian (c) =
 	let(
 	s =
@@ -410,14 +304,6 @@ function c_sqr (c) =
 		, c[0]*c[1]*2 ]
 	:              // c_sqr_polar (c)
 		[ c[0]*c[0], c[1]*2, 0 ]
-;
-function c_sqr_safe (c) =
-	is_list(c) ?
-		 len(c)==2 ? c_sqr_cartesian (c)
-		:len(c)==3 ? c_sqr_polar (c)
-		:complex_undef
-	:is_num(c) ? [c*c, 0]
-	:complex_undef
 ;
 function c_sqr_cartesian (c) =
 	[ c[0]*c[0]-c[1]*c[1]
