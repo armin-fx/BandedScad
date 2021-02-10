@@ -12,7 +12,7 @@ use <banded/math_common.scad>
 function extract_axis (list, axis) = [ for (n=list) n[axis] ];
 
 // gibt den größten Abstand der einzelnen Werte innerhalb einer Liste zurück
-function diff_list     (list) = max(list) - min(list);
+function diff_list (list) = max(list) - min(list);
 // gibt den größten Abstand jeder einzelnen Achse in einer Vektoren-Liste
 function diff_axis_list (list) = [
 	for (axis=[0 : len(list[0])-1]) diff_list(extract_axis(list, axis))
@@ -29,7 +29,7 @@ function max_norm (list) = norm(diff_axis_list(list));
 //      0   1   2   3
 //     -4  -3  -2  -1
 function get_position (list, position) =
-	(position>=0) ? position : len(list)+position
+	position>=0 ? position : len(list)+position
 ;
 // Positionen außerhalb der Liste werden an den Anfang oder das Ende gesetzt
 function get_position_safe (list, position) =
@@ -47,7 +47,7 @@ function get_position_safe (list, position) =
 //     \   \   \   \   \
 //     -5  -4  -3  -2  -1
 function get_position_insert (list, position) =
-	(position>=0) ? position : len(list)+position+1
+	position>=0 ? position : len(list)+position+1
 ;
 function get_position_insert_safe (list, position) =
 	let( real = (position>=0) ? position : len(list)+position+1 )
@@ -70,66 +70,155 @@ function is_range (value) =
 	&& !is_nan   (value)
 ;
 
-// testet eine Variable, ob sie eine Liste enthält
+// testet eine Variable, ob sie eine Liste mit einer angegebenen
+// Verschachelungstiefe enthält.
 // dimension - Tiefe der verschachtelten Listen,
-//             ohne Angabe wird eine eindimensionale Liste getestet
+//             ohne Angabe (= 1) wird auf eine einfache unverschachtelte Liste getestet
 //             bei 0 wird die Variable getestet, ob sie eine Zahl enthält
 function is_list_depth (value, dimension=1) =
-	(dimension==0) ? is_num(value) :
-	(dimension==1) ? (is_list(value) && !is_list(value[0]))
-	:                is_list_depth  (value[0], dimension-1)
+	dimension==0 ? is_num(value) :
+	dimension==1 ? (is_list(value) && !is_list(value[0]))
+	:              is_list_depth  (value[0], dimension-1)
 ;
 
 // gibt die Verschachelungstiefe einer Liste zurück
 function get_list_depth (list) = get_list_depth_intern(list);
 function get_list_depth_intern (list, i=0) =
-	(!is_list(list)) ? i
-	:                  get_list_depth_intern (list[0], i+1)
+	!is_list(list) ? i
+	:                get_list_depth_intern (list[0], i+1)
 ;
 
 
 // gibt einen Wert für mehrere gleiche Parameter zurück
 // Sinnvoll, wenn z.B. der Parameter r oder d/2 für den Radius stehen sollen.
 // Sind mehrere Parameter gesetzt, wird der erste genommen, der gesetzt ist (und nicht undef ist).
-function get_first_good      (a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) =
-	 get_first_good_in_list ([a0, a1, a2, a3, a4, a5, a6, a7, a8, a9], 0)
+function get_first_good (a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) =
+	// get_first_good_in_list ([a0, a1, a2, a3, a4, a5, a6, a7, a8, a9], 0)
+	a0!=undef ? a0 :
+	a1!=undef ? a1 :
+	a2!=undef ? a2 :
+	a3!=undef ? a3 :
+	a4!=undef ? a4 :
+	a5!=undef ? a5 :
+	a6!=undef ? a6 :
+	a7!=undef ? a7 :
+	a8!=undef ? a8 :
+	a9
 ;
+
 // Parameter sind nur Zahlen
-function get_first_num      (a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) =
-	 get_first_num_in_list ([a0, a1, a2, a3, a4, a5, a6, a7, a8, a9], 0)
+function get_first_num (a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) =
+	// get_first_num_in_list ([a0, a1, a2, a3, a4, a5, a6, a7, a8, a9], 0)
+	a0!=undef && is_num(a0) ? a0 :
+	a1!=undef && is_num(a1) ? a1 :
+	a2!=undef && is_num(a2) ? a2 :
+	a3!=undef && is_num(a3) ? a3 :
+	a4!=undef && is_num(a4) ? a4 :
+	a5!=undef && is_num(a5) ? a5 :
+	a6!=undef && is_num(a6) ? a6 :
+	a7!=undef && is_num(a7) ? a7 :
+	a8!=undef && is_num(a8) ? a8 :
+	a9!=undef && is_num(a9) ? a9 :
+	undef
 ;
 
 // gibt einen Wert für mehrere gleiche Parameter zurück
 // Die Parameter sind hier 1-Dimensionale Vektoren
 // Alle einzelnen Parameter im Vektor müssen einen Wert haben, um akzeptiert zu werden.
 // Sind mehrere Parameter gesetzt, wird der erste genommen, der gesetzt ist.
-function get_first_good_1d   (a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) =
-	 get_first_good_in_list ([a0, a1, a2, a3, a4, a5, a6, a7, a8, a9], 1)
+function get_first_good_1d (a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) =
+	// get_first_good_in_list ([a0, a1, a2, a3, a4, a5, a6, a7, a8, a9], 1)
+	a0!=undef && is_list(a0) && len(a0)==1 && a0[0]!=undef ? a0 :
+	a0!=undef && is_list(a1) && len(a1)==1 && a1[0]!=undef ? a1 :
+	a0!=undef && is_list(a2) && len(a2)==1 && a2[0]!=undef ? a2 :
+	a0!=undef && is_list(a3) && len(a3)==1 && a3[0]!=undef ? a3 :
+	a0!=undef && is_list(a4) && len(a4)==1 && a4[0]!=undef ? a4 :
+	a0!=undef && is_list(a5) && len(a5)==1 && a5[0]!=undef ? a5 :
+	a0!=undef && is_list(a6) && len(a6)==1 && a6[0]!=undef ? a6 :
+	a0!=undef && is_list(a7) && len(a7)==1 && a7[0]!=undef ? a7 :
+	a0!=undef && is_list(a8) && len(a8)==1 && a8[0]!=undef ? a8 :
+	a0!=undef && is_list(a9) && len(a9)==1 && a9[0]!=undef ? a9 :
+	undef
 ;
 function get_first_num_1d   (a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) =
-	 get_first_num_in_list ([a0, a1, a2, a3, a4, a5, a6, a7, a8, a9], 1)
+	// get_first_num_in_list ([a0, a1, a2, a3, a4, a5, a6, a7, a8, a9], 1)
+	a0!=undef && is_list(a0) && len(a0)==1 && is_num(a0[0]) ? a0 :
+	a0!=undef && is_list(a1) && len(a1)==1 && is_num(a1[0]) ? a1 :
+	a0!=undef && is_list(a2) && len(a2)==1 && is_num(a2[0]) ? a2 :
+	a0!=undef && is_list(a3) && len(a3)==1 && is_num(a3[0]) ? a3 :
+	a0!=undef && is_list(a4) && len(a4)==1 && is_num(a4[0]) ? a4 :
+	a0!=undef && is_list(a5) && len(a5)==1 && is_num(a5[0]) ? a5 :
+	a0!=undef && is_list(a6) && len(a6)==1 && is_num(a6[0]) ? a6 :
+	a0!=undef && is_list(a7) && len(a7)==1 && is_num(a7[0]) ? a7 :
+	a0!=undef && is_list(a8) && len(a8)==1 && is_num(a8[0]) ? a8 :
+	a0!=undef && is_list(a9) && len(a9)==1 && is_num(a9[0]) ? a9 :
+	undef
 ;
 
 // gibt einen Wert für mehrere gleiche Parameter zurück
 // Die Parameter sind hier 2-Dimensionale Vektoren
 // Alle 2 Parameter im Vektor müssen einen Wert haben, um akzeptiert zu werden.
 // Sind mehrere Parameter gesetzt, wird der erste genommen, der gesetzt ist.
-function get_first_good_2d   (a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) =
-	 get_first_good_in_list ([a0, a1, a2, a3, a4, a5, a6, a7, a8, a9], 2)
+function get_first_good_2d (a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) =
+	// get_first_good_in_list ([a0, a1, a2, a3, a4, a5, a6, a7, a8, a9], 2)
+	a0!=undef && is_list(a0) && len(a0)==2 && a0[0]!=undef && a0[1]!=undef ? a0 :
+	a0!=undef && is_list(a1) && len(a1)==2 && a1[0]!=undef && a1[1]!=undef ? a1 :
+	a0!=undef && is_list(a2) && len(a2)==2 && a2[0]!=undef && a2[1]!=undef ? a2 :
+	a0!=undef && is_list(a3) && len(a3)==2 && a3[0]!=undef && a3[1]!=undef ? a3 :
+	a0!=undef && is_list(a4) && len(a4)==2 && a4[0]!=undef && a4[1]!=undef ? a4 :
+	a0!=undef && is_list(a5) && len(a5)==2 && a5[0]!=undef && a5[1]!=undef ? a5 :
+	a0!=undef && is_list(a6) && len(a6)==2 && a6[0]!=undef && a6[1]!=undef ? a6 :
+	a0!=undef && is_list(a7) && len(a7)==2 && a7[0]!=undef && a7[1]!=undef ? a7 :
+	a0!=undef && is_list(a8) && len(a8)==2 && a8[0]!=undef && a8[1]!=undef ? a8 :
+	a0!=undef && is_list(a9) && len(a9)==2 && a9[0]!=undef && a9[1]!=undef ? a9 :
+	undef
 ;
-function get_first_num_2d   (a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) =
-	 get_first_num_in_list ([a0, a1, a2, a3, a4, a5, a6, a7, a8, a9], 2)
+function get_first_num_2d (a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) =
+	// get_first_num_in_list ([a0, a1, a2, a3, a4, a5, a6, a7, a8, a9], 2)
+	a0!=undef && is_list(a0) && len(a0)==2 && is_num(a0[0]) && is_num(a0[1]) ? a0 :
+	a0!=undef && is_list(a1) && len(a1)==2 && is_num(a1[0]) && is_num(a1[1]) ? a1 :
+	a0!=undef && is_list(a2) && len(a2)==2 && is_num(a2[0]) && is_num(a2[1]) ? a2 :
+	a0!=undef && is_list(a3) && len(a3)==2 && is_num(a3[0]) && is_num(a3[1]) ? a3 :
+	a0!=undef && is_list(a4) && len(a4)==2 && is_num(a4[0]) && is_num(a4[1]) ? a4 :
+	a0!=undef && is_list(a5) && len(a5)==2 && is_num(a5[0]) && is_num(a5[1]) ? a5 :
+	a0!=undef && is_list(a6) && len(a6)==2 && is_num(a6[0]) && is_num(a6[1]) ? a6 :
+	a0!=undef && is_list(a7) && len(a7)==2 && is_num(a7[0]) && is_num(a7[1]) ? a7 :
+	a0!=undef && is_list(a8) && len(a8)==2 && is_num(a8[0]) && is_num(a8[1]) ? a8 :
+	a0!=undef && is_list(a9) && len(a9)==2 && is_num(a9[0]) && is_num(a9[1]) ? a9 :
+	undef
 ;
 
 // gibt einen Wert für mehrere gleiche Parameter zurück
 // Die Parameter sind hier 3-Dimensionale Vektoren
 // Alle 3 Parameter im Vektor müssen einen Wert haben, um akzeptiert zu werden.
 // Sind mehrere Parameter gesetzt, wird der erste genommen, der gesetzt ist.
-function get_first_good_3d   (a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) =
-	 get_first_good_in_list ([a0, a1, a2, a3, a4, a5, a6, a7, a8, a9], 3)
+function get_first_good_3d (a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) =
+	// get_first_good_in_list ([a0, a1, a2, a3, a4, a5, a6, a7, a8, a9], 3)
+	a0!=undef && is_list(a0) && len(a0)==3 && a0[0]!=undef && a0[1]!=undef && a0[2]!=undef ? a0 :
+	a0!=undef && is_list(a1) && len(a1)==3 && a1[0]!=undef && a1[1]!=undef && a1[2]!=undef ? a1 :
+	a0!=undef && is_list(a2) && len(a2)==3 && a2[0]!=undef && a2[1]!=undef && a2[2]!=undef ? a2 :
+	a0!=undef && is_list(a3) && len(a3)==3 && a3[0]!=undef && a3[1]!=undef && a3[2]!=undef ? a3 :
+	a0!=undef && is_list(a4) && len(a4)==3 && a4[0]!=undef && a4[1]!=undef && a4[2]!=undef ? a4 :
+	a0!=undef && is_list(a5) && len(a5)==3 && a5[0]!=undef && a5[1]!=undef && a5[2]!=undef ? a5 :
+	a0!=undef && is_list(a6) && len(a6)==3 && a6[0]!=undef && a6[1]!=undef && a6[2]!=undef ? a6 :
+	a0!=undef && is_list(a7) && len(a7)==3 && a7[0]!=undef && a7[1]!=undef && a7[2]!=undef ? a7 :
+	a0!=undef && is_list(a8) && len(a8)==3 && a8[0]!=undef && a8[1]!=undef && a8[2]!=undef ? a8 :
+	a0!=undef && is_list(a9) && len(a9)==3 && a9[0]!=undef && a9[1]!=undef && a9[2]!=undef ? a9 :
+	undef
 ;
 function get_first_num_3d   (a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) =
-	 get_first_num_in_list ([a0, a1, a2, a3, a4, a5, a6, a7, a8, a9], 3)
+	// get_first_num_in_list ([a0, a1, a2, a3, a4, a5, a6, a7, a8, a9], 3)
+	a0!=undef && is_list(a0) && len(a0)==3 && is_num(a0[0]) && is_num(a0[1]) && is_num(a0[2]) ? a0 :
+	a0!=undef && is_list(a1) && len(a1)==3 && is_num(a1[0]) && is_num(a1[1]) && is_num(a1[2]) ? a1 :
+	a0!=undef && is_list(a2) && len(a2)==3 && is_num(a2[0]) && is_num(a2[1]) && is_num(a2[2]) ? a2 :
+	a0!=undef && is_list(a3) && len(a3)==3 && is_num(a3[0]) && is_num(a3[1]) && is_num(a3[2]) ? a3 :
+	a0!=undef && is_list(a4) && len(a4)==3 && is_num(a4[0]) && is_num(a4[1]) && is_num(a4[2]) ? a4 :
+	a0!=undef && is_list(a5) && len(a5)==3 && is_num(a5[0]) && is_num(a5[1]) && is_num(a5[2]) ? a5 :
+	a0!=undef && is_list(a6) && len(a6)==3 && is_num(a6[0]) && is_num(a6[1]) && is_num(a6[2]) ? a6 :
+	a0!=undef && is_list(a7) && len(a7)==3 && is_num(a7[0]) && is_num(a7[1]) && is_num(a7[2]) ? a7 :
+	a0!=undef && is_list(a8) && len(a8)==3 && is_num(a8[0]) && is_num(a8[1]) && is_num(a8[2]) ? a8 :
+	a0!=undef && is_list(a9) && len(a9)==3 && is_num(a9[0]) && is_num(a9[1]) && is_num(a9[2]) ? a9 :
+	undef
 ;
 
 // gibt das erste gültige Element in der Liste zurück
@@ -146,16 +235,54 @@ function get_first_num_3d   (a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) =
 //             wenn 0, dann muss das Element ein gültiger Wert sein und keine Liste
 //   begin   - ab dieser Position wird getestet
 function get_first_good_in_list (list, size=0, begin=0) =
-	 (len(list)  ==undef) ? undef
-	:(len(list)-1 <begin) ? undef
-	:(size==0) ?
-		(list[begin]==undef) ?
-			get_first_good_in_list(list, size, begin+1)
-		:	list[begin]
-	  :
-		 (list[begin]==undef || !is_good_list(list[begin],0,size)) ?
-			get_first_good_in_list(list, size, begin+1)
-		:	list[begin]
+	list==undef || !is_list(list) ? undef :
+	 size==0 ? get_first_good_in_list_intern      (list, begin)
+	:size==3 ? get_first_good_in_list_intern_l_3  (list, begin)
+	:size==2 ? get_first_good_in_list_intern_l_2  (list, begin)
+	:size==1 ? get_first_good_in_list_intern_l_1  (list, begin)
+	:          get_first_good_in_list_intern_list (list, size, begin)
+;
+/*
+function get_first_good_in_list_intern (list, begin=0) =
+	(len(list)-1 <begin) ? undef :
+	(list[begin]!=undef) ?
+		list[begin]
+	:	get_first_good_in_list_intern(list, begin+1)
+;*/
+function get_first_good_in_list_intern (list, begin=0) =
+	len(list)-1<begin ? undef :
+	list[begin]  !=undef ? list[begin]   :
+	list[begin+1]!=undef ? list[begin+1] :
+	list[begin+2]!=undef ? list[begin+2] :
+	list[begin+3]!=undef ? list[begin+3] :
+	get_first_good_in_list_intern (list, begin+4)
+;
+function get_first_good_in_list_intern_l_1 (list, begin=0) =
+	len(list)-1<begin ? undef :
+	list[begin]!=undef && is_list(list[begin]) && len(list[begin])==1
+	 && list[begin][0]!=undef ?
+		list[begin]
+	:	get_first_good_in_list_intern_l_1(list, begin+1)
+;
+function get_first_good_in_list_intern_l_2 (list, begin=0) =
+	len(list)-1<begin ? undef :
+	list[begin]!=undef && is_list(list[begin]) && len(list[begin])==2
+	 && list[begin][0]!=undef && list[begin][1]!=undef ?
+		list[begin]
+	:	get_first_good_in_list_intern_l_2(list, begin+1)
+;
+function get_first_good_in_list_intern_l_3 (list, begin=0) =
+	len(list)-1<begin ? undef :
+	list[begin]!=undef && is_list(list[begin]) && len(list[begin])==3
+	 && list[begin][0]!=undef && list[begin][1]!=undef && list[begin][2]!=undef ?
+		list[begin]
+	:	get_first_good_in_list_intern_l_3(list, begin+1)
+;
+function get_first_good_in_list_intern_list (list, size, begin=0) =
+	 len(list)-1<begin ? undef
+	:is_good_list(list[begin],0,size) ?
+		list[begin]
+	:	get_first_good_in_list_intern_list(list, size, begin+1)
 ;
 
 // testet eine Liste durch, ob alle Werte darin nicht undef sind
@@ -163,41 +290,91 @@ function get_first_good_in_list (list, size=0, begin=0) =
 // Argumente:
 //  - list    - Liste mit den Werten
 //  - begin   - das erste Element das getestet wird
+//              Standard = vom ersten Element an
 //  - end     - das erste Element das nicht mehr getestet wird
+//              Standart = bis zum letzten Element
 function is_good_list (list, begin=0, end=undef) =
-	 (list==undef)   ? false
-	:(begin==undef)  ? false
-	:(end==undef)    ? is_good_list (list, begin, len(list))
-	:(len(list)<end) ? false
-	:(begin>=end)    ? true
-	:(list[begin]==undef) ? false
-	:(len(list)<end) ? false
-	:is_good_list (list, begin+1, end)
+	 list==undef      ? false
+	:!is_list(list)   ? false
+	:begin==undef     ? false
+	:end==undef       ? is_good_list_intern (list, begin, len(list))
+	:! len(list)>=end ? false
+	:is_good_list_intern (list, begin, end)
+;
+function is_good_list_intern (list, begin, end) =
+	 begin>=end         ? true
+	:list[begin]==undef ? false
+	:is_good_list_intern (list, begin+1, end)
 ;
 
 // wie get_first_good_in_list () aber
 //  - ein gültiger Wert: -> eine Zahl
 function get_first_num_in_list (list, size=0, begin=0) =
-	 (len(list)  ==undef) ? undef
-	:(len(list)-1 <begin) ? undef
-	:(size==0) ?
-		(! is_num(list[begin])) ?
-			get_first_num_in_list(list, size, begin+1)
-		:	list[begin]
-	  :
-		 (list[begin]==undef || !is_num_list(list[begin],0,size)) ?
-			get_first_num_in_list(list, size, begin+1)
-		:	list[begin]
+	list==undef || !is_list(list) ? undef :
+	 size==0 ? get_first_num_in_list_intern      (list, begin)
+	:size==3 ? get_first_num_in_list_intern_l_3  (list, begin)
+	:size==2 ? get_first_num_in_list_intern_l_2  (list, begin)
+	:size==1 ? get_first_num_in_list_intern_l_1  (list, begin)
+	:          get_first_num_in_list_intern_list (list, size, begin)
 ;
+/*
+function get_first_num_in_list_intern (list, begin=0) =
+	len(list)-1 <begin  ? undef :
+	list[begin]!=undef && is_num(list[begin]) ?
+		list[begin]
+	:	get_first_num_in_list_intern(list, begin+1)
+;*/
+function get_first_num_in_list_intern (list, begin=0) =
+	len(list)-1<begin ? undef :
+	list[begin  ]!=undef && is_num(list[begin])   ? list[begin]   :
+	list[begin+1]!=undef && is_num(list[begin+1]) ? list[begin+1] :
+	list[begin+2]!=undef && is_num(list[begin+2]) ? list[begin+2] :
+	list[begin+3]!=undef && is_num(list[begin+3]) ? list[begin+3] :
+	get_first_num_in_list_intern (list, begin+4)
+;
+function get_first_num_in_list_intern_l_1 (list, begin=0) =
+	len(list)-1<begin ? undef :
+	list[begin]!=undef && is_list(list[begin]) && len(list[begin])==1
+	 && is_num(list[begin][0]) ?
+		list[begin]
+	:	get_first_num_in_list_intern_l_1(list, begin+1)
+;
+function get_first_num_in_list_intern_l_2 (list, begin=0) =
+	len(list)-1<begin ? undef :
+	list[begin]!=undef && is_list(list[begin]) && len(list[begin])==2
+	 && is_num(list[begin][0]) && is_num(list[begin][1]) ?
+		list[begin]
+	:	get_first_num_in_list_intern_l_2(list, begin+1)
+;
+function get_first_num_in_list_intern_l_3 (list, begin=0) =
+	len(list)-1<begin ? undef :
+	list[begin]!=undef && is_list(list[begin]) && len(list[begin])==3
+	 && is_num(list[begin][0]) && is_num(list[begin][1]) && is_num(list[begin][2]) ?
+		list[begin]
+	:	get_first_num_in_list_intern_l_3(list, begin+1)
+;
+function get_first_num_in_list_intern_list (list, size, begin=0) =
+	len(list)-1<begin ? undef :
+	is_num_list(list[begin],0,size) ?
+		list[begin]
+	:	get_first_num_in_list_intern_list(list, size, begin+1)
+;
+// testet eine Liste durch, ob alle Werte darin eine numerische Zahl sind
+// gibt true zurück bei Erfolg
+// Argumente wie is_good_list()
 function is_num_list (list, begin=0, end=undef) =
-	 (list==undef)   ? false
-	:(begin==undef)  ? false
-	:(end==undef)    ? is_num_list (list, begin, len(list))
-	:(len(list)<end) ? false
-	:(begin>=end)    ? true
-	:(! is_num(list[begin])) ? false
-	:(len(list)<end) ? false
-	:is_num_list (list, begin+1, end)
+	 list==undef      ? false
+	:!is_list(list)   ? false
+	:begin==undef     ? false
+	:end==undef       ? is_num_list_intern (list, begin, len(list))
+	:! len(list)>=end ? false
+	:is_num_list_intern (list, begin, end)
+;
+function is_num_list_intern (list, begin, end) =
+	 begin>=end            ? true
+	:list[begin]==undef    ? false
+	:! is_num(list[begin]) ? false
+	:is_num_list_intern (list, begin+1, end)
 ;
 
 function is_split_block (block, last, first=0) = last-first > block*2;
