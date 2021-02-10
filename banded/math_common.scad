@@ -9,6 +9,9 @@ use <banded/helper_native.scad>
 use <banded/function_algorithmus.scad>
 use <banded/function_select.scad>
 
+
+// - Testen und beschränken:
+
 // setzt einen Wert innerhalb eines Bereiches
 // zwischen Minimum <min> und Maximum <max>
 // <min> muss kleiner sein als <max>, sonst seltsames Verhalten
@@ -23,8 +26,12 @@ function constrain_bidirectional (value, a, b) =
 		 (value<a) ? a
 		:(value>b) ? b
 		: value
-	: constrain(value, b, a)
+	:
+		 (value<b) ? b
+		:(value>a) ? a
+		: value
 ;
+
 // testet zwei Werte oder zwei Listen mit Werten ob sie näherungsweise übereinstimmen
 // deviation - maximale Abweichung der Werte
 function is_nearly (a, b, deviation=1e-14) =
@@ -36,19 +43,28 @@ function is_nearly (a, b, deviation=1e-14) =
 // Quantisiert einen Wert innerhalb eines Rasters
 // Voreinstellung = auf ganze Zahl runden
 function quantize (value, raster=1, offset=0.5) =
-	raster * floor( (value/raster) + offset )
-//	value+offset - ((value+offset)%raster+raster)%raster
+	// raster * floor( (value/raster) + offset )
+	value+offset - ((value+offset)%raster+raster)%raster
 ;
 
 // Test: die Zahl ist eine ungerade Zahl? 
-function is_odd  (n) = (abs(n%2)==1);
+function is_odd  (n) = (n+1)%2==0;
 // Test: die Zahl ist eine gerade Zahl? 
-function is_even (n) = (n%2==0);
+function is_even (n) =  n   %2==0;
 
+/*
 function positiv_if_odd  (n) = (is_odd (n)) ?  1 : -1;
 function positiv_if_even (n) = (is_even(n)) ?  1 : -1;
 function negativ_if_odd  (n) = (is_odd (n)) ? -1 :  1;
 function negativ_if_even (n) = (is_even(n)) ? -1 :  1;
+*/
+function positiv_if_odd  (n) = (n+1)%2==0 ?  1 : -1;
+function positiv_if_even (n) =  n   %2==0 ?  1 : -1;
+function negativ_if_odd  (n) = (n+1)%2==0 ? -1 :  1;
+function negativ_if_even (n) =  n   %2==0 ? -1 :  1;
+
+
+// Verschiedene Funktionen:
 
 // Zum Quadrat nehmen
 function sqr (x) = x*x;
@@ -57,20 +73,40 @@ function sqr (x) = x*x;
 // n = "Diagonale"
 // v = "Kathete" oder Liste von "Katheten"
 function reverse_norm (n, v) =
-	(is_num(v)) ? sqrt( sqr(n) - sqr(v) )
-	:             sqrt( sqr(n) + reverse_norm_intern(v))
+	 is_num(v)   ? sqrt( n*n - v*v )
+	:!(len(v)>0) ? n
+	:              sqrt( n*n + reverse_norm_intern(v))
 ;
 function reverse_norm_intern (v, index=0) =
-	(index==len(v)) ? 0
-	: 0 - sqr(v[index]) + reverse_norm_intern(v, index+1)
+	index==len(v)-1 ?
+		0 - v[index]*v[index]
+	:	0 - v[index]*v[index] + reverse_norm_intern(v, index+1)
 ;
 
+// Rechnet den modulo 'x%n'
+// = Rest von 'x / n'
+// Das Vorzeichen vom Rest ist das selbe wie vom Teiler 'n'.
+function mod (x, n) =
+	(x%n+n)%n
+;
+
+// bildet das 'exklusive oder'
+function xor (bool, bool2) = bool==bool2 ? false : true;
+
+// Gaußsche Normalverteilung
+function normal_distribution(x, mean=0, sigma=1) =
+	1/(sqrt(2*PI)*sigma) * exp(-sqr(x-mean/sigma)/2)
+;
+
+
+// - Trigonometrische Funktion:
+
 // Sekans
-function sec   (angle) = 1 / cos(angle);
+function sec (angle) = 1 / cos(angle);
 // Kosekans
-function cosec (angle) = 1 / sin(angle);
+function csc (angle) = 1 / sin(angle);
 // Kotangens
-function cot   (angle) = tan(90 - angle); // = 1 / tan(angle);
+function cot (angle) = tan(90 - angle); // = 1 / tan(angle);
 // Arkuskotangens
 function acot (x) = 90 - atan(x);
 //
@@ -103,12 +139,10 @@ function sinc (x) = si(PI*x);
 // Integralsinus (arbeitet nur bis x<32)
 function Si (x) = taylor_auto(Si_taylor_index, x, n=100);
 function Si_taylor_index(x, n) = let (term=2*n+1) positiv_if_even(n) * pow(x, term) / (factorial(term) * term);
-Si_taylor_index = str("Si_taylor_index");
+Si_taylor_index = "Si_taylor_index";
 
-// Gaußsche Normalverteilung
-function normal_distribution(x, mean=0, sigma=1) =
-	1/(sqrt(2*PI)*sigma) * exp(-sqr(x-mean/sigma)/2)
-;
+
+// Funktionen mit ganze Zahlen:
 
 // errechnet die Fakultät einer natürlichen Zahl
 function factorial (n) =
@@ -158,18 +192,25 @@ function binomial_coefficient_intern_calc (n_minus_k, j) =
 	:binomial_coefficient_intern_calc(n_minus_k, j-1) * (n_minus_k + j) / j
 ;
 
-// Kettenbruch
-// b0 + a1 / (b1 + a2 / (b2 + (...))))
-// Argumente:
-//   b - Liste mit Teilnenner
-//   a - Liste mit Teilzähler (1 Element kleiner als b)
-//       ohne Angabe werden alle Werte von a[] auf 1 gesetzt, entspricht regulären Kettenbruch
-function continued_fraction (b, a=undef) =
-	continued_fraction_intern(b, a)
+// Fibonacci-Folge errechnen, geht auch mit reelle Zahlen
+function fibonacci (n) =
+//	( pow(golden,n) - pow(-1/golden,n) ) / sqrt(5)
+//	( pow(golden,n) - pow(1-golden ,n) ) / sqrt(5)
+	( pow(golden,n) - cos(180*n)*pow(golden,-n) ) / sqrt(5)
 ;
-function continued_fraction_intern (b, a, pos=0) =
-	(pos+1 >= len(b)) ? b[pos]
-	:b[pos] + get_first_good(a[pos], 1) / continued_fraction_intern(b, a, pos+1)
+
+// Kettenbruch
+// a0 + b1 / (a1 + b2 / (a2 + (...))))
+// Argumente:
+//   a - Liste mit Teilnenner
+//   b - Liste mit Teilzähler (1 Element kleiner als a)
+//       ohne Angabe werden alle Werte von b[] auf 1 gesetzt, entspricht regulären Kettenbruch
+function continued_fraction (a, b=undef) =
+	continued_fraction_intern(a, b)
+;
+function continued_fraction_intern (a, b, pos=0) =
+	(pos+1 >= len(a)) ? a[pos]
+	:a[pos] + get_first_good(b[pos], 1) / continued_fraction_intern(a, b, pos+1)
 ;
 /*
 function continued_fraction_intern_ (b, a, pos=0) =
@@ -196,12 +237,3 @@ function gcd (a, b=0) = ggt (a, b); // english name
 function kgv (a, b=1) = a/ggt(a,b) * b; // deutscher Name
 function lcm (a, b=1) = kgv (a, b);     // english name
 
-// bildet das 'exklusive oder'
-function xor (bool, bool2) = bool==bool2 ? false : true;
-
-// Fibonacci-Folge errechnen, geht auch mit reelle Zahlen
-function fibonacci (n) =
-//	( pow(golden,n) - pow(-1/golden,n) ) / sqrt(5)
-//	( pow(golden,n) - pow(1-golden ,n) ) / sqrt(5)
-	( pow(golden,n) - cos(180*n)*pow(golden,-n) ) / sqrt(5)
-;
