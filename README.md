@@ -24,7 +24,10 @@ What is does [^][contents]
     Like transformation operator in OpenScad for object modules.
   - Contains functions for working with [multmatrix][multmatrix]
 - Contains some functions for [edit and work with lists][list]
-- Contains some math and helper functions
+- Contains some [math][math] and helper functions
+  - More math functions
+  - Functions for matrices and vector
+  - Work with [complex numbers][complex]
 - Contains modules to [transform and edit objects][operator]
 - Contains some configurable object modules
 
@@ -36,6 +39,8 @@ What is does [^][contents]
 [transform]:  doc/draft.md#transform-functions-
 [multmatrix]: doc/draft.md#multmatrix-
 [list]:       doc/list.md
+[math]:       doc/math.md
+[complex]:    doc/complex.md
 [operator]:   doc/operator.md
 
 Installation [^][contents]

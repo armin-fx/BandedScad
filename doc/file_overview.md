@@ -6,11 +6,12 @@ Overview of scad files
 ` `|\
 ` `+--> `banded/constants.scad`\
 ` `|\
-` `+--> `banded/math.scad`\
+` `+--> [`banded/math.scad`](math.md "Math functions")\
 ` `| . . . +--> `banded/math_common.scad`\
 ` `| . . . +--> `banded/math_vector.scad`\
 ` `| . . . +--> `banded/math_matrix.scad`\
 ` `| . . . +--> `banded/math_formula.scad`\
+` `| . . . +--> [`banded/complex.scad`](complex.md "Working with complex numbers")\
 ` `|\
 ` `+--> [`banded/list.scad`](list.md "Functions for work with lists")\
 ` `| . . . +--> [`banded/list_edit.scad`](list.md#editing-lists- "Editing lists")\

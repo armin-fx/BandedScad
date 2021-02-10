@@ -57,19 +57,19 @@ Editing lists [^][contents]
 
 ### Edit list independent from the data [^][contents]
 
-#### `concat_list (list)`
+#### `concat_list (list)` [^][contents]
 Binds lists in a list together.\
 Such as `[ [1,2,3], [4,5] ]` goes to `[1,2,3,4,5]`
 
-#### `reverse_list (list)`
+#### `reverse_list (list)` [^][contents]
 Reverse the sequence of elements in a list
 
-#### `erase_list (list, begin, count)`
+#### `erase_list (list, begin, count)` [^][contents]
 Remove an element from a list
 - `begin` - Erases from this position
 - `count` - Count of elements which will erase, standard = 1 element
 
-#### `insert_list (list, list_insert, position, begin, count)`
+#### `insert_list (list, list_insert, position, begin, count)` [^][contents]
 Insert `list_insert` into a list
 - `position`
   - Insert the list into this position, shift all elements from here at the end.
@@ -82,48 +82,48 @@ Insert `list_insert` into a list
   - The same like in python
 - `count` - Count of elements which will insert from `list_insert`
 
-#### `extract_list (list, 'range_args')`
+#### `extract_list (list, 'range_args')` [^][contents]
 Extract a sequence from a list
 - [`'range_args'`](#repeating-options-) - sets the range to extract
 
-#### `fill_list (count, value)`
+#### `fill_list (count, value)` [^][contents]
 Makes a list with `count` elements filled with `value`
 
 
 ### Use data in list [^][contents]
 
-#### `sort_list (list, type)`
+#### `sort_list (list, type)` [^][contents]
 Sort a list with a stable sort algorithm
 
-#### `merge_list (list1, list2, type)`
+#### `merge_list (list1, list2, type)` [^][contents]
 Merge 2 sorted lists into one list
 
-#### `binary_search_list (list, value, type)`
+#### `binary_search_list (list, value, type)` [^][contents]
 Search a value in a sorted list
 
-#### `find_first_list (list, value, index, type)`
+#### `find_first_list (list, value, index, type)` [^][contents]
 Search at a value in a list and returns the position
 - `index`
   - Same values are skipped `index` times
   - Standard = get first hit, `index` = 0
 
-#### `count_list (list, value, type, 'range_args')`
+#### `count_list (list, value, type, 'range_args')` [^][contents]
 Count how often a value is in list
 - [`'range_args'`](#repeating-options-) - sets the range in which will count, standard = full list
 
 
 ### List functions with specified `type` [^][contents]
 
-#### `get_value (data, type)`
+#### `get_value (data, type)` [^][contents]
 return the value from the `data` element with specified `type`
 
-#### `value_list (list, type)`
+#### `value_list (list, type)` [^][contents]
 return a list with only values from specified `type`
 
-#### `min_list (list, type)`
+#### `min_list (list, type)` [^][contents]
 get the minimum value from a list at specified `type`
 
-#### `max_list (list, type)`
+#### `max_list (list, type)` [^][contents]
 get the maximum value from a list at specified `type`
 
 
@@ -132,16 +132,16 @@ get the maximum value from a list at specified `type`
 - Construction of a pair: `[key, value]`
 - `list` - list of several key-value-pair s.a. `[ [key1,value1], [key2,value2], ... ]`
 
-#### `pair (key, value)`
+#### `pair (key, value)` [^][contents]
 creates a key-value-pair
 
-#### `pair_value (list, key, index)`
+#### `pair_value (list, key, index)` [^][contents]
 get a value from a pair list with given key
 - `index`
   - Same key are skipped `index` times
   - Standard = get first hit, `index` = 0
 
-#### `pair_key (list, value, index)`
+#### `pair_key (list, value, index)` [^][contents]
 get a key from a pair list with contained value
 - `index`
   - Same values are skipped `index` times
@@ -151,19 +151,19 @@ get a key from a pair list with contained value
 Algorithm on lists [^][contents]
 --------------------------------
 
-#### `summation_list (list, n, k)`
+#### `summation_list (list, n, k)` [^][contents]
 Summation of a list.\
 Add all values in a list from position `k` to `n`
 - `k` - standard = `0`, from first element
 - `n` - if undefined, run until the last element
 
-#### `product_list (list, n, k)`
+#### `product_list (list, n, k)` [^][contents]
 Product of a list.\
 Multiply all values in a list from position `k` to `n`
 - `k` - standard = `0`, from first element
 - `n` - if undefined, run until the last element
 
-#### `unit_summation (list)`
+#### `unit_summation (list)` [^][contents]
 Scale the complete list that the summation of the list equals `1`
 
 
@@ -177,7 +177,7 @@ Returns a list with the result.
 
 ### Integrated in Openscad [^][contents]
 
-#### Addition / Subtraction
+#### Addition / Subtraction [^][contents]
 `[1,2,3] + [0,4,2]` -> `[1,6,5]`\
 `[6,7,8] - [1,2,3]` -> `[5,5,5]`
 
@@ -213,48 +213,49 @@ Calculating mean [^][contents]
 - Calculates mean of a list of numeric values
 - Optional with weight list
 - weight list can to get normalised,
-  - option `normalize`, standard = true
-  - sum of all values of weight list will be scaled to 1
+  - option `normalize`
+    - `true` - (standard)
+      sum of all values of weight list will be scaled to 1
 
 
 ### List of mean functions [^][contents]
 
-#### `mean_arithmetic (list, weight, normalize)`
+#### `mean_arithmetic (list, weight, normalize)` [^][contents]
 Calculates the arithmetic mean of a list\
 [=> Wikipedia - Arithmetic mean](https://en.wikipedia.org/wiki/Arithmetic_mean)
 
-#### `mean_geometric(list, weight, normalize)`
+#### `mean_geometric(list, weight, normalize)` [^][contents]
 Calculates the geometic mean of a list\
 [=> Wikipedia - Geometric mean](https://en.wikipedia.org/wiki/Geometric_mean)
 
-#### `mean_harmonic(list, weight, normalize)`
+#### `mean_harmonic(list, weight, normalize)` [^][contents]
 Calculates the harmonic mean of a list\
 [=> Wikipedia - Harmonic mean](https://en.wikipedia.org/wiki/Harmonic_mean)
 
-#### `root_mean_square(list, weight, normalize)`
+#### `root_mean_square(list, weight, normalize)` [^][contents]
 Calculates the root mean square of a list\
 [=> Wikipedia - Root mean square](https://en.wikipedia.org/wiki/Root_mean_square)
 
-#### `mean_cubic(list, weight, normalize)`
+#### `mean_cubic(list, weight, normalize)` [^][contents]
 Calculates the cubic mean of a list\
 [=> Wikipedia - Cubic mean](https://en.wikipedia.org/wiki/Cubic_mean)
 
-#### `mean_generalized(list, weight, normalize)`
+#### `mean_generalized(list, weight, normalize)` [^][contents]
 Calculates the generalized mean (or power mean, or Hölder mean) of a list\
 [=> Wikipedia - Generalized mean](https://en.wikipedia.org/wiki/Generalized_mean)
 
 
 ### Other mean functions [^][contents]
 
-#### `median (list)`
+#### `median (list)` [^][contents]
 Calculates the median of a list\
 [=> Wikipedia - Median](https://en.wikipedia.org/wiki/Median)
 
-#### `mid_range(list)`
+#### `mid_range(list)` [^][contents]
 Calculates the mid-range or mid-extreme of a list\
 [=> Wikipedia - Mid-range](https://en.wikipedia.org/wiki/Mid-range)
 
-#### `truncate_outlier (list, ratio)`
+#### `truncate_outlier (list, ratio)` [^][contents]
 - Sort a list and remove a given ratio of elements from the ends.
   This is useful for mean functions to truncate outliers from a data list.
 - Leaves always at minimum 1 element if odd size of list or
@@ -278,6 +279,6 @@ echo (mean);  // 5
 ```
 
 
-#### `truncate (list, ratio)`
+#### `truncate (list, ratio)` [^][contents]
 - Removes same elements from the ends like `truncate_outlier()`
   without previous sorting the list.
