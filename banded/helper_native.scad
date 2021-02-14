@@ -59,7 +59,7 @@ function is_nan (value) = value!=value;
 // testet eine numerische Variable auf unendlich
 function is_inf (value) = value==1e200*1e200;
 // testet eine numerische Variable unendlich oder -unendlich
-function is_inf_abs (value) = is_num(value) && abs(value)==1e200*1e200;
+function is_inf_abs (value) = value==1e200*1e200 || value==-1e200*1e200;
 // testet eine Variable ob sie eine Bereichsangabe enthält (z.B. [0:1:10])
 function is_range (value) =
 	   value!=undef
@@ -67,7 +67,8 @@ function is_range (value) =
 	&& !is_bool  (value)
 	&& !is_list  (value)
 	&& !is_string(value)
-	&& !is_nan   (value)
+	&& value==value
+	&& !is_function (value)
 ;
 
 // testet eine Variable, ob sie eine Liste mit einer angegebenen

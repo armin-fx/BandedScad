@@ -3,9 +3,9 @@
 //
 // defines module assert() to keep compatibility
 // with older versions than 2019.05
-// and newer than 2015.03
+// and newer than or equal 2015.03
 //
-// !!! It will make an error if OpenScad version has buildin assert !!!
+// !!! It will make an error if OpenScad version has buildin assert() !!!
 
 // Assert evaluates a logical expression,
 // but it can not stop the process like new real assert in OpenScad

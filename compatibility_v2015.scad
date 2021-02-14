@@ -3,16 +3,27 @@
 //
 // defines functions and modules to keep compatibility
 // with older versions than 2019.05
-// and newer than 2015.03
+// and newer than or equal 2015.03
 
-if (version_num()>=20190500) echo ("\nWARNING: this version of OpenScad don\'t need \'compatibility.scad\'\n");
+if (version_num()>=20190500) echo ("\nWARNING: this version of OpenScad don\'t need \'compatibility_v2015.scad\'\n");
 
 // emulate new testing functions
 function is_undef  (value) = (undef==value);
 function is_bool   (value) = (value==true || value==false);
-function is_num    (value) = (concat(value)!=value && value+0!=undef && value==value);
+//function is_num  (value) = (concat(value)!=value && value+0!=undef && value==value);
+function is_num    (value) =
+	concat(value)!=value &&
+	str(value)!=value &&
+	len(search("aut[(", str(value)))==0
+;
 function is_list   (value) = (concat(value)==value);
 function is_string (value) = (str(value)==value);
+function is_function (value) =
+	let(str_value = str(value))
+	concat(value)!=value &&
+	str_value!=value &&
+	str_value[8]=="("
+;
 
 // Convert the first character of the given string to a Unicode code point.
 function ord (string) =

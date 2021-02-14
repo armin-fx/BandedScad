@@ -64,6 +64,8 @@ You can reach this from OpenScad menu File->Show Library Folder.
 Use [^][contents]
 -----------------
 
+### Include library [^][contents]
+
 You can include the whole library with
 ```OpenSCAD
 include <banded.scad>
@@ -77,12 +79,21 @@ Or even with `use`. But if you need this defined constants
 you must include the file separately.
 So you can keep the namespace clean.
 ```OpenSCAD
-use <banded/ *** .scad>
+use <banded/ ??? .scad>
 include <banded/constants.scad>
 ```
-  
-If you want to use some new functions from OpenScad from version 2019.05 in version 2015.03
-you can include file 'compatibility.scad'.
+
+### Compatibility [^][contents]
+
+If you want to use some new buildin functions from OpenScad in older OpenScad version
+you can include file 'compatibility_???.scad'.
+
+#### For OpenSCAD version 2015.03
 ```OpenSCAD
-include <compatibility.scad>
+include <compatibility_v2015.scad>
+```
+
+#### For OpenSCAD version 2019.05
+```OpenSCAD
+include <compatibility_v2019.scad>
 ```

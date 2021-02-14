@@ -90,6 +90,9 @@ function test_message_constants () =
 ;
 function test_message_constants_echo (s) = echo(s) + false;
 function test_message_constants_console (s) =
+	version_num()>=20210100 ?
+	str ( "\n", s )
+	:
 	str (
 		"<span style=\"background-color:yellow\">\n",
 		s,
