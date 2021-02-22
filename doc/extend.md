@@ -40,7 +40,7 @@ Variables can set off with `0`.
 
 | variable      | description
 |---------------|-------------
-| `$fn_min`     | Number of fragments which will will never lesser then this value
+| `$fn_min`     | Number of fragments which will never lesser then this value
 | `$fn_max`     | Number of fragments which will never bigger then this value
 | `$fd`         | Maximum distance of deviation from model, distance in mm which will not exceeded
 | `$fa_enabled` | `$fa` can be switch off when set with `false`
@@ -59,20 +59,20 @@ with extra special variables, some modules have extra arguments
 | `cylinder()` | `cylinder_extend()`
 | `sphere()`   | `sphere_extend()`
 
-#### `circle_extend()`
+#### `circle_extend()` [^][contents]
 Creates a circle with [options of `circle_curve()`](draft.md#circle-)
 
-#### `cylinder_extend()`
+#### `cylinder_extend()` [^][contents]
 Creates a cylinder with ground circle [options of `circle_curve()`](draft.md#circle-)
 
-#### `sphere_extend()`
+#### `sphere_extend()` [^][contents]
 Creates a sphere at moment only control with extra special variables.
 
 
 Functions [^][contents]
 -----------------------
 
-#### `get_angle_from_percent (value)`
+#### `get_angle_from_percent (value)` [^][contents]
 Get the minimum angle for a fragment from maximum distance of deviation
 in percent to set value in special variable `$fa`
 

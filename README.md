@@ -26,7 +26,7 @@ What is does [^][contents]
 - Contains some functions for [edit and work with lists][list]
 - Contains some [math][math] and helper functions
   - More math functions
-  - Functions for matrices and vector
+  - Functions for [matrices and vector][matrix]
   - Work with [complex numbers][complex]
 - Contains modules to [transform and edit objects][operator]
 - Contains some configurable object modules
@@ -40,6 +40,7 @@ What is does [^][contents]
 [multmatrix]: doc/draft.md#multmatrix-
 [list]:       doc/list.md
 [math]:       doc/math.md
+[matrix]:     doc/matrix.md
 [complex]:    doc/complex.md
 [operator]:   doc/operator.md
 
@@ -91,6 +92,8 @@ you can include file 'compatibility_???.scad'.
 #### For OpenSCAD version 2015.03
 ```OpenSCAD
 include <compatibility_v2015.scad>
+// If you want use assert()
+include <compatibility_v2015_assert.scad>
 ```
 
 #### For OpenSCAD version 2019.05

@@ -8,8 +8,8 @@ Overview of scad files
 ` `|\
 ` `+--> [`banded/math.scad`](math.md "Math functions")\
 ` `| . . . +--> `banded/math_common.scad`\
-` `| . . . +--> `banded/math_vector.scad`\
-` `| . . . +--> `banded/math_matrix.scad`\
+` `| . . . +--> [`banded/math_vector.scad`](matrix.md#vector-operations- "Vector operations")\
+` `| . . . +--> [`banded/math_matrix.scad`](matrix.md#matrix-operations- "Matrix operations")\
 ` `| . . . +--> `banded/math_formula.scad`\
 ` `| . . . +--> [`banded/complex.scad`](complex.md "Working with complex numbers")\
 ` `|\

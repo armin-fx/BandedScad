@@ -15,6 +15,7 @@ Math functions
 ### Contents
 [contents]: #contents "Up to Contents"
 - [Complex numbers ->][complex]
+- [Matrix and vector operations ->][matrix]
 - [More math functions](#more-math-functions-)
   - [Test and restrict](#test-and-restrict-)
     - [`constrain()`][constrain]
@@ -59,6 +60,7 @@ Math functions
      - [`lcm()`][lcm]
 
 [complex]: complex.md
+[matrix]:  matrix.md
 
 
 More math functions [^][contents]
@@ -200,14 +202,15 @@ Calculate the Gauss normal distribution
 #### `sinc (x)` [^][contents]
 [sinc]: #sinc-x-
 Sinc function
+
 [=> Wikipedia - Sinc function](https://en.wikipedia.org/wiki/Sinc_function)
 
-`si (x)`   - unnormalized sinc function
+`si (x)`   - unnormalized sinc function\
 `sinc (x)` - normalized sinc function
 
 #### `Si (x)` [^][contents]
 [si]: #si-x-
-Trigonometric integral
+Trigonometric integral\
 [=> Wikipedia - Trigonometric integral](https://en.wikipedia.org/wiki/Trigonometric_integral)
 
 
@@ -215,48 +218,49 @@ Trigonometric integral
 
 #### `factorial (n)` [^][contents]
 [factorial]: #factorial-n-
-Calculate the factorial of a positive integer `n`, denoted by n!
+Calculate the factorial of a positive integer `n`, denoted by n!\
 [=> Wikipedia - Factorial](https://en.wikipedia.org/wiki/Factorial)
 
 #### `double_factorial (n)` [^][contents]
 [double_factorial]: #double_factorial-n-
-Calculate the double factorial or semifactorial of a number `n`, denoted by n‼
+Calculate the double factorial or semifactorial of a number `n`, denoted by n‼\
 [=> Wikipedia - Double factorial](https://en.wikipedia.org/wiki/Double_factorial)
 
 #### `multi_factorial (n, k)` [^][contents]
 [multi_factorial]: #multi_factorial-n-k-
-Calculate the multifactorial of a positive integer `n`
-[=> Wikipedia - ](https://en.wikipedia.org/wiki/Factorial#Multifactorials)
+Calculate the multifactorial of a positive integer `n`\
+[=> Wikipedia - Multifactorials](https://en.wikipedia.org/wiki/Factorial#Multifactorials)
 
 #### `binomial_coefficient (n, k)` [^][contents]
 [binomial_coefficient]: #binomial_coefficient-n-k-
-Calculate the binomial coefficient `n` over `k`
-[=> Wikipedia - ](https://en.wikipedia.org/wiki/Binomial_coefficient)
+Calculate the binomial coefficient `n` over `k`\
+[=> Wikipedia - Binomial coefficient](https://en.wikipedia.org/wiki/Binomial_coefficient)
 
 #### `fibonacci (n)` [^][contents]
 [fibonacci]: #fibonacci-n-
-Calculate the Fibonacci numbers of a number `n`
+Calculate the Fibonacci numbers of a number `n`\
 [=> Wikipedia - Fibonacci number](https://en.wikipedia.org/wiki/Fibonacci_number)
 
 #### `continued_fraction (a, b)` [^][contents]
 [continued_fraction]: #continued_fraction-a-b-
 Calculate the continued fraction\
-`a0 + b1 / (a1 + b2 / (a2 + (...))))`
+`a0 + b1 / (a1 + b2 / (a2 + (...))))`\
+
 [=> Wikipedia - Continued fraction](https://en.wikipedia.org/wiki/Continued_fraction)
 
 - `a` - list with the coefficients of the continued fraction
 - `b` - list with the numerator of the continued fraction
-      - size of this list is 1 less then list `a`
-      - if not specified value `1` will set
+     -  size of this list is 1 less then list `a`
+     -  if not specified value `1` will set
         and it calculate a simple continued fraction
 
 #### `gcd (a, b)` [^][contents]
 [gcd]: #gcd-a-b-
-Calculate the greatest common divisor of two integers `a` and `b`
+Calculate the greatest common divisor of two integers `a` and `b`\
 [=> Wikipedia - Greatest common divisor](https://en.wikipedia.org/wiki/Greatest_common_divisor)
 
 #### `lcm (a, b)` [^][contents]
 [lcm]: #lcm-a-b-
-Calculate the least common multiple of two integers `a` and `b`
+Calculate the least common multiple of two integers `a` and `b`\
 [=> Wikipedia - Least common multiple](https://en.wikipedia.org/wiki/Least_common_multiple)
 
