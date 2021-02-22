@@ -112,7 +112,7 @@ module helix_extrude (angle, rotations, pitch, height, r, opposite, slices=32, c
 {
 	R  = parameter_cylinder_r_basic (r, r[0], r[1], preset=[0,0]);
 	rp = parameter_helix_to_rp (
-		get_first_num (angle/360, rotations),
+		is_num(angle) ? angle/360 : rotations,
 		pitch,
 		height
 	);
