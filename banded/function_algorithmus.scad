@@ -3,141 +3,238 @@
 
 use <banded/list_algorithmus.scad>
 
-debug=false;
-
-function summation_fn (label, n, k=0) =
+function summation_fn (fn, n, k=0) =
 	(n==undef) ?
-	 summation_auto_fn (label, k, debug=debug)
-	:summation_fn_intern_big(label, n, k)
+	 summation_auto_fn (fn, k)
+	:summation_fn_intern_big(fn, n, k)
 ;
-function summation_fn_intern (label, n, k, value=0) =
-	 (k>n) ? value
-	:summation_fn_intern(label, n, k+1,
-		value + select_function(label, k))
+function summation_fn_intern (fn, n, k, value=0) =
+	is_select_function(fn) ? summation_fn_intern_select (fn, n, k, value)
+	:                        summation_fn_intern_direct (fn, n, k, value)
 ;
-function summation_fn_intern_big (label, n, k, slice=100000) =
+function summation_fn_intern_direct (fn, n, k, value=0) =
+	(k>n) ? value :
+	summation_fn_intern_direct(fn, n, k+1,
+		value + fn(k)
+	)
+;
+function summation_fn_intern_select (fn, n, k, value=0) =
+	(k>n) ? value :
+	summation_fn_intern_select(fn, n, k+1,
+		value + select_function(fn, k)
+	)
+;
+function summation_fn_intern_big (fn, n, k, slice=100000) =
 	(n > slice) ?
-	 summation_list([ for (i=[k:slice:n]) summation_fn_intern(label, min(i+slice,n), max(i,k)) ])
-	:summation_fn_intern(label, n, k)
-;
-function summation_auto_fn (label, k=0) =
-	summation_auto_fn_intern(label, k+1, select_function(label, k), debug=debug)
-;
-function summation_auto_fn_intern (label, k, value, value_old) =
-	(value==value_old) ?
-		(debug) ? [value,k] : value
-	:	summation_auto_fn_intern (label, k+1,
-			value + select_function(label, k),
-			value,
-			debug=debug)
+	 summation_list([ for (i=[k:slice:n]) summation_fn_intern(fn, min(i+slice,n), max(i,k)) ])
+	:summation_fn_intern(fn, n, k)
 ;
 
-function product_fn (label, n, k=0) = product_fn_intern_big (label, n, k);
-function product_fn_intern (label, n, k, value=1) =
-	 (k>n) ? value
-	:product_fn_intern(label, n, k+1,
-		value * select_function(label, k))
+function summation_auto_fn (fn, k=0) =
+	is_select_function(fn) ? summation_auto_fn_intern_select(fn, k+1, select_function(fn, k))
+	:                        summation_auto_fn_intern       (fn, k+1, fn(k) )
 ;
-function product_fn_intern_big (label, n, k, slice=100000) =
-	(n > slice) ?
-	 product_list([ for (i=[k:slice:n]) product_fn_intern(label, min(i+slice,n), max(i,k)) ])
-	:product_fn_intern(label, n, k)
+function summation_auto_fn_intern (fn, k, value, value_old) =
+	(value==value_old) ? value
+	:	summation_auto_fn_intern (fn, k+1,
+			value + fn(k),
+			value
+		)
+;
+function summation_auto_fn_intern_select (fn, k, value, value_old) =
+	(value==value_old) ? value
+	:	summation_auto_fn_intern_select (fn, k+1,
+			value + select_function(fn, k),
+			value
+		)
 ;
 
-function taylor        (label, x, n=0, k=0) = taylor_intern(label, x, n, k);
-function taylor_intern (label, x, n,   k,  value=0) =
-	(k>n) ? value
-	:taylor_intern(label, x, n, k+1,
-		value + select_function(label, x, k))
+function product_fn (fn, n, k=0) =
+	is_select_function(fn) ? product_fn_intern_big_select (fn, n, k)
+	:                        product_fn_intern_big        (fn, n, k)
 ;
-function taylor_auto (label, x, n=undef, k=0) =
+function product_fn_intern (fn, n, k, value=1) =
+	is_select_function(fn) ? product_fn_intern_select (fn, n, k, value)
+	:                        product_fn_intern_direct (fn, n, k, value)
+;
+function product_fn_intern_direct (fn, n, k, value=1) =
+	(k>n) ? value :
+	product_fn_intern_direct(fn, n, k+1,
+		value * fn(k)
+	)
+;
+function product_fn_intern_select (fn, n, k, value=1) =
+	(k>n) ? value :
+	product_fn_intern_select(fn, n, k+1,
+		value * select_function(fn, k)
+	)
+;
+function product_fn_intern_big (fn, n, k, slice=100000) =
+	(n > slice) ?
+	 product_list([ for (i=[k:slice:n]) product_fn_intern(fn, min(i+slice,n), max(i,k)) ])
+	:product_fn_intern(fn, n, k)
+;
+
+function taylor        (fn, x, n=0, k=0) =
+	is_select_function(fn) ? taylor_intern_select(fn, x, n, k)
+	:                        taylor_intern       (fn, x, n, k)
+;
+function taylor_intern (fn, x, n, k, value=0) =
+	(k>n) ? value :
+	taylor_intern (fn, x, n, k+1,
+		value + fn(x, k)
+	)
+;
+function taylor_intern_select (fn, x, n, k, value=0) =
+	(k>n) ? value :
+	taylor_intern_select (fn, x, n, k+1,
+		value + select_function(fn, x, k)
+	)
+;
+
+function taylor_auto (fn, x, n=undef, k=0) =
 	(n==undef) ?
-	 taylor_auto_intern (label, x, 100000, k+1, select_function(label, x, k), debug=debug)
-	:taylor_auto_intern (label, x, n,      k+1, select_function(label, x, k), debug=debug)
+	 	is_select_function(fn) ? taylor_auto_intern_select (fn, x, 100000, k+1, select_function(fn, x, k) )
+	 	:                        taylor_auto_intern        (fn, x, 100000, k+1,                 fn (x, k) )
+	:	is_select_function(fn) ? taylor_auto_intern_select (fn, x, n,      k+1, select_function(fn, x, k) )
+	 	:                        taylor_auto_intern        (fn, x, n,      k+1,                 fn (x, k) )
 ;
-function taylor_auto_intern (label, x, n, k, value, value_old) =
-	(k>n || value==value_old) ?
-		((debug) ? [value,k] : value)
-	:	taylor_auto_intern (label, x, n, k+1,
-			value + select_function(label, x, k),
-			value,
-			debug=debug)
+function taylor_auto_intern (fn, x, n, k, value, value_old) =
+	(k>n || value==value_old) ? value :
+	taylor_auto_intern (fn, x, n, k+1,
+		value + fn(x, k),
+		value
+	)
+;
+function taylor_auto_intern_select (fn, x, n, k, value, value_old) =
+	(k>n || value==value_old) ? value :
+	taylor_auto_intern (fn, x, n, k+1,
+		value + select_function(fn, x, k),
+		value
+	)
 ;
 
 delta_std = 0.001;
 
-function integrate (label, begin, end, constant=0, delta=delta_std) =
-	integrate_simpson (label, begin, end, delta, constant)
+function integrate (fn, begin, end, constant=0, delta=delta_std) =
+	integrate_simpson (fn, begin, end, delta, constant)
 ;
-function integrate_midpoint (label, begin, end, constant=0, delta=delta_std) =
+//
+function integrate_midpoint (fn, begin, end, constant=0, delta=delta_std) =
+	(begin>end) ? undef :
+	(delta<=0)  ? undef :
+	let(
+		delta_balanced = (end-begin)/ceil((end-begin)/delta)
+	)
+	is_select_function(fn) ?
+		integrate_midpoint_intern_select (fn, begin, end, delta_balanced) + constant
+	:	integrate_midpoint_intern        (fn, begin, end, delta_balanced) + constant
+;
+function integrate_midpoint_intern (fn, begin, end, delta, value=0) =
+	(begin>=end) ? value :
+	integrate_midpoint_intern (fn, begin+delta, end, delta,
+		value + fn(begin+delta/2) * delta
+	)
+;
+function integrate_midpoint_intern_select (fn, begin, end, delta, value=0) =
+	(begin>=end) ? value :
+	integrate_midpoint_intern_select (fn, begin+delta, end, delta,
+		value + select_function(fn, begin+delta/2) * delta
+	)
+;
+//
+function integrate_simpson (fn, begin, end, constant=0, delta=delta_std) =
 	 (begin>end) ? undef
 	:(delta<=0)  ? undef
-	:integrate_midpoint_intern (label, begin, end, (end-begin)/ceil((end-begin)/delta)) + constant
+	:integrate_simpson_intern (fn, begin, end, ceil((end-begin)/2/delta)) + constant
 ;
-function integrate_midpoint_intern (label, begin, end, delta, value=0) =
-	(begin>=end) ? value
-	: integrate_midpoint_intern (label, begin+delta, end, delta,
-		value + select_function(label, begin+delta/2) * delta
-		)
-;
-function integrate_simpson (label, begin, end, constant=0, delta=delta_std) =
-	 (begin>end) ? undef
-	:(delta<=0)  ? undef
-	:integrate_simpson_intern (label, begin, end, ceil((end-begin)/2/delta)) + constant
-;
-function integrate_simpson_intern (label, begin, end, count, position=0, value=0) =
+function integrate_simpson_intern (fn, begin, end, count, position=0, value=0) =
 	(position>=count) ? value
-	: integrate_simpson_intern (label, begin, end, count, position+1,
-		value + area_simpson(label,
+	: integrate_simpson_intern (fn, begin, end, count, position+1,
+		value + area_simpson(fn,
 			begin+(end-begin)*(position  )/count,
 			begin+(end-begin)*(position+1)/count)
 		)
 ;
-function integrate_simpson_2 (label, begin, end, constant=0, delta=delta_std) =
+//
+function integrate_simpson_2 (fn, begin, end, constant=0, delta=delta_std) =
 	 (begin>end) ? undef
 	:(delta<=0)  ? undef
-	:integrate_simpson_2_intern (label, begin, end, ceil((end-begin)/4/delta)) + constant
+	:integrate_simpson_2_intern (fn, begin, end, ceil((end-begin)/4/delta)) + constant
 ;
-function integrate_simpson_2_intern (label, begin, end, count, position=0, value=0) =
+function integrate_simpson_2_intern (fn, begin, end, count, position=0, value=0) =
 	(position>=count) ? value
-	: integrate_simpson_2_intern (label, begin, end, count, position+1,
-		value + area_simpson_2(label,
+	: integrate_simpson_2_intern (fn, begin, end, count, position+1,
+		value + area_simpson_2(fn,
 			begin+(end-begin)*(position  )/count,
 			begin+(end-begin)*(position+1)/count)
 		)
 ;
-function area_simpson (label, begin, end) =
-	( select_function(label, begin)
-	+ select_function(label, (begin+end)/2) * 4
-	+ select_function(label, end)
-	) * (end-begin) / 6
+//
+function area_simpson (fn, begin, end) =
+	let( mid=(begin+end)/2 )
+	is_select_function(fn) ?
+		let( mid=(begin+end)/2 )
+		( select_function(fn, begin)
+		+ select_function(fn, mid) * 4
+		+ select_function(fn, end)
+		) * (end-begin) / 6
+	:
+		( fn(begin)
+		+ fn(mid) * 4
+		+ fn(end)
+		) * (end-begin) / 6
 ;
-function area_simpson_2 (label, begin, end) =
-	( 16 * (area_simpson(label,begin,(begin+end)/2) + area_simpson(label,(begin+end)/2,end))
-	      - area_simpson(label,begin,end)
+
+function area_simpson_2 (fn, begin, end) =
+	let( mid=(begin+end)/2 )
+	( 16 * (area_simpson(fn,begin,mid) + area_simpson(fn,mid,end))
+	      - area_simpson(fn,begin,end)
 	) / 15
 ;
 
-function derivation (label, value, delta=delta_std) =
-	derivation_symmetric_2(label, value, delta)
+function derivation (fn, value, delta=delta_std) =
+	derivation_symmetric_2(fn, value, delta)
 ;
-function derivation_symmetric (label, value, delta=delta_std) =
-	(select_function(label, value+delta) - select_function(label, value-delta)) / (2*delta)
+function derivation_symmetric (fn, value, delta=delta_std) =
+	is_select_function(fn) ?
+		(select_function(fn, value+delta) - select_function(fn, value-delta)) / (2*delta)
+	:
+		(fn(value+delta) - fn(value-delta)) / (2*delta)
 ;
-function derivation_symmetric_2 (label, value, delta=dx) =
-	//( 4*derivation_symmetric(label,x,delta) - derivation_symmetric(label,x,delta*2) ) / 3
-	(   (select_function(label, value+  delta) - select_function(label, value-  delta)) * 2
-	  - (select_function(label, value+2*delta) - select_function(label, value-2*delta)) / 4
-	) / (3*delta)
+function derivation_symmetric_2 (fn, value, delta=delta_std) =
+	// ( 4*derivation_symmetric(fn,value,delta) - derivation_symmetric(fn,value,delta*2) ) / 3
+	is_select_function(fn) ?
+		( (select_function(fn, value+  delta) - select_function(fn, value-  delta)) * 2
+		- (select_function(fn, value+2*delta) - select_function(fn, value-2*delta)) / 4
+		) / (3*delta)
+	:
+		( (fn(value+  delta) - fn(value-  delta)) * 2
+		- (fn(value+2*delta) - fn(value-2*delta)) / 4
+		) / (3*delta)
 ;
-
 
 
 // funktion(argument) muss value zurückgeben
-function find_first_fn (label, value, begin, end, step=1) =
-	(sign(step)*begin>=sign(step)*end) ? undef
-	:(select_function(label, begin) == value) ?
+function find_first_fn (fn, value, begin, end, step=1) =
+	let(
+		 Begin = is_num(begin) ? begin : 0
+		,End   = is_num(end)   ? end   : 0
+		,Step  = is_num(step)&&step!=0 ? step : 1
+	)
+	is_select_function(fn) ? find_first_fn_intern_select (fn, value, Begin, End, Step)
+	:                        find_first_fn_intern        (fn, value, Begin, End, Step)
+;
+function find_first_fn_intern (fn, value, begin, end, step=1) =
+	(sign(step)*begin>=sign(step)*end) ? undef :
+	(fn(begin) == value) ?
 		 begin
-		:find_first_fn(label, value, begin+step, end)
+		:find_first_fn_intern(fn, value, begin+step, end, step)
+;
+function find_first_fn_intern_select (fn, value, begin, end, step=1) =
+	(sign(step)*begin>=sign(step)*end) ? undef :
+	(select_function(fn, begin) == value) ?
+		 begin
+		:find_first_fn_intern_select(fn, value, begin+step, end, step)
 ;
 
