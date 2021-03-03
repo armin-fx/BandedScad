@@ -24,15 +24,15 @@ module connect (point=[0,0,0], direction=[0,0,1], orientation=[1,0,0])
 	children();
 }
 
-// Platziert ein Objekt an den angegebenen Punkten in der Liste
-module place (points)
+// Platziert und kopiert ein Objekt an den angegebenen Punkten in der Liste
+module place_copy (points)
 {
 	for (p=points)
 		translate (p)
 		children();
 }
-// Platziert ein Objekt entlang der angegebenen Richtung an den angegebenen Entfernungen
-module place_line(direction, distances)
+// Platziert und kopiert ein Objekt entlang der angegebenen Richtung an den angegebenen Entfernungen
+module place_copy_line(direction, distances)
 {
 	Direction = unit_vector(
 		(is_list(direction) && len(direction)>1) ?
@@ -44,20 +44,20 @@ module place_line(direction, distances)
 		translate (l*Direction)
 		children();
 }
-// Platziert ein Objekt entlang der entsprechenden Achse an den angegebenen Entfernungen
-module place_x (distances)
+// Platziert und kopiert ein Objekt entlang der entsprechenden Achse an den angegebenen Entfernungen
+module place_copy_x (distances)
 {
 	for (l=distances)
 		translate_x (l)
 		children();
 }
-module place_y (distances)
+module place_copy_y (distances)
 {
 	for (l=distances)
 		translate_y (l)
 		children();
 }
-module place_z (distances)
+module place_copy_z (distances)
 {
 	for (l=distances)
 		translate_z (l)
