@@ -90,7 +90,7 @@ function get_list_depth_intern (list, i=0) =
 ;
 
 
-// gibt einen Wert für mehrere gleiche Parameter zurück
+// gibt einen Wert für mehrere gleichartige Parameter zurück
 // Sinnvoll, wenn z.B. der Parameter r oder d/2 für den Radius stehen sollen.
 // Sind mehrere Parameter gesetzt, wird der erste genommen, der gesetzt ist (und nicht undef ist).
 function get_first_good (a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) =
@@ -123,102 +123,102 @@ function get_first_num (a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) =
 	undef
 ;
 
-// gibt einen Wert für mehrere gleiche Parameter zurück
+// gibt einen Wert für mehrere gleichartige Parameter zurück
 // Die Parameter sind hier 1-Dimensionale Vektoren
 // Alle einzelnen Parameter im Vektor müssen einen Wert haben, um akzeptiert zu werden.
 // Sind mehrere Parameter gesetzt, wird der erste genommen, der gesetzt ist.
 function get_first_good_1d (a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) =
 	// get_first_good_in_list ([a0, a1, a2, a3, a4, a5, a6, a7, a8, a9], 1)
 	a0!=undef && is_list(a0) && len(a0)==1 && a0[0]!=undef ? a0 :
-	a0!=undef && is_list(a1) && len(a1)==1 && a1[0]!=undef ? a1 :
-	a0!=undef && is_list(a2) && len(a2)==1 && a2[0]!=undef ? a2 :
-	a0!=undef && is_list(a3) && len(a3)==1 && a3[0]!=undef ? a3 :
-	a0!=undef && is_list(a4) && len(a4)==1 && a4[0]!=undef ? a4 :
-	a0!=undef && is_list(a5) && len(a5)==1 && a5[0]!=undef ? a5 :
-	a0!=undef && is_list(a6) && len(a6)==1 && a6[0]!=undef ? a6 :
-	a0!=undef && is_list(a7) && len(a7)==1 && a7[0]!=undef ? a7 :
-	a0!=undef && is_list(a8) && len(a8)==1 && a8[0]!=undef ? a8 :
-	a0!=undef && is_list(a9) && len(a9)==1 && a9[0]!=undef ? a9 :
+	a1!=undef && is_list(a1) && len(a1)==1 && a1[0]!=undef ? a1 :
+	a2!=undef && is_list(a2) && len(a2)==1 && a2[0]!=undef ? a2 :
+	a3!=undef && is_list(a3) && len(a3)==1 && a3[0]!=undef ? a3 :
+	a4!=undef && is_list(a4) && len(a4)==1 && a4[0]!=undef ? a4 :
+	a5!=undef && is_list(a5) && len(a5)==1 && a5[0]!=undef ? a5 :
+	a6!=undef && is_list(a6) && len(a6)==1 && a6[0]!=undef ? a6 :
+	a7!=undef && is_list(a7) && len(a7)==1 && a7[0]!=undef ? a7 :
+	a8!=undef && is_list(a8) && len(a8)==1 && a8[0]!=undef ? a8 :
+	a9!=undef && is_list(a9) && len(a9)==1 && a9[0]!=undef ? a9 :
 	undef
 ;
 function get_first_num_1d   (a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) =
 	// get_first_num_in_list ([a0, a1, a2, a3, a4, a5, a6, a7, a8, a9], 1)
 	a0!=undef && is_list(a0) && len(a0)==1 && is_num(a0[0]) ? a0 :
-	a0!=undef && is_list(a1) && len(a1)==1 && is_num(a1[0]) ? a1 :
-	a0!=undef && is_list(a2) && len(a2)==1 && is_num(a2[0]) ? a2 :
-	a0!=undef && is_list(a3) && len(a3)==1 && is_num(a3[0]) ? a3 :
-	a0!=undef && is_list(a4) && len(a4)==1 && is_num(a4[0]) ? a4 :
-	a0!=undef && is_list(a5) && len(a5)==1 && is_num(a5[0]) ? a5 :
-	a0!=undef && is_list(a6) && len(a6)==1 && is_num(a6[0]) ? a6 :
-	a0!=undef && is_list(a7) && len(a7)==1 && is_num(a7[0]) ? a7 :
-	a0!=undef && is_list(a8) && len(a8)==1 && is_num(a8[0]) ? a8 :
-	a0!=undef && is_list(a9) && len(a9)==1 && is_num(a9[0]) ? a9 :
+	a1!=undef && is_list(a1) && len(a1)==1 && is_num(a1[0]) ? a1 :
+	a2!=undef && is_list(a2) && len(a2)==1 && is_num(a2[0]) ? a2 :
+	a3!=undef && is_list(a3) && len(a3)==1 && is_num(a3[0]) ? a3 :
+	a4!=undef && is_list(a4) && len(a4)==1 && is_num(a4[0]) ? a4 :
+	a5!=undef && is_list(a5) && len(a5)==1 && is_num(a5[0]) ? a5 :
+	a6!=undef && is_list(a6) && len(a6)==1 && is_num(a6[0]) ? a6 :
+	a7!=undef && is_list(a7) && len(a7)==1 && is_num(a7[0]) ? a7 :
+	a8!=undef && is_list(a8) && len(a8)==1 && is_num(a8[0]) ? a8 :
+	a9!=undef && is_list(a9) && len(a9)==1 && is_num(a9[0]) ? a9 :
 	undef
 ;
 
-// gibt einen Wert für mehrere gleiche Parameter zurück
+// gibt einen Wert für mehrere gleichartige Parameter zurück
 // Die Parameter sind hier 2-Dimensionale Vektoren
 // Alle 2 Parameter im Vektor müssen einen Wert haben, um akzeptiert zu werden.
 // Sind mehrere Parameter gesetzt, wird der erste genommen, der gesetzt ist.
 function get_first_good_2d (a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) =
 	// get_first_good_in_list ([a0, a1, a2, a3, a4, a5, a6, a7, a8, a9], 2)
 	a0!=undef && is_list(a0) && len(a0)==2 && a0[0]!=undef && a0[1]!=undef ? a0 :
-	a0!=undef && is_list(a1) && len(a1)==2 && a1[0]!=undef && a1[1]!=undef ? a1 :
-	a0!=undef && is_list(a2) && len(a2)==2 && a2[0]!=undef && a2[1]!=undef ? a2 :
-	a0!=undef && is_list(a3) && len(a3)==2 && a3[0]!=undef && a3[1]!=undef ? a3 :
-	a0!=undef && is_list(a4) && len(a4)==2 && a4[0]!=undef && a4[1]!=undef ? a4 :
-	a0!=undef && is_list(a5) && len(a5)==2 && a5[0]!=undef && a5[1]!=undef ? a5 :
-	a0!=undef && is_list(a6) && len(a6)==2 && a6[0]!=undef && a6[1]!=undef ? a6 :
-	a0!=undef && is_list(a7) && len(a7)==2 && a7[0]!=undef && a7[1]!=undef ? a7 :
-	a0!=undef && is_list(a8) && len(a8)==2 && a8[0]!=undef && a8[1]!=undef ? a8 :
-	a0!=undef && is_list(a9) && len(a9)==2 && a9[0]!=undef && a9[1]!=undef ? a9 :
+	a1!=undef && is_list(a1) && len(a1)==2 && a1[0]!=undef && a1[1]!=undef ? a1 :
+	a2!=undef && is_list(a2) && len(a2)==2 && a2[0]!=undef && a2[1]!=undef ? a2 :
+	a3!=undef && is_list(a3) && len(a3)==2 && a3[0]!=undef && a3[1]!=undef ? a3 :
+	a4!=undef && is_list(a4) && len(a4)==2 && a4[0]!=undef && a4[1]!=undef ? a4 :
+	a5!=undef && is_list(a5) && len(a5)==2 && a5[0]!=undef && a5[1]!=undef ? a5 :
+	a6!=undef && is_list(a6) && len(a6)==2 && a6[0]!=undef && a6[1]!=undef ? a6 :
+	a7!=undef && is_list(a7) && len(a7)==2 && a7[0]!=undef && a7[1]!=undef ? a7 :
+	a8!=undef && is_list(a8) && len(a8)==2 && a8[0]!=undef && a8[1]!=undef ? a8 :
+	a9!=undef && is_list(a9) && len(a9)==2 && a9[0]!=undef && a9[1]!=undef ? a9 :
 	undef
 ;
 function get_first_num_2d (a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) =
 	// get_first_num_in_list ([a0, a1, a2, a3, a4, a5, a6, a7, a8, a9], 2)
 	a0!=undef && is_list(a0) && len(a0)==2 && is_num(a0[0]) && is_num(a0[1]) ? a0 :
-	a0!=undef && is_list(a1) && len(a1)==2 && is_num(a1[0]) && is_num(a1[1]) ? a1 :
-	a0!=undef && is_list(a2) && len(a2)==2 && is_num(a2[0]) && is_num(a2[1]) ? a2 :
-	a0!=undef && is_list(a3) && len(a3)==2 && is_num(a3[0]) && is_num(a3[1]) ? a3 :
-	a0!=undef && is_list(a4) && len(a4)==2 && is_num(a4[0]) && is_num(a4[1]) ? a4 :
-	a0!=undef && is_list(a5) && len(a5)==2 && is_num(a5[0]) && is_num(a5[1]) ? a5 :
-	a0!=undef && is_list(a6) && len(a6)==2 && is_num(a6[0]) && is_num(a6[1]) ? a6 :
-	a0!=undef && is_list(a7) && len(a7)==2 && is_num(a7[0]) && is_num(a7[1]) ? a7 :
-	a0!=undef && is_list(a8) && len(a8)==2 && is_num(a8[0]) && is_num(a8[1]) ? a8 :
-	a0!=undef && is_list(a9) && len(a9)==2 && is_num(a9[0]) && is_num(a9[1]) ? a9 :
+	a1!=undef && is_list(a1) && len(a1)==2 && is_num(a1[0]) && is_num(a1[1]) ? a1 :
+	a2!=undef && is_list(a2) && len(a2)==2 && is_num(a2[0]) && is_num(a2[1]) ? a2 :
+	a3!=undef && is_list(a3) && len(a3)==2 && is_num(a3[0]) && is_num(a3[1]) ? a3 :
+	a4!=undef && is_list(a4) && len(a4)==2 && is_num(a4[0]) && is_num(a4[1]) ? a4 :
+	a5!=undef && is_list(a5) && len(a5)==2 && is_num(a5[0]) && is_num(a5[1]) ? a5 :
+	a6!=undef && is_list(a6) && len(a6)==2 && is_num(a6[0]) && is_num(a6[1]) ? a6 :
+	a7!=undef && is_list(a7) && len(a7)==2 && is_num(a7[0]) && is_num(a7[1]) ? a7 :
+	a8!=undef && is_list(a8) && len(a8)==2 && is_num(a8[0]) && is_num(a8[1]) ? a8 :
+	a9!=undef && is_list(a9) && len(a9)==2 && is_num(a9[0]) && is_num(a9[1]) ? a9 :
 	undef
 ;
 
-// gibt einen Wert für mehrere gleiche Parameter zurück
+// gibt einen Wert für mehrere gleichartige Parameter zurück
 // Die Parameter sind hier 3-Dimensionale Vektoren
 // Alle 3 Parameter im Vektor müssen einen Wert haben, um akzeptiert zu werden.
 // Sind mehrere Parameter gesetzt, wird der erste genommen, der gesetzt ist.
 function get_first_good_3d (a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) =
 	// get_first_good_in_list ([a0, a1, a2, a3, a4, a5, a6, a7, a8, a9], 3)
 	a0!=undef && is_list(a0) && len(a0)==3 && a0[0]!=undef && a0[1]!=undef && a0[2]!=undef ? a0 :
-	a0!=undef && is_list(a1) && len(a1)==3 && a1[0]!=undef && a1[1]!=undef && a1[2]!=undef ? a1 :
-	a0!=undef && is_list(a2) && len(a2)==3 && a2[0]!=undef && a2[1]!=undef && a2[2]!=undef ? a2 :
-	a0!=undef && is_list(a3) && len(a3)==3 && a3[0]!=undef && a3[1]!=undef && a3[2]!=undef ? a3 :
-	a0!=undef && is_list(a4) && len(a4)==3 && a4[0]!=undef && a4[1]!=undef && a4[2]!=undef ? a4 :
-	a0!=undef && is_list(a5) && len(a5)==3 && a5[0]!=undef && a5[1]!=undef && a5[2]!=undef ? a5 :
-	a0!=undef && is_list(a6) && len(a6)==3 && a6[0]!=undef && a6[1]!=undef && a6[2]!=undef ? a6 :
-	a0!=undef && is_list(a7) && len(a7)==3 && a7[0]!=undef && a7[1]!=undef && a7[2]!=undef ? a7 :
-	a0!=undef && is_list(a8) && len(a8)==3 && a8[0]!=undef && a8[1]!=undef && a8[2]!=undef ? a8 :
-	a0!=undef && is_list(a9) && len(a9)==3 && a9[0]!=undef && a9[1]!=undef && a9[2]!=undef ? a9 :
+	a1!=undef && is_list(a1) && len(a1)==3 && a1[0]!=undef && a1[1]!=undef && a1[2]!=undef ? a1 :
+	a2!=undef && is_list(a2) && len(a2)==3 && a2[0]!=undef && a2[1]!=undef && a2[2]!=undef ? a2 :
+	a3!=undef && is_list(a3) && len(a3)==3 && a3[0]!=undef && a3[1]!=undef && a3[2]!=undef ? a3 :
+	a4!=undef && is_list(a4) && len(a4)==3 && a4[0]!=undef && a4[1]!=undef && a4[2]!=undef ? a4 :
+	a5!=undef && is_list(a5) && len(a5)==3 && a5[0]!=undef && a5[1]!=undef && a5[2]!=undef ? a5 :
+	a6!=undef && is_list(a6) && len(a6)==3 && a6[0]!=undef && a6[1]!=undef && a6[2]!=undef ? a6 :
+	a7!=undef && is_list(a7) && len(a7)==3 && a7[0]!=undef && a7[1]!=undef && a7[2]!=undef ? a7 :
+	a8!=undef && is_list(a8) && len(a8)==3 && a8[0]!=undef && a8[1]!=undef && a8[2]!=undef ? a8 :
+	a9!=undef && is_list(a9) && len(a9)==3 && a9[0]!=undef && a9[1]!=undef && a9[2]!=undef ? a9 :
 	undef
 ;
 function get_first_num_3d   (a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) =
 	// get_first_num_in_list ([a0, a1, a2, a3, a4, a5, a6, a7, a8, a9], 3)
 	a0!=undef && is_list(a0) && len(a0)==3 && is_num(a0[0]) && is_num(a0[1]) && is_num(a0[2]) ? a0 :
-	a0!=undef && is_list(a1) && len(a1)==3 && is_num(a1[0]) && is_num(a1[1]) && is_num(a1[2]) ? a1 :
-	a0!=undef && is_list(a2) && len(a2)==3 && is_num(a2[0]) && is_num(a2[1]) && is_num(a2[2]) ? a2 :
-	a0!=undef && is_list(a3) && len(a3)==3 && is_num(a3[0]) && is_num(a3[1]) && is_num(a3[2]) ? a3 :
-	a0!=undef && is_list(a4) && len(a4)==3 && is_num(a4[0]) && is_num(a4[1]) && is_num(a4[2]) ? a4 :
-	a0!=undef && is_list(a5) && len(a5)==3 && is_num(a5[0]) && is_num(a5[1]) && is_num(a5[2]) ? a5 :
-	a0!=undef && is_list(a6) && len(a6)==3 && is_num(a6[0]) && is_num(a6[1]) && is_num(a6[2]) ? a6 :
-	a0!=undef && is_list(a7) && len(a7)==3 && is_num(a7[0]) && is_num(a7[1]) && is_num(a7[2]) ? a7 :
-	a0!=undef && is_list(a8) && len(a8)==3 && is_num(a8[0]) && is_num(a8[1]) && is_num(a8[2]) ? a8 :
-	a0!=undef && is_list(a9) && len(a9)==3 && is_num(a9[0]) && is_num(a9[1]) && is_num(a9[2]) ? a9 :
+	a1!=undef && is_list(a1) && len(a1)==3 && is_num(a1[0]) && is_num(a1[1]) && is_num(a1[2]) ? a1 :
+	a2!=undef && is_list(a2) && len(a2)==3 && is_num(a2[0]) && is_num(a2[1]) && is_num(a2[2]) ? a2 :
+	a3!=undef && is_list(a3) && len(a3)==3 && is_num(a3[0]) && is_num(a3[1]) && is_num(a3[2]) ? a3 :
+	a4!=undef && is_list(a4) && len(a4)==3 && is_num(a4[0]) && is_num(a4[1]) && is_num(a4[2]) ? a4 :
+	a5!=undef && is_list(a5) && len(a5)==3 && is_num(a5[0]) && is_num(a5[1]) && is_num(a5[2]) ? a5 :
+	a6!=undef && is_list(a6) && len(a6)==3 && is_num(a6[0]) && is_num(a6[1]) && is_num(a6[2]) ? a6 :
+	a7!=undef && is_list(a7) && len(a7)==3 && is_num(a7[0]) && is_num(a7[1]) && is_num(a7[2]) ? a7 :
+	a8!=undef && is_list(a8) && len(a8)==3 && is_num(a8[0]) && is_num(a8[1]) && is_num(a8[2]) ? a8 :
+	a9!=undef && is_list(a9) && len(a9)==3 && is_num(a9[0]) && is_num(a9[1]) && is_num(a9[2]) ? a9 :
 	undef
 ;
 
@@ -377,6 +377,37 @@ function is_num_list_intern (list, begin, end) =
 	:! is_num(list[begin]) ? false
 	:is_num_list_intern (list, begin+1, end)
 ;
+
+// testet eine Liste mit fester Größe, ob alle Werte darin nicht undef sind
+// gibt true zurück bei Erfolg
+function is_good_1d (list) =
+	 list!=undef && is_list(list) && len(list)==1
+	 && list[0]!=undef
+;
+function is_good_2d (list) =
+	 list!=undef && is_list(list) && len(list)==2
+	 && list[0]!=undef && list[1]!=undef
+;
+function is_good_3d (list) =
+	 list!=undef && is_list(list) && len(list)==3
+	 && list[0]!=undef && list[1]!=undef && list[2]!=undef
+;
+
+// testet eine Liste mit fester Größe, ob alle Werte darin eine numerische Zahl sind
+// gibt true zurück bei Erfolg
+function is_num_1d (list) =
+	 list!=undef && is_list(list) && len(list)==1
+	 && is_num(list[0])
+;
+function is_num_2d (list) =
+	 list!=undef && is_list(list) && len(list)==2
+	 && is_num(list[0]) && is_num(list[1])
+;
+function is_num_3d (list) =
+	 list!=undef && is_list(list) && len(list)==3
+	 && is_num(list[0]) && is_num(list[1]) && is_num(list[2])
+;
+
 
 function is_split_block (block, last, first=0) = last-first > block*2;
 function    split_block (block, last, first=0) = last - (last-first)%block - block - 1;

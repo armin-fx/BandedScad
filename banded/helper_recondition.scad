@@ -66,10 +66,10 @@ function parameter_range_safe (list, begin, last, count, range) =
 // - ohne Angabe: r1=1, r2=2
 function parameter_ring_2r (r, w, r1, r2, d, d1, d2) =
 	parameter_ring_2r_basic (
-		r =get_first_num(d /2,  r),
+		r =get_first_num( (is_num(d ) ? d /2 : undef), r),
 		w =w,
-		r1=get_first_num(d1/2, r1),
-		r2=get_first_num(d2/2, r2)
+		r1=get_first_num( (is_num(d1) ? d1/2 : undef), r1),
+		r2=get_first_num( (is_num(d2) ? d2/2 : undef), r2)
 	)
 ;
 function parameter_ring_2r_basic (r, w, r1, r2) =
@@ -111,9 +111,9 @@ function parameter_helix_to_rp (rotations, pitch, height) =
 // - ohne Angabe: r=1
 function parameter_cylinder_r (r, r1, r2, d, d1, d2, preset) =
 	parameter_cylinder_r_basic (
-		get_first_num(d /2, r),
-		get_first_num(d1/2, r1),
-		get_first_num(d2/2, r2),
+		get_first_num( (is_num(d ) ? d /2 : undef), r),
+		get_first_num( (is_num(d1) ? d1/2 : undef), r1),
+		get_first_num( (is_num(d2) ? d2/2 : undef), r2),
 		preset)
 ;
 function parameter_cylinder_r_basic (r, r1, r2, preset) =
@@ -133,7 +133,7 @@ function parameter_cylinder_r_basic (r, r1, r2, preset) =
 // Regeln wie bei circle() von OpenSCAD
 // - Durchmesser geht vor Radius
 // - ohne Angabe: r=1
-function parameter_circle_r (r, d) = get_first_good (d/2, r, 1);
+function parameter_circle_r (r, d) = get_first_num ( (is_num(d) ? d/2 : undef), r, 1);
 
 // wandelt das Argument 'size' um in einen Tupel [1,2,3]
 // aus size=3       wird   [3,3,3]
@@ -151,7 +151,9 @@ function parameter_size_3d (size) =
 
 ;
 function parameter_size_2d (size) =
-	get_first_good_2d (size+[0,0], [size+0,size+0], [1,1])
+	 is_num_2d(size) ? size
+	:is_num   (size) ? [size, size]
+	:                  [1,1]
 ;
 
 // Wandelt das Argument 'value' in eine Liste mit 'dimension' Elementen

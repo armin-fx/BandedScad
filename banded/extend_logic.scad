@@ -21,13 +21,15 @@ function get_fn_circle (r, angle=360, piece=true, fn, fa, fs) =
 
 // gibt die Anzahl der Segmente eines geschlossenen Kreises zurück
 // erweiterte Funktion
-function get_fn_circle_closed_x (r, fn, fa, fs, fn_min, fn_max, fd, fa_enabled, fs_enabled) = 
+// Code (x!=false)  ->  Rückgabe: true = true, false = false, Standartwert bei undefiniert = true
+function get_fn_circle_closed_x (r, fn, fa, fs, fn_min, fn_max, fd, fa_enabled, fs_enabled) =
+	r==undef ? 3 :
 	is_sfx_activated(fn) ? get_fn_circle_closed(r, fn, fa, fs)
 	:
 		let (
 			fa_value = 360/fa,
 			fs_value = r*2*PI/fs,
-			fd_value = (fd<r) ? 360/(2*asin(sqrt( 2*fd*(r-fd) )/r)) : 0
+			fd_value = (fd!=undef)&&(fd<r) ? 360/(2*asin(sqrt( 2*fd*(r-fd) )/r)) : 0
 		)
 		sf_minmax(fn_min, fn_max,
 		ceil(max (5
