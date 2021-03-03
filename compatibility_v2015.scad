@@ -5,7 +5,10 @@
 // with older versions than 2019.05
 // and newer than or equal 2015.03
 
-if (version_num()>=20190500) echo ("\nWARNING: this version of OpenScad don\'t need \'compatibility_v2015.scad\'\n");
+if (version_num()>=20210100)
+	echo ("\nWARNING: This version of OpenSCAD don\'t need \'compatibility_v2015.scad\'\n");
+if (version_num()>=20190500 && version_num()<20210100)
+	echo ("\nWARNING: This version of OpenSCAD don\'t need \'compatibility_v2015.scad\'. Use \'compatibility_v2019.scad\' instead.\n");
 
 // emulate new testing functions
 function is_undef  (value) = (undef==value);
@@ -19,6 +22,7 @@ function is_num    (value) =
 function is_list   (value) = (concat(value)==value);
 function is_string (value) = (str(value)==value);
 function is_function (value) =
+	version_num()<=20190500 ? false :
 	let(str_value = str(value))
 	concat(value)!=value &&
 	str_value!=value &&
