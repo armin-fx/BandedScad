@@ -7,11 +7,18 @@
 //   1. fn_test() als Funktion definieren
 //   2. seit OpenSCAD Version 2021.01: Funktionsliteral übergeben über Option fn_test
 // count = Anzahl der Schleifendurchgänge (0 => 1 Aufruf)
+// Wenn eine Variable 'benchmark_trial=true' definiert wird, wird die Funktion nur
+// 1 mal aufgerufen, unabhängig, was in 'count' steht. Sinnvoll zum testen, ob die
+// Funktion Warnungen ausgibt.
 function benchmark (count=0, fn_test) =
 	(fn_test!=undef && !is_function(fn_test)) ?
 		benchmark_select (count, fn_test)
 	:
-	let( Count = (is_num(count) && count>=0) ? count : 0
+	let(
+		 Count =
+			(is_num(count) && count>=0
+			&& !(!is_undef(benchmark_trial) && benchmark_trial==true) )
+			? count : 0
 		,c = max( floor(sqrt((Count+1)*2)-1), 0)
 		,r = Count - (ceil((c+1)*(c+1)/2)-floor(c/2))
 	)
@@ -31,7 +38,11 @@ function benchmark_intern_2 (count=0, fn_test, trash) =
 
 // ruft select_function() mit der entsprechenden Kennung der Testfunktion auf
 function benchmark_select (count=0, fn, arg, arg2, arg3, arg4) =
-	let( Count = (is_num(count) && count>=0) ? count : 0
+	let(
+		 Count =
+			(is_num(count) && count>=0
+			&& !(!is_undef(benchmark_trial) && benchmark_trial==true) )
+			? count : 0
 		,c = max( floor(sqrt((Count+1)*2)-1), 0)
 		,r = Count - (ceil((c+1)*(c+1)/2)-floor(c/2))
 	)
