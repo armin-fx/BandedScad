@@ -8,6 +8,6 @@
 //     <Modulname>       - Objekt kann zentriert werden mit center=true im Argument
 
 
-include <banded/object_basic.scad>
+include <banded/object_figure.scad>
 include <banded/object_circle.scad>
 include <banded/object_rounded.scad>

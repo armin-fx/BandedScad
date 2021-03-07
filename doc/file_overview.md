@@ -44,7 +44,7 @@ Overview of scad files
 ` `| . . . +--> `banded/draft_transform_names.scad`\
 ` `|\
 ` `+--> `banded/object.scad`\
-` `| . . . +--> `banded/object_basic.scad`\
+` `| . . . +--> `banded/object_figure.scad`\
 ` `| . . . +--> `banded/object_circle.scad`\
 ` `| . . . +--> `banded/object_rounded.scad`\
 ` `|\

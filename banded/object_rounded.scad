@@ -13,7 +13,7 @@ use <banded/draft_curves.scad>
 use <banded/draft_transform_common.scad>
 use <banded/draft_transform_basic.scad>
 use <banded/operator_transform.scad>
-use <banded/object_basic.scad>
+use <banded/object_figure.scad>
 
 // Quader mit abgerundeten Kanten, alle Kanten mit gleichen Radius/Durchmesser
 // Argumente:

@@ -127,7 +127,7 @@ echo( 2 * a ); // scalar multiplication, result [ [4,6],[6,8] ]
 #### `identity_matrix (n)` [^][contents]
 [identity_matrix]: #identity_matrix-n-
 Generate the identity matrix with size `n` × `n`.\
-The identity matrix of size `n` is the n × n square matrix with ones on the main diagonal and zeros elsewhere.\
+The identity matrix of size `n` is the n × n square matrix with ones on the main diagonal and zeros elsewhere.
 ```
 [1 0 0]
 [0 1 0]
