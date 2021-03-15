@@ -216,20 +216,6 @@ function get_bounding_box_list (list) =
 	[ max_pos - min_pos, min_pos, max_pos ]
 ;
 
-
-// jeden Punkt in der Liste <list> auf die xy-Ebene projizieren
-//  list  = Punkt-Liste
-//  cut   = nur den Umriss nehmen, der durch die xy-Ebene geht
-//          TODO nicht implementierbar ohne Zusammengehörigkeit der Punkte
-//  plane = true  = eine 2D-Liste machen - Standart
-//          false = 3D-Liste behalten, alle Punkte auf xy-Ebene
-function projection_list (list, plane) =
-	let (Plane=is_bool(plane) ? plane : true)
-	//
-	Plane==true ? [ for (p=list) [p.x,p.y]   ]
-	:             [ for (p=list) [p.x,p.y,0] ]
-;
-
 // jeden Punkt in der Liste <list> mit der Matrix <m> multiplizieren
 // funktioniert wie multmatrix()
 //  list = Punkt-Liste
@@ -264,5 +250,18 @@ function multmatrix_3d_list (list, m) =
 		)
 		p_new
 	]
+;
+
+// jeden Punkt in der Liste <list> auf die xy-Ebene projizieren
+//  list  = Punkt-Liste
+//  cut   = nur den Umriss nehmen, der durch die xy-Ebene geht
+//          TODO nicht implementierbar ohne Zusammengehörigkeit der Punkte
+//  plane = true  = eine 2D-Liste machen - Standart
+//          false = 3D-Liste behalten, alle Punkte auf xy-Ebene
+function projection_list (list, plane) =
+	let (Plane=is_bool(plane) ? plane : true)
+	//
+	Plane==true ? [ for (p=list) [p.x,p.y]   ]
+	:             [ for (p=list) [p.x,p.y,0] ]
 ;
 

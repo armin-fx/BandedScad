@@ -8,4 +8,4 @@ include <banded/draft_curves.scad>
 include <banded/draft_transform.scad>
 include <banded/draft_multmatrix.scad>
 //
-include <banded/draft_transform_names.scad>
+include <banded/draft_primitives.scad>
