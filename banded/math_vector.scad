@@ -36,3 +36,6 @@ function angle_right_vector (v1, v2) = 360 - angle_left_vector(v1, v2);
 // rechnet das Spatprodukt aus
 function triple_product (a, b, c) = a * cross(b, c) ;
 
+// Wählt aus 3 Vektoren die Reihe nach eine Achse aus
+function pick_vector (vx, vy, vz) = [vx.x, vy.y, vz.z] ;
+

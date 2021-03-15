@@ -6,6 +6,7 @@
 use <banded/extend.scad>
 use <banded/helper_native.scad>
 use <banded/helper_recondition.scad>
+use <banded/math_vector.scad>
 use <banded/draft_curves.scad>
 use <banded/operator_transform.scad>
 
@@ -36,13 +37,10 @@ module torus (r, w, ri, ro, angle=360, center=false, fn_ring=undef)
 	rotate_extrude(angle=angle, $fn=get_fn_circle_current_x(rm+rw))
 	difference()
 	{
-		translate([ rm,  0]) circle(r=rw, $fn=fn_Ring); 
-		translate([-rw,-rw]) square([rw, 2*rw]);   
+		translate([ rm,  0]) circle(r=rw, $fn=fn_Ring);
+		translate([-rw,-rw]) square([rw, 2*rw]);
 	}
 }
-
-
-function pick_vector (vx, vy, vz) = [vx.x, vy.y, vz.z] ;
 
 // Erzeugt einen Keil mit den Parametern von FreeCAD
 // v_min  = [Xmin, Ymin, Zmin]
@@ -79,13 +77,13 @@ module wedge (v_min, v_max, v2_min, v2_max)
 	
 	CubeFaces = [
 		[0,1,2,3],  // bottom
-		[4,5,1,0],  // front
 		[7,6,5,4],  // top
-		[5,6,2,1],  // right
+		[4,5,1,0],  // front
 		[6,7,3,2],  // back
+		[5,6,2,1],  // right
 		[7,4,0,3]]; // left
 	
-	polyhedron( CubePoints, CubeFaces );	
+	polyhedron( CubePoints, CubeFaces );
 }
 
 // erzeugt einen quadratischen Ring
