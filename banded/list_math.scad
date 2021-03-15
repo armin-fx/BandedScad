@@ -55,3 +55,13 @@ function divide_each (list1, list2) =
 		:                   list1[i] / list2
 	]
 ;
+
+function sum_each_next (list, begin=0, offset=0) =
+	!(begin<=len(list)-1) ? undef :
+	//sum_each_next_intern (list, begin, offset)
+	[ for (i=begin,o=offset; i<=len(list); o=o+(list[i]!=undef ? list[i] : 0),i=i+1) o ]
+;
+function sum_each_next_intern (list, begin=0, offset=0) =
+	begin==len(list) ? offset :
+	concat(offset, sum_each_next_intern(list, begin+1, offset+list[begin]))
+;

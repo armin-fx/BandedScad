@@ -205,6 +205,7 @@ Returns a list with the result.
 - `divide_each (list1, list2)`  - divide each value `list1[*] / list2[*]`
 - `reciprocal_each (list)`      - reciprocate each value `1 / list[*]`
 - `sqr_each (list)`             - square each value `list[*] ^ 2`
+- `sum_each_next (list)`        - every next value contains the summation of all previous values in list
 
 
 Calculating mean [^][contents]
