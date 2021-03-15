@@ -130,21 +130,28 @@ module helix_extrude (angle, rotations, pitch, height, r, opposite, slices=32, c
 	//
 	union()
 	{
-		for (i = [0:segment_count-1])
+		segment_height = Height/segment_count;
+		segment_angle  = Angle /segment_count;
+		segment_angle_extra = segment_angle + min(epsilon, segment_angle/4);
+		segment_last = segment_count-1;
+		//
+		for (i = [0:1:segment_last])
 		{
-			radius_segment = [
+			segment_radius = [
 				 bezier_1( (i  )/(segment_count), R )
 				,bezier_1( (i+1)/(segment_count), R )
 			];
 			//
-			translate_z(Height/segment_count * i)
-			rotate_z   (Angle/segment_count * i * (Opposite==true ? -1 : 1))
+			translate_z(segment_height * i)
+			rotate_z   (segment_angle * i * (Opposite==true ? -1 : 1))
 			render(convexity=2+2*convexity)
 			if (convexity>=2)
-				helix_segment_slice(Angle/segment_count, Height/segment_count, radius_segment, Opposite, scope,step)
+				helix_segment_slice(i==segment_last ? segment_angle : segment_angle_extra,
+					segment_height, segment_radius, Opposite, scope,step)
 				children();
 			else
-				helix_segment      (Angle/segment_count, Height/segment_count, radius_segment, Opposite, convexity=convexity)
+				helix_segment      (i==segment_last ? segment_angle : segment_angle_extra,
+					segment_height, segment_radius, Opposite, convexity=convexity)
 				children();
 		}
 	}
@@ -171,21 +178,39 @@ module helix_segment_slice (angle, height, radius, opposite=false, scope, step)
 
 module helix_segment (angle, height, radius, opposite=false, convexity=0)
 {
-	difference()
+	Radius =
+		is_list(radius) ?
+			is_num(radius[0]) ?
+				is_num(radius[1]) ? radius
+				:[radius[0],radius[0]]
+			:[0,0]
+		:is_num(radius) ? [radius,radius]
+		:[0,0]
+	;
+	intersection()
 	{
-		hull()
+		difference()
 		{
-			helix_object_intern( opposite) translate_x(radius[0]) children();
-			translate_z(height) rotate_z(angle * (opposite==true ? -1 : 1))
-			helix_object_intern(!opposite) translate_x(radius[1]) children();
+			hull()
+			{
+				helix_object_intern( opposite) translate_x(Radius[0]) children();
+				translate_z(height) rotate_z(angle * (opposite==true ? -1 : 1))
+				helix_object_intern(!opposite) translate_x(Radius[1]) children();
+			}
+			if (convexity>=1)
+			hull()
+			{
+				helix_object_diff_intern( opposite) translate_x(Radius[0]) children();
+				translate_z(height) rotate_z(angle * (opposite==true ? -1 : 1))
+				helix_object_diff_intern(!opposite) translate_x(Radius[1]) children();
+			}
 		}
-		if (convexity>=1)
-		hull()
-		{
-			helix_object_diff_intern( opposite) translate_x(radius[0]) children();
-			translate_z(height) rotate_z(angle * (opposite==true ? -1 : 1))
-			helix_object_diff_intern(!opposite) translate_x(radius[1]) children();
-		}
+		linear_extrude(height=1000, center=true, convexity=2)
+		polygon([
+			[0,0],
+			[1000,0],
+			rotate_z_list([[1000,0]], angle * (opposite==true ? -1 : 1)) [0]
+		]);
 	}
 }
 
@@ -197,11 +222,16 @@ module helix_object_intern (opposite)
 }
 module helix_object_diff_intern (opposite)
 {
-	rotate_x(90)
-	translate_z( (is_bool(opposite) && opposite==false) ? 0 : -epsilon)
-	difference()
+	minkowski()
 	{
-		hull()              linear_extrude( (is_bool(opposite) ? epsilon : epsilon*2)          ) children();
-		translate_z(-extra) linear_extrude( (is_bool(opposite) ? epsilon : epsilon*2) + extra*2) children();
+		sphere(d=epsilon,$fn=5);
+		//
+		rotate_x(90)
+		translate_z( (is_bool(opposite) && opposite==false) ? 0 : -epsilon)
+		difference()
+		{
+			hull()              linear_extrude( (is_bool(opposite) ? epsilon : epsilon*2)          ) children();
+			translate_z(-extra) linear_extrude( (is_bool(opposite) ? epsilon : epsilon*2) + extra*2) children();
+		}
 	}
 }
