@@ -190,17 +190,17 @@ module rotate_backwards_to_vector_at (v, p, a)
 }
 
 // rotiert um die jeweilige Achse wie die Hauptfunktion
-module rotate_x (a) { if (!is_num(a)) children(); else  rotate([a,0,0]) children(); }
-module rotate_y (a) { if (!is_num(a)) children(); else  rotate([0,a,0]) children(); }
-module rotate_z (a) { if (!is_num(a)) children(); else  rotate([0,0,a]) children(); }
+module rotate_x (a, backwards=false) { if (!is_num(a)) children(); else  rotate(!(backwards==true)?[a,0,0]:[-a, 0, 0]) children(); }
+module rotate_y (a, backwards=false) { if (!is_num(a)) children(); else  rotate(!(backwards==true)?[0,a,0]:[ 0,-a, 0]) children(); }
+module rotate_z (a, backwards=false) { if (!is_num(a)) children(); else  rotate(!(backwards==true)?[0,0,a]:[ 0, 0,-a]) children(); }
 //
 module rotate_backwards_x (a) { if (!is_num(a)) children(); else  rotate_backwards([a,0,0]) children(); }
 module rotate_backwards_y (a) { if (!is_num(a)) children(); else  rotate_backwards([0,a,0]) children(); }
 module rotate_backwards_z (a) { if (!is_num(a)) children(); else  rotate_backwards([0,0,a]) children(); }
 //
-module rotate_at_x (a, p) { if (!is_num(a)) children(); else  rotate_at([a,0,0], p) children(); }
-module rotate_at_y (a, p) { if (!is_num(a)) children(); else  rotate_at([0,a,0], p) children(); }
-module rotate_at_z (a, p) { if (!is_num(a)) children(); else  rotate_at([0,0,a], p) children(); }
+module rotate_at_x (a, p, backwards=false) { if (!is_num(a)) children(); else  rotate_at([a,0,0], p, backwards=backwards) children(); }
+module rotate_at_y (a, p, backwards=false) { if (!is_num(a)) children(); else  rotate_at([0,a,0], p, backwards=backwards) children(); }
+module rotate_at_z (a, p, backwards=false) { if (!is_num(a)) children(); else  rotate_at([0,0,a], p, backwards=backwards) children(); }
 //
 module rotate_backwards_at_x (a, p) { if (!is_num(a)) children(); else  rotate_backwards_at([a,0,0], p) children(); }
 module rotate_backwards_at_y (a, p) { if (!is_num(a)) children(); else  rotate_backwards_at([0,a,0], p) children(); }
