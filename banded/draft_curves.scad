@@ -154,9 +154,15 @@ function circle_curve (r, angle=360, slices, piece=0, outer=0, d) =
 		concat( circle_list, [[0,0]])
 	:	circle_list
 ;
-function circle_curve_intern (r, angle, angle_begin, slices) =
-	let (angle_pie = angle/slices)
-	[for (i = [0 : (angle==0 ? 0 : slices)])
+function circle_curve_intern (r=1, angle=360, angle_begin=0, slices=5) =
+	let (
+		 angle_pie = angle/slices
+		,end =
+			 angle==0   ? 0
+			:angle==360 ? max (slices-1, 0)
+			:            slices
+	)
+	[for (i = [0:1:end])
 		circle_point_r(r, angle_begin + i*angle_pie )
 	]
 ;
@@ -349,7 +355,7 @@ function square_curve (size, center=false) =
 		square_list=[[0,0], [x,0], [x,y], [0,y]]
 	)
 	(center!=true) ? square_list
-	:translate_list( square_list, [-x/2,-y/2])
+	:translate_list( square_list, -Size/2 )
 ;
 
 // gibt eine Helix als Punkteliste zurück
