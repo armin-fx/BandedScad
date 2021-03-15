@@ -72,21 +72,37 @@ function is_range (value) =
 ;
 
 // testet eine Variable, ob sie eine Liste mit einer angegebenen
-// Verschachelungstiefe enthält.
+// Verschachtelungstiefe enthält.
+// dimension - Tiefe der verschachtelten Listen,
+//             ohne Angabe (= 1) wird auf eine einfache unverschachtelte Liste getestet
+//             bei 0 wird die Variable getestet, ob sie nicht undef und keine Liste ist
+function is_list_depth (value, dimension=1) =
+	dimension==0 ? value!=undef && !is_list(value) :
+	is_list_depth_intern (value, dimension)
+;
+function is_list_depth_intern (value, dimension=1) =
+	dimension==1 ? (!is_list(value[0]) && is_list(value))
+	:              is_list_depth_intern (value[0], dimension-1)
+;
+// testet eine Variable, ob sie eine Liste mit einer angegebenen
+// Verschachtelungstiefe enthält.
 // dimension - Tiefe der verschachtelten Listen,
 //             ohne Angabe (= 1) wird auf eine einfache unverschachtelte Liste getestet
 //             bei 0 wird die Variable getestet, ob sie eine Zahl enthält
-function is_list_depth (value, dimension=1) =
+function is_list_depth_num (value, dimension=1) =
 	dimension==0 ? is_num(value) :
-	dimension==1 ? (is_list(value) && !is_list(value[0]))
-	:              is_list_depth  (value[0], dimension-1)
+	is_list_depth_num (value, dimension)
+;
+function is_list_depth_num_intern (value, dimension=1) =
+	dimension==1 ? (is_num(value[0]) && is_list(value))
+	:              is_list_depth_num_intern (value[0], dimension-1)
 ;
 
-// gibt die Verschachelungstiefe einer Liste zurück
+// gibt die Verschachtelungstiefe einer Liste zurück
 function get_list_depth (list) = get_list_depth_intern(list);
 function get_list_depth_intern (list, i=0) =
-	!is_list(list) ? i
-	:                get_list_depth_intern (list[0], i+1)
+	list[0]==undef && !is_list(list) ? i
+	:	get_list_depth_intern (list[0], i+1)
 ;
 
 
