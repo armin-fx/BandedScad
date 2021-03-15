@@ -166,7 +166,7 @@ function matrix_scale_z (f) = let(d=3) matrix_scale ([0,0,f], d=d);
 //         - as angle in degree
 //         - standard = X axis
 //     2D: not needed, undefined
-// m = skew factor, standard = 0 
+// m = skew factor, standard = 0
 // a = angle in degree inside (-90 ... 90)
 //     alternative to 'm'
 // standard 3D = shear X along Z

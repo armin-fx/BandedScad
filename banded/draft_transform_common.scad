@@ -64,21 +64,25 @@ function rotate_backwards_x_list (list, a) = !is_num(a) ? list : rotate_x_list(l
 function rotate_backwards_y_list (list, a) = !is_num(a) ? list : rotate_y_list(list, -a);
 function rotate_backwards_z_list (list, a) = !is_num(a) ? list : rotate_z_list(list, -a);
 //
-function rotate_at_x_list (list, a, p) = !is_num(a) ? list : rotate_at_list(list, [a,0,0], p);
-function rotate_at_y_list (list, a, p) = !is_num(a) ? list : rotate_at_list(list, [0,a,0], p);
-function rotate_at_z_list (list, a, p) = !is_num(a) ? list : rotate_at_list(list, a      , p);
+function rotate_at_x_list (list, a, p, backwards=false) = !is_num(a) ? list : rotate_at_list(list, [a,0,0], p, backwards=backwards);
+function rotate_at_y_list (list, a, p, backwards=false) = !is_num(a) ? list : rotate_at_list(list, [0,a,0], p, backwards=backwards);
+function rotate_at_z_list (list, a, p, backwards=false) = !is_num(a) ? list : rotate_at_list(list, a      , p, backwards=backwards);
 //
 function rotate_backwards_at_x_list (list, a, p) = !is_num(a) ? list : rotate_backwards_at_list(list, [a,0,0], p);
 function rotate_backwards_at_y_list (list, a, p) = !is_num(a) ? list : rotate_backwards_at_list(list, [0,a,0], p);
 function rotate_backwards_at_z_list (list, a, p) = !is_num(a) ? list : rotate_backwards_at_list(list, a,       p);
-//
+
 // verschiebt in der jeweiligen Achse wie die Hauptfunktion
 function translate_x_list  (list, l) = !is_num(l) ? list : translate_list(list, [l,0,0]);
 function translate_y_list  (list, l) = !is_num(l) ? list : translate_list(list, [0,l,0]);
 function translate_z_list  (list, l) = !is_num(l) ? list : translate_list(list, [0,0,l]);
 function translate_xy_list (list, t) =
-	!(is_list(t) && len(t)>=2 && is_num(t.x) && is_num(t.y)) ? list :
-	translate_list(list, [t.x,t.y,0])
+	(is_list(t) && len(t)>=2 && is_num(t.x) && is_num(t.y)) ?
+		translate_list(list, [t.x,t.y,0])
+	:(is_num(t)) ?
+		translate_list(list, [t,t,0])
+	:
+		list
 ;
 
 // jeden Punkt in der Liste <list> spiegeln entlang dem Vektor <v>
@@ -128,7 +132,7 @@ function skew_list (list, v, t, m, a) =
 ;
 
 // skew an object in a point list at position 'p', see matrix_skew_at()
-function skew_list_at (list, v, t, m, a, p) =
+function skew_at_list (list, v, t, m, a, p) =
 	(!is_list(list) || !is_list(list[0])) ? undef :
 	multmatrix_list (list,
 		matrix_skew_at (v, t, m, a, p, d=len(list[0]))

@@ -207,13 +207,15 @@ module rotate_backwards_at_y (a, p) { if (!is_num(a)) children(); else  rotate_b
 module rotate_backwards_at_z (a, p) { if (!is_num(a)) children(); else  rotate_backwards_at([0,0,a], p) children(); }
 
 // verschiebt in der jeweiligen Achse wie die Hauptfunktion
-module translate_x (l) { if (!is_num(l)) children(); else  translate([l,0,0]) children(); }
-module translate_y (l) { if (!is_num(l)) children(); else  translate([0,l,0]) children(); }
+module translate_x (l) { if (!is_num(l)) children(); else  translate([l,0]) children(); }
+module translate_y (l) { if (!is_num(l)) children(); else  translate([0,l]) children(); }
 module translate_z (l) { if (!is_num(l)) children(); else  translate([0,0,l]) children(); }
 module translate_xy (t)
 {
 	if (is_list(t) && len(t)>=2 && is_num(t.x) && is_num(t.y))
-		translate([t.x,t.y,0]) children();
+		translate([t.x,t.y]) children();
+	if (is_num(t))
+		translate([t,t]) children();
 	else
 		children();
 }

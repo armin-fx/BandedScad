@@ -56,11 +56,12 @@ function rotate_list (list, a, v, backwards=false) =
 ;
 
 // jeden Punkt in der Liste <list> um die X-Achse um <a> Grad drehen
-function rotate_x_list (list, a) =
+function rotate_x_list (list, a, backwards=false) =
 	!is_num(a) ? list :
 	let (
-		sina  = sin(a),
-		cosa  = cos(a)
+		A = !(backwards==true) ? a : -a,
+		sina  = sin(A),
+		cosa  = cos(A)
 	)
 	[for (p=list)
 		[
@@ -71,11 +72,12 @@ function rotate_x_list (list, a) =
 	]
 ;
 // jeden Punkt in der Liste <list> um die Y-Achse um <a> Grad drehen
-function rotate_y_list (list, a) =
+function rotate_y_list (list, a, backwards=false) =
 	!is_num(a) ? list :
 	let (
-		sina  = sin(a),
-		cosa  = cos(a)
+		A = !(backwards==true) ? a : -a,
+		sina  = sin(A),
+		cosa  = cos(A)
 	)
 	[for (p=list)
 		[
@@ -87,12 +89,13 @@ function rotate_y_list (list, a) =
 ;
 // jeden Punkt in der Liste <list> um die Z-Achse um <a> Grad drehen
 // auch für 2D-Listen
-function rotate_z_list (list, a) =
+function rotate_z_list (list, a, backwards=false) =
 	!is_num(a) ? list :
 	(!is_list(list) || len(list)==0) ? list :
 	let (
-		sina  = sin(a),
-		cosa  = cos(a)
+		A = !(backwards==true) ? a : -a,
+		sina  = sin(A),
+		cosa  = cos(A)
 	)
 	len(list[0])==2 ?
 		[for (p=list)
@@ -111,15 +114,16 @@ function rotate_z_list (list, a) =
 		]
 ;
 // jeden Punkt in der Liste <list> um einen Vektor <v> herum um <a> Grad drehen
-function rotate_v_list (list, a, v) =
+function rotate_v_list (list, a, v, backwards=false) =
 	 !is_num (a) ? list
 	:!is_list(v) ? list
 	:
 	let (
 		u=unit_vector(v),
 		x=u.x, y=u.y, z=u.z,
-		sina=sin(-a),
-		cosa=cos(-a),
+		A = !(backwards==true) ? a : -a,
+		sina=sin(-A),
+		cosa=cos(-A),
 		matrix=
 		[
 			[ x*x*(1-cosa)+  cosa, x*y*(1-cosa)-z*sina, x*z*(1-cosa)+y*sina ],
@@ -216,7 +220,7 @@ function get_bounding_box_list (list) =
 // jeden Punkt in der Liste <list> auf die xy-Ebene projizieren
 //  list  = Punkt-Liste
 //  cut   = nur den Umriss nehmen, der durch die xy-Ebene geht
-//          TODO nicht implementiert
+//          TODO nicht implementierbar ohne Zusammengehörigkeit der Punkte
 //  plane = true  = eine 2D-Liste machen - Standart
 //          false = 3D-Liste behalten, alle Punkte auf xy-Ebene
 function projection_list (list, plane) =
