@@ -40,7 +40,7 @@ module cylinder_extend (h, r1, r2, center=false, r, d, d1, d2, angle, slices="x"
 	linear_extrude(height=H, center=center
 		,scale=R_sorted[1]/R_sorted[0]
 		,convexity=(piece==true && angles[0]>180) ? 4 : 2)
-	circle_extend (r=R_sorted[0], angle=angle, slices=slices, piece=piece);
+	circle_extend (r=R_sorted[0], angle=angles, slices=slices, piece=piece);
 }
 /*
 module cylinder_extend (h, r1, r2, center=false, r, d, d1, d2)
