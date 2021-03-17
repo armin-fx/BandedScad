@@ -209,7 +209,7 @@ module helix_segment (angle, height, radius, opposite=false, convexity=0)
 		polygon([
 			[0,0],
 			[1000,0],
-			rotate_z_list([[1000,0]], angle * (opposite==true ? -1 : 1)) [0]
+			rotate_z_points([[1000,0]], angle * (opposite==true ? -1 : 1)) [0]
 		]);
 	}
 }

@@ -13,7 +13,7 @@ use <banded/draft_multmatrix_basic.scad>
 // funktioniert wie translate()
 //  list = Punkt-Liste
 //  v    = Vektor
-function translate_list (list, v) =
+function translate_points (list, v) =
 	let ( vector = is_list(v) ? v : [0,0,0] )
 	(v==[0,0] || v==[0,0,0]) ? list :
 	[for (p=list) p+vector]
@@ -26,37 +26,37 @@ function translate_list (list, v) =
 //  v    = Vektor
 //  backwards = 'false' - Standard, vorwärts rotieren
 //              'true'  - rückwärts rotieren, macht Rotation rückgängig
-function rotate_list (list, a, v, backwards=false) =
+function rotate_points (list, a, v, backwards=false) =
 	! (backwards==true) ?
 		// forward
 		is_list(a) ?
-			multmatrix_list (list,
+			multmatrix_points (list,
 				matrix_rotate_z(a.z, d=3) *
 				matrix_rotate_y(a.y, d=3) *
 				matrix_rotate_x(a.x, d=3)
 			)
 		:is_num(a)  ?
 			is_list(v) ?
-				rotate_v_list(list, a, v)
-			:	rotate_z_list(list, a)
+				rotate_v_points(list, a, v)
+			:	rotate_z_points(list, a)
 		:list
 	:
 		// backwards
 		is_list(a) ?
-			multmatrix_list (list,
+			multmatrix_points (list,
 				matrix_rotate_x(-a.x, d=3) *
 				matrix_rotate_y(-a.y, d=3) *
 				matrix_rotate_z(-a.z, d=3)
 			)
 		:is_num(a)  ?
 			is_list(v) ?
-				rotate_v_list(list, -a, v)
-			:	rotate_z_list(list, -a)
+				rotate_v_points(list, -a, v)
+			:	rotate_z_points(list, -a)
 		:list
 ;
 
 // jeden Punkt in der Liste <list> um die X-Achse um <a> Grad drehen
-function rotate_x_list (list, a, backwards=false) =
+function rotate_x_points (list, a, backwards=false) =
 	!is_num(a) ? list :
 	let (
 		A = !(backwards==true) ? a : -a,
@@ -72,7 +72,7 @@ function rotate_x_list (list, a, backwards=false) =
 	]
 ;
 // jeden Punkt in der Liste <list> um die Y-Achse um <a> Grad drehen
-function rotate_y_list (list, a, backwards=false) =
+function rotate_y_points (list, a, backwards=false) =
 	!is_num(a) ? list :
 	let (
 		A = !(backwards==true) ? a : -a,
@@ -89,7 +89,7 @@ function rotate_y_list (list, a, backwards=false) =
 ;
 // jeden Punkt in der Liste <list> um die Z-Achse um <a> Grad drehen
 // auch für 2D-Listen
-function rotate_z_list (list, a, backwards=false) =
+function rotate_z_points (list, a, backwards=false) =
 	!is_num(a) ? list :
 	(!is_list(list) || len(list)==0) ? list :
 	let (
@@ -114,7 +114,7 @@ function rotate_z_list (list, a, backwards=false) =
 		]
 ;
 // jeden Punkt in der Liste <list> um einen Vektor <v> herum um <a> Grad drehen
-function rotate_v_list (list, a, v, backwards=false) =
+function rotate_v_points (list, a, v, backwards=false) =
 	 !is_num (a) ? list
 	:!is_list(v) ? list
 	:
@@ -140,30 +140,30 @@ function rotate_v_list (list, a, v, backwards=false) =
 // funktioniert wie mirror()
 //  list = Punkt-Liste
 //  v    = Vektor, in dieser Richtung wird gespiegelt
-function mirror_list (list, v) =
+function mirror_points (list, v) =
 	(!is_list(list) || !is_list(list[0])) ? undef
-	:len(list[0])==3 ? multmatrix_list (list, matrix_mirror_3d (v))
-	:len(list[0])==2 ? multmatrix_list (list, matrix_mirror_2d (v))
+	:len(list[0])==3 ? multmatrix_points (list, matrix_mirror_3d (v))
+	:len(list[0])==2 ? multmatrix_points (list, matrix_mirror_2d (v))
 	:len(list[0])==1 ? -list
 	:undef
 	
 ;
-function mirror_2d_list (list, v) =
+function mirror_2d_points (list, v) =
 	let (
 		V = parameter_mirror_vector_2d(v),
 		angle = atan2(V.y,V.x)
 	)
-	rotate_z_list(
-	[ for (p=rotate_backwards_z_list(list, angle)) [-p.x,p.y] ]
+	rotate_z_points(
+	[ for (p=rotate_backwards_z_points(list, angle)) [-p.x,p.y] ]
 	, angle)
 ;
-function mirror_3d_list (list, v) =
+function mirror_3d_points (list, v) =
 	let (
 		V = parameter_mirror_vector_3d(v),
 		angle = atan2(V.y,V.x)
 	)
-	rotate_to_vector_list(
-	[ for (p=rotate_backwards_to_vector_list(list, V,angle)) [p.x,p.y,-p.z] ]
+	rotate_to_vector_points(
+	[ for (p=rotate_backwards_to_vector_points(list, V,angle)) [p.x,p.y,-p.z] ]
 	, V,angle)
 ;
 
@@ -171,7 +171,7 @@ function mirror_3d_list (list, v) =
 // funktioniert wie scale()
 //  list = Punkt-Liste
 //  v    = Vektor mit den Vergrößerungsfaktoren
-function scale_list (list, v) =
+function scale_points (list, v) =
 	(!is_list(list) || !is_list(list[0])) ? undef :
 	(!is_list(v) || len(v)==0) ? list :
 	let (
@@ -189,9 +189,9 @@ function scale_list (list, v) =
 // funktioniert wie resize()
 //  list    = Punkt-Liste
 //  newsize = Vektor mit den neuen Maßen
-function resize_list (list, newsize) =
+function resize_points (list, newsize) =
 	let (
-		bounding_box = get_bounding_box_list(list) [0],
+		bounding_box = get_bounding_box_points(list) [0],
 		scale_factor =
 		[ for (i=[0:len(bounding_box)-1])
 			(is_num(newsize[i]) && newsize[i]!=0 && bounding_box[i]>0) ?
@@ -199,7 +199,7 @@ function resize_list (list, newsize) =
 				: 1
 		]
 	)
-	scale_list (list, scale_factor)
+	scale_points (list, scale_factor)
 ;
 
 // gibt die Größe der umschließenden Box der Punkt-Liste zurück
@@ -207,7 +207,7 @@ function resize_list (list, newsize) =
 //   - size    = Größe der umschließenden Box
 //   - min_pos = Punkt am Beginn der Box
 //   - max_pos = Punkt am Ende der Box
-function get_bounding_box_list (list) =
+function get_bounding_box_points (list) =
 	(!is_list(list) || len(list)==0) ? [[0,0,0],[0,0,0]] :
 	let (
 		min_pos = [ for (i=[ 0:len(list[0])-1 ]) min ([for(e=list) e[i]]) ],
@@ -220,15 +220,15 @@ function get_bounding_box_list (list) =
 // funktioniert wie multmatrix()
 //  list = Punkt-Liste
 //  m    = 4x3 oder 4x4 Matrix
-function multmatrix_list (list, m) =
+function multmatrix_points (list, m) =
 	(!is_list(list) || !is_list(list[0])) ? undef :
 	(!is_list(m)) ? list :
-	 (len(list[0]) == 3) ? multmatrix_3d_list (list, m)
-	:(len(list[0]) == 2) ? multmatrix_2d_list (list, m)
+	 (len(list[0]) == 3) ? multmatrix_3d_points (list, m)
+	:(len(list[0]) == 2) ? multmatrix_2d_points (list, m)
 	:undef
 ;
 
-function multmatrix_2d_list (list, m) =
+function multmatrix_2d_points (list, m) =
 	let (M = repair_matrix_2d(m))
 	[ for (p=list)
 		let (
@@ -239,7 +239,7 @@ function multmatrix_2d_list (list, m) =
 		p_new
 	]
 ;
-function multmatrix_3d_list (list, m) =
+function multmatrix_3d_points (list, m) =
 	let (M = repair_matrix_3d(m))
 	[ for (p=list)
 		let (
@@ -258,7 +258,7 @@ function multmatrix_3d_list (list, m) =
 //          TODO nicht implementierbar ohne Zusammengehörigkeit der Punkte
 //  plane = true  = eine 2D-Liste machen - Standart
 //          false = 3D-Liste behalten, alle Punkte auf xy-Ebene
-function projection_list (list, plane) =
+function projection_points (list, plane) =
 	let (Plane=is_bool(plane) ? plane : true)
 	//
 	Plane==true ? [ for (p=list) [p.x,p.y]   ]

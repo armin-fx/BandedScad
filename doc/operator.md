@@ -224,23 +224,23 @@ Axis = x, y or z. later named as '?'
 #### Buildin operator modules [^][contents]
 [=> OpenScad user manual, transformations](https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Transformations)
 
-| operator module        | function on lists                    | generating matrix
-|------------------------|--------------------------------------|-------------------
-| translate()            | [translate_list()][translate_list]   | [matrix_translate()][matrix_translate]
-| [rotate()][rotate_new] | [rotate_list()][rotate_list]         | [matrix_rotate()][matrix_rotate]
-| mirror()               | [mirror_list()][mirror_list]         | [matrix_mirror()][matrix_mirror]
-| scale()                | [scale_list()][scale_list]           | [matrix_scale()][matrix_scale]
-| resize()               | [resize_list()][resize_list]         | -
-| projection()           | [projection_list()][projection_list] | -
-| multmatrix()           | [multmatrix_list()][multmatrix_list] | -
+| operator module        | function on lists                        | generating matrix
+|------------------------|------------------------------------------|-------------------
+| translate()            | [translate_points()][translate_points]   | [matrix_translate()][matrix_translate]
+| [rotate()][rotate_new] | [rotate_points()][rotate_points]         | [matrix_rotate()][matrix_rotate]
+| mirror()               | [mirror_points()][mirror_points]         | [matrix_mirror()][matrix_mirror]
+| scale()                | [scale_points()][scale_points]           | [matrix_scale()][matrix_scale]
+| resize()               | [resize_points()][resize_points]         | -
+| projection()           | [projection_points()][projection_points] | -
+| multmatrix()           | [multmatrix_points()][multmatrix_points] | -
 
-[translate_list]:  draft.md#translate_list-list-v-
-[rotate_list]:     draft.md#rotate_list-list-a-v-backwards-
-[mirror_list]:     draft.md#mirror_list-list-v-
-[scale_list]:      draft.md#scale_list-list-v-
-[resize_list]:     draft.md#resize_list-list-newsize-
-[projection_list]: draft.md#projection_list-list-plane-
-[multmatrix_list]: draft.md#multmatrix_list-list-m-
+[translate_points]:  draft.md#translate_points-list-v-
+[rotate_points]:     draft.md#rotate_points-list-a-v-backwards-
+[mirror_points]:     draft.md#mirror_points-list-v-
+[scale_points]:      draft.md#scale_points-list-v-
+[resize_points]:     draft.md#resize_points-list-newsize-
+[projection_points]: draft.md#projection_points-list-plane-
+[multmatrix_points]: draft.md#multmatrix_points-list-m-
 
 [matrix_translate]: draft.md#matrix_translate-v-d-
 [matrix_rotate]:    draft.md#matrix_rotate-a-v-backwards-d-
@@ -249,27 +249,27 @@ Axis = x, y or z. later named as '?'
 
 #### More operator modules [^][contents]
 
-| operator module                              | function on lists                                      | generating matrix
-|----------------------------------------------|--------------------------------------------------------|-------------------
-| [rotate_backwards()][rotate_backwards]       | [rotate_backwards_list()][rotate_backwards_list]       | [matrix_rotate_backwards()][matrix_rotate_backwards]
-| [rotate_at()][rotate_at]                     | [rotate_at_list()][rotate_at_list]                     | [matrix_rotate_at()][matrix_rotate_at]
-| [rotate_to_vector()][rotate_to_vector]       | [rotate_to_vector_list()][rotate_to_vector_list]       | [matrix_rotate_to_vector()][matrix_rotate_to_vector]
-| [rotate_to_vector_at()][rotate_to_vector_at] | [rotate_to_vector_at_list()][rotate_to_vector_at_list] | [matrix_rotate_to_vector_at()][matrix_rotate_to_vector_at]
-| [mirror_at()][mirror_at]                     | [mirror_at_list()][mirror_at_list]                     | [matrix_mirror_at()][matrix_mirror_at]
-| [mirror_copy()][mirror_copy]                 | -                                                      | -
-| [mirror_copy_at()][mirror_copy_at]           | -                                                      | -
-| [mirror_repeat()][mirror_repeat]             | -                                                      | -
-| [mirror_repeat_copy()][mirror_repeat_copy]   | -                                                      | -
-| [skew()][skew]                               | [skew_list()][skew_list]                               | [matrix_skew()][matrix_skew]
-| [skew_at()][skew_at]                         | [skew_at_list()][skew_at_list]                         | [matrix_skew_at()][matrix_skew_at]
+| operator module                              | function on lists                                          | generating matrix
+|----------------------------------------------|------------------------------------------------------------|-------------------
+| [rotate_backwards()][rotate_backwards]       | [rotate_backwards_points()][rotate_backwards_points]       | [matrix_rotate_backwards()][matrix_rotate_backwards]
+| [rotate_at()][rotate_at]                     | [rotate_at_points()][rotate_at_points]                     | [matrix_rotate_at()][matrix_rotate_at]
+| [rotate_to_vector()][rotate_to_vector]       | [rotate_to_vector_points()][rotate_to_vector_points]       | [matrix_rotate_to_vector()][matrix_rotate_to_vector]
+| [rotate_to_vector_at()][rotate_to_vector_at] | [rotate_to_vector_at_points()][rotate_to_vector_at_points] | [matrix_rotate_to_vector_at()][matrix_rotate_to_vector_at]
+| [mirror_at()][mirror_at]                     | [mirror_at_points()][mirror_at_points]                     | [matrix_mirror_at()][matrix_mirror_at]
+| [mirror_copy()][mirror_copy]                 | -                                                          | -
+| [mirror_copy_at()][mirror_copy_at]           | -                                                          | -
+| [mirror_repeat()][mirror_repeat]             | -                                                          | -
+| [mirror_repeat_copy()][mirror_repeat_copy]   | -                                                          | -
+| [skew()][skew]                               | [skew_points()][skew_points]                               | [matrix_skew()][matrix_skew]
+| [skew_at()][skew_at]                         | [skew_at_points()][skew_at_points]                         | [matrix_skew_at()][matrix_skew_at]
 
-[rotate_backwards_list]:    draft.md#rotate_backwards_list-list-a-v-
-[rotate_at_list]:           draft.md#rotate_at_list-list-a-p-v-backwards-
-[rotate_to_vector_list]:    draft.md#rotate_to_vector_list-list-v-a-backwards-
-[rotate_to_vector_at_list]: draft.md#rotate_to_vector_at_list-list-v-p-a-backwards-
-[mirror_at_list]:           draft.md#mirror_at_list-list-v-p-
-[skew_list]:                draft.md#skew_list-list-v-t-m-a-
-[skew_at_list]:             draft.md#skew_at_list-list-v-t-m-a-p-
+[rotate_backwards_points]:    draft.md#rotate_backwards_points-list-a-v-
+[rotate_at_points]:           draft.md#rotate_at_points-list-a-p-v-backwards-
+[rotate_to_vector_points]:    draft.md#rotate_to_vector_points-list-v-a-backwards-
+[rotate_to_vector_at_points]: draft.md#rotate_to_vector_at_points-list-v-p-a-backwards-
+[mirror_at_points]:           draft.md#mirror_at_points-list-v-p-
+[skew_points]:                draft.md#skew_points-list-v-t-m-a-
+[skew_at_points]:             draft.md#skew_at_points-list-v-t-m-a-p-
 
 [matrix_rotate_backwards]:    draft.md#matrix_rotate_backwards-a-v-d-
 [matrix_rotate_at]:           draft.md#matrix_rotate_at-a-p-v-backwards-d-

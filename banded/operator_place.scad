@@ -15,8 +15,8 @@ use <banded/operator_transform.scad>
 module connect (point=[0,0,0], direction=[0,0,1], orientation=[1,0,0])
 {
 	base_vector = [1,0];
-	up_to_z     = rotate_backwards_to_vector_list ( [orientation], direction);
-	plane       = projection_list (up_to_z);
+	up_to_z     = rotate_backwards_to_vector_points ( [orientation], direction);
+	plane       = projection_points (up_to_z);
 	angle_base  = rotation_vector (base_vector, plane[0]);
 	//
 	translate (point)

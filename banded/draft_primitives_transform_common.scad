@@ -14,16 +14,16 @@ function rotate_backwards (object, a, v) =
 	(object==undef || !is_list(object)) ? undef :
 	is_num(object[0][0]) ?
 		let(list=object)
-		rotate_backwards_list (list, a, v)
+		rotate_backwards_points (list, a, v)
 	:
 	[ for (k=[0:1:len(object)-1])
 		k==0 ?
 			 is_num(object[0][0][0]) ?
 				let(list=object[0])
-				rotate_backwards_list (list, a, v)
+				rotate_backwards_points (list, a, v)
 			:is_num(object[0][0][0][0]) ?
 				[for (list=object[0])
-				rotate_backwards_list (list, a, v)
+				rotate_backwards_points (list, a, v)
 				]
 			:undef
 		:
@@ -34,16 +34,16 @@ function rotate_at (object, a, p, v, backwards) =
 	(object==undef || !is_list(object)) ? undef :
 	is_num(object[0][0]) ?
 		let(list=object)
-		rotate_at_list (list, a, p, v, backwards)
+		rotate_at_points (list, a, p, v, backwards)
 	:
 	[ for (k=[0:1:len(object)-1])
 		k==0 ?
 			 is_num(object[0][0][0]) ?
 				let(list=object[0])
-				rotate_at_list (list, a, p, v, backwards)
+				rotate_at_points (list, a, p, v, backwards)
 			:is_num(object[0][0][0][0]) ?
 				[for (list=object[0])
-				rotate_at_list (list, a, p, v, backwards)
+				rotate_at_points (list, a, p, v, backwards)
 				]
 			:undef
 		:
@@ -54,16 +54,16 @@ function rotate_backwards_at (object, a, p, v) =
 	(object==undef || !is_list(object)) ? undef :
 	is_num(object[0][0]) ?
 		let(list=object)
-		rotate_backwards_at_list (list, a, p, v)
+		rotate_backwards_at_points (list, a, p, v)
 	:
 	[ for (k=[0:1:len(object)-1])
 		k==0 ?
 			 is_num(object[0][0][0]) ?
 				let(list=object[0])
-				rotate_backwards_at_list (list, a, p, v)
+				rotate_backwards_at_points (list, a, p, v)
 			:is_num(object[0][0][0][0]) ?
 				[for (list=object[0])
-				rotate_backwards_at_list (list, a, p, v)
+				rotate_backwards_at_points (list, a, p, v)
 				]
 			:undef
 		:
@@ -74,16 +74,16 @@ function rotate_to_vector (object, v, a, backwards) =
 	(object==undef || !is_list(object)) ? undef :
 	is_num(object[0][0]) ?
 		let(list=object)
-		rotate_to_vector_list (list, v, a, backwards)
+		rotate_to_vector_points (list, v, a, backwards)
 	:
 	[ for (k=[0:1:len(object)-1])
 		k==0 ?
 			 is_num(object[0][0][0]) ?
 				let(list=object[0])
-				rotate_to_vector_list (list, v, a, backwards)
+				rotate_to_vector_points (list, v, a, backwards)
 			:is_num(object[0][0][0][0]) ?
 				[for (list=object[0])
-				rotate_to_vector_list (list, v, a, backwards)
+				rotate_to_vector_points (list, v, a, backwards)
 				]
 			:undef
 		:
@@ -94,16 +94,16 @@ function rotate_backwards_to_vector (object, v, a) =
 	(object==undef || !is_list(object)) ? undef :
 	is_num(object[0][0]) ?
 		let(list=object)
-		rotate_backwards_to_vector_list (list, v, a)
+		rotate_backwards_to_vector_points (list, v, a)
 	:
 	[ for (k=[0:1:len(object)-1])
 		k==0 ?
 			 is_num(object[0][0][0]) ?
 				let(list=object[0])
-				rotate_backwards_to_vector_list (list, v, a)
+				rotate_backwards_to_vector_points (list, v, a)
 			:is_num(object[0][0][0][0]) ?
 				[for (list=object[0])
-				rotate_backwards_to_vector_list (list, v, a)
+				rotate_backwards_to_vector_points (list, v, a)
 				]
 			:undef
 		:
@@ -114,16 +114,16 @@ function rotate_to_vector_at (object, v, p, a, backwards) =
 	(object==undef || !is_list(object)) ? undef :
 	is_num(object[0][0]) ?
 		let(list=object)
-		rotate_to_vector_at_list (list, v, p, a, backwards)
+		rotate_to_vector_at_points (list, v, p, a, backwards)
 	:
 	[ for (k=[0:1:len(object)-1])
 		k==0 ?
 			 is_num(object[0][0][0]) ?
 				let(list=object[0])
-				rotate_to_vector_at_list (list, v, p, a, backwards)
+				rotate_to_vector_at_points (list, v, p, a, backwards)
 			:is_num(object[0][0][0][0]) ?
 				[for (list=object[0])
-				rotate_to_vector_at_list (list, v, p, a, backwards)
+				rotate_to_vector_at_points (list, v, p, a, backwards)
 				]
 			:undef
 		:
@@ -134,16 +134,16 @@ function rotate_backwards_to_vector_at (object, v, p, a) =
 	(object==undef || !is_list(object)) ? undef :
 	is_num(object[0][0]) ?
 		let(list=object)
-		rotate_backwards_to_vector_at_list (list, v, p, a)
+		rotate_backwards_to_vector_at_points (list, v, p, a)
 	:
 	[ for (k=[0:1:len(object)-1])
 		k==0 ?
 			 is_num(object[0][0][0]) ?
 				let(list=object[0])
-				rotate_backwards_to_vector_at_list (list, v, p, a)
+				rotate_backwards_to_vector_at_points (list, v, p, a)
 			:is_num(object[0][0][0][0]) ?
 				[for (list=object[0])
-				rotate_backwards_to_vector_at_list (list, v, p, a)
+				rotate_backwards_to_vector_at_points (list, v, p, a)
 				]
 			:undef
 		:
@@ -156,16 +156,16 @@ function rotate_x (object, a, backwards) =
 	(object==undef || !is_list(object)) ? undef :
 	is_num(object[0][0]) ?
 		let(list=object)
-		rotate_x_list (list, a, backwards)
+		rotate_x_points (list, a, backwards)
 	:
 	[ for (k=[0:1:len(object)-1])
 		k==0 ?
 			 is_num(object[0][0][0]) ?
 				let(list=object[0])
-				rotate_x_list (list, a, backwards)
+				rotate_x_points (list, a, backwards)
 			:is_num(object[0][0][0][0]) ?
 				[for (list=object[0])
-				rotate_x_list (list, a, backwards)
+				rotate_x_points (list, a, backwards)
 				]
 			:undef
 		:
@@ -176,16 +176,16 @@ function rotate_y (object, a, backwards) =
 	(object==undef || !is_list(object)) ? undef :
 	is_num(object[0][0]) ?
 		let(list=object)
-		rotate_y_list (list, a, backwards)
+		rotate_y_points (list, a, backwards)
 	:
 	[ for (k=[0:1:len(object)-1])
 		k==0 ?
 			 is_num(object[0][0][0]) ?
 				let(list=object[0])
-				rotate_y_list (list, a, backwards)
+				rotate_y_points (list, a, backwards)
 			:is_num(object[0][0][0][0]) ?
 				[for (list=object[0])
-				rotate_y_list (list, a, backwards)
+				rotate_y_points (list, a, backwards)
 				]
 			:undef
 		:
@@ -196,16 +196,16 @@ function rotate_z (object, a, backwards) =
 	(object==undef || !is_list(object)) ? undef :
 	is_num(object[0][0]) ?
 		let(list=object)
-		rotate_z_list (list, a, backwards)
+		rotate_z_points (list, a, backwards)
 	:
 	[ for (k=[0:1:len(object)-1])
 		k==0 ?
 			 is_num(object[0][0][0]) ?
 				let(list=object[0])
-				rotate_z_list (list, a, backwards)
+				rotate_z_points (list, a, backwards)
 			:is_num(object[0][0][0][0]) ?
 				[for (list=object[0])
-				rotate_z_list (list, a, backwards)
+				rotate_z_points (list, a, backwards)
 				]
 			:undef
 		:
@@ -216,16 +216,16 @@ function rotate_backwards_x (object, a) =
 	(object==undef || !is_list(object)) ? undef :
 	is_num(object[0][0]) ?
 		let(list=object)
-		rotate_backwards_x_list (list, a)
+		rotate_backwards_x_points (list, a)
 	:
 	[ for (k=[0:1:len(object)-1])
 		k==0 ?
 			 is_num(object[0][0][0]) ?
 				let(list=object[0])
-				rotate_backwards_x_list (list, a)
+				rotate_backwards_x_points (list, a)
 			:is_num(object[0][0][0][0]) ?
 				[for (list=object[0])
-				rotate_backwards_x_list (list, a)
+				rotate_backwards_x_points (list, a)
 				]
 			:undef
 		:
@@ -236,16 +236,16 @@ function rotate_backwards_y (object, a) =
 	(object==undef || !is_list(object)) ? undef :
 	is_num(object[0][0]) ?
 		let(list=object)
-		rotate_backwards_y_list (list, a)
+		rotate_backwards_y_points (list, a)
 	:
 	[ for (k=[0:1:len(object)-1])
 		k==0 ?
 			 is_num(object[0][0][0]) ?
 				let(list=object[0])
-				rotate_backwards_y_list (list, a)
+				rotate_backwards_y_points (list, a)
 			:is_num(object[0][0][0][0]) ?
 				[for (list=object[0])
-				rotate_backwards_y_list (list, a)
+				rotate_backwards_y_points (list, a)
 				]
 			:undef
 		:
@@ -256,16 +256,16 @@ function rotate_backwards_z (object, a) =
 	(object==undef || !is_list(object)) ? undef :
 	is_num(object[0][0]) ?
 		let(list=object)
-		rotate_backwards_z_list (list, a)
+		rotate_backwards_z_points (list, a)
 	:
 	[ for (k=[0:1:len(object)-1])
 		k==0 ?
 			 is_num(object[0][0][0]) ?
 				let(list=object[0])
-				rotate_backwards_z_list (list, a)
+				rotate_backwards_z_points (list, a)
 			:is_num(object[0][0][0][0]) ?
 				[for (list=object[0])
-				rotate_backwards_z_list (list, a)
+				rotate_backwards_z_points (list, a)
 				]
 			:undef
 		:
@@ -276,16 +276,16 @@ function rotate_at_x (object, a, p, backwards) =
 	(object==undef || !is_list(object)) ? undef :
 	is_num(object[0][0]) ?
 		let(list=object)
-		rotate_at_x_list (list, a, p, backwards)
+		rotate_at_x_points (list, a, p, backwards)
 	:
 	[ for (k=[0:1:len(object)-1])
 		k==0 ?
 			 is_num(object[0][0][0]) ?
 				let(list=object[0])
-				rotate_at_x_list (list, a, p, backwards)
+				rotate_at_x_points (list, a, p, backwards)
 			:is_num(object[0][0][0][0]) ?
 				[for (list=object[0])
-				rotate_at_x_list (list, a, p, backwards)
+				rotate_at_x_points (list, a, p, backwards)
 				]
 			:undef
 		:
@@ -296,16 +296,16 @@ function rotate_at_y (object, a, p, backwards) =
 	(object==undef || !is_list(object)) ? undef :
 	is_num(object[0][0]) ?
 		let(list=object)
-		rotate_at_y_list (list, a, p, backwards)
+		rotate_at_y_points (list, a, p, backwards)
 	:
 	[ for (k=[0:1:len(object)-1])
 		k==0 ?
 			 is_num(object[0][0][0]) ?
 				let(list=object[0])
-				rotate_at_y_list (list, a, p, backwards)
+				rotate_at_y_points (list, a, p, backwards)
 			:is_num(object[0][0][0][0]) ?
 				[for (list=object[0])
-				rotate_at_y_list (list, a, p, backwards)
+				rotate_at_y_points (list, a, p, backwards)
 				]
 			:undef
 		:
@@ -316,16 +316,16 @@ function rotate_at_z (object, a, p, backwards) =
 	(object==undef || !is_list(object)) ? undef :
 	is_num(object[0][0]) ?
 		let(list=object)
-		rotate_at_z_list (list, a, p, backwards)
+		rotate_at_z_points (list, a, p, backwards)
 	:
 	[ for (k=[0:1:len(object)-1])
 		k==0 ?
 			 is_num(object[0][0][0]) ?
 				let(list=object[0])
-				rotate_at_z_list (list, a, p, backwards)
+				rotate_at_z_points (list, a, p, backwards)
 			:is_num(object[0][0][0][0]) ?
 				[for (list=object[0])
-				rotate_at_z_list (list, a, p, backwards)
+				rotate_at_z_points (list, a, p, backwards)
 				]
 			:undef
 		:
@@ -337,16 +337,16 @@ function rotate_backwards_at_x (object, a, p) =
 	(object==undef || !is_list(object)) ? undef :
 	is_num(object[0][0]) ?
 		let(list=object)
-		rotate_backwards_at_x_list (list, a, p)
+		rotate_backwards_at_x_points (list, a, p)
 	:
 	[ for (k=[0:1:len(object)-1])
 		k==0 ?
 			 is_num(object[0][0][0]) ?
 				let(list=object[0])
-				rotate_backwards_at_x_list (list, a, p)
+				rotate_backwards_at_x_points (list, a, p)
 			:is_num(object[0][0][0][0]) ?
 				[for (list=object[0])
-				rotate_backwards_at_x_list (list, a, p)
+				rotate_backwards_at_x_points (list, a, p)
 				]
 			:undef
 		:
@@ -357,16 +357,16 @@ function rotate_backwards_at_y (object, a, p) =
 	(object==undef || !is_list(object)) ? undef :
 	is_num(object[0][0]) ?
 		let(list=object)
-		rotate_backwards_at_y_list (list, a, p)
+		rotate_backwards_at_y_points (list, a, p)
 	:
 	[ for (k=[0:1:len(object)-1])
 		k==0 ?
 			 is_num(object[0][0][0]) ?
 				let(list=object[0])
-				rotate_backwards_at_y_list (list, a, p)
+				rotate_backwards_at_y_points (list, a, p)
 			:is_num(object[0][0][0][0]) ?
 				[for (list=object[0])
-				rotate_backwards_at_y_list (list, a, p)
+				rotate_backwards_at_y_points (list, a, p)
 				]
 			:undef
 		:
@@ -377,16 +377,16 @@ function rotate_backwards_at_z (object, a, p) =
 	(object==undef || !is_list(object)) ? undef :
 	is_num(object[0][0]) ?
 		let(list=object)
-		rotate_backwards_at_z_list (list, a, p)
+		rotate_backwards_at_z_points (list, a, p)
 	:
 	[ for (k=[0:1:len(object)-1])
 		k==0 ?
 			 is_num(object[0][0][0]) ?
 				let(list=object[0])
-				rotate_backwards_at_z_list (list, a, p)
+				rotate_backwards_at_z_points (list, a, p)
 			:is_num(object[0][0][0][0]) ?
 				[for (list=object[0])
-				rotate_backwards_at_z_list (list, a, p)
+				rotate_backwards_at_z_points (list, a, p)
 				]
 			:undef
 		:
@@ -399,16 +399,16 @@ function translate_x (object, l) =
 	(object==undef || !is_list(object)) ? undef :
 	is_num(object[0][0]) ?
 		let(list=object)
-		translate_x_list (list, l)
+		translate_x_points (list, l)
 	:
 	[ for (k=[0:1:len(object)-1])
 		k==0 ?
 			 is_num(object[0][0][0]) ?
 				let(list=object[0])
-				translate_x_list (list, l)
+				translate_x_points (list, l)
 			:is_num(object[0][0][0][0]) ?
 				[for (list=object[0])
-				translate_x_list (list, l)
+				translate_x_points (list, l)
 				]
 			:undef
 		:
@@ -419,16 +419,16 @@ function translate_y (object, l) =
 	(object==undef || !is_list(object)) ? undef :
 	is_num(object[0][0]) ?
 		let(list=object)
-		translate_y_list (list, l)
+		translate_y_points (list, l)
 	:
 	[ for (k=[0:1:len(object)-1])
 		k==0 ?
 			 is_num(object[0][0][0]) ?
 				let(list=object[0])
-				translate_y_list (list, l)
+				translate_y_points (list, l)
 			:is_num(object[0][0][0][0]) ?
 				[for (list=object[0])
-				translate_y_list (list, l)
+				translate_y_points (list, l)
 				]
 			:undef
 		:
@@ -439,16 +439,16 @@ function translate_z (object, l) =
 	(object==undef || !is_list(object)) ? undef :
 	is_num(object[0][0]) ?
 		let(list=object)
-		translate_z_list (list, l)
+		translate_z_points (list, l)
 	:
 	[ for (k=[0:1:len(object)-1])
 		k==0 ?
 			 is_num(object[0][0][0]) ?
 				let(list=object[0])
-				translate_z_list (list, l)
+				translate_z_points (list, l)
 			:is_num(object[0][0][0][0]) ?
 				[for (list=object[0])
-				translate_z_list (list, l)
+				translate_z_points (list, l)
 				]
 			:undef
 		:
@@ -460,16 +460,16 @@ function translate_xy (object, t) =
 	(object==undef || !is_list(object)) ? undef :
 	is_num(object[0][0]) ?
 		let(list=object)
-		translate_xy_list (list, t)
+		translate_xy_points (list, t)
 	:
 	[ for (k=[0:1:len(object)-1])
 		k==0 ?
 			 is_num(object[0][0][0]) ?
 				let(list=object[0])
-				translate_xy_list (list, t)
+				translate_xy_points (list, t)
 			:is_num(object[0][0][0][0]) ?
 				[for (list=object[0])
-				translate_xy_list (list, t)
+				translate_xy_points (list, t)
 				]
 			:undef
 		:
@@ -482,16 +482,16 @@ function mirror_at (object, v, p) =
 	(object==undef || !is_list(object)) ? undef :
 	is_num(object[0][0]) ?
 		let(list=object)
-		mirror_at_list (list, v, p)
+		mirror_at_points (list, v, p)
 	:
 	[ for (k=[0:1:len(object)-1])
 		k==0 ?
 			 is_num(object[0][0][0]) ?
 				let(list=object[0])
-				mirror_at_list (list, v, p)
+				mirror_at_points (list, v, p)
 			:is_num(object[0][0][0][0]) ?
 				[for (list=object[0])
-				mirror_at_list (list, v, p)
+				mirror_at_points (list, v, p)
 				]
 			:undef
 		:
@@ -504,16 +504,16 @@ function mirror_x (object) =
 	(object==undef || !is_list(object)) ? undef :
 	is_num(object[0][0]) ?
 		let(list=object)
-		mirror_x_list (list)
+		mirror_x_points (list)
 	:
 	[ for (k=[0:1:len(object)-1])
 		k==0 ?
 			 is_num(object[0][0][0]) ?
 				let(list=object[0])
-				mirror_x_list (list)
+				mirror_x_points (list)
 			:is_num(object[0][0][0][0]) ?
 				[for (list=object[0])
-				mirror_x_list (list)
+				mirror_x_points (list)
 				]
 			:undef
 		:
@@ -524,16 +524,16 @@ function mirror_y (object) =
 	(object==undef || !is_list(object)) ? undef :
 	is_num(object[0][0]) ?
 		let(list=object)
-		mirror_y_list (list)
+		mirror_y_points (list)
 	:
 	[ for (k=[0:1:len(object)-1])
 		k==0 ?
 			 is_num(object[0][0][0]) ?
 				let(list=object[0])
-				mirror_y_list (list)
+				mirror_y_points (list)
 			:is_num(object[0][0][0][0]) ?
 				[for (list=object[0])
-				mirror_y_list (list)
+				mirror_y_points (list)
 				]
 			:undef
 		:
@@ -544,16 +544,16 @@ function mirror_z (object) =
 	(object==undef || !is_list(object)) ? undef :
 	is_num(object[0][0]) ?
 		let(list=object)
-		mirror_z_list (list)
+		mirror_z_points (list)
 	:
 	[ for (k=[0:1:len(object)-1])
 		k==0 ?
 			 is_num(object[0][0][0]) ?
 				let(list=object[0])
-				mirror_z_list (list)
+				mirror_z_points (list)
 			:is_num(object[0][0][0][0]) ?
 				[for (list=object[0])
-				mirror_z_list (list)
+				mirror_z_points (list)
 				]
 			:undef
 		:
@@ -565,16 +565,16 @@ function mirror_at_x (object, p) =
 	(object==undef || !is_list(object)) ? undef :
 	is_num(object[0][0]) ?
 		let(list=object)
-		mirror_at_x_list (list, p)
+		mirror_at_x_points (list, p)
 	:
 	[ for (k=[0:1:len(object)-1])
 		k==0 ?
 			 is_num(object[0][0][0]) ?
 				let(list=object[0])
-				mirror_at_x_list (list, p)
+				mirror_at_x_points (list, p)
 			:is_num(object[0][0][0][0]) ?
 				[for (list=object[0])
-				mirror_at_x_list (list, p)
+				mirror_at_x_points (list, p)
 				]
 			:undef
 		:
@@ -585,16 +585,16 @@ function mirror_at_y (object, p) =
 	(object==undef || !is_list(object)) ? undef :
 	is_num(object[0][0]) ?
 		let(list=object)
-		mirror_at_y_list (list, p)
+		mirror_at_y_points (list, p)
 	:
 	[ for (k=[0:1:len(object)-1])
 		k==0 ?
 			 is_num(object[0][0][0]) ?
 				let(list=object[0])
-				mirror_at_y_list (list, p)
+				mirror_at_y_points (list, p)
 			:is_num(object[0][0][0][0]) ?
 				[for (list=object[0])
-				mirror_at_y_list (list, p)
+				mirror_at_y_points (list, p)
 				]
 			:undef
 		:
@@ -605,16 +605,16 @@ function mirror_at_z (object, p) =
 	(object==undef || !is_list(object)) ? undef :
 	is_num(object[0][0]) ?
 		let(list=object)
-		mirror_at_z_list (list, p)
+		mirror_at_z_points (list, p)
 	:
 	[ for (k=[0:1:len(object)-1])
 		k==0 ?
 			 is_num(object[0][0][0]) ?
 				let(list=object[0])
-				mirror_at_z_list (list, p)
+				mirror_at_z_points (list, p)
 			:is_num(object[0][0][0][0]) ?
 				[for (list=object[0])
-				mirror_at_z_list (list, p)
+				mirror_at_z_points (list, p)
 				]
 			:undef
 		:
@@ -627,16 +627,16 @@ function scale_x (object, f) =
 	(object==undef || !is_list(object)) ? undef :
 	is_num(object[0][0]) ?
 		let(list=object)
-		scale_x_list (list, f)
+		scale_x_points (list, f)
 	:
 	[ for (k=[0:1:len(object)-1])
 		k==0 ?
 			 is_num(object[0][0][0]) ?
 				let(list=object[0])
-				scale_x_list (list, f)
+				scale_x_points (list, f)
 			:is_num(object[0][0][0][0]) ?
 				[for (list=object[0])
-				scale_x_list (list, f)
+				scale_x_points (list, f)
 				]
 			:undef
 		:
@@ -647,16 +647,16 @@ function scale_y (object, f) =
 	(object==undef || !is_list(object)) ? undef :
 	is_num(object[0][0]) ?
 		let(list=object)
-		scale_y_list (list, f)
+		scale_y_points (list, f)
 	:
 	[ for (k=[0:1:len(object)-1])
 		k==0 ?
 			 is_num(object[0][0][0]) ?
 				let(list=object[0])
-				scale_y_list (list, f)
+				scale_y_points (list, f)
 			:is_num(object[0][0][0][0]) ?
 				[for (list=object[0])
-				scale_y_list (list, f)
+				scale_y_points (list, f)
 				]
 			:undef
 		:
@@ -668,16 +668,16 @@ function scale_z (object, f) =
 	(object==undef || !is_list(object)) ? undef :
 	is_num(object[0][0]) ?
 		let(list=object)
-		scale_z_list (list, f)
+		scale_z_points (list, f)
 	:
 	[ for (k=[0:1:len(object)-1])
 		k==0 ?
 			 is_num(object[0][0][0]) ?
 				let(list=object[0])
-				scale_z_list (list, f)
+				scale_z_points (list, f)
 			:is_num(object[0][0][0][0]) ?
 				[for (list=object[0])
-				scale_z_list (list, f)
+				scale_z_points (list, f)
 				]
 			:undef
 		:
@@ -690,16 +690,16 @@ function resize_x (object, l) =
 	(object==undef || !is_list(object)) ? undef :
 	is_num(object[0][0]) ?
 		let(list=object)
-		resize_x_list (list, l)
+		resize_x_points (list, l)
 	:
 	[ for (k=[0:1:len(object)-1])
 		k==0 ?
 			 is_num(object[0][0][0]) ?
 				let(list=object[0])
-				resize_x_list (list, l)
+				resize_x_points (list, l)
 			:is_num(object[0][0][0][0]) ?
 				[for (list=object[0])
-				resize_x_list (list, l)
+				resize_x_points (list, l)
 				]
 			:undef
 		:
@@ -710,16 +710,16 @@ function resize_y (object, l) =
 	(object==undef || !is_list(object)) ? undef :
 	is_num(object[0][0]) ?
 		let(list=object)
-		resize_y_list (list, l)
+		resize_y_points (list, l)
 	:
 	[ for (k=[0:1:len(object)-1])
 		k==0 ?
 			 is_num(object[0][0][0]) ?
 				let(list=object[0])
-				resize_y_list (list, l)
+				resize_y_points (list, l)
 			:is_num(object[0][0][0][0]) ?
 				[for (list=object[0])
-				resize_y_list (list, l)
+				resize_y_points (list, l)
 				]
 			:undef
 		:
@@ -731,16 +731,16 @@ function resize_z (object, l) =
 	(object==undef || !is_list(object)) ? undef :
 	is_num(object[0][0]) ?
 		let(list=object)
-		resize_z_list (list, l)
+		resize_z_points (list, l)
 	:
 	[ for (k=[0:1:len(object)-1])
 		k==0 ?
 			 is_num(object[0][0][0]) ?
 				let(list=object[0])
-				resize_z_list (list, l)
+				resize_z_points (list, l)
 			:is_num(object[0][0][0][0]) ?
 				[for (list=object[0])
-				resize_z_list (list, l)
+				resize_z_points (list, l)
 				]
 			:undef
 		:
@@ -753,16 +753,16 @@ function skew    (object, v, t, m, a) =
 	(object==undef || !is_list(object)) ? undef :
 	is_num(object[0][0]) ?
 		let(list=object)
-		skew_list (list, v, t, m, a)
+		skew_points (list, v, t, m, a)
 	:
 	[ for (k=[0:1:len(object)-1])
 		k==0 ?
 			 is_num(object[0][0][0]) ?
 				let(list=object[0])
-				skew_list (list, v, t, m, a)
+				skew_points (list, v, t, m, a)
 			:is_num(object[0][0][0][0]) ?
 				[for (list=object[0])
-				skew_list (list, v, t, m, a)
+				skew_points (list, v, t, m, a)
 				]
 			:undef
 		:
@@ -773,16 +773,16 @@ function skew_at (object, v, t, m, a, p) =
 	(object==undef || !is_list(object)) ? undef :
 	is_num(object[0][0]) ?
 		let(list=object)
-		skew_at_list (list, v, t, m, a, p)
+		skew_at_points (list, v, t, m, a, p)
 	:
 	[ for (k=[0:1:len(object)-1])
 		k==0 ?
 			 is_num(object[0][0][0]) ?
 				let(list=object[0])
-				skew_at_list (list, v, t, m, a, p)
+				skew_at_points (list, v, t, m, a, p)
 			:is_num(object[0][0][0][0]) ?
 				[for (list=object[0])
-				skew_at_list (list, v, t, m, a, p)
+				skew_at_points (list, v, t, m, a, p)
 				]
 			:undef
 		:

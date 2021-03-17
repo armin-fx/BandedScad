@@ -46,8 +46,8 @@ function matrix_rotate_to_vector_vo (v, o, backwards=false) =
 	orientation = (is_list(o) && len(o)==3) ? o : [1,0,0],
 	//
 	base_vector = [1,0],
-	up_to_z     = multmatrix_list ( [orientation], matrix_rotate_to_vector_yz(V, backwards=true) ),
-	plane       = projection_list (up_to_z),
+	up_to_z     = multmatrix_points ( [orientation], matrix_rotate_to_vector_yz(V, backwards=true) ),
+	plane       = projection_points (up_to_z),
 	angle_base  = rotation_vector (base_vector, plane[0])
 	)
 	matrix_rotate_to_vector_yz (V, angle_base, backwards)

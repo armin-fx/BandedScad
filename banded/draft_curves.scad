@@ -354,8 +354,8 @@ function square_curve (size, center=false) =
 		y=Size[1],
 		square_list=[[0,0], [x,0], [x,y], [0,y]]
 	)
-	(center!=true) ? square_list
-	:translate_list( square_list, -Size/2 )
+	(center!=true) ?   square_list
+	:translate_points( square_list, -Size/2 )
 ;
 
 // gibt eine Helix als Punkteliste zurück

@@ -51,7 +51,7 @@ function cube (size, center) =
 			,[7,4,0,3]] // left
 	)
 	[
-		(center!=true) ? points : translate_list( points, -Size/2 )
+		(center!=true) ? points : translate_points( points, -Size/2 )
 	    , path
 	]
 ;
@@ -154,22 +154,22 @@ function transform_function (object, fn) =
 /*
 // since OpenSCAD version 2021.01
 function translate (object, v) = transform_function (object, function (list)
-    translate_list (list,   v) )
+    translate_points (list, v) )
 ;
 function rotate (object, a, v, backwards=false) = transform_function (object, function (list)
-    rotate_list (list,   a, v, backwards=false) )
+    rotate_points (list, a, v, backwards=false) )
 ;
 function mirror (object, v) = transform_function (object, function (list)
-    mirror_list (list,   v) )
+    mirror_points (list, v) )
 ;
 function scale (object, v) = transform_function (object, function (list)
-    scale_list (list,   v) )
+    scale_points (list, v) )
 ;
 function resize (object, newsize) = transform_function (object, function (list)
-    resize_list (list,   newsize) )
+    resize_points (list, newsize) )
 ;
 function multmatrix (object, m) = transform_function (object, function (list)
-    multmatrix_list (list,   m) )
+    multmatrix_points (list, m) )
 ;
 */
 
@@ -177,16 +177,16 @@ function translate (object, v) =
 	(object==undef || !is_list(object)) ? undef :
 	is_num(object[0][0]) ?
 		let(list=object)
-		translate_list (list, v)
+		translate_points (list, v)
 	:
 	[ for (k=[0:1:len(object)-1])
 		k==0 ?
 			 is_num(object[0][0][0]) ?
 				let(list=object[0])
-				translate_list (list, v)
+				translate_points (list, v)
 			:is_num(object[0][0][0][0]) ?
 				[for (list=object[0])
-				translate_list (list, v)
+				translate_points (list, v)
 				]
 			:undef
 		:
@@ -198,16 +198,16 @@ function rotate (object, a, v, backwards=false) =
 	(object==undef || !is_list(object)) ? undef :
 	is_num(object[0][0]) ?
 		let(list=object)
-		rotate_list (list, a, v, backwards)
+		rotate_points (list, a, v, backwards)
 	:
 	[ for (k=[0:1:len(object)-1])
 		k==0 ?
 			 is_num(object[0][0][0]) ?
 				let(list=object[0])
-				rotate_list (list, a, v, backwards)
+				rotate_points (list, a, v, backwards)
 			:is_num(object[0][0][0][0]) ?
 				[for (list=object[0])
-				rotate_list (list, a, v, backwards)
+				rotate_points (list, a, v, backwards)
 				]
 			:undef
 		:
@@ -219,16 +219,16 @@ function mirror (object, v) =
 	(object==undef || !is_list(object)) ? undef :
 	is_num(object[0][0]) ?
 		let(list=object)
-		mirror_list (list, v)
+		mirror_points (list, v)
 	:
 	[ for (k=[0:1:len(object)-1])
 		k==0 ?
 			 is_num(object[0][0][0]) ?
 				let(list=object[0])
-				mirror_list (list, v)
+				mirror_points (list, v)
 			:is_num(object[0][0][0][0]) ?
 				[for (list=object[0])
-				mirror_list (list, v)
+				mirror_points (list, v)
 				]
 			:undef
 		:
@@ -240,16 +240,16 @@ function scale (object, v) =
 	(object==undef || !is_list(object)) ? undef :
 	is_num(object[0][0]) ?
 		let(list=object)
-		scale_list (list, v)
+		scale_points (list, v)
 	:
 	[ for (k=[0:1:len(object)-1])
 		k==0 ?
 			 is_num(object[0][0][0]) ?
 				let(list=object[0])
-				scale_list (list, v)
+				scale_points (list, v)
 			:is_num(object[0][0][0][0]) ?
 				[for (list=object[0])
-				scale_list (list, v)
+				scale_points (list, v)
 				]
 			:undef
 		:
@@ -261,14 +261,14 @@ function resize (object, newsize) =
 	(object==undef || !is_list(object)) ? undef :
 	is_num(object[0][0]) ?
 		let(list=object)
-		resize_list (list, newsize)
+		resize_points (list, newsize)
 	:
 	let( Object = unify_object(object) )
 	[ for (k=[0:1:len(Object)-1])
 		k==0 ?
 			 is_num(Object[0][0][0]) ?
 				let(list=Object[0])
-				resize_list (list, newsize)
+				resize_points (list, newsize)
 			:undef
 		:
 			Object[k]
@@ -279,16 +279,16 @@ function multmatrix (object, m) =
 	(object==undef || !is_list(object)) ? undef :
 	is_num(object[0][0]) ?
 		let(list=object)
-		multmatrix_list (list, m)
+		multmatrix_points (list, m)
 	:
 	[ for (k=[0:1:len(object)-1])
 		k==0 ?
 			 is_num(object[0][0][0]) ?
 				let(list=object[0])
-				multmatrix_list (list, m)
+				multmatrix_points (list, m)
 			:is_num(object[0][0][0][0]) ?
 				[for (list=object[0])
-				multmatrix_list (list, m)
+				multmatrix_points (list, m)
 				]
 			:undef
 		:
@@ -299,7 +299,7 @@ function multmatrix (object, m) =
 function projection (object, cut, plane) =
 	(object==undef || !is_list(object)) ? undef :
 	is_num(object[0][0]) ?
-		projection_list (object, plane)
+		projection_points (object, plane)
 	:
 	echo("Not working yet")
 	let(

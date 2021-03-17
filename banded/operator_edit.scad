@@ -104,8 +104,8 @@ module extrude_line (line, rotational=[1,0,0], convexity, extra_h=0)
 	base_vector = [1,0];
 	origin      = line[0];
 	line_vector = line[1] - line[0];
-	up_to_z     = rotate_backwards_to_vector_list ( [rotational], line_vector);
-	plane       = projection_list (up_to_z);
+	up_to_z     = rotate_backwards_to_vector_points ( [rotational], line_vector);
+	plane       = projection_points (up_to_z);
 	angle_base  = rotation_vector (base_vector, plane[0]);
 	//
 	translate (origin)
