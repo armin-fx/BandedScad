@@ -19,9 +19,9 @@ function summation_list_intern (list, n, k) =
 		summation_list_intern_8(list, mid_n, k) +
 		summation_list_intern  (list, n,     mid_n+1)
 	:
-		summation_list_intern_1(list, n, k)
+		summation_list_intern_1(list, n, k+1, list[k])
 ;
-function summation_list_intern_1 (list, n, k, value=0) =
+function summation_list_intern_1 (list, n, k, value) =
 	(k>n) ? value :
 	summation_list_intern_1(list, n, k+1, value + list[k])
 ;
@@ -50,7 +50,7 @@ function product_list_intern (list, n, k) =
 		product_list_intern_8(list, mid_n, k) *
 		product_list_intern  (list, n,     mid_n+1)
 	:
-		product_list_intern_1(list, n, k)
+		product_list_intern_1(list, n, k+1, list[k])
 ;
 function product_list_intern_1 (list, n, k, value=1) =
 	(k>n) ? value :

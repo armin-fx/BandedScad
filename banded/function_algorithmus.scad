@@ -15,13 +15,13 @@ function summation_fn_intern (fn, n, k, value=0) =
 function summation_fn_intern_direct (fn, n, k, value=0) =
 	(k>n) ? value :
 	summation_fn_intern_direct(fn, n, k+1,
-		value + fn(k)
+		value==0 ? fn(k) : value + fn(k)
 	)
 ;
 function summation_fn_intern_select (fn, n, k, value=0) =
 	(k>n) ? value :
 	summation_fn_intern_select(fn, n, k+1,
-		value + select_function(fn, k)
+		value==0 ? select_function(fn, k) : value + select_function(fn, k)
 	)
 ;
 function summation_fn_intern_big (fn, n, k, slice=100000) =
