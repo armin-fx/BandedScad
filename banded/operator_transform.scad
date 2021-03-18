@@ -37,7 +37,8 @@ module mirror_at (v, p)
 		translate(-p)
 		children();
 	else
-		mirror(V) children();
+		mirror(V)
+		children();
 }
 
 // erzeugt ein Objekt und ein gespiegeltes Objekt
@@ -84,8 +85,11 @@ module mirror_check (v)
 //              'true'  - rückwärts rotieren, macht Rotation rückgängig
 module rotate_new (a, v, backwards=false)
 {
-	multmatrix ( matrix_rotate_to_vector (v, a, backwards) )
-	children();
+	if (!(backwards==true))
+		rotate (a, v)
+		children();
+	else
+		rotate_backwards (a, v)
 }
 
 // rotiert ein Objekt rückwärts
@@ -100,7 +104,8 @@ module rotate_backwards (a, v)
 		)
 		children();
 	else if (is_num(a))
-		rotate(-a,v) children();
+		rotate(-a,v)
+		children();
 	else
 		children();
 }
