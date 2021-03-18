@@ -90,6 +90,7 @@ module rotate_new (a, v, backwards=false)
 		children();
 	else
 		rotate_backwards (a, v)
+		children();
 }
 
 // rotiert ein Objekt rückwärts
