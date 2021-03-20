@@ -267,6 +267,8 @@ function binary_search_list_intern (list, value, type, begin, end) =
 ;
 
 // sucht nach einem Wert und gibt die Position des Treffers aus einer Liste heraus
+// Die Liste wird vom Anfang aus durchsucht
+// Wurde der Wert nicht gefunden, wird die Größe der Liste zurückgegeben
 // Argumente:
 //   list    -Liste
 //   value   -gesuchter Wert
@@ -297,6 +299,41 @@ function find_first_list_intern_type (list, value, index=0, type, n=0) =
 		(index==0) ? n
 		:	find_first_list_intern_type (list, value, index-1, type, n+1)
 	:		find_first_list_intern_type (list, value, index,   type, n+1)
+;
+
+// sucht nach einem Wert und gibt die Position des Treffers aus einer Liste heraus
+// Die Liste wird vom Ende aus rückwärts durchsucht
+// Wurde der Wert nicht gefunden, wird -1 zurückgegeben
+// Argumente:
+//   list    -Liste
+//   value   -gesuchter Wert
+//   index   -Bei gleichen Werten wird index-mal übersprungen
+//            standartmäßig wird der erste vom Ende aus gefundene Schlüssel genommen (index=0)
+function find_last_list (list, value, index=0, type=0) =
+	 type==0 ? find_last_list_intern_direct (list, value, index,         n=len(list)-1)
+	:type> 0 ? find_last_list_intern_list   (list, value, index, type-1, n=len(list)-1)
+	:          find_last_list_intern_type   (list, value, index, type,   n=len(list)-1)
+;
+function find_last_list_intern_direct (list, value, index=0, n=-2) =
+	(n<0) ? n
+	:(list[n]==value) ?
+		(index==0) ? n
+		:	find_last_list_intern_direct (list, value, index-1, n-1)
+	:		find_last_list_intern_direct (list, value, index,   n-1)
+;
+function find_last_list_intern_list (list, value, index=0, position=0, n=-2) =
+	(n<0) ? n
+	:(list[n][position]==value) ?
+		(index==0) ? n
+		:	find_last_list_intern_list (list, value, index-1, position, n-1)
+	:		find_last_list_intern_list (list, value, index,   position, n-1)
+;
+function find_last_list_intern_type (list, value, index=0, type, n=-2) =
+	(n<0) ? n
+	:(get_value(list[n],type)==value) ?
+		(index==0) ? n
+		:	find_last_list_intern_type (list, value, index-1, type, n-1)
+	:		find_last_list_intern_type (list, value, index,   type, n-1)
 ;
 
 // Zählt das Vorkommen eines Wertes in der Liste
@@ -344,24 +381,30 @@ function remove_duplicate_list (list, type=0) =
 	:type >0 ? remove_duplicate_list_intern_list   (list, type-1)
 	:          remove_duplicate_list_intern_type   (list, type)
 ;
-function remove_duplicate_list_intern_direct (list, i=0, new=[]) =
-	i==len(list) ? new :
-	(find_first_list (new, list[i]) == len(new)) ?
-		remove_duplicate_list_intern_direct (list, i+1, concat(new,[list[i]]))
-	:	remove_duplicate_list_intern_direct (list, i+1, new)
+function remove_duplicate_list_intern_direct (list, i=0, new=[], last=[]) =
+	i==len(list) ? concat(new,last):
+	// test value is in 'new'
+	((last!=[] && last[0]==list[i]) || (len([for (e=new) if (e==list[i]) 0]) != 0) ) ?
+		remove_duplicate_list_intern_direct (list, i+1, new, last)
+	:	remove_duplicate_list_intern_direct (list, i+1, concat(new,last), [list[i]])
 ;
-function remove_duplicate_list_intern_list (list, position=0, i=0, new=[]) =
-	i==len(list) ? new :
-	(find_first_list_intern_list (new, list[i][position], position=position) == len(new)) ?
-		remove_duplicate_list_intern_list (list, position, i+1, concat(new,[list[i]]))
-	:	remove_duplicate_list_intern_list (list, position, i+1, new)
+function remove_duplicate_list_intern_list (list, position=0, i=0, new=[], last=[]) =
+	i==len(list) ? concat(new,last):
+	let( v = list[i][position] )
+	// test value is in 'new'
+	((last!=[] && last[0][position]==v) || (len([for (e=new) if (e[position]==v) 0]) != 0) ) ?
+		remove_duplicate_list_intern_list (list, position, i+1, new, last)
+	:	remove_duplicate_list_intern_list (list, position, i+1, concat(new,last), [list[i]])
 ;
-function remove_duplicate_list_intern_type (list, type, i=0, new=[]) =
+function remove_duplicate_list_intern_type (list, type, i=0, new=[], values=[], last=[]) =
 	i==len(list) ? new :
-	(find_first_list (new, get_value(list[i],type), type=type) == len(new)) ?
-		remove_duplicate_list_intern_type (list, type, i+1, concat(new,[list[i]]))
-	:	remove_duplicate_list_intern_type (list, type, i+1, new)
+	let( v = get_value(list[i],type) )
+	// test value is in 'new'
+	((last!=[] && last[0]==v) || (len([for (e=values) if (e==v) 0]) != 0) ) ?
+		remove_duplicate_list_intern_type (list, type, i+1, new, values, last)
+	:	remove_duplicate_list_intern_type (list, type, i+1, concat(new,[list[i]]), concat(values,last), [v])
 ;
+
 
 // Entfernt alle Vorkommen eines Wertes
 function remove_value_list (list, value, type=0) =
