@@ -5,6 +5,10 @@
 
 use <banded/helper_native.scad>
 
+
+// Listenfunktionen ohne Zugriff auf den Inhalt
+
+
 // verbindet einzelne Listen innerhalb einer Liste miteinander
 // aus z.B  [ [1,2,3], [4,5] ]  wird  [1,2,3,4,5]
 function concat_list (list) = [for (a=list) for (b=a) b];
@@ -14,30 +18,36 @@ function reverse_list (list) = [for (a=[len(list)-1:-1:0]) list[a]];
 
 // entfernt Elemente aus einer Liste
 function erase_list (list, begin, count=1) =
-	let (size=len(list))
+	let (
+		size=len(list),
+		pos_begin=get_position(list,begin),
+		pos_count=get_position(list,count)
+	)
 	concat(
-		 (get_position(list,begin)==0) ? []
-		 :[for (i=[0:min(get_position(list,begin)-1,size-1)])
-				list[i]]
-		,(get_position(list,begin)+get_position(list,count)>=size) ? []
-		 :[for (i=[min(get_position(list,begin)+get_position(list,count),size-1):size-1])
-				list[i]]
+		 (pos_begin==0)                ? []
+		 :[for (i=[0:min(pos_begin-1,size-1)])              list[i] ]
+		,((pos_begin+pos_count)>=size) ? []
+		 :[for (i=[min(pos_begin+pos_count,size-1):size-1]) list[i] ]
 	)
 ;
 
 // fügt alle Elemente einer Liste in die Liste ein
 function insert_list (list, list_insert, position=-1, begin=0, count=-1) =
-	let (size=len(list), size_insert=len(list_insert))
+	let (
+		 size        = len(list)
+		,size_insert = len(list_insert)
+		,real_position = get_position_insert(list,position)
+		,real_begin    = get_position       (list_insert,begin)
+		,real_count    = get_position_insert(list_insert,count)
+		,real_last     = min(real_begin+real_count-1,size_insert-1)
+	)
 	concat(
-		 (get_position_insert(list,position)<=0) ? []
-		 :[for (i=[0:min(get_position_insert(list,position)-1,size-1)])
-				list[i] ]
-		,(get_position(list_insert,begin)>min(get_position(list_insert,begin)+get_position_insert(list_insert,count)-1,size_insert-1)) ? []
-		 :[for (i=[get_position(list_insert,begin):min(get_position(list_insert,begin)+get_position_insert(list_insert,count)-1,size_insert-1)])
-				list_insert[i] ]
-		,(get_position_insert(list,position)>=size) ? []
-		 :[for (i=[max(0,min(get_position_insert(list,position),size-1)):size-1])
-				list[i] ]
+		 (real_position<=0)     ? []
+		 :[for (i=[0:min(real_position-1,size-1)])           list[i] ]
+		,(real_begin>real_last) ? []
+		 :[for (i=[real_begin:real_last])                    list_insert[i] ]
+		,(real_position>=size)  ? []
+		 :[for (i=[max(0,min(real_position,size-1)):size-1]) list[i] ]
 	)
 ;
 
@@ -68,7 +78,9 @@ function fill_list (count, value) =
 	[ for (i=[0:count-1]) value ]
 ;
 
-// Listenfunktionen
+
+// Listenfunktionen mit Zugriff auf den Inhalt
+
 
 // gibt den Wert eines angegebenen Typs zurück
 // Typen:
@@ -78,28 +90,119 @@ function fill_list (count, value) =
 // Wird in den folgenden Listenfunktionen verwendet,
 // um zwischen den Daten umschalten zu können von außerhalb der Funktion
 // = Angabe Argument 'type'
-function get_value (data, type=0) = (type==0) ? data : data[type-1];
+function get_value (data, type=0) =
+	 type==0 ? data
+	:type> 0 ? data[type-1]
+	:undef
+;
 
 // Gibt eine Liste des gewählten Typs zurück aus einer Liste
-function value_list (list, type=0) = (type==0) ? list : let(i=type-1) [ for (e=list) e[i] ];
+function value_list (list, type=0) =
+	 type==0 ? list
+	:type >0 ? let(p=type-1) [ for (e=list) e[p] ]
+	:undef
+;
 
 // Maximum oder Minimum einer Liste gemäß des Typs
 function min_list(list, type=0) = min (value_list(list, type));
 function max_list(list, type=0) = max (value_list(list, type));
+
+// Position des kleinsten Wertes einer Liste gemäß des Typs zurückgeben
+function min_position (list, type=0) =
+	 type==0 ? min_position_intern_direct (list)
+	:type> 0 ? min_position_intern_list   (list, type-1)
+	:          min_position_intern_type   (list, type)
+;
+function min_position_intern_direct (list, pos=0, i=0) =
+	i>=len(list) ? pos :
+	min_position_intern_direct (list
+		,list[pos]<=list[i] ? pos : i
+		,i+1
+		)
+;
+function min_position_intern_list (list, position=0, pos=0, i=0) =
+	i>=len(list) ? pos :
+	min_position_intern_list (list, position
+		,list[pos][position]<=list[i][position] ? pos : i
+		,i+1
+		)
+;
+function min_position_intern_type (list, type, pos=0, i=0) =
+	i>=len(list) ? pos :
+	min_position_intern_type (list, type
+		,get_value(list[pos],type)<=get_value(list[i],type) ? pos : i
+		,i+1
+		)
+;
+
+// Position des größten Wertes einer Liste gemäß des Typs zurückgeben
+function max_position (list, type=0) =
+	 type==0 ? max_position_intern_direct (list)
+	:type> 0 ? max_position_intern_list   (list, type-1)
+	:          max_position_intern_type   (list, type)
+;
+function max_position_intern_direct (list, pos=0, i=0) =
+	i>=len(list) ? pos :
+	max_position_intern_direct (list
+		,list[pos]>=list[i] ? pos : i
+		,i+1
+		)
+;
+function max_position_intern_list (list, position=0, pos=0, i=0) =
+	i>=len(list) ? pos :
+	max_position_intern_list (list, position
+		,list[pos][position]>=list[i][position] ? pos : i
+		,i+1
+		)
+;
+function max_position_intern_type (list, type, pos=0, i=0) =
+	i>=len(list) ? pos :
+	max_position_intern_type (list, type
+		,get_value(list[pos],type)>=get_value(list[i],type) ? pos : i
+		,i+1
+		)
+;
 
 // Listen sortieren
 function sort_list (list, type=0) = sort_list_quicksort (list, type);
 
 // stabiles sortieren mit Quicksort
 function sort_list_quicksort (list, type=0) =
+	 type==0 ? sort_list_quicksort_direct (list)
+	:type> 0 ? sort_list_quicksort_list   (list, type-1)
+	:          sort_list_quicksort_type   (list, type)
+;
+function sort_list_quicksort_direct (list) =
+	!(len(list)>1) ? list :
+	let(
+		pivot   = list[floor(len(list)/2)],
+		lesser  = [ for (e=list) if (e  < pivot) e ],
+		equal   = [ for (e=list) if (e == pivot) e ],
+		greater = [ for (e=list) if (e  > pivot) e ]
+	) concat(
+		sort_list_quicksort_direct(lesser), equal, sort_list_quicksort_direct(greater)
+	)
+;
+function sort_list_quicksort_list (list, position=0) =
+	!(len(list)>1) ? list :
+	let(
+		pivot   = list[floor(len(list)/2)][position],
+		lesser  = [ for (e=list) if (e[position]  < pivot) e ],
+		equal   = [ for (e=list) if (e[position] == pivot) e ],
+		greater = [ for (e=list) if (e[position]  > pivot) e ]
+	) concat(
+		sort_list_quicksort_list(lesser,position), equal, sort_list_quicksort_list(greater,position)
+	)
+;
+function sort_list_quicksort_type (list, type) =
 	!(len(list)>1) ? list :
 	let(
 		pivot   = get_value( list[floor(len(list)/2)] ,type),
-		lesser  = [ for (e = list) if (get_value(e,type)  < pivot) e ],
-		equal   = [ for (e = list) if (get_value(e,type) == pivot) e ],
-		greater = [ for (e = list) if (get_value(e,type)  > pivot) e ]
+		lesser  = [ for (e=list) if (get_value(e,type)  < pivot) e ],
+		equal   = [ for (e=list) if (get_value(e,type) == pivot) e ],
+		greater = [ for (e=list) if (get_value(e,type)  > pivot) e ]
 	) concat(
-		sort_list_quicksort(lesser,type), equal, sort_list_quicksort(greater,type)
+		sort_list_quicksort_type(lesser,type), equal, sort_list_quicksort_type(greater,type)
 	)
 ;
 
@@ -169,13 +272,31 @@ function binary_search_list_intern (list, value, type, begin, end) =
 //   value   -gesuchter Wert
 //   index   -Bei gleichen Werten wird index-mal übersprungen
 //            standartmäßig wird der erste gefundene Schlüssel genommen (index=0)
-function find_first_list        (list, value, index=0, type=0) = find_first_list_intern(list, value, index, type);
-function find_first_list_intern (list, value, index,   type, n=0) =
+function find_first_list (list, value, index=0, type=0) =
+	 type==0 ? find_first_list_intern_direct (list, value, index)
+	:type> 0 ? find_first_list_intern_list   (list, value, index, type-1)
+	:          find_first_list_intern_type   (list, value, index, type)
+;
+function find_first_list_intern_direct (list, value, index=0, n=0) =
+	(list[n]==undef) ? len(list)
+	:(list[n]==value) ?
+		(index==0) ? n
+		:	find_first_list_intern_direct (list, value, index-1, n+1)
+	:		find_first_list_intern_direct (list, value, index,   n+1)
+;
+function find_first_list_intern_list (list, value, index=0, position=0, n=0) =
+	(list[n]==undef) ? len(list)
+	:(list[n][position]==value) ?
+		(index==0) ? n
+		:	find_first_list_intern_list (list, value, index-1, position, n+1)
+	:		find_first_list_intern_list (list, value, index,   position, n+1)
+;
+function find_first_list_intern_type (list, value, index=0, type, n=0) =
 	(list[n]==undef) ? len(list)
 	:(get_value(list[n],type)==value) ?
 		(index==0) ? n
-		:	find_first_list_intern (list, value, index-1, type, n+1)
-	:		find_first_list_intern (list, value, index,   type, n+1)
+		:	find_first_list_intern_type (list, value, index-1, type, n+1)
+	:		find_first_list_intern_type (list, value, index,   type, n+1)
 ;
 
 // Zählt das Vorkommen eines Wertes in der Liste
@@ -190,14 +311,64 @@ function find_first_list_intern (list, value, index,   type, n=0) =
 // Kodierung wie in python
 function count_list        (list, value, type=0, begin, last, count, range) =
 	let (Range = parameter_range_safe (list, begin, last, count, range))
-	count_list_intern (list, value, type, Range[0], Range[1])
+	 type==0 ? count_list_intern_direct (list, value,         Range[0], Range[1])
+	:type >0 ? count_list_intern_list   (list, value, type-1, Range[0], Range[1])
+	:          count_list_intern_type   (list, value, type,   Range[0], Range[1])
 ;
-function count_list_intern (list, value, type, n=0, k=-1, count=0) =
+function count_list_intern_direct (list, value, n=0, k=-1, count=0) =
 	n>k ? count :
-	count_list_intern (list, value, type
+	count_list_intern_direct (list, value
+		, n+1, k,
+		, count + ( list[n]==value ? 1 : 0 )
+	)
+;
+function count_list_intern_list (list, value, position=0, n=0, k=-1, count=0) =
+	n>k ? count :
+	count_list_intern_list (list, value, position
+		, n+1, k,
+		, count + ( list[n][position]==value ? 1 : 0 )
+	)
+;
+function count_list_intern_type (list, value, type, n=0, k=-1, count=0) =
+	n>k ? count :
+	count_list_intern_type (list, value, type
 		, n+1, k,
 		, count + ( get_value(list[n],type)==value ? 1 : 0 )
 	)
+;
+
+// Entfernt alle Duplikate aus der Liste
+function remove_duplicate_list (list, type=0) =
+	len(list)==0 ? list :
+	 type==0 ? remove_duplicate_list_intern_direct (list)
+	:type >0 ? remove_duplicate_list_intern_list   (list, type-1)
+	:          remove_duplicate_list_intern_type   (list, type)
+;
+function remove_duplicate_list_intern_direct (list, i=0, new=[]) =
+	i==len(list) ? new :
+	(find_first_list (new, list[i]) == len(new)) ?
+		remove_duplicate_list_intern_direct (list, i+1, concat(new,[list[i]]))
+	:	remove_duplicate_list_intern_direct (list, i+1, new)
+;
+function remove_duplicate_list_intern_list (list, position=0, i=0, new=[]) =
+	i==len(list) ? new :
+	(find_first_list_intern_list (new, list[i][position], position=position) == len(new)) ?
+		remove_duplicate_list_intern_list (list, position, i+1, concat(new,[list[i]]))
+	:	remove_duplicate_list_intern_list (list, position, i+1, new)
+;
+function remove_duplicate_list_intern_type (list, type, i=0, new=[]) =
+	i==len(list) ? new :
+	(find_first_list (new, get_value(list[i],type), type=type) == len(new)) ?
+		remove_duplicate_list_intern_type (list, type, i+1, concat(new,[list[i]]))
+	:	remove_duplicate_list_intern_type (list, type, i+1, new)
+;
+
+// Entfernt alle Vorkommen eines Wertes
+function remove_value_list (list, value, type=0) =
+	len(list)==0 ? list :
+	 type==0 ? [ for (e=list) if (e                !=value) e ]
+	:type >0 ? [ for (e=list) if (e[type-1]        !=value) e ]
+	:          [ for (e=list) if (get_value(e,type)!=value) e ]
 ;
 
 
@@ -217,7 +388,7 @@ type_pair_value=2;
 //   index   -Bei gleichen Schlüsselwerten wird index-mal übersprungen
 //            standartmäßig wird der erste gefundene Schlüssel genommen (index=0)
 function pair_value     (list, key, index=0) =
-	list[find_first_list(list, key, index, type_pair_key)][type_pair_value-1];
+	list[find_first_list(list, key, index, type=type_pair_key)][type_pair_value-1];
 
 // gibt den Schlüssel eines Wertes aus einer Liste heraus
 // Argumente:
@@ -226,7 +397,7 @@ function pair_value     (list, key, index=0) =
 //   index   -Bei gleichen Werten wird index-mal übersprungen
 //            standartmäßig wird der erste gefundene Wert genommen (index=0)
 function pair_key       (list, value, index=0) =
-	list[find_first_list(list, value, index, type_pair_value)][type_pair_key-1];
+	list[find_first_list(list, value, index, type=type_pair_value)][type_pair_key-1];
 
 // erzeugt ein Schlüssel-Werte-Paare
 function pair (key, value) = [key, value];
