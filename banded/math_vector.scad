@@ -24,7 +24,7 @@ function angle_vector (v1, v2) =
 // gerechnet wird mit Linksrotation = gegen den Uhrzeigersinn
 // wie in der Mathematik üblich
 // Im 3D-Raum wird wie bei angle_vector() der eingeschlossene Winkel
-// zurückgegeben. Die Rotationsachse kann über das Kreuzprodukt ermitelt werden.
+// zurückgegeben. Die Rotationsachse kann über das Kreuzprodukt ermittelt werden.
 function rotation_vector (v1, v2) = angle_left_vector (v1, v2);
 function angle_left_vector (v1, v2) =
 	(len(v1)!=2) || (cross(v1,v2) >= 0) ?
@@ -32,6 +32,24 @@ function angle_left_vector (v1, v2) =
 	:	360 - acos( (v1 * v2) / (norm(v1) * norm(v2)) )
 ;
 function angle_right_vector (v1, v2) = 360 - angle_left_vector(v1, v2);
+
+// rechnet das Kreuzprodukt von n-dimensionale Vektoren aus
+// mit n-1 Vektoren in einer Liste 'list'
+// Besonderheit:
+// Verwendet in jeder Dimension das Rechtshandsystem.
+// Werden die nachfolgenden n-1 Einheitsvektoren übergeben,
+// wird der fehlende letzte Einheitsvektor geliefert.
+function cross_universal (list) =
+	list==undef ? undef
+	: len(list[0])==2 ? [-list[0].y,list[0].x]
+	: len(list[0])==3 ? cross(list[0], list[1])
+	: len(list[0]) >3 ?
+		determinant( concat(
+			 [ for (i=[0:1:len(list[0])-2]) list[i] ]
+			,[ identity_matrix( len(list[0]) ) ]
+		) )
+	: undef
+;
 
 // rechnet das Spatprodukt aus
 function triple_product (a, b, c) = a * cross(b, c) ;

@@ -42,9 +42,9 @@ function determinant (m) =
 	(size>3) ?
 		let (j=0)
 		summation_list([ for (i=[0:size-1])
-			(m[i][j]==0) ? 0 :
-			m[i][j] * positiv_if_even(i+j)
-			* determinant( matrix_minor(m, i, j) )
+			if (m[i][j]!=0)
+				m[i][j] * positiv_if_even(i+j)
+				* determinant( matrix_minor(m, i, j) )
 		])
 	:(size==3) ? det_3x3(m)
 	:(size==2) ? det_2x2(m)
@@ -55,8 +55,12 @@ function det (m) = determinant (m);
 // Determinante einer quadratischen 2x2 - Matrix
 function det_2x2 (m) = m[0][0]*m[1][1] - m[0][1]*m[1][0];
 // Determinante einer quadratischen 3x3 - Matrix über das Spatprodukt ausrechnen
-function det_3x3 (m) = cross(m[0], m[1]) * m[2];
+function det_3x3_ (m) =
+	+ m[1][0] * (m[0][2]*m[2][1] - m[2][2]*m[0][1])
+	+ m[1][1] * (m[0][0]*m[2][2] - m[2][0]*m[0][2])
+	+ m[1][2] * (m[0][1]*m[2][0] - m[2][1]*m[0][0])
 ;
+function det_3x3_2 (m) = cross(m[0], m[1]) * m[2];
 
 // Aus der Matritze eine Zeile ausschneiden
 function matrix_cut_row    (m, i) =
