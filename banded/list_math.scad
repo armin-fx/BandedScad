@@ -1,6 +1,15 @@
 // Copyright (c) 2020 Armin Frenzel
 // License: LGPL-2.1-or-later
 
+// Function literal 'fn' with each element in list
+// since OpenSCAD Version 2021.01
+function fn_each   (list, fn) = [for (a=list) fn(a)];
+function fn_2_each (list1, list2, fn) =
+	[ for (i=[0:min(len(list1),len(list2))-1])
+		fn(list1[i],list2[i])
+	]
+;
+
 function sqr_each   (list) = [for (a=list) a*a];
 function sqrt_each  (list) = [for (a=list) sqrt(a)];
 function ln_each    (list) = [for (a=list) ln(a)];
@@ -55,6 +64,8 @@ function divide_each (list1, list2) =
 		:                   list1[i] / list2
 	]
 ;
+
+function norm_each (list) = [for (a=list) norm(a)];
 
 function sum_each_next (list, begin=0, offset=0) =
 	!(begin<=len(list)-1) ? undef :
