@@ -16,11 +16,15 @@ Functions for working with lists
 - [Editing lists](#editing-lists-)
   - [Repeating options](#repeating-options-)
   - [Independent from the data](#edit-list-independent-from-the-data-)
-  - [Use data in list](#use-data-in-list-)
+  - [Type of data][type]
   - [List functions with specified `type`](#list-functions-with-specified-type-)
+  - [Use data in list](#use-data-in-list-)
   - [Pair functions](#pair-functions-)
 - [Algorithm on lists](#algorithm-on-lists-)
 - [Math on lists](#math-on-lists-)
+  - [Integrated in Openscad](#integrated-in-openscad-)
+  - [Operand with functions from OpenScad](#operand-with-functions-from-openscad-)
+  - [Extra functions](#extra-functions-)
 - [Calculating mean](#calculating-mean-)
   - [List of mean functions](#list-of-mean-functions-)
   - [Other mean functions](#other-mean-functions-)
@@ -43,8 +47,7 @@ Editing lists [^][contents]
     after the last element, -2 is the last element
 - `type`
   - Specify how the data from an element in a list will be used.
-  - `0`     - uses the element as value, standard if `type` not set
-  - `1...n` - uses the element from the position from a list, (position = `type - 1` -> `[ 1 2 3 ]`)
+  - [see entry - Type of Data][type]
 - `value` - nothing to say, value used for
 - `'range_args'`
   - Contain a set of arguments which defines a range in a list. Choose which you need.
@@ -90,6 +93,71 @@ Extract a sequence from a list
 Makes a list with `count` elements filled with `value`
 
 
+### Type of data [^][contents]
+[type]: #type-of-data-
+Define helper functions for type-dependent access to the content of lists.\
+These can used to create one functions with the same access on different data.
+The data access can be switched with the argument `type`.
+
+#### Internal type identifier convention [^][contents]
+
+| value        | description
+|--------------|-------------
+| `0`          | uses the element as value, standard if `type` not set
+| `[position]` | uses the element from the position from a list, (position = `type[0]` -> `[ 0 1 2 ... ]`)
+| `[-1, fn]`   | call function literal fn, or call direct defined function fn() if `fn` set undef
+
+#### Set type identifier of data [^][contents]
+This will set the type identifier which will control the data access
+in list edit functions.
+
+| function                     | description
+|------------------------------|-------------
+| set_type_direct   ()         | uses the data direct
+| set_type_list     (position) | uses the data as list and uses the value at `position`
+| set_type_function (fn)       | call a function literal `fn` with the data as argument, this return the value.<br /> If fn is `undef`, then it calls a defined extern function fn()
+| set_type          (argument) | generalized function, set the type dependent of the argument
+
+#### Test of type identifier [^][contents]
+Return `true` if it fits.
+
+| test function           | description
+|-------------------------|-------------
+| is_type_direct   (type) | is it for data direct use?
+| is_type_list     (type) | is it for use with data as list?
+| is_type_function (type) | is it to call a function?
+| is_type_unknown  (type) | nothing of all?
+
+#### Info from type identifier [^][contents]
+Get the information from type identifier which are needed to read the data.
+
+| function                 | description
+|--------------------------|-------------
+| get_position_type (type) | get the position in a list as data
+| get_function_type (type) | get the function literal `fn`
+
+
+### List functions with specified `type` [^][contents]
+
+#### `get_value (data, type)` [^][contents]
+return the value from the `data` element with specified `type`
+
+#### `value_list (list, type)` [^][contents]
+return a list with only values from specified `type`
+
+#### `min_list (list, type)` [^][contents]
+get the minimum value from a list with specified `type`
+
+#### `max_list (list, type)` [^][contents]
+get the maximum value from a list with specified `type`
+
+#### `min_position (list, type)` [^][contents]
+get the position of minimum value in a list
+
+#### `max_position (list, type)` [^][contents]
+get the position of maximum value in a list
+
+
 ### Use data in list [^][contents]
 
 #### `sort_list (list, type)` [^][contents]
@@ -102,7 +170,15 @@ Merge 2 sorted lists into one list
 Search a value in a sorted list
 
 #### `find_first_list (list, value, index, type)` [^][contents]
-Search at a value in a list and returns the position
+Search at a value in a list and returns the position.\
+Returns the size of list if nothing was found.
+- `index`
+  - Same values are skipped `index` times
+  - Standard = get first hit, `index` = 0
+
+#### `find_last_list (list, value, index, type)` [^][contents]
+Search at a value in a list backwards from the end to first value and returns the position.\
+Returns -1 if nothing was found.
 - `index`
   - Same values are skipped `index` times
   - Standard = get first hit, `index` = 0
@@ -111,20 +187,11 @@ Search at a value in a list and returns the position
 Count how often a value is in list
 - [`'range_args'`](#repeating-options-) - sets the range in which will count, standard = full list
 
+#### `remove_duplicate_list (list, type)` [^][contents]
+Remove every duplicate in a list, so a value exists only once
 
-### List functions with specified `type` [^][contents]
-
-#### `get_value (data, type)` [^][contents]
-return the value from the `data` element with specified `type`
-
-#### `value_list (list, type)` [^][contents]
-return a list with only values from specified `type`
-
-#### `min_list (list, type)` [^][contents]
-get the minimum value from a list at specified `type`
-
-#### `max_list (list, type)` [^][contents]
-get the maximum value from a list at specified `type`
+#### `remove_value_list (list, value, type)` [^][contents]
+Remove every entry with a given value in a list
 
 
 ### Pair functions [^][contents]
@@ -153,7 +220,8 @@ Algorithm on lists [^][contents]
 
 #### `summation_list (list, n, k)` [^][contents]
 Summation of a list.\
-Add all values in a list from position `k` to `n`
+Add all values in a list from position `k` to `n`.
+This function accepts numeric values and vectors in the list.
 - `k` - standard = `0`, from first element
 - `n` - if undefined, run until the last element
 
@@ -183,29 +251,38 @@ Returns a list with the result.
 
 
 ### Operand with functions from OpenScad [^][contents]
-- `sqrt_each (list)` - square root
-- `ln_each (list)`   - natural logarithm
-- `log_each (list)`  - logarithm with base 10
-- `exp_each (list)`  - natural exponent
-- `pow_each (list1,list2)`  - power `list1[*] ^ list2[*]`
-- `sin_each (list)`  - sine function
-- `cos_each (list)`  - cosine
-- `tan_each (list)`  - tangent
-- `asin_each (list)` - arcus sine
-- `acos_each (list)` - arcus cosine
-- `atan_each (list)` - arcus tangent
-- `atan2_each (list1,list2)` - 2-argument arcus tangent
-- `floor_each (list)` - floor function
-- `ceil_each (list)`  - ceiling function
-- `round_each (list)` - rounding function
-- `abs_each (list)`   - absolute values
+
+| function                   | description
+|----------------------------|-------------
+| `sqrt_each (list)`         | square root
+| `ln_each (list)`           | natural logarithm
+| `log_each (list)`          | logarithm with base 10
+| `exp_each (list)`          | natural exponent
+| `pow_each (list1,list2) `  | power `list1[*] ^ list2[*]`
+| `sin_each (list)`          | sine function
+| `cos_each (list)`          | cosine
+| `tan_each (list)`          | tangent
+| `asin_each (list)`         | arcus sine
+| `acos_each (list)`         | arcus cosine
+| `atan_each (list)`         | arcus tangent
+| `atan2_each (list1,list2)` | 2-argument arcus tangent
+| `floor_each (list)`        | floor function
+| `ceil_each (list)`         | ceiling function
+| `round_each (list)`        | rounding function
+| `abs_each (list)`          | absolute values
 
 ### Extra functions [^][contents]
-- `multiply_each (list1,list2)` - multiply each value `list1[*] * list2[*]`
-- `divide_each (list1, list2)`  - divide each value `list1[*] / list2[*]`
-- `reciprocal_each (list)`      - reciprocate each value `1 / list[*]`
-- `sqr_each (list)`             - square each value `list[*] ^ 2`
-- `sum_each_next (list)`        - every next value contains the summation of all previous values in list
+
+| function                      | description
+|-------------------------------|-------------
+| `fn_each (list, fn)`          | call a function literal `fn` with one argument with every entry in a list
+| `fn_2_each (list1,list2, fn)` | call a function literal `fn` with two arguments with every entries from the same position in `list1` and `list2`
+| `multiply_each (list1,list2)` | multiply each value `list1[*] * list2[*]`
+| `divide_each (list1, list2)`  | divide each value `list1[*] / list2[*]`
+| `reciprocal_each (list)`      | reciprocate each value `1 / list[*]`
+| `sqr_each (list)`             | square each value `list[*] ^ 2`
+| `norm_each (list)`            | calculate the norm of a vector in every entry in a list
+| `sum_each_next (list)`        | every next value contains the summation of all previous values in list
 
 
 Calculating mean [^][contents]

@@ -92,6 +92,14 @@ Calculate the triple productof three 3-dimensional vectors `a`, `b` and `c`.
 Return the (signed) volume of the parallelepiped defined by the three vectors given.\
 [=> Wikipedia - Triple product](https://en.wikipedia.org/wiki/Triple_product)
 
+#### `cross_universal (list)` [^][contents]
+[cross_universal]: #cross_universal-list-
+Calculate the cross product for n dimensional vector in a list of n-1 vectors.\
+Characteristic in this version:
+- it uses the right hand rule in every dimension
+- if will set in order the n-1 unit vector,
+  then the last missing unit vector will be the result
+
 
 Matrix operations [^][contents]
 -------------------------------
@@ -138,6 +146,7 @@ The identity matrix of size `n` is the n × n square matrix with ones on the mai
 #### `determinant (m)` [^][contents]
 [determinant]: #determinant-m-
 Return the determinant of a n × n matrix `m`.
+The entries in matrix `m` accept numeric values and vectors.
 Short name: `det (m)`\
 [=> Wikipedia - Determinant](https://en.wikipedia.org/wiki/Determinant)
 

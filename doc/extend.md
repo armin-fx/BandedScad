@@ -1,5 +1,4 @@
-﻿
-Control the level of detail of a mesh
+﻿Control the level of detail of a mesh
 =====================================
 
 ### defined in file

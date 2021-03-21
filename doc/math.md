@@ -16,7 +16,8 @@ Math functions
 [contents]: #contents "Up to Contents"
 - [Complex numbers ->][complex]
 - [Matrix and vector operations ->][matrix]
-- [More math functions](#more-math-functions-)
+
+- [More math functions][math]
   - [Test and restrict](#test-and-restrict-)
     - [`constrain()`][constrain]
     - [`constrain_bidirectional()`][constrain_bi]
@@ -61,6 +62,7 @@ Math functions
 
 [complex]: complex.md
 [matrix]:  matrix.md
+[math]:    #more-math-functions-
 
 
 More math functions [^][contents]
