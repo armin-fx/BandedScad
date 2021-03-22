@@ -17,6 +17,11 @@ use <banded/list_algorithmus.scad>
 
 // Gibt die Einheitsmatrix zurück in der Dimension n*n
 function identity_matrix (n) =
+	// die wichtigsten Einheitsmatritzen vordefiniert
+	n==4 ? [[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]] :
+	n==3 ? [[1,0,0],[0,1,0],[0,0,1]] :
+	n==2 ? [[1,0],[0,1]] :
+	// Den Rest ausrechnen
 	(!is_num(n)) ? undef :
 	(n<1)        ? undef :
 	[ for (i=[0:n-1])
@@ -24,14 +29,6 @@ function identity_matrix (n) =
 	(j==i) ? 1 : 0
 	] ]
 ;
-// die wichtigsten Einheitsmatritzen vordefiniert
-identity_matrix = [
-	identity_matrix(0),
-	identity_matrix(1),
-	identity_matrix(2),
-	identity_matrix(3),
-	identity_matrix(4)
-];
 
 
 // Determinante berechnen

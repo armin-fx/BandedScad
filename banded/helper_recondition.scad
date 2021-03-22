@@ -7,10 +7,20 @@ use <banded/helper_native.scad>
 use <banded/math_matrix.scad>
 
 function repair_matrix_3d (m) =
-	fill_matrix_with (m, identity_matrix(4))
+	m[0][0]==undef ? identity_matrix(4) :
+	len(m[0])==4 ?
+		len(m)==4 ? m :
+		len(m)==3 ? concat (m,[0,0,0,1]) :
+		fill_matrix_with (m, identity_matrix(4)) :
+	fill_matrix_with     (m, identity_matrix(4))
 ;
 function repair_matrix_2d (m) =
-	fill_matrix_with (m, identity_matrix(3))
+	m[0][0]==undef ? identity_matrix(3) :
+	len(m[0])==3 ?
+		len(m)==3 ? m :
+		len(m)==2 ? concat (m,[0,0,1]) :
+		fill_matrix_with (m, identity_matrix(3)) :
+	fill_matrix_with     (m, identity_matrix(3))
 ;
 
 function fill_matrix_with (m, c) =
@@ -198,18 +208,20 @@ function parameter_numlist (dimension, value, preset, fill) =
 //   angle_std - Standartangabe des Winkels, wenn angle nicht gesetzt wurde
 //               (Standart = [360, 0])
 function parameter_angle (angle, angle_std) =
-	(is_num (angle))                  ? [angle   , 0] :
-	(is_list(angle) && len(angle)==2) ? angle         :
-	(is_list(angle) && len(angle)==1) ? [angle[0], 0] :
-	(is_list(angle) && len(angle) >2) ? [angle[0], angle[1]] :
-	parameter_angle (angle_std, [360,0])
+	(is_num (angle))  ? [angle   , 0] :
+	is_list(angle) ?
+		len(angle)==2 ? angle         :
+		len(angle)==1 ? [angle[0], 0] :
+		len(angle) >2 ? [angle[0], angle[1]] :
+		parameter_angle (angle_std, [360,0]) :
+	parameter_angle     (angle_std, [360,0])
 ;
 
 function parameter_mirror_vector_2d (v, v_std=[1,0]) =
-	(is_list(v) && len(v)>=2) ? v : v_std
+	(v!=undef && len(v)>=2) ? v : v_std
 ;
 function parameter_mirror_vector_3d (v, v_std=[1,0,0]) =
-	 !is_list(v) ? v_std
+	 v!=undef ? v_std
 	:len(v)>=3   ? v
 	:len(v)==2   ? [v[0],v[1],0]
 	:v_std

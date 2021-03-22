@@ -403,6 +403,17 @@ Works like `multmatrix()`.
   - 3D: 4x3 or 4x4 matrix
   - 2D: 3x2 or 3x3 matrix
 
+#### `multmatrix_xx_point (p, m)` [^][contents]
+[multmatrix_xx_point]: multmatrix_xx_point-p-m- "multmatrix_xx_point (p, m)"
+Multiply one point in `p` with matrix `m`.
+```OpenSCAD
+multmatrix_2D_point()  // 2D version
+multmatrix_3D_point()  // 3D version
+```
+- `m`
+  - 3D: 4x4 matrix
+  - 2D: 3x3 matrix
+
 
 ### More transformation [^][contents]
 

@@ -91,7 +91,7 @@ function rotate_y_points (list, a, backwards=false) =
 // auch für 2D-Listen
 function rotate_z_points (list, a, backwards=false) =
 	!is_num(a) ? list :
-	(!is_list(list) || len(list)==0) ? list :
+	(list==undef || len(list)==0) ? list :
 	let (
 		A = !(backwards==true) ? a : -a,
 		sina  = sin(A),
@@ -141,7 +141,7 @@ function rotate_v_points (list, a, v, backwards=false) =
 //  list = Punkt-Liste
 //  v    = Vektor, in dieser Richtung wird gespiegelt
 function mirror_points (list, v) =
-	(!is_list(list) || !is_list(list[0])) ? undef
+	(list==undef || list[0]==undef) ? undef
 	:len(list[0])==3 ? multmatrix_points (list, matrix_mirror_3d (v))
 	:len(list[0])==2 ? multmatrix_points (list, matrix_mirror_2d (v))
 	:len(list[0])==1 ? -list
@@ -151,20 +151,22 @@ function mirror_points (list, v) =
 function mirror_2d_points (list, v) =
 	let (
 		V = parameter_mirror_vector_2d(v),
-		angle = atan2(V.y,V.x)
+		angle = atan2(V.y,V.x),
+		list_up     = rotate_z_points (list,        angle, backwards=true),
+		list_mirror = [ for (p=list_up) [-p.x,p.y] ],
+		list_result = rotate_z_points (list_mirror, angle)
 	)
-	rotate_z_points(
-	[ for (p=rotate_backwards_z_points(list, angle)) [-p.x,p.y] ]
-	, angle)
+	list_result
 ;
 function mirror_3d_points (list, v) =
 	let (
 		V = parameter_mirror_vector_3d(v),
-		angle = atan2(V.y,V.x)
+		angle = atan2(V.y,V.x),
+		list_up     = rotate_to_vector_points (list,        V,angle, backwards=true),
+		list_mirror = [ for (p=list_up) [p.x,p.y,-p.z] ],
+		list_result = rotate_to_vector_points (list_mirror, V,angle)
 	)
-	rotate_to_vector_points(
-	[ for (p=rotate_backwards_to_vector_points(list, V,angle)) [p.x,p.y,-p.z] ]
-	, V,angle)
+	list_result
 ;
 
 // jeden Punkt in der Liste <list> an der jeweiligen Achse vergrößern
@@ -172,8 +174,8 @@ function mirror_3d_points (list, v) =
 //  list = Punkt-Liste
 //  v    = Vektor mit den Vergrößerungsfaktoren
 function scale_points (list, v) =
-	(!is_list(list) || !is_list(list[0])) ? undef :
-	(!is_list(v) || len(v)==0) ? list :
+	(list==undef || list[0]==undef) ? undef :
+	(v   ==undef || len(v) ==0)     ? list :
 	let (
 		last = len(list[0])-1,
 		scale_factor = [ for (i=[0:last]) (len(v)>i && v[i]!=0 && is_num(v[i])) ? v[i] : 1 ]
@@ -208,7 +210,7 @@ function resize_points (list, newsize) =
 //   - min_pos = Punkt am Beginn der Box
 //   - max_pos = Punkt am Ende der Box
 function get_bounding_box_points (list) =
-	(!is_list(list) || len(list)==0) ? [[0,0,0],[0,0,0]] :
+	(list==undef || len(list)==0) ? [[0,0,0],[0,0,0]] :
 	let (
 		min_pos = [ for (i=[ 0:len(list[0])-1 ]) min ([for(e=list) e[i]]) ],
 		max_pos = [ for (i=[ 0:len(list[0])-1 ]) max ([for(e=list) e[i]]) ]
@@ -221,35 +223,40 @@ function get_bounding_box_points (list) =
 //  list = Punkt-Liste
 //  m    = 4x3 oder 4x4 Matrix
 function multmatrix_points (list, m) =
-	(!is_list(list) || !is_list(list[0])) ? undef :
-	(!is_list(m)) ? list :
-	 (len(list[0]) == 3) ? multmatrix_3d_points (list, m)
-	:(len(list[0]) == 2) ? multmatrix_2d_points (list, m)
+	(list==undef || list[0]==undef) ? undef :
+	 m==undef ? list :
+	 (len(list[0]) == 3) ? multmatrix_3d_points (list, repair_matrix_3d(m))
+	:(len(list[0]) == 2) ? multmatrix_2d_points (list, repair_matrix_2d(m))
 	:undef
 ;
 
 function multmatrix_2d_points (list, m) =
-	let (M = repair_matrix_2d(m))
 	[ for (p=list)
 		let (
 			a = [ p.x,p.y, 1 ],
-			c = M * a,
+			c = m * a,
 			p_new = [ c.x,c.y ]
 		)
 		p_new
 	]
 ;
 function multmatrix_3d_points (list, m) =
-	let (M = repair_matrix_3d(m))
 	[ for (p=list)
 		let (
-			//a = [ p.x,p.y,p.z, 1 ],
-			a = concat (p, 1),
-			c = M * a,
+			a = [ p.x,p.y,p.z, 1 ],
+			c = m * a,
 			p_new = [ c.x,c.y,c.z ]
 		)
 		p_new
 	]
+;
+function multmatrix_2d_point (p, m) =
+	let ( v = m * [ p.x,p.y, 1 ] )
+	[v.x,v.y]
+;
+function multmatrix_3d_point (p, m) =
+	let ( v = m * [ p.x,p.y,p.z, 1 ] )
+	[v.x,v.y,v.z]
 ;
 
 // jeden Punkt in der Liste <list> auf die xy-Ebene projizieren
@@ -259,9 +266,7 @@ function multmatrix_3d_points (list, m) =
 //  plane = true  = eine 2D-Liste machen - Standart
 //          false = 3D-Liste behalten, alle Punkte auf xy-Ebene
 function projection_points (list, plane) =
-	let (Plane=is_bool(plane) ? plane : true)
-	//
-	Plane==true ? [ for (p=list) [p.x,p.y]   ]
-	:             [ for (p=list) [p.x,p.y,0] ]
+	plane==false ? [ for (p=list) [p.x,p.y,0] ]
+	:              [ for (p=list) [p.x,p.y]   ]
 ;
 
