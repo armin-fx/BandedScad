@@ -108,7 +108,7 @@ function taylor_auto_intern (fn, x, n, k, value, value_old) =
 ;
 function taylor_auto_intern_select (fn, x, n, k, value, value_old) =
 	(k>n || value==value_old) ? value :
-	taylor_auto_intern (fn, x, n, k+1,
+	taylor_auto_intern_select (fn, x, n, k+1,
 		value + select_function(fn, x, k),
 		value
 	)

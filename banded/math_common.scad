@@ -137,9 +137,15 @@ function si   (x) = (x==0) ? 1 : sin(x*degree_per_radian) / x;
 // normierter Kardinalsinus
 function sinc (x) = si(PI*x);
 // Integralsinus (arbeitet nur bis x<32)
-function Si (x) = taylor_auto(Si_taylor_index, x, n=100);
+function Si (x) = Si_taylor_auto(x);
 function Si_taylor_index(x, n) = let (term=2*n+1) positiv_if_even(n) * pow(x, term) / (factorial(term) * term);
-Si_taylor_index = "Si_taylor_index";
+function Si_taylor_auto (x, n=60, k=0, value=0, value_old) =
+	(k>n || value==value_old) ? value :
+	Si_taylor_auto (x, n, k+1,
+		value + Si_taylor_index(x, k),
+		value
+	)
+;
 
 
 // Funktionen mit ganze Zahlen:
