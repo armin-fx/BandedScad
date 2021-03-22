@@ -21,11 +21,22 @@ Matrix and vector operations
     - [`unit_vector()`][unit_vector]
     - [`angle_vector()`][angle_vector]
     - [`rotation_vector()`][rotation_vector]
+    - [`rotation_around_vector()`][rotation_around_vector]
+    - [`rotation_around_line()`][rotation_around_line]
+    - [`triple_product()`][triple_product]
+    - [`cross_universal()`][cross_universal]
 - [Matrix operations][matrix]
   - [Buildin matrix operations in OpenSCAD][matrix_buildin]
     - [Matrix addition and subtraction][matrix_add]
     - [Matrix multiplication][matrix_mul]
   - [Defined matrix operations][matrix_defined]
+    - [`identity_matrix()`][identity_matrix]
+    - [`determinant()`][determinant]
+    - [`transpose()`][transpose]
+    - [`inverse()`][inverse]
+    - [`gauss_jordan_elimination()`][gauss_jordan_elimination]
+    - [`reduced_row_echelon_form()`][reduced_row_echelon_form]
+    - [`back_substitution()`][back_substitution]
 
 
 Vector operations [^][contents]
@@ -85,6 +96,26 @@ Return the angle from vector `v1` to `v2` in 2D plane in
 mathematical direction = counter clockwise\
 If spatial 3D vector are used, only return the minimum angle inside `v1` and `v2`.
 The 3D rotation vector can get with cross product `cross()`.
+
+#### `rotation_around_vector (v, p1, p2)` [^][contents]
+[rotation_around_vector]: #rotation_around_vector-v-p1-p2-
+Return the angle around vector `v` from points `p1` to `p2` in
+mathematical direction = counter clockwise\
+This is the angle you see if you show into the vector `v` from the upper side,
+from point `p1` to `p2`.
+`v`  - vector, line defined from origin to this point
+`p1` - first vector, rotate begin
+`p2` - second vector, rotate end
+
+#### `rotation_around_line (line, p1, p2)` [^][contents]
+[rotation_around_line]: #rotation_around_line-line-p1-p2-
+Return the angle around a line from points `p1` to `p2` in
+mathematical direction = counter clockwise\
+This is the angle you see if you show into the line from the upper side,
+from point `p1` to `p2`.
+`line` - 2 point list, line defined from first point to second point
+`p1`   - first vector, rotate begin
+`p2`   - second vector, rotate end
 
 #### `triple_product (a, b, c)` [^][contents]
 [triple_product]: #triple_product-a-b-c-
