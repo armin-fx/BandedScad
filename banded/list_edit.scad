@@ -270,9 +270,13 @@ function binary_search_list_intern (list, value, type, begin, end) =
 //            standartmäßig wird der erste gefundene Schlüssel genommen (index=0)
 function find_first_list (list, value, index=0, type=0) =
 	list==undef ? 0 :
-	 type==0    ? find_first_list_intern_direct (list, value, index)
-	:type[0]>=0 ? find_first_list_intern_list   (list, value, index, type[0])
-	:             find_first_list_intern_type   (list, value, index, type)
+	index==0 ? find_first_once_list (list, value, type) :
+	//
+	 type==0     ? find_first_list_intern_direct   (list, value, index)
+	:type[0]>=0  ? find_first_list_intern_list     (list, value, index, type[0])
+	:type[0]==-1 ? let( fn=type[1] )
+	               find_first_list_intern_function (list, value, index, fn)
+	:              find_first_list_intern_type     (list, value, index, type)
 ;
 function find_first_list_intern_direct (list, value, index=0, n=0) =
 	(list[n]==undef) ? len(list)
@@ -288,12 +292,45 @@ function find_first_list_intern_list (list, value, index=0, position=0, n=0) =
 		:	find_first_list_intern_list (list, value, index-1, position, n+1)
 	:		find_first_list_intern_list (list, value, index,   position, n+1)
 ;
+function find_first_list_intern_function (list, value, index=0, fn, n=-2) =
+	(list[n]==undef) ? len(list)
+	:(fn(list[n])==value) ?
+		(index==0) ? n
+		:	find_first_list_intern_function (list, value, index-1, fn, n+1)
+	:		find_first_list_intern_function (list, value, index,   fn, n+1)
+;
 function find_first_list_intern_type (list, value, index=0, type, n=0) =
 	(list[n]==undef) ? len(list)
 	:(get_value(list[n],type)==value) ?
 		(index==0) ? n
 		:	find_first_list_intern_type (list, value, index-1, type, n+1)
 	:		find_first_list_intern_type (list, value, index,   type, n+1)
+;
+//
+// sucht nach dem ersten Auftreten eines Wertes und gibt die Position des Treffers aus einer Liste heraus
+function find_first_once_list (list, value, type=0) =
+	list==undef ? 0 :
+	 type==0     ? find_first_once_list_intern_direct (list, value)
+	:type[0]>=0  ? find_first_once_list_intern_list   (list, value, type[0])
+	:type[0]==-1 ? let( fn=type[1] )
+	               find_first_once_list_intern_type   (list, value, fn)
+	:              find_first_once_list_intern_type   (list, value, type)
+;
+function find_first_once_list_intern_direct   (list, value, n=0) =
+	(n<0) || (list[n]                ==value) ? n :
+	find_first_once_list_intern_direct        (list, value, n+1)
+;
+function find_first_once_list_intern_list     (list, value, position, n=0) =
+	(n<0) || (list[n][position]      ==value) ? n :
+	find_first_once_list_intern_list          (list, value, position, n+1)
+;
+function find_first_once_list_intern_function (list, value, fn, n=0) =
+	(n<0) || (fn(list[n])            ==value) ? n :
+	find_first_once_list_intern_function      (list, value, fn, n+1)
+;
+function find_first_once_list_intern_type     (list, value, type, n=0) =
+	(n<0) || (get_value(list[n],type)==value) ? n :
+	find_first_once_list_intern_type          (list, value, type, n+1)
 ;
 
 // sucht nach einem Wert und gibt die Position des Treffers aus einer Liste heraus
@@ -306,9 +343,13 @@ function find_first_list_intern_type (list, value, index=0, type, n=0) =
 //            standartmäßig wird der erste vom Ende aus gefundene Schlüssel genommen (index=0)
 function find_last_list (list, value, index=0, type=0) =
 	list==undef ? -1 :
-	 type==0    ? find_last_list_intern_direct (list, value, index,          n=len(list)-1)
-	:type[0]>=0 ? find_last_list_intern_list   (list, value, index, type[0], n=len(list)-1)
-	:             find_last_list_intern_type   (list, value, index, type,    n=len(list)-1)
+	index==0 ? find_last_once_list (list, value, type) :
+	//
+	 type==0     ? find_last_list_intern_direct   (list, value, index,          n=len(list)-1)
+	:type[0]>=0  ? find_last_list_intern_list     (list, value, index, type[0], n=len(list)-1)
+	:type[0]==-1 ? let( fn=type[1] )
+	               find_last_list_intern_function (list, value, index, fn,      n=len(list)-1)
+	:              find_last_list_intern_type     (list, value, index, type,    n=len(list)-1)
 ;
 function find_last_list_intern_direct (list, value, index=0, n=-2) =
 	(n<0) ? n
@@ -324,12 +365,45 @@ function find_last_list_intern_list (list, value, index=0, position=0, n=-2) =
 		:	find_last_list_intern_list (list, value, index-1, position, n-1)
 	:		find_last_list_intern_list (list, value, index,   position, n-1)
 ;
+function find_last_list_intern_function (list, value, index=0, fn, n=-2) =
+	(n<0) ? n
+	:(fn(list[n])==value) ?
+		(index==0) ? n
+		:	find_last_list_intern_function (list, value, index-1, fn, n-1)
+	:		find_last_list_intern_function (list, value, index,   fn, n-1)
+;
 function find_last_list_intern_type (list, value, index=0, type, n=-2) =
 	(n<0) ? n
 	:(get_value(list[n],type)==value) ?
 		(index==0) ? n
 		:	find_last_list_intern_type (list, value, index-1, type, n-1)
 	:		find_last_list_intern_type (list, value, index,   type, n-1)
+;
+//
+// sucht nach dem ersten Auftreten eines Wertes und gibt die Position des Treffers aus einer Liste heraus
+function find_last_once_list (list, value, type=0) =
+	list==undef ? -1 :
+	 type==0     ? find_last_once_list_intern_direct (list, value,          n=len(list)-1)
+	:type[0]>=0  ? find_last_once_list_intern_list   (list, value, type[0], n=len(list)-1)
+	:type[0]==-1 ? let( fn=type[1] )
+	               find_last_once_list_intern_type   (list, value, fn,      n=len(list)-1)
+	:              find_last_once_list_intern_type   (list, value, type,    n=len(list)-1)
+;
+function find_last_once_list_intern_direct   (list, value, n=-2) =
+	(n<0) || (list[n]                ==value) ? n :
+	find_last_once_list_intern_direct        (list, value, n-1)
+;
+function find_last_once_list_intern_list     (list, value, position, n=-2) =
+	(n<0) || (list[n][position]      ==value) ? n :
+	find_last_once_list_intern_list          (list, value, position, n-1)
+;
+function find_last_once_list_intern_function (list, value, fn, n=-2) =
+	(n<0) || (fn(list[n])            ==value) ? n :
+	find_last_once_list_intern_function      (list, value, fn, n-1)
+;
+function find_last_once_list_intern_type     (list, value, type, n=-2) =
+	(n<0) || (get_value(list[n],type)==value) ? n :
+	find_last_once_list_intern_type          (list, value, type, n-1)
 ;
 
 // Zählt das Vorkommen eines Wertes in der Liste
@@ -345,9 +419,22 @@ function find_last_list_intern_type (list, value, index=0, type, n=-2) =
 function count_list        (list, value, type=0, begin, last, count, range) =
 	list==undef ? 0 :
 	let (Range = parameter_range_safe (list, begin, last, count, range))
-	 type==0    ? count_list_intern_direct (list, value,          Range[0], Range[1])
-	:type[0]>=0 ? count_list_intern_list   (list, value, type[0], Range[0], Range[1])
-	:             count_list_intern_type   (list, value, type,    Range[0], Range[1])
+	count_list_intern      (list, value, type, Range[0], Range[1])
+;
+// Zähle alles durch von Position n nach k
+function count_list_intern (list, value, type=0, n=0, k=-1) =
+	n>k ? 0 :
+	 type==0     ? len([for(i=[n:1:k]) if (list[i]                ==value) 0])
+	:type[0]>=0  ? len([for(i=[n:1:k]) if (list[i][type[0]]       ==value) 0])
+	:type[0]==-1 ? let( fn=type[1] )
+	               len([for(i=[n:1:k]) if (fn(list[i])            ==value) 0])
+	:              len([for(i=[n:1:k]) if (get_value(list[i],type)==value) 0])
+;
+function count_list_intern_old (list, value, type=0, n=0, k=-1, count=0) =
+	 type==0    ?  count_list_intern_direct   (list, value,          n, k)
+	:type[0]>=0 ?  count_list_intern_list     (list, value, type[0], n, k)
+	:type[0]==-1 ? count_list_intern_function (list, value, type,    n, k)
+	:              count_list_intern_type     (list, value, type,    n, k)
 ;
 function count_list_intern_direct (list, value, n=0, k=-1, count=0) =
 	n>k ? count :
@@ -361,6 +448,13 @@ function count_list_intern_list (list, value, position=0, n=0, k=-1, count=0) =
 	count_list_intern_list (list, value, position
 		, n+1, k,
 		, count + ( list[n][position]==value ? 1 : 0 )
+	)
+;
+function count_list_intern_function (list, value, fn, n=0, k=-1, count=0) =
+	n>k ? count :
+	count_list_intern_function (list, value, fn
+		, n+1, k,
+		, count + ( fn(list[n])==value ? 1 : 0 )
 	)
 ;
 function count_list_intern_type (list, value, type, n=0, k=-1, count=0) =
@@ -420,6 +514,17 @@ function remove_value_list (list, value, type=0) =
 	:type[0]==-1 ? let( fn=type[1] )
 	               [ for (e=list) if (fn(e)!=value)             e ]
 	:              [ for (e=list) if (get_value(e,type)!=value) e ]
+;
+
+// Entfernt alle Vorkommen von Werten aus einer Liste
+function remove_values_list (list, value_list, type=0) =
+	list==undef || len(list)==0 ? list :
+	value_list==undef || len(value_list)==0 ? list :
+	 type==0     ? [ for (e=list)                             if ( len([for(value=value_list) if (e ==value) 0]) == 0 ) e ]
+	:type[0]>=0  ? [ for (e=list) let(ev = e[type[0]])        if ( len([for(value=value_list) if (ev==value) 0]) == 0 ) e ]
+	:type[0]==-1 ? let( fn=type[1] )
+	               [ for (e=list) let(ev = fn(e))             if ( len([for(value=value_list) if (ev==value) 0]) == 0 ) e ]
+	:              [ for (e=list) let(ev = get_value(e,type)) if ( len([for(value=value_list) if (ev==value) 0]) == 0 ) e ]
 ;
 
 

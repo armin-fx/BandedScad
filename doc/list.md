@@ -15,15 +15,15 @@ Functions for working with lists
 [contents]: #contents "Up to Contents"
 - [Editing lists](#editing-lists-)
   - [Repeating options](#repeating-options-)
-  - [Independent from the data](#edit-list-independent-from-the-data-)
-  - [Type of data][type]
+  - [Different type of data][type]
   - [List functions with specified `type`](#list-functions-with-specified-type-)
-  - [Use data in list](#use-data-in-list-)
+  - [Edit list independent from the data](#edit-list-independent-from-the-data-)
+  - [Edit list with use of data](#edit-list-with-use-of-data-)
   - [Pair functions](#pair-functions-)
 - [Algorithm on lists](#algorithm-on-lists-)
 - [Math on lists](#math-on-lists-)
   - [Integrated in Openscad](#integrated-in-openscad-)
-  - [Operand with functions from OpenScad](#operand-with-functions-from-openscad-)
+  - [Operand with functions from OpenSCAD](#operand-with-functions-from-openscad-)
   - [Extra functions](#extra-functions-)
 - [Calculating mean](#calculating-mean-)
   - [List of mean functions](#list-of-mean-functions-)
@@ -47,7 +47,7 @@ Editing lists [^][contents]
     after the last element, -2 is the last element
 - `type`
   - Specify how the data from an element in a list will be used.
-  - [see entry - Type of Data][type]
+  - [see entry - Different type of data][type]
 - `value` - nothing to say, value used for
 - `'range_args'`
   - Contain a set of arguments which defines a range in a list. Choose which you need.
@@ -56,6 +56,67 @@ Editing lists [^][contents]
     - `last`  - last element
     - `count` - count of elements
     - `range` - a list with: `[begin, last]`
+
+
+### Different type of data [^][contents]
+[type]: #different-type-of-data-
+Define helper functions for type-dependent access to the content of lists.\
+These can used to create one functions with the same access on different data.
+The data access can be switched with the argument `type`.
+
+#### Internal type identifier convention [^][contents]
+
+| value        | description
+|--------------|-------------
+| `0`          | uses the element as value, standard if `type` not set
+| `[position]` | uses the element from the position from a list, (position = `type[0]` -> `[ 0 1 2 ... ]`)
+| `[-1, fn]`   | call function literal `fn`, or call direct defined function `fn()` if `fn` is set undef
+
+#### Set type identifier of data [^][contents]
+This will set the type identifier which will control the data access
+in list edit functions.
+
+| function                       | description
+|--------------------------------|-------------
+| `set_type_direct   ()`         | uses the data direct
+| `set_type_list     (position)` | uses the data as list and uses the value at `position`
+| `set_type_function (fn)`       | call a function literal `fn` with the data as argument, this return the value.<br /> If fn is `undef`, then it calls a defined extern function `fn()`
+| `set_type          (argument)` | generalized function, set the type dependent of the argument
+
+#### Test of type identifier [^][contents]
+Return `true` if it fits.
+
+| test function             | description
+|---------------------------|-------------
+| `is_type_direct   (type)` | is it for data direct use?
+| `is_type_list     (type)` | is it for use with data as list?
+| `is_type_function (type)` | is it to call a function?
+| `is_type_unknown  (type)` | nothing known?
+
+#### Info from type identifier [^][contents]
+Get the information from type identifier which are needed to read the data.
+
+| function                   | description
+|----------------------------|-------------
+| `get_position_type (type)` | get the position in a list as data
+| `get_function_type (type)` | get the function literal `fn`
+
+#### Get data with type identifier [^][contents]
+
+| function                  | description
+|---------------------------|-------------
+| `get_value  (data, type)` | return the value from the `data` element with specified `type`
+| `value_list (list, type)` | return a list with only values from specified `type`
+
+
+### List functions with specified `type` [^][contents]
+
+| function                    | description
+|-----------------------------|-------------
+| `min_list     (list, type)` | get the minimum value from a list with specified `type`
+| `max_list     (list, type)` | get the maximum value from a list with specified `type`
+| `min_position (list, type)` | get the position of minimum value in a list
+| `max_position (list, type)` | get the position of maximum value in a list
 
 
 ### Edit list independent from the data [^][contents]
@@ -93,72 +154,7 @@ Extract a sequence from a list
 Makes a list with `count` elements filled with `value`
 
 
-### Type of data [^][contents]
-[type]: #type-of-data-
-Define helper functions for type-dependent access to the content of lists.\
-These can used to create one functions with the same access on different data.
-The data access can be switched with the argument `type`.
-
-#### Internal type identifier convention [^][contents]
-
-| value        | description
-|--------------|-------------
-| `0`          | uses the element as value, standard if `type` not set
-| `[position]` | uses the element from the position from a list, (position = `type[0]` -> `[ 0 1 2 ... ]`)
-| `[-1, fn]`   | call function literal fn, or call direct defined function fn() if `fn` set undef
-
-#### Set type identifier of data [^][contents]
-This will set the type identifier which will control the data access
-in list edit functions.
-
-| function                     | description
-|------------------------------|-------------
-| set_type_direct   ()         | uses the data direct
-| set_type_list     (position) | uses the data as list and uses the value at `position`
-| set_type_function (fn)       | call a function literal `fn` with the data as argument, this return the value.<br /> If fn is `undef`, then it calls a defined extern function fn()
-| set_type          (argument) | generalized function, set the type dependent of the argument
-
-#### Test of type identifier [^][contents]
-Return `true` if it fits.
-
-| test function           | description
-|-------------------------|-------------
-| is_type_direct   (type) | is it for data direct use?
-| is_type_list     (type) | is it for use with data as list?
-| is_type_function (type) | is it to call a function?
-| is_type_unknown  (type) | nothing of all?
-
-#### Info from type identifier [^][contents]
-Get the information from type identifier which are needed to read the data.
-
-| function                 | description
-|--------------------------|-------------
-| get_position_type (type) | get the position in a list as data
-| get_function_type (type) | get the function literal `fn`
-
-
-### List functions with specified `type` [^][contents]
-
-#### `get_value (data, type)` [^][contents]
-return the value from the `data` element with specified `type`
-
-#### `value_list (list, type)` [^][contents]
-return a list with only values from specified `type`
-
-#### `min_list (list, type)` [^][contents]
-get the minimum value from a list with specified `type`
-
-#### `max_list (list, type)` [^][contents]
-get the maximum value from a list with specified `type`
-
-#### `min_position (list, type)` [^][contents]
-get the position of minimum value in a list
-
-#### `max_position (list, type)` [^][contents]
-get the position of maximum value in a list
-
-
-### Use data in list [^][contents]
+### Edit list with use of data [^][contents]
 
 #### `sort_list (list, type)` [^][contents]
 Sort a list with a stable sort algorithm
@@ -170,18 +166,32 @@ Merge 2 sorted lists into one list
 Search a value in a sorted list
 
 #### `find_first_list (list, value, index, type)` [^][contents]
+[find_first_list]: #find_first_list-list-value-index-type-
 Search at a value in a list and returns the position.\
 Returns the size of list if nothing was found.
 - `index`
   - Same values are skipped `index` times
   - Standard = get first hit, `index` = 0
 
+#### `find_first_once_list (list, value, index, type)` [^][contents]
+Search at a value in a list and returns the position.\
+Returns the size of list if nothing was found.\
+Like [`find_first_list()`][find_first_list],
+but return always the position of the first hit.
+
 #### `find_last_list (list, value, index, type)` [^][contents]
+[find_last_list]: #find_last_list-list-value-index-type-
 Search at a value in a list backwards from the end to first value and returns the position.\
 Returns -1 if nothing was found.
 - `index`
   - Same values are skipped `index` times
   - Standard = get first hit, `index` = 0
+
+#### `find_last_once_list (list, value, index, type)` [^][contents]
+Search at a value in a list backwards from the end to first value and returns the position.\
+Returns -1 if nothing was found.\
+Like [`find_last_list()`][find_last_list],
+but return always the position of the first hit.
 
 #### `count_list (list, value, type, 'range_args')` [^][contents]
 Count how often a value is in list
@@ -192,6 +202,9 @@ Remove every duplicate in a list, so a value exists only once
 
 #### `remove_value_list (list, value, type)` [^][contents]
 Remove every entry with a given value in a list
+
+#### `remove_values_list (list, value, type)` [^][contents]
+Remove every entry with a given list of values in a list
 
 
 ### Pair functions [^][contents]
@@ -250,7 +263,7 @@ Returns a list with the result.
 `[6,7,8] - [1,2,3]` -> `[5,5,5]`
 
 
-### Operand with functions from OpenScad [^][contents]
+### Operand with functions from OpenSCAD [^][contents]
 
 | function                   | description
 |----------------------------|-------------
@@ -345,7 +358,7 @@ Options:
     (25% from begin and 25% from end)
 
 Sample:
-```OpenScad
+```OpenSCAD
 include <banded.scad>
 
 data  = [1,9,4,2,15];

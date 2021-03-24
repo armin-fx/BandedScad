@@ -1,9 +1,8 @@
-
 BandedScad
 ==========
 
-BandedScad is a OpenScad library.
-It contains functions and modules to make OpenScad easier to use.
+BandedScad is an OpenSCAD library.
+It contains functions and modules to make OpenSCAD easier to use.
 
 ### Contents
 [contents]: #contents "Up to Contents"
@@ -12,7 +11,7 @@ It contains functions and modules to make OpenScad easier to use.
 [Use](#use-)
 
 
-What is does [^][contents]
+What it does [^][contents]
 --------------------------
 
 - [More control of the level of detail for a mesh][extend],
@@ -21,7 +20,7 @@ What is does [^][contents]
   - Create [curves][curves] in a point list with functions.
     These can load with `polygon()`
   - [Transform][transform] objects in a point list with affine transformations.
-    Like transformation operator in OpenScad for object modules.
+    Like transformation operator in OpenSCAD for object modules.
   - Contains functions for working with [multmatrix][multmatrix]
 - Contains some functions for [edit and work with lists][list]
 - Contains some [math][math] and helper functions
@@ -50,7 +49,7 @@ Installation [^][contents]
 You must extract archive and copy 'banded.scad' and folder 'banded/' into a directory
 and now you can use it here.
   
-Or you can copy this into the library folder from OpenScad for global use.
+Or you can copy this into the library folder from OpenSCAD for global use.
 The path for this directory depends on your system:
 
 | OS       | Path
@@ -59,7 +58,7 @@ The path for this directory depends on your system:
 | Linux:   | $HOME/.local/share/OpenSCAD/libraries
 | MacOS:   | $HOME/Documents/OpenSCAD/libraries
 
-You can reach this from OpenScad menu File->Show Library Folder.
+You can reach this from OpenSCAD menu File->Show Library Folder.
 
 
 Use [^][contents]
@@ -84,9 +83,17 @@ use <banded/ ??? .scad>
 include <banded/constants.scad>
 ```
 
-### Compatibility [^][contents]
 
-If you want to use some new buildin functions from OpenScad in older OpenScad version
+### To consider [^][contents]
+
+This library is designed for OpenSCAD version 2021.01.\
+It can used with OpenSCAD version 2019.05 or above but without new language features.\
+OpenSCAD can be downloaded from <https://www.openscad.org/>.
+
+
+### Compatibility files [^][contents]
+
+If you want to use some new buildin functions from OpenSCAD in older OpenSCAD version
 you can include file 'compatibility_???.scad'.
 
 #### For OpenSCAD version 2015.03
