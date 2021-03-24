@@ -14,7 +14,9 @@ Overview of scad files
 ` `|\
 ` `+--> [`banded/list.scad`](list.md "Functions for work with lists")\
 ` `| . . . +--> [`banded/list_edit.scad`](list.md#editing-lists- "Editing lists")\
-` `| . . . +--> [`banded/list_edit_type.scad`](list.md#type-of-data- "Type-dependent access to the content of lists")\
+` `| . . . | . . . . +--> [`banded/list_edit_type.scad`](list.md#different-type-of-data- "Type-dependent access to the content of lists")\
+` `| . . . | . . . . +--> [`banded/list_edit_item.scad`](list.md#edit-list-independent-from-the-data- "Edit list independent from the data")\
+` `| . . . | . . . . +--> [`banded/list_edit_data.scad`](list.md#edit-list-with-use-of-data- "Edit list with use of data, type-dependent")\
 ` `| . . . +--> [`banded/list_algorithmus.scad`](list.md#algorithm-on-lists- "Algorithm on lists")\
 ` `| . . . +--> [`banded/list_math.scad`](list.md#math-on-lists- "Math on lists")\
 ` `| . . . +--> [`banded/list_mean.scad`](list.md#calculating-mean- "Calculating mean")\
@@ -35,10 +37,10 @@ Overview of scad files
 ` `+--> [`banded/draft.scad`](draft.md "Draft objects in a point list")\
 ` `| . . . +--> [`banded/draft_curves.scad`](draft.md#curves- "Creates curves in a list")\
 ` `| . . . +--> [`banded/draft_multmatrix.scad`](draft.md#multmatrix- "Multmatrix functions")\
-` `| . . . | . . . . +--> [`banded/draft_multmatrix_basic.scad`](draft.md#basic-multmatrix-functions- "Generate matrix like OpenScad buildin affine transformation")\
+` `| . . . | . . . . +--> [`banded/draft_multmatrix_basic.scad`](draft.md#basic-multmatrix-functions- "Generate matrix like OpenSCAD buildin affine transformation")\
 ` `| . . . | . . . . +--> [`banded/draft_multmatrix_common.scad`](draft.md#more-multmatrix-functions- "Generate matrix for more affine transformations")\
 ` `| . . . +--> [`banded/draft_transform.scad`](draft.md#transform-functions- "Transform functions on point lists for affine transformations")\
-` `| . . . | . . . . +--> [`banded/draft_transform_basic.scad`](draft.md#basic-multmatrix-functions- "OpenScad buildin transformation on point lists")\
+` `| . . . | . . . . +--> [`banded/draft_transform_basic.scad`](draft.md#basic-multmatrix-functions- "OpenSCAD buildin transformation on point lists")\
 ` `| . . . | . . . . +--> [`banded/draft_transform_common.scad`](draft.md#more-multmatrix-functions- "More functions for affine transformations on point lists")\
 ` `|\
 ` `+--> `banded/object.scad`\

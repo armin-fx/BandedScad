@@ -5,6 +5,9 @@ Functions for working with lists
 `banded/list.scad`\
 ` `| \
 ` `+--> `banded/list_edit.scad`\
+` `| . . . +--> `banded/list_edit_type.scad`\
+` `| . . . +--> `banded/list_edit_item.scad`\
+` `| . . . +--> `banded/list_edit_data.scad`\
 ` `+--> `banded/list_algorithm.scad`\
 ` `+--> `banded/list_math.scad`\
 ` `+--> `banded/list_mean.scad`
@@ -17,8 +20,8 @@ Functions for working with lists
   - [Repeating options](#repeating-options-)
   - [Different type of data][type]
   - [List functions with specified `type`](#list-functions-with-specified-type-)
-  - [Edit list independent from the data](#edit-list-independent-from-the-data-)
-  - [Edit list with use of data](#edit-list-with-use-of-data-)
+  - [Edit list independent from the data][list_edit_item]
+  - [Edit list with use of data][list_edit_data]
   - [Pair functions](#pair-functions-)
 - [Algorithm on lists](#algorithm-on-lists-)
 - [Math on lists](#math-on-lists-)
@@ -120,6 +123,7 @@ Get the information from type identifier which are needed to read the data.
 
 
 ### Edit list independent from the data [^][contents]
+[list_edit_item]: #edit-list-independent-from-the-data-
 
 #### `concat_list (list)` [^][contents]
 Binds lists in a list together.\
@@ -155,6 +159,7 @@ Makes a list with `count` elements filled with `value`
 
 
 ### Edit list with use of data [^][contents]
+[list_edit_data]: #edit-list-with-use-of-data-
 
 #### `sort_list (list, type)` [^][contents]
 Sort a list with a stable sort algorithm
