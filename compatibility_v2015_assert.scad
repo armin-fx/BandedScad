@@ -1,14 +1,13 @@
 // Copyright (c) 2020 Armin Frenzel
 // License: LGPL-2.1-or-later
 //
-// defines module assert() to keep compatibility
-// with older versions than 2019.05
-// and newer than or equal 2015.03
+// defines module assert() which are new in OpenSCAD version 2019.05
+// to keep compatibility with OpenSCAD version 2015.03
 //
-// !!! It will make an error if OpenScad version has buildin assert() !!!
+// !!! It will make an error if OpenSCAD version has buildin assert() !!!
 
 // Assert evaluates a logical expression,
-// but it can not stop the process like new real assert in OpenScad
+// but it can not stop the process like new real assert in OpenSCAD
 module assert (condition, string)
 {
 	if (! condition)

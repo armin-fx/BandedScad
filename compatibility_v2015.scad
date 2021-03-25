@@ -1,28 +1,42 @@
 // Copyright (c) 2020 Armin Frenzel
 // License: LGPL-2.1-or-later
 //
-// defines functions and modules to keep compatibility
-// with older versions than 2019.05
-// and newer than or equal 2015.03
+// defines functions and modules which are new in OpenSCAD version 2019.05
+// to keep compatibility with OpenSCAD version 2015.03
 
 if (version_num()>=20210100)
 	echo ("\nWARNING: This version of OpenSCAD don\'t need \'compatibility_v2015.scad\'\n");
 if (version_num()>=20190500 && version_num()<20210100)
 	echo ("\nWARNING: This version of OpenSCAD don\'t need \'compatibility_v2015.scad\'. Use \'compatibility_v2019.scad\' instead.\n");
 
+version_num__=version_num();
+
 // emulate new testing functions
-function is_undef  (value) = (undef==value);
+function is_undef  (value) = (value==undef);
 function is_bool   (value) = (value==true || value==false);
-//function is_num  (value) = (concat(value)!=value && value+0!=undef && value==value);
 function is_num    (value) =
-	concat(value)!=value &&
-	str(value)!=value &&
-	len(search("aut[(", str(value)))==0
+	value==undef ? false :
+	(version_num__<=20190500) ?
+	(concat(value)!=value && value+0!=undef && value==value)
+	:
+	let(v = str(value)[0])
+	v=="-" ||
+	v=="0" ||
+	v=="1" ||
+	v=="2" ||
+	v=="3" ||
+	v=="4" ||
+	v=="5" ||
+	v=="6" ||
+	v=="7" ||
+	v=="8" ||
+	v=="9" ||
+	value==1e200*1e200
 ;
 function is_list   (value) = (concat(value)==value);
 function is_string (value) = (str(value)==value);
 function is_function (value) =
-	version_num()<=20190500 ? false :
+	version_num__<=20190500 ? false :
 	let(str_value = str(value))
 	concat(value)!=value &&
 	str_value!=value &&
