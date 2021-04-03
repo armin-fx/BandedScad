@@ -48,17 +48,37 @@ function fill_list_with (list, c) =
 //     [begin, last]
 function parameter_range (list, begin, last, count, range) =
 	let(
-		Count = !is_num(count) ? undef : count<0 ? 0 : count,
-		Begin = get_position(list, get_first_good(begin,range[0],last -Count  ,range[1]-Count  , 0)),
-		Last  = get_position(list, get_first_good(last ,range[1],begin+Count-1,range[0]+Count-1,-1))
+		Count = count==undef||!is_num(count) ? undef : count<0 ? 0 : count,
+		Begin = get_position(list,
+			begin   !=undef                 ? begin :
+			range[0]!=undef                 ? range[0] :
+			last    !=undef && Count!=undef ? last-Count :
+			range[1]!=undef && Count!=undef ? range[1]-Count :
+			0 ),
+		Last  = get_position(list,
+			last    !=undef                 ? last :
+			range[1]!=undef                 ? range[1] :
+			begin   !=undef && Count!=undef ? begin+Count-1 :
+			range[0]!=undef && Count!=undef ? range[0]+Count-1 :
+			-1 )
 	)
 	[Begin, Last]
 ;
 function parameter_range_safe (list, begin, last, count, range) =
 	let(
-		Count = !is_num(count) ? undef : count<0 ? 0 : count,
-		Begin = get_position_safe(list, get_first_good(begin,range[0],last -Count  ,range[1]-Count  , 0)),
-		Last  = get_position_safe(list, get_first_good(last ,range[1],begin+Count-1,range[0]+Count-1,-1))
+		Count = count==undef||!is_num(count) ? undef : count<0 ? 0 : count,
+		Begin = get_position_safe(list,
+			begin   !=undef                 ? begin :
+			range[0]!=undef                 ? range[0] :
+			last    !=undef && Count!=undef ? last-Count :
+			range[1]!=undef && Count!=undef ? range[1]-Count :
+			0 ),
+		Last  = get_position_safe(list,
+			last    !=undef                 ? last :
+			range[1]!=undef                 ? range[1] :
+			begin   !=undef && Count!=undef ? begin+Count-1 :
+			range[0]!=undef && Count!=undef ? range[0]+Count-1 :
+			-1 )
 	)
 	[Begin, Last]
 ;
@@ -76,10 +96,10 @@ function parameter_range_safe (list, begin, last, count, range) =
 // - ohne Angabe: r1=1, r2=2
 function parameter_ring_2r (r, w, r1, r2, d, d1, d2) =
 	parameter_ring_2r_basic (
-		r =get_first_num( (is_num(d ) ? d /2 : undef), r),
+		r =d !=undef&&is_num(d ) ? d /2 :  r !=undef&&is_num(r ) ? r  :  undef,
 		w =w,
-		r1=get_first_num( (is_num(d1) ? d1/2 : undef), r1),
-		r2=get_first_num( (is_num(d2) ? d2/2 : undef), r2)
+		r1=d1!=undef&&is_num(d1) ? d1/2 :  r1!=undef&&is_num(r1) ? r1 :  undef,
+		r2=d2!=undef&&is_num(d2) ? d2/2 :  r2!=undef&&is_num(r2) ? r2 :  undef
 	)
 ;
 function parameter_ring_2r_basic (r, w, r1, r2) =
@@ -98,12 +118,17 @@ function parameter_ring_2r_basic (r, w, r1, r2) =
 //   pitch     - Höhenunterschied je Umdrehung
 //   height    - Höhe der Helix
 function parameter_helix_to_rp (rotations, pitch, height) =
-	 (is_num(pitch)  && is_num(rotations)) ? [rotations,    pitch]
-	:(is_num(pitch)  && is_num(height))    ? [height/pitch, pitch]
-	:(is_num(height) && is_num(rotations)) ? [rotations,    height/rotations]
-	:(is_num(pitch))     ? [1,         pitch]
-	:(is_num(height))    ? [1,         height]
-	:(is_num(rotations)) ? [rotations, 0]
+	let(
+		is_rotations = rotations!=undef && is_num(rotations),
+		is_pitch     = pitch    !=undef && is_num(pitch),
+		is_height    = height   !=undef && is_num(height)
+	)
+	 (is_pitch  && is_rotations) ? [rotations,    pitch]
+	:(is_pitch  && is_height)    ? [height/pitch, pitch]
+	:(is_height && is_rotations) ? [rotations,    height/rotations]
+	:(is_pitch)     ? [1,         pitch]
+	:(is_height)    ? [1,         height]
+	:(is_rotations) ? [rotations, 0]
 	:[1, 0]
 ;
 
@@ -121,10 +146,10 @@ function parameter_helix_to_rp (rotations, pitch, height) =
 // - ohne Angabe: r=1
 function parameter_cylinder_r (r, r1, r2, d, d1, d2, preset) =
 	parameter_cylinder_r_basic (
-		get_first_num( (is_num(d ) ? d /2 : undef), r),
-		get_first_num( (is_num(d1) ? d1/2 : undef), r1),
-		get_first_num( (is_num(d2) ? d2/2 : undef), r2),
-		preset)
+		r =d !=undef&&is_num(d ) ? d /2 :  r !=undef&&is_num(r ) ? r  :  undef,
+		r1=d1!=undef&&is_num(d1) ? d1/2 :  r1!=undef&&is_num(r1) ? r1 :  undef,
+		r2=d2!=undef&&is_num(d2) ? d2/2 :  r2!=undef&&is_num(r2) ? r2 :  undef,
+		preset=preset)
 ;
 function parameter_cylinder_r_basic (r, r1, r2, preset) =
 	get_first_num_2d (
@@ -143,7 +168,11 @@ function parameter_cylinder_r_basic (r, r1, r2, preset) =
 // Regeln wie bei circle() von OpenSCAD
 // - Durchmesser geht vor Radius
 // - ohne Angabe: r=1
-function parameter_circle_r (r, d) = get_first_num ( (is_num(d) ? d/2 : undef), r, 1);
+function parameter_circle_r (r, d) =
+	d!=undef&&is_num(d) ? d/2 :
+	r!=undef&&is_num(r) ? r :
+	1
+;
 
 // wandelt das Argument 'size' um in einen Tupel [1,2,3]
 // aus size=3       wird   [3,3,3]
