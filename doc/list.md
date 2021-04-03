@@ -157,6 +157,17 @@ Extract a sequence from a list
 #### `fill_list (count, value)` [^][contents]
 Makes a list with `count` elements filled with `value`
 
+#### `refer_list (base, positions)` [^][contents]
+Create a list with values of list `base` at positions in order of list `positions`.\
+Run `base[ position ]` with every item in `positions`.\
+`base <-- positions`
+
+#### `refer_link_list (base, link, positions)` [^][contents]
+Create a list with values of list `base` at positions
+in list `link` in order of list `positions` to list `link`.\
+Run `base[ link[ position ] ]` with every item in `positions`.\
+`base <-- link <-- positions`
+
 
 ### Edit list with use of data [^][contents]
 [list_edit_data]: #edit-list-with-use-of-data-

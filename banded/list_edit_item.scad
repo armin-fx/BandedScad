@@ -75,3 +75,17 @@ function fill_list (count, value) =
 	(!is_num(count) || count<1) ? [] :
 	[ for (i=[0:count-1]) value ]
 ;
+
+// gibt eine Liste zurück mit den Werten von der Liste 'base' in den Positionen 'positions'
+//   base <-- positions
+function refer_list       (base,       positions) =
+	[ for (position=positions) base[position] ]
+;
+// gibt eine Liste zurück mit den Werten von der Liste 'base'
+// von der Liste mit den Positionen 'link' von 'base'
+// in den Positionen 'positions' in 'link'
+//   base <-- link <-- positions
+function refer_link_list  (base, link, positions) =
+	[ for (position=positions) base[link[position]] ]
+;
+
