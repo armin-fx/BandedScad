@@ -63,12 +63,9 @@ function is_inf_abs (value) = value==1e200*1e200 || value==-1e200*1e200;
 // testet eine Variable ob sie eine Bereichsangabe enthält (z.B. [0:1:10])
 function is_range (value) =
 	   value!=undef
-	&& !is_num   (value)
-	&& !is_bool  (value)
-	&& !is_list  (value)
+	&& value[0]!=undef
+	&& !is_list(value)
 	&& !is_string(value)
-	&& value==value
-	&& !is_function (value)
 ;
 
 // testet eine Variable, ob sie eine Liste mit einer angegebenen
