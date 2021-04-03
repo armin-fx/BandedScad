@@ -49,6 +49,9 @@ extra=0.02;
 //epsilon=0.00005;
 epsilon=  0.000075;
 
+// kleinste Zahl, die bei Rechenungenauigkeiten auftritt
+deviation=1e-14;
+
 // Wert unendlich
 inf = 1e200 * 1e200;
 // Wert keine gültige Zahl
@@ -66,8 +69,15 @@ X=x(); Y=y(); Z=z();
 // returns a vector with axis n
 // n - number of axis (X=0, Y=1, Z=2)
 // d - count of dimensions (2D plane = 2; 3D room, standard = 3)
-function axis (n=1, d=3) =
+function axis (n=0, d=3) =
 	d<=n || n<0 ? undef :
+	d==3 ?
+		n==0 ? [1,0,0] :
+		n==1 ? [0,1,0] :
+		       [0,0,1] :
+	d==2 ?
+		n==0 ? [1,0] :
+		       [0,1] :
 	[ for (i=[0:d-1]) i==n ? 1 : 0 ]
 ;
 
