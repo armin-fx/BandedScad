@@ -4,7 +4,7 @@
 // enthält Hilfsfunktionen, zum Arbeiten mit Matritzen
 //
 //
-// Hilfsfunktionen enthalten in OpenScad:
+// Hilfsfunktionen enthalten in OpenSCAD:
 //
 // norm()   - Betrag eines Vektors = die Länge des Vektors
 // a[]+b[]  - Vektorielle Addition / Subtraktion
@@ -52,7 +52,7 @@ function det (m) = determinant (m);
 // Determinante einer quadratischen 2x2 - Matrix
 function det_2x2 (m) = m[0][0]*m[1][1] - m[0][1]*m[1][0];
 // Determinante einer quadratischen 3x3 - Matrix über das Spatprodukt ausrechnen
-function det_3x3_ (m) =
+function det_3x3 (m) =
 	+ m[1][0] * (m[0][2]*m[2][1] - m[2][2]*m[0][1])
 	+ m[1][1] * (m[0][0]*m[2][2] - m[2][0]*m[0][2])
 	+ m[1][2] * (m[0][1]*m[2][0] - m[2][1]*m[0][0])
