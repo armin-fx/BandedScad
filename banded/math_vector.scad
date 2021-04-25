@@ -4,13 +4,15 @@
 // enthält Hilfsfunktionen, zum Arbeiten mit Vektoren
 //
 //
-// Hilfsfunktionen enthalten in OpenScad:
+// Hilfsfunktionen enthalten in OpenSCAD:
 //
 // norm()   - Betrag eines Vektors = die Länge des Vektors
 // a[]+b[]  - Vektorielle Addition / Subtraktion
 // a[]*b[]  - Skalarprodukt
 // cross()  - Kreuzprodukt (Vektorielles Produkt)
 //
+
+use <banded/math_matrix.scad>
 
 
 // Vektor normieren auf die Länge 1
@@ -101,3 +103,16 @@ function triple_product (a, b, c) = a * cross(b, c) ;
 // Wählt aus 3 Vektoren die Reihe nach eine Achse aus
 function pick_vector (vx, vy, vz) = [vx.x, vy.y, vz.z] ;
 
+// Testet, ob zwei Vektoren in die gleiche Richtung oder genau entgegengesetzt zeigen.
+function is_collinear (v1, v2) =
+	let(
+		 u1 = v1 / norm(v1)
+		,u2 = v2 / norm(v2)
+	)
+	u1==u2 || u1==-u2
+;
+
+// Testet im 3D Raum ob 3 aufgespannte Vektoren in der Ebene liegen
+function is_coplanar (v1, v2, v3) =
+	( v1 * cross(v2, v3) ) == 0
+;
