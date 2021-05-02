@@ -2,7 +2,7 @@
 // License: LGPL-2.1-or-later
 //
 // Funktionen erzeugen Objekte in Listen,
-// die an polygon() oder polyhedron() übergeben werden können.
+// deren Daten an polygon() oder polyhedron() übergeben werden können.
 //
 // Listenkonvention:
 // [ points ]
@@ -10,6 +10,12 @@
 // [ points, [path, path2, ...] ]    -> Standard
 // [ [points, points2, ...], [path, path2, ...] ]
 //
+// Position in der Objektliste:
+//  [0] - Punktliste
+//  [1] - Zusammengehörigkeit der Punkte
+//  [2] - Farbe des Objekts
+
+use <banded/draft_color.scad>
 
 
 // - 2D:
@@ -308,6 +314,20 @@ function projection (object, cut, plane) =
 	Object
 ;
 
+function color (object, c, alpha) =
+	[ for (i=[0:1:max(3,len(object)-1)])
+		i!=2 ? object[i] :
+		// write color as rgb or rgba list
+		is_string(c) ?
+			c[0]=="#" ?
+				color_hex_to_list (c, alpha)
+			:	color_name        (c, alpha)
+		:is_num(c[2]) ?
+			alpha==undef ? c : [c[0],c[1],c[2],alpha]
+		:undef
+	]
+;
+
 // - Hilfsfunktionen:
 
 // Objekt in Liste in ein einheitliches Format ausgeben.
@@ -450,6 +470,7 @@ module build_object (object)
 {
 	o = unify_object (object);
 	
+	color (o[2])
 	if      (is_object_2d(o)) { polygon    (o[0], o[1]); }
 	else if (is_object_3d(o)) { polyhedron (o[0], o[1]); }
 }
