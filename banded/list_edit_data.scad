@@ -168,6 +168,9 @@ function merge_list_intern_2 (list1, list2, type=0) =
 	) v ]
 ;
 
+// sucht einen Wert in einer aufsteigend sortierten Liste und gibt die Position zurück.
+// Gibt einen negativen Wert zurück, wenn nichts gefunden wurde. Der Betrag des Wertes
+// ist die letzte Position, wo gesucht wurde.
 function binary_search_list        (list, value, type=0) =
 	list==undef || len(list)<=1 ? 0 :
 	binary_search_list_intern (list, value, type, 0, len(list)-1)
@@ -176,11 +179,11 @@ function binary_search_list_intern (list, value, type, begin, end) =
 	(end<begin)        ? -begin
 	:let(
 		middle=floor((begin+end)/2),
-		v=get_value(list[middle])
+		v=get_value(list[middle],type)
 	)
 	 (v==value) ? middle
-	:(v< value) ? binary_search_list_intern (list, value, middle+1, end)
-	:             binary_search_list_intern (list, value, begin   , middle-1)
+	:(v< value) ? binary_search_list_intern (list, value, type, middle+1, end)
+	:             binary_search_list_intern (list, value, type, begin   , middle-1)
 ;
 
 // sucht nach einem Wert und gibt die Position des Treffers aus einer Liste heraus
