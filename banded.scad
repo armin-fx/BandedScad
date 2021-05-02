@@ -1,6 +1,6 @@
 // Copyright (c) 2020 Armin Frenzel
 // License: LGPL-2.1-or-later
-// Version: 2021.02.10
+// Version: 2021.05.02
 //
 //
 // load the entire BandedScad-bibliothek
@@ -13,6 +13,7 @@
 include <banded/constants.scad>
 include <banded/math.scad>
 include <banded/list.scad>
+include <banded/string.scad>
 include <banded/function.scad>
 include <banded/helper.scad>
 include <banded/extend.scad>
