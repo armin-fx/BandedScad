@@ -95,7 +95,7 @@ Return real part or imaginary part from complex number
 #### Specialized function:
 | input          | return
 |----------------|--------
-| numeric value  | `abs()` - from OpenScad
+| numeric value  | `abs()` - from OpenSCAD
 | cartesian form | `c_abs_cartesian()`
 | polar form     | `c_abs_polar()`
 
@@ -167,7 +167,7 @@ Return a list with 2 complex number
 #### Specialized function:
 | input          | return
 |----------------|--------
-| numeric value  | `sqrt()` - from OpenScad
+| numeric value  | `sqrt()` - from OpenSCAD
 | cartesian form | `c_sqrt_cartesian()`
 | polar form     | `c_sqrt_polar()`
 

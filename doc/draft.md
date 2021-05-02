@@ -173,12 +173,12 @@ __Options:__
    - count of segments, without specification it gets the same like `circle()`
    - with `"x"` includes the extra special variables to automatically control the count of segments
 - `piece`
-  - `true`  - like a pie, like `rotate_extrude()` in OpenScad
+  - `true`  - like a pie, like `rotate_extrude()` in OpenSCAD
   - `false` - connect the ends of the circle
   - `0`     - to work on, ends not connected, no edges, default
 - `outer`
   - value `0`...`1`
-    - `0` - edges on real circle line, default like `circle()` in OpenScad
+    - `0` - edges on real circle line, default like `circle()` in OpenSCAD
     - `1` - tangent on real circle line
     - any value between, such as `0.5` = middle around inner or outer circle
 
@@ -233,7 +233,7 @@ __Additional options:__
   - If set `"x"`, the information from the extra special variables
     (`$fn_min`, `$fn_max`, `$fd`, ...) are also used
 - `piece`
-  - `true`  - like a pie, like `rotate_extrude()` in OpenScad
+  - `true`  - like a pie, like `rotate_extrude()` in OpenSCAD
   - `false` - connect the ends of the circle
   - `0`     - to work on, ends not connected, no edges, default
 
@@ -274,7 +274,7 @@ __Additional options:__
   - If set `"x"`, the information from the extra special variables
     (`$fn_min`, `$fn_max`, `$fd`, ...) are also used
 - `piece`
-  - `true`  - like a pie, like `rotate_extrude()` in OpenScad
+  - `true`  - like a pie, like `rotate_extrude()` in OpenSCAD
   - `false` - connect the ends of the circle
   - `0`     - to work on, ends not connected, no edges, default
 
@@ -309,7 +309,7 @@ __Additional options:__
 
 #### `square_curve (size, center)` [^][contents]
 Return a 2D square as point list.
-Options are like module `square()` from OpenScad.
+Options are like module `square()` from OpenSCAD.
 Rotation is mathematical direction = counter clockwise.
 
 
@@ -351,7 +351,7 @@ Contains functions which transform point lists with affine transformations.\
 [=> Wikipedia - Affine_transformation](https://en.wikipedia.org/wiki/Affine_transformation)
 
 ### Basic transformation [^][contents]
-Works like transformation operator in OpenScad for object modules,
+Works like transformation operator in OpenSCAD for object modules,
 result is the same.
 
 #### `translate_points (list, v)` [^][contents]
@@ -549,7 +549,7 @@ Multmatrix [^][contents]
 ------------------------
 Returns matrices for use with `multmatrix()`.
 These can linked with matrix multiplication.
-```OpenScad
+```OpenSCAD
 multmatrix( matrix_translate() * matrix_rotate() * matrix_scale() )
     object();
 

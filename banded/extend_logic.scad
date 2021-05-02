@@ -7,7 +7,7 @@
 use <banded/math_common.scad>
 
 // gibt die Anzahl der Segmente eines Kreises zurück
-// originale Funktion von OpenScad
+// originale Funktion von OpenSCAD
 function get_fn_circle_closed (r, fn, fa, fs) = 
 	(fn > 0) ?
 		(fn >= 3) ? fn : 3

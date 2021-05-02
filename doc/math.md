@@ -140,7 +140,7 @@ Invert the euclidean norm
 - `v` - cathetus or a list of cathetus
 
 Example:
-```OpenScad
+```OpenSCAD
 include <banded.scad>
 
 echo( norm         (  [4,3]) ); // 5

@@ -40,7 +40,7 @@ Transform and edit objects
 
 Transform operator [^][contents]
 --------------------------------
-Contains modules which extend OpenScad buildin operator family
+Contains modules which extend OpenSCAD buildin operator family
 and keep the same behavior and option names.
 
 ### Transformation modules [^][contents]
@@ -50,7 +50,7 @@ and keep the same behavior and option names.
 Rotate object with additional options.
 Works like `rotate()`.\
 You can replace buildin `rotate()` with:
-```OpenScad
+```OpenSCAD
 module rotate(a,v,backwards=false) { rotate_new(a,v,backwards) children(); }
 ```
 - `a` - angle to rotate in degree
@@ -222,7 +222,7 @@ Axis = x, y or z. later named as '?'
 ### Comparison same transformation [^][contents]
 
 #### Buildin operator modules [^][contents]
-[=> OpenScad user manual, transformations](https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Transformations)
+[=> OpenSCAD user manual, transformations](https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Transformations)
 
 | operator module        | function on lists                        | generating matrix
 |------------------------|------------------------------------------|-------------------

@@ -20,7 +20,7 @@
 Special variables [^][contents]
 -------------------------------
 
-The buildin special variables in OpenScad `$fa`, `$fs` and `$fn` special variables
+The buildin special variables in OpenSCAD `$fa`, `$fs` and `$fn` special variables
 control the number of facets used to generate an arc.
 This library contains extra special variables and functions to control the level of detail
 and defines modules to extend the buildin objects like `circle()` and `cylinder()`.
@@ -49,7 +49,7 @@ Variables can set off with `0`.
 
 Defined modules [^][contents]
 -----------------------------
-Keep compatibility with buildin modules in OpenScad with same arguments and can controlled
+Keep compatibility with buildin modules in OpenSCAD with same arguments and can controlled
 with extra special variables, some modules have extra arguments
 
 | buildin      | extended

@@ -48,7 +48,7 @@ Vector operations [^][contents]
 
 #### Addition and subtraction [^][contents]
 [vector_add]: #addition-and-subtraction-
-```OpenScad
+```OpenSCAD
 a = [1,2,3];
 b = [1,1,2];
 
@@ -59,7 +59,7 @@ echo( a - b ); // subtraction, return [0,1,1]
 [vector_scalar]: #dot-product-or-scalar-multiplikation-
 [=> Wikipedia - Dot product](https://en.wikipedia.org/wiki/Dot_product)
 [=> Wikipedia - Scalar multiplication](https://en.wikipedia.org/wiki/Scalar_multiplication)
-```OpenScad
+```OpenSCAD
 a = [1,2,3];
 b = [1,1,2];
 
@@ -69,7 +69,7 @@ echo( 2 * a ); // scalar multiplikation, return [2,4,6]
 #### Cross product [^][contents]
 [vector_cross]: #cross-product-
 [=> Wikipedia - Cross product](https://en.wikipedia.org/wiki/Cross_product)
-```OpenScad
+```OpenSCAD
 a = [1,2,3];
 b = [1,1,2];
 
@@ -100,7 +100,7 @@ The 3D rotation vector can get with cross product `cross()`.
 #### `rotation_around_vector (v, p1, p2)` [^][contents]
 [rotation_around_vector]: #rotation_around_vector-v-p1-p2-
 Return the angle around vector `v` from points `p1` to `p2` in
-mathematical direction = counter clockwise\
+mathematical direction = counter clockwise.\
 This is the angle you see if you show into the vector `v` from the upper side,
 from point `p1` to `p2`.
 `v`  - vector, line defined from origin to this point
@@ -110,7 +110,7 @@ from point `p1` to `p2`.
 #### `rotation_around_line (line, p1, p2)` [^][contents]
 [rotation_around_line]: #rotation_around_line-line-p1-p2-
 Return the angle around a line from points `p1` to `p2` in
-mathematical direction = counter clockwise\
+mathematical direction = counter clockwise.\
 This is the angle you see if you show into the line from the upper side,
 from point `p1` to `p2`.
 `line` - 2 point list, line defined from first point to second point
@@ -141,7 +141,7 @@ Matrix operations [^][contents]
 
 #### Matrix addition and subtraction [^][contents]
 [matrix_add]: #matrix-addition-and-subtraction-
-```OpenScad
+```OpenSCAD
 a = [ [2,3],[3,4] ];
 b = [ [1,1],[2,2] ];
 
@@ -151,7 +151,7 @@ echo( a - b ); // subtraction,    result [ [1,2],[1,2] ]
 
 #### Matrix multiplication [^][contents]
 [matrix_mul]: #matrix-multiplication-
-```OpenScad
+```OpenSCAD
 a = [ [2,3],[3,4] ];
 b = [ [1,1],[2,2] ];
 
