@@ -17,35 +17,60 @@ function reverse_list (list) = [for (a=[len(list)-1:-1:0]) list[a]];
 function erase_list (list, begin, count=1) =
 	list==undef ? list :
 	let (
-		size=len(list),
-		pos_begin=get_position(list,begin),
-		pos_count=get_position(list,count)
+		 size=len(list)
+		,real_begin=get_position(list,begin)
+		,real_count=get_position(list,count)
 	)
 	concat(
-		 (pos_begin==0)                ? []
-		 :[for (i=[0:min(pos_begin-1,size-1)])              list[i] ]
-		,((pos_begin+pos_count)>=size) ? []
-		 :[for (i=[min(pos_begin+pos_count,size-1):size-1]) list[i] ]
+		 (real_begin==0)                ? []
+		 :[for (i=[0:min(real_begin-1,size-1)])               list[i] ]
+		,((real_begin+real_count)>=size) ? []
+		 :[for (i=[min(real_begin+real_count,size-1):size-1]) list[i] ]
 	)
 ;
 
 // fügt alle Elemente einer Liste in die Liste ein
-function insert_list (list, list_insert, position=-1, begin=0, count=-1) =
+function insert_list (list, list_insert, position=-1, begin_insert=0, count_insert=-1) =
 	let (
 		 size        = len(list)
 		,size_insert = len(list_insert)
+		//
 		,real_position = get_position_insert(list,position)
-		,real_begin    = get_position       (list_insert,begin)
-		,real_count    = get_position_insert(list_insert,count)
-		,real_last     = min(real_begin+real_count-1,size_insert-1)
+		//
+		,real_begin_insert = get_position       (list_insert,begin_insert)
+		,real_count_insert = get_position_insert(list_insert,count_insert)
+		,real_last_insert  = min(real_begin_insert+real_count_insert-1,size_insert-1)
 	)
 	concat(
 		 (real_position<=0)     ? []
 		 :[for (i=[0:min(real_position-1,size-1)])           list[i] ]
-		,(real_begin>real_last) ? []
-		 :[for (i=[real_begin:real_last])                    list_insert[i] ]
+		,(real_begin_insert>real_last_insert) ? []
+		 :[for (i=[real_begin_insert:real_last_insert])      list_insert[i] ]
 		,(real_position>=size)  ? []
 		 :[for (i=[max(0,min(real_position,size-1)):size-1]) list[i] ]
+	)
+;
+
+// ersetzt Elemente in einer Liste durch alle Elemente einer weiteren Liste
+function replace_list (list, list_insert, begin=-1, count=0, begin_insert=0, count_insert=-1) =
+	let (
+		 size        = len(list)
+		,size_insert = len(list_insert)
+		//
+		,real_begin=get_position_insert(list,begin)
+		,real_count=get_position       (list,count)
+		//
+		,real_begin_insert = get_position       (list_insert,begin_insert)
+		,real_count_insert = get_position_insert(list_insert,count_insert)
+		,real_last_insert  = min(real_begin_insert+real_count_insert-1,size_insert-1)
+	)
+	concat(
+		 (real_begin==0)                ? []
+		 :[for (i=[0:min(real_begin-1,size-1)])               list[i] ]
+		,(real_begin_insert>real_last_insert) ? []
+		 :[for (i=[real_begin_insert:real_last_insert])       list_insert[i] ]
+		,((real_begin+real_count)>=size) ? []
+		 :[for (i=[min(real_begin+real_count,size-1):size-1]) list[i] ]
 	)
 ;
 

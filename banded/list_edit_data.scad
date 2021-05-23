@@ -453,6 +453,26 @@ function remove_values_list (list, value_list, type=0) =
 	:              [ for (e=list) let(ev = get_value(e,type)) if ( len([for(value=value_list) if (ev==value) 0]) == 0 ) e ]
 ;
 
+// Ersetzt alle Vorkommen eines Wertes durch einen anderen Wert
+function replace_value_list (list, value, new, type=0) =
+	list==undef || len(list)==0 ? list :
+	 type==0     ? [ for (e=list) if (e                !=value) e else new ]
+	:type[0]>=0  ? [ for (e=list) if (e[type[0]]       !=value) e else new ]
+	:type[0]==-1 ? let( fn=type[1] )
+	               [ for (e=list) if (fn(e)!=value)             e else new ]
+	:              [ for (e=list) if (get_value(e,type)!=value) e else new ]
+;
+
+// Ersetzt alle Vorkommen von Werten aus einer Liste durch einen anderen Wert
+function replace_values_list (list, value_list, new, type=0) =
+	list==undef || len(list)==0 ? list :
+	value_list==undef || len(value_list)==0 ? list :
+	 type==0     ? [ for (e=list)                             if ( len([for(value=value_list) if (e ==value) 0]) == 0 ) e else new ]
+	:type[0]>=0  ? [ for (e=list) let(ev = e[type[0]])        if ( len([for(value=value_list) if (ev==value) 0]) == 0 ) e else new ]
+	:type[0]==-1 ? let( fn=type[1] )
+	               [ for (e=list) let(ev = fn(e))             if ( len([for(value=value_list) if (ev==value) 0]) == 0 ) e else new ]
+	:              [ for (e=list) let(ev = get_value(e,type)) if ( len([for(value=value_list) if (ev==value) 0]) == 0 ) e else new ]
+;
 
 // pair-Funktionen
 //

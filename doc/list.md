@@ -39,7 +39,7 @@ Editing lists [^][contents]
 ### Repeating options [^][contents]
 
 - `list`
-  - list on witch is working for
+  - list on which is working for
 - `position`
   - set the position of an element
   - uses the coding of language python\
@@ -133,22 +133,50 @@ Such as `[ [1,2,3], [4,5] ]` goes to `[1,2,3,4,5]`
 Reverse the sequence of elements in a list
 
 #### `erase_list (list, begin, count)` [^][contents]
-Remove an element from a list
-- `begin` - Erases from this position
-- `count` - Count of elements which will erase, standard = 1 element
+Remove elements from a list
+- `begin`
+  - Erases from this position
+  - The same coding like in python
+- `count`
+  - Count of elements which will erase,
+  - default = 1 element
 
-#### `insert_list (list, list_insert, position, begin, count)` [^][contents]
+#### `insert_list (list, list_insert, position, begin_insert, count_insert)` [^][contents]
 Insert `list_insert` into a list
 - `position`
-  - Insert the list into this position, shift all elements from here at the end.
+  - Insert the list into this position,
+    shift all elements from here at the end.
   - Position differs from coding in python
   - Positive value = insert at the begin of the element
   - Negative value = insert at the end of the element
   - Standard = -1, append at the end
-- `begin`
+- `begin_insert`
   - Copy the elements from this position in `list_insert`
-  - The same like in python
-- `count` - Count of elements which will insert from `list_insert`
+  - The same coding like in python
+  - default = from first element in `list_insert`
+- `count_insert`
+  - Count of elements which will insert from `list_insert`
+  - default = all elements until last element
+
+#### `replace_list (list, list_insert, begin, count, begin_insert, count_insert)` [^][contents]
+Replace elements in a list with `list_insert` or part of it
+- `begin`
+  - Insert the list into this position,
+    shift all remain elements from here at the end.
+  - Position differs from coding in python
+  - Positive value = insert at the begin of the element
+  - Negative value = insert at the end of the element
+  - Standard = -1, append at the end
+- `count`
+  - Remove this count of elements from `begin` in `list`
+  - default = remove no element, only insert the list
+- `begin_insert`
+  - Copy the elements from this position in `list_insert`
+  - The same coding like in python
+  - default = from first element in `list_insert`
+- `count_insert`
+  - Count of elements which will insert from `list_insert`
+  - default = all elements until last element
 
 #### `extract_list (list, 'range_args')` [^][contents]
 Extract a sequence from a list
@@ -219,8 +247,16 @@ Remove every duplicate in a list, so a value exists only once
 #### `remove_value_list (list, value, type)` [^][contents]
 Remove every entry with a given value in a list
 
-#### `remove_values_list (list, value, type)` [^][contents]
+#### `remove_values_list (list, value_list, type)` [^][contents]
 Remove every entry with a given list of values in a list
+- `value_list` - a list with values to remove
+
+#### `replace_value_list (list, value, new, type)` [^][contents]
+Replace every entry with a given value in a list to a new value
+
+#### `replace_values_list (list, value_list, new, type)` [^][contents]
+Replace every entry with a given list of values in a list to a new value
+- `value_list` - a list with values to replace with value `new`
 
 
 ### Pair functions [^][contents]
