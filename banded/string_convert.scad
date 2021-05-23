@@ -4,6 +4,7 @@
 // Enthält Funktionen zum Umwandeln von Strings
 //
 
+// convert all letter in string 'txt' to a lower case version
 function to_lower_case (txt) =
 	txt==undef || len(txt)==0 ? txt :
 	to_lower_case_intern (txt)
@@ -17,6 +18,7 @@ function to_lower_case_intern (txt, i=0, new_txt="") =
 	to_lower_case_intern (txt, i+1, str(new_txt,l) )
 ;
 
+// convert all letter in string 'txt' to a upper case version
 function to_upper_case (txt) =
 	txt==undef || len(txt)==0 ? txt :
 	to_upper_case_intern (txt)
@@ -30,6 +32,7 @@ function to_upper_case_intern (txt, i=0, new_txt="") =
 	to_upper_case_intern (txt, i+1, str(new_txt,l) )
 ;
 
+// convert a numeric integer value to a hexadecimal string
 function value_to_hex (value, size=1) =
 	value<0  ? undef :
 	value_to_hex_intern (value, size)
@@ -46,6 +49,7 @@ function value_to_hex_intern (value, size=0, string="") =
 	:	value_to_hex_intern (remainder, size-1, str(hex_letter,string))
 ;
 
+// convert a hexadecimal string to a numeric value
 function hex_to_value (txt, pos=0, size=undef, error=undef) =
 	let(
 		last =
@@ -63,6 +67,7 @@ function hex_to_value_intern (txt, pos, last, error, value=0) =
 	hex_to_value_intern (txt, pos+1, last, error, value*16 + l)
 ;
 
+// convert one letter of a hexadecimal string into a numeric value (0 ... 15)
 function hex_letter_to_value (txt, pos=0, error=undef) =
 	let( t=txt[pos] )
 	t<="9" ?
@@ -110,4 +115,16 @@ function hex_letter_to_value (txt, pos=0, error=undef) =
 					t=="e" ? 14 :
 					/*="f"*/ 15
 	:error
+;
+
+// put every once letter from a string 'txt' into a list
+function str_to_list (txt) = [ for (e=txt) e ]
+;
+
+// concat every entry in a list to a string
+function list_to_str (list) = list_to_str_intern (list)
+;
+function list_to_str_intern (list, index=0) =
+	index>=len(list) ? "" :
+	str( list[index], list_to_str_intern(list, index+1) )
 ;
