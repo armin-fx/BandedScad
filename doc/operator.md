@@ -7,7 +7,7 @@ Transform and edit objects
 `banded/operator.scad`\
 ` `| \
 ` `+--> `banded/operator_edit.scad`\
-` `+--> `banded/operator_transform.scad`
+` `+--> `banded/operator_transform.scad`\
 ` `+--> `banded/operator_place.scad`\
 
 [<-- file overview](file_overview.md)
