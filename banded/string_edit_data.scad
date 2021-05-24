@@ -29,7 +29,11 @@ function find_last_once_str (txt, value) =
 
 // Zählt das Vorkommen eines Buchstaben im String
 function count_str (txt, value, begin, last, count, range) =
-	count_list (txt, value, 0, begin, last, count, range)
+	txt==undef ? 0 :
+	let ( Range = parameter_range_safe (txt, begin, last, count, range) )
+	(Range[0]==0 && Range[1]==len(txt)-1 && len(value)==1) ?
+		len( search(value,txt,0)[0] )
+	:	count_list_intern (txt, value, 0, Range[0], Range[1])
 ;
 
 // Entfernt alle Duplikate der Buchstaben aus dem String
