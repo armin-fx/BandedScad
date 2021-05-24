@@ -122,9 +122,31 @@ function str_to_list (txt) = [ for (e=txt) e ]
 ;
 
 // concat every entry in a list to a string
-function list_to_str (list) = list_to_str_intern (list)
+function list_to_str (list) =
+	let( size = (list==undef) ? 0 : len(list) )
+	size==0 ? "" :
+	size==1 ? str( list[0] ) :
+	list_to_str_intern (list, size)
 ;
 function list_to_str_intern (list, index=0) =
-	index>=len(list) ? "" :
-	str( list[index], list_to_str_intern(list, index+1) )
+	index>=16 ?
+		str( list_to_str_intern(list, index-16),
+			list[index-16], list[index-15], list[index-14], list[index-13],
+			list[index-12], list[index-11], list[index-10], list[index-9],
+			list[index-8], list[index-7], list[index-6], list[index-5],
+			list[index-4], list[index-3], list[index-2], list[index-1] )
+	:index>=8 ?
+		str( list_to_str_intern(list, index-8),
+			list[index-8], list[index-7], list[index-6], list[index-5],
+			list[index-4], list[index-3], list[index-2], list[index-1] )
+	:index>=4 ?
+		str( list_to_str_intern(list, index-4), list[index-4], list[index-3], list[index-2], list[index-1] )
+	:index==3 ?
+		str( list[0], list[1], list[2] )
+	:index==2 ?
+		str( list[0], list[1] )
+	:index==1 ?
+		list[0]
+	:""
+
 ;
