@@ -8,32 +8,32 @@ use <banded/string_convert.scad>
 use <banded/list_edit_data.scad>
 
 // sucht nach einem Buchstaben und gibt die Position des Treffers aus dem String heraus
-function find_first_str (txt, value, index=0) =
-	find_first_list (txt, value, index)
+function find_first_str (txt, letter, index=0) =
+	find_first_list (txt, letter, index)
 ;
 // sucht nach dem ersten Auftreten eines Buchstaben und gibt die Position des Treffers aus dem String heraus
-function find_first_once_str (txt, value) =
-	find_first_once_list (txt, value)
+function find_first_once_str (txt, letter) =
+	find_first_once_list (txt, letter)
 ;
 
 // sucht nach einem Buchstaben und gibt die Position des Treffers aus dem String heraus
 // Der String wird vom Ende aus rückwärts durchsucht
-function find_last_str (txt, value, index=0) =
-	find_last_list (txt, value, index)
+function find_last_str (txt, letter, index=0) =
+	find_last_list (txt, letter, index)
 ;
 // sucht nach dem ersten Auftreten eines Buchstaben und gibt die Position des Treffers aus dem String heraus
 // Der String wird vom Ende aus rückwärts durchsucht
-function find_last_once_str (txt, value) =
-	find_last_once_list (txt, value)
+function find_last_once_str (txt, letter) =
+	find_last_once_list (txt, letter)
 ;
 
 // Zählt das Vorkommen eines Buchstaben im String
-function count_str (txt, value, begin, last, count, range) =
+function count_str (txt, letter, begin, last, count, range) =
 	txt==undef ? 0 :
 	let ( Range = parameter_range_safe (txt, begin, last, count, range) )
-	(Range[0]==0 && Range[1]==len(txt)-1 && len(value)==1) ?
-		len( search(value,txt,0)[0] )
-	:	count_list_intern (txt, value, 0, Range[0], Range[1])
+	(Range[0]==0 && Range[1]==len(txt)-1 && len(letter)==1) ?
+		len( search(letter,txt,0)[0] )
+	:	count_list_intern (txt, letter, 0, Range[0], Range[1])
 ;
 
 // Entfernt alle Duplikate der Buchstaben aus dem String

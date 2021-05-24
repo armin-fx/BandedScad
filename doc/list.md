@@ -144,7 +144,7 @@ Remove elements from a list
 #### `insert_list (list, list_insert, position, begin_insert, count_insert)` [^][contents]
 Insert `list_insert` into a list
 - `position`
-  - Insert the list into this position,
+  - Insert the list `list_insert` into this position,
     shift all elements from here at the end.
   - Position differs from coding in python
   - Positive value = insert at the begin of the element
@@ -161,15 +161,15 @@ Insert `list_insert` into a list
 #### `replace_list (list, list_insert, begin, count, begin_insert, count_insert)` [^][contents]
 Replace elements in a list with `list_insert` or part of it
 - `begin`
-  - Insert the list into this position,
+  - Insert the list `list_insert` into this position of `list`,
     shift all remain elements from here at the end.
   - Position differs from coding in python
   - Positive value = insert at the begin of the element
   - Negative value = insert at the end of the element
-  - Standard = -1, append at the end
+  - Standard = `-1`, append at the end
 - `count`
   - Remove this count of elements from `begin` in `list`
-  - default = remove no element, only insert the list
+  - default = `0`, remove no element, only insert the list
 - `begin_insert`
   - Copy the elements from this position in `list_insert`
   - The same coding like in python
@@ -226,14 +226,14 @@ but return always the position of the first hit.
 #### `find_last_list (list, value, index, type)` [^][contents]
 [find_last_list]: #find_last_list-list-value-index-type-
 Search at a value in a list backwards from the end to first value and returns the position.\
-Returns -1 if nothing was found.
+Returns `-1` if nothing was found.
 - `index`
   - Same values are skipped `index` times
   - Standard = get first hit, `index` = 0
 
 #### `find_last_once_list (list, value, index, type)` [^][contents]
 Search at a value in a list backwards from the end to first value and returns the position.\
-Returns -1 if nothing was found.\
+Returns `-1` if nothing was found.\
 Like [`find_last_list()`][find_last_list],
 but return always the position of the first hit.
 

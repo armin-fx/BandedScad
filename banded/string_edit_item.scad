@@ -28,16 +28,6 @@ function replace_str (txt, txt_insert, begin=-1, count=0, begin_insert=0, count_
 ;
 
 // extrahiert eine Sequenz aus dem String
-// Angaben:
-//     txt  = String mit der enthaltenen Sequenz
-//
-// 2 benötigte Angaben von:
-//     begin = erster Buchstabe aus dem String
-//     last  = letzter Buchstabe
-//     count = Anzahl der Buchstaben
-// oder
-//     range = [begin, last]
-// Kodierung wie in python
 function extract_str (txt, begin, last, count, range) =
 	list_to_str ( extract_list (txt, begin, last, count, range) )
 ;

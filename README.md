@@ -2,7 +2,7 @@ BandedScad
 ==========
 
 BandedScad is an OpenSCAD library.
-It contains functions and modules to make OpenSCAD easier to use.
+It contains functions and modules to extend the OpenSCAD language.
 
 ### Contents
 [contents]: #contents "Up to Contents"
@@ -16,32 +16,36 @@ What it does [^][contents]
 
 - [More control of the level of detail for a mesh][extend],
     extend the control of number of facets used to generate an arc
-- Contains functions to [draft objects in a point list][draft]
-  - Create [curves][curves] in a point list with functions.
+- [Draft objects in a point list][draft]
+  - [Create curves][curves] in a point list with functions.
     These can load with `polygon()`
-  - [Transform][transform] objects in a point list with affine transformations.
+  - Create and edit objects as data in a list (not finished yet)
+  - [Transform objects in a point list][transform] with affine transformations.
     Like transformation operator in OpenSCAD for object modules.
-  - Contains functions for working with [multmatrix][multmatrix]
-- Contains some functions for [edit and work with lists][list]
-- Contains some [math][math] and helper functions
-  - More math functions
+  - [Working with multmatrix][multmatrix]
+- [Transform and edit objects][operator]
+- Configurable object modules
+- [Edit and work with lists][list]
+- [Edit and convert strings][string]
+- [Math][math] and helper functions
+  - [More common math functions][math_common]
   - Functions for [matrices and vector][matrix]
   - Work with [complex numbers][complex]
-- Contains modules to [transform and edit objects][operator]
-- Contains some configurable object modules
 
 [file overview -->](doc/file_overview.md)
 
-[extend]:     doc/extend.md
-[draft]:      doc/draft.md
-[curves]:     doc/draft.md#curves-
-[transform]:  doc/draft.md#transform-functions-
-[multmatrix]: doc/draft.md#multmatrix-
-[list]:       doc/list.md
-[math]:       doc/math.md
-[matrix]:     doc/matrix.md
-[complex]:    doc/complex.md
-[operator]:   doc/operator.md
+[extend]:      doc/extend.md
+[draft]:       doc/draft.md
+[curves]:      doc/draft.md#curves-
+[transform]:   doc/draft.md#transform-functions-on-point-lists-
+[multmatrix]:  doc/draft.md#multmatrix-
+[list]:        doc/list.md
+[string]:      doc/string.md
+[math]:        doc/math.md
+[math_common]: doc/math.md#more-math-functions-
+[matrix]:      doc/matrix.md
+[complex]:     doc/complex.md
+[operator]:    doc/operator.md
 
 Installation [^][contents]
 --------------------------
