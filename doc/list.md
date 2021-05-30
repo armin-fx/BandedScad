@@ -47,7 +47,7 @@ Functions for working with lists
     - [`replace_value_list()`][replace_value_list]
     - [`replace_values_list()`][replace_values_list]
   - [Pair functions](#pair-functions-)
-- [Algorithm on lists](algorithm)
+- [Algorithm on lists][algorithm]
   - [`summation_list()`][summation_list]
   - [`product_list()`][product_list]
   - [`unit_summation()`][unit_summation]
@@ -56,7 +56,7 @@ Functions for working with lists
   - [Operand with functions from OpenSCAD](#operand-with-functions-from-openscad-)
   - [Extra functions](#extra-functions-)
 
-[mean]:      mean.md
+[mean]:      mean.md#calculating-mean-
 [edit]:      #editing-lists-
 [algorithm]: #algorithm-on-lists-
 [math]:      #math-on-lists-

@@ -50,33 +50,63 @@ List of mean functions [^][contents]
 
 #### `mean_arithmetic (list, weight, normalize)` [^][contents]
 [mean_arithmetic]: #mean_arithmetic-list-weight-normalize-
-Calculates the arithmetic mean of a list\
+Calculates the arithmetic mean (or mean or average) of a list\
 [=> Wikipedia - Arithmetic mean](https://en.wikipedia.org/wiki/Arithmetic_mean)
 
-#### `mean_geometric(list, weight, normalize)` [^][contents]
+```OpenSCAD
+l = [3, 5, 8, 4];
+echo ( mean_arithmetic (l) ); // echo 5
+```
+
+#### `mean_geometric (list, weight, normalize)` [^][contents]
 [mean_geometric]: #mean_geometric-list-weight-normalize-
 Calculates the geometic mean of a list\
 [=> Wikipedia - Geometric mean](https://en.wikipedia.org/wiki/Geometric_mean)
 
-#### `mean_harmonic(list, weight, normalize)` [^][contents]
+```OpenSCAD
+l = [3, 5, 8, 4];
+echo ( mean_geometric (l) ); // echo 4.68069
+```
+
+#### `mean_harmonic (list, weight, normalize)` [^][contents]
 [mean_harmonic]: #mean_harmonic-list-weight-normalize-
 Calculates the harmonic mean of a list\
 [=> Wikipedia - Harmonic mean](https://en.wikipedia.org/wiki/Harmonic_mean)
 
-#### `root_mean_square(list, weight, normalize)` [^][contents]
+```OpenSCAD
+l = [3, 5, 8, 4];
+echo ( mean_harmonic (l) ); // echo 4.40367
+```
+
+#### `root_mean_square (list, weight, normalize)` [^][contents]
 [root_mean_square]: #root_mean_square-list-weight-normalize-
 Calculates the root mean square of a list\
 [=> Wikipedia - Root mean square](https://en.wikipedia.org/wiki/Root_mean_square)
 
-#### `mean_cubic(list, weight, normalize)` [^][contents]
+```OpenSCAD
+l = [3, 5, 8, 4];
+echo ( root_mean_square (l) ); // echo 5.33854
+```
+
+#### `mean_cubic (list, weight, normalize)` [^][contents]
 [mean_cubic]: #mean_cubic-list-weight-normalize-
 Calculates the cubic mean of a list\
 [=> Wikipedia - Cubic mean](https://en.wikipedia.org/wiki/Cubic_mean)
 
-#### `mean_generalized(list, weight, normalize)` [^][contents]
-[mean_generalized]: #mean_generalized-list-weight-normalize-
+```OpenSCAD
+l = [3, 5, 8, 4];
+echo ( mean_cubic (l) ); // echo 5.66705
+```
+
+#### `mean_generalized (p, list, weight, normalize)` [^][contents]
+[mean_generalized]: #mean_generalized-p-list-weight-normalize-
 Calculates the generalized mean (or power mean, or Hölder mean) of a list\
 [=> Wikipedia - Generalized mean](https://en.wikipedia.org/wiki/Generalized_mean)
+
+```OpenSCAD
+l = [3, 5, 8, 4];
+echo ( mean_generalized (4, l) ); // echo 5.9632
+```
 
 
 Other mean functions [^][contents]
@@ -87,7 +117,7 @@ Other mean functions [^][contents]
 Calculates the median of a list\
 [=> Wikipedia - Median](https://en.wikipedia.org/wiki/Median)
 
-#### `mid_range(list)` [^][contents]
+#### `mid_range (list)` [^][contents]
 [mid_range]: #mid_range-list-
 Calculates the mid-range or mid-extreme of a list\
 [=> Wikipedia - Mid-range](https://en.wikipedia.org/wiki/Mid-range)
