@@ -32,9 +32,11 @@ Overview of scad files
 ` `| . . . +--> `banded/function_algorithmus.scad`\
 ` `| . . . +--> `banded/function_list_edit.scad`\
 ` `|\
-` `+--> `banded/helper.scad`\
+` `+--> [`banded/helper.scad`](helper.md "Helper functions")\
 ` `| . . . +--> `banded/helper_native.scad`\
 ` `| . . . +--> `banded/helper_recondition.scad`\
+` `|\
+` `+--> [`banded/benchmark.scad`](helper.md#benchmark-function- "Benchmark functions to measure speed")\
 ` `|\
 ` `+--> [`banded/extend.scad`](extend.md "Control the level of detail of a mesh")\
 ` `| . . . +--> [`banded/extend_logic.scad`](extend.md#functions-)\
@@ -58,7 +60,5 @@ Overview of scad files
 ` `| . . . +--> `banded/operator_edit.scad`\
 ` `| . . . +--> [`banded/operator_transform.scad`](operator.md#transform-operator- "Transform operator for affine transformations")\
 ` `| . . . +--> `banded/operator_place.scad`\
-` `|\
-` `+--> `banded/benchmark.scad`\
 ` `|\
 ` `+--> `banded/other.scad`\

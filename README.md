@@ -27,10 +27,12 @@ What it does [^][contents]
 - Configurable object modules
 - [Edit and work with lists][list]
 - [Edit and convert strings][string]
-- [Math][math] and helper functions
+- [Math functions][math]
   - [More common math functions][math_common]
   - Functions for [matrices and vector][matrix]
   - Work with [complex numbers][complex]
+- [Helper functions][helper]
+- [Benchmark functions for speed][benchmark]
 
 [file overview -->](doc/file_overview.md)
 
@@ -41,6 +43,8 @@ What it does [^][contents]
 [multmatrix]:  doc/draft.md#multmatrix-
 [list]:        doc/list.md
 [string]:      doc/string.md
+[helper]:      doc/helper.md
+[benchmark]:   doc/helper.md#benchmark-function-
 [math]:        doc/math.md
 [math_common]: doc/math.md#more-math-functions-
 [matrix]:      doc/matrix.md
