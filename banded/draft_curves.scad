@@ -376,7 +376,7 @@ function helix_curve (r, rotations, pitch, height, opposite, slices, angle) =
 	let(
 		 R         = parameter_cylinder_r_basic (r, r[0], r[1])
 		,rp        = parameter_helix_to_rp (
-			get_first_num (angle/360, rotations),
+			(angle!=undef && is_num(angle)) ? angle/360 : rotations,
 			pitch,
 			height
 		)
