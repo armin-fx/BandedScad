@@ -220,7 +220,7 @@ module translate_xy (t)
 {
 	if (is_list(t) && len(t)>=2 && is_num(t.x) && is_num(t.y))
 		translate([t.x,t.y]) children();
-	if (is_num(t))
+	else if (is_num(t))
 		translate([t,t]) children();
 	else
 		children();
