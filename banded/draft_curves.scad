@@ -374,9 +374,11 @@ function square_curve (size, center=false) =
 //   je 2 Argumente: pitch, rotations oder height
 function helix_curve (r, rotations, pitch, height, opposite, slices, angle) =
 	let(
-		 R         = parameter_cylinder_r_basic (r, r[0], r[1])
+		 is_angle  = angle!=undef && is_num(angle)
+		//
+		,R         = parameter_cylinder_r_basic (r, r[0], r[1])
 		,rp        = parameter_helix_to_rp (
-			(angle!=undef && is_num(angle)) ? angle/360 : rotations,
+			is_angle ? angle/360 : rotations,
 			pitch,
 			height
 		)

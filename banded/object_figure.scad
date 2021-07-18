@@ -125,33 +125,43 @@ module funnel (h=1, ri1, ri2, ro1, ro2, w, angle=360, di1, di2, do1, do2)
 	//_ri2 = get_first_num (ri2, ro2-w, di2/2, do2/2-w, 1);
 	//_ro1 = get_first_num (ro1, ri1+w, do1/2, di1/2+w, 2);
 	//_ro2 = get_first_num (ro2, ri2+w, do2/2, di2/2+w, 2);
+	
+	is_ri1 = ri1!=undef && is_num(ri1);
+	is_ri2 = ri2!=undef && is_num(ri2);
+	is_ro1 = ro1!=undef && is_num(ro1);
+	is_ro2 = ro2!=undef && is_num(ro2);
+	is_w   =   w!=undef && is_num(w);
+	is_di1 = di1!=undef && is_num(di1);
+	is_di2 = di2!=undef && is_num(di2);
+	is_do1 = do1!=undef && is_num(do1);
+	is_do2 = do2!=undef && is_num(do2);
 	//
 	_ri1 =
-		(ri1!=undef && is_num(ri1))                            ? ri1 :
-		(ro1!=undef && is_num(ro1)) && (w!=undef && is_num(w)) ? ro1-w :
-		(di1!=undef && is_num(di1))                            ? di1/2 :
-		(do1!=undef && is_num(do1)) && (w!=undef && is_num(w)) ? do1/2-w :
+		is_ri1         ? ri1 :
+		is_ro1 && is_w ? ro1-w :
+		is_di1         ? di1/2 :
+		is_do1 && is_w ? do1/2-w :
 			1;
 	_ri2 =
-		(ri2!=undef && is_num(ri2))                            ? ri2 :
-		(ro2!=undef && is_num(ro2)) && (w!=undef && is_num(w)) ? ro2-w :
-		(di2!=undef && is_num(di2))                            ? di2/2 :
-		(do2!=undef && is_num(do2)) && (w!=undef && is_num(w)) ? do2/2-w :
+		is_ri2         ? ri2 :
+		is_ro2 && is_w ? ro2-w :
+		is_di2         ? di2/2 :
+		is_do2 && is_w ? do2/2-w :
 			1;
 	_ro1 =
-		(ro1!=undef && is_num(ro1))                            ? ro1 :
-		(ri1!=undef && is_num(ri1)) && (w!=undef && is_num(w)) ? ri1+w :
-		(do1!=undef && is_num(do1))                            ? do1/2 :
-		(di1!=undef && is_num(di1)) && (w!=undef && is_num(w)) ? di1/2+w :
+		is_ro1         ? ro1 :
+		is_ri1 && is_w ? ri1+w :
+		is_do1         ? do1/2 :
+		is_di1 && is_w ? di1/2+w :
 			2;
 	_ro2 =
-		(ro2!=undef && is_num(ro2))                            ? ro2 :
-		(ri2!=undef && is_num(ri2)) && (w!=undef && is_num(w)) ? ri2+w :
-		(do2!=undef && is_num(do2))                            ? do2/2 :
-		(di2!=undef && is_num(di2)) && (w!=undef && is_num(w)) ? di2/2+w :
+		is_ro2         ? ro2 :
+		is_ri2 && is_w ? ri2+w :
+		is_do2         ? do2/2 :
+		is_di2 && is_w ? di2/2+w :
 			2;
 	fn = get_fn_circle_current_x( max(_ri1, _ri2, _ro1, _ro2) );
-	//
+	
 	rotate_extrude(angle=angle, $fn=fn)
 	{
 		polygon([

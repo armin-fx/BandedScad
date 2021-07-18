@@ -27,7 +27,7 @@ module cylinder_extend (h, r1, r2, center=false, r, d, d1, d2, angle, slices="x"
 {
 	R        = parameter_cylinder_r (r, r1, r2, d, d1, d2);
 	R_sorted = R[0]>R[1] ? R : [R[1],R[0]]; // erster Radius muss größer oder gleich sein
-	H        = get_first_good (h, 1);
+	H        = get_first_num (h, 1);
 	angles = parameter_angle (angle, [360,0]);
 	//
 	module mirror_at_z_choice (p, choice)
