@@ -136,9 +136,9 @@ function matrix_mirror_at (v, p, d=3) =
 ;
 
 // gibt die Matrix zurück zum spiegeln an der jeweiligen Achse wie die Hauptfunktion
-function matrix_mirror_x (d=3) =       matrix_mirror (list, [1,0,0], d=d);
-function matrix_mirror_y (d=3) =       matrix_mirror (list, [0,1,0], d=d);
-function matrix_mirror_z () = let(d=3) matrix_mirror (list, [0,0,1], d=d);
+function matrix_mirror_x (d=3) =       matrix_mirror ([1,0,0], d=d);
+function matrix_mirror_y (d=3) =       matrix_mirror ([0,1,0], d=d);
+function matrix_mirror_z () = let(d=3) matrix_mirror ([0,0,1], d=d);
 // gibt die Matrix zurück zum spiegeln an der jeweiligen Achse bei gewählter Position
 // p = Position als Vektor
 //     oder als Abstand auf der jeweiligen Achse vom Koordinatenursprung

@@ -246,13 +246,15 @@ function parameter_angle (angle, angle_std) =
 	parameter_angle     (angle_std, [360,0])
 ;
 
+// test and may load default for vector in mirror function
 function parameter_mirror_vector_2d (v, v_std=[1,0]) =
 	(v!=undef && len(v)>=2) ? v : v_std
 ;
 function parameter_mirror_vector_3d (v, v_std=[1,0,0]) =
-	 v!=undef ? v_std
-	:len(v)>=3   ? v
-	:len(v)==2   ? [v[0],v[1],0]
+	 v==undef  ? v_std
+	:len(v)==3 ? v
+	:len(v) >3 ? [v[0],v[1],v[2]]
+	:len(v)==2 ? [v[0],v[1],0]
 	:v_std
 ;
 
