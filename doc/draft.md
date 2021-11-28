@@ -52,6 +52,7 @@ Draft objects in a point list
     - [`matrix_rotate()`][matrix_rotate]
     - [`matrix_mirror()`][matrix_mirror]
     - [`matrix_scale()`][matrix_scale]
+    - [`matrix_projection()`][matrix_projection]
   - [More multmatrix functions](#more-multmatrix-functions-)
     - [`matrix_rotate_backwards()`][matrix_rotate_backwards]
     - [`matrix_rotate_at()`][matrix_rotate_at]
@@ -603,6 +604,18 @@ Generate a matrix to scale to a given axis in vector `v`.
     - `3` - spatial (3D) - default
     - `2` - flat (2D)
 
+#### `matrix_projection (v, d)` [^][contents]
+[matrix_projection]: #matrix_projection-v-d-
+Generate a matrix to get a projection on a plane (3D) or on a line (2D)
+which crosses origin.
+- `v` - normal vector of the plane (3D) or the line (2D)
+  - 2D-default = X-axis
+  - 3D-default = Z-axis
+- `d`
+  - dimensions of vector which will transformed with matrix
+    - `3` - spatial (3D) - default
+    - `2` - flat (2D)
+
 
 ### More multmatrix functions [^][contents]
 
@@ -730,16 +743,18 @@ Name convention: 'function operation name' + '_axis'\
 Axis = x, y or z. later named as '?'
 
 ##### Basic multmatrix at fixed axis [^][contents]
-| Base function                            | with fixed axis              | description
-|------------------------------------------|------------------------------|-------------
-| [`matrix_translate()`][matrix_translate] | `matrix_translate_?  (l, d)` | `l` - length to translate        <br> `d` - dimension
-| .                                        | `matrix_translate_z  (l)`    | only in 3 dimension
-| .                                        | `matrix_translate_xy (t, d)` | `t` - 2D position at X and Y axis<br> `d` - dimension
-| [`matrix_rotate()`][matrix_rotate]       | `matrix_rotate_? (a, d)`     | `a` - angle to rotate in degree  <br> `d` - dimension
-| [`matrix_mirror()`][matrix_mirror]       | `matrix_mirror_? (d)`        | `d` - dimension
-| .                                        | `matrix_mirror_z ()`         | only in 3 dimension
-| [`matrix_scale()`][matrix_scale]         | `matrix_scale_? (f, d)`      | `f` - scale factor               <br> `d` - dimension
-| .                                        | `matrix_scale_z (f)`         | only in 3 dimension
+| Base function                              | with fixed axis              | description
+|--------------------------------------------|------------------------------|-------------
+| [`matrix_translate()`][matrix_translate]   | `matrix_translate_?  (l, d)` | `l` - length to translate        <br> `d` - dimension
+| .                                          | `matrix_translate_z  (l)`    | only in 3 dimension
+| .                                          | `matrix_translate_xy (t, d)` | `t` - 2D position at X and Y axis<br> `d` - dimension
+| [`matrix_rotate()`][matrix_rotate]         | `matrix_rotate_? (a, d)`     | `a` - angle to rotate in degree  <br> `d` - dimension
+| [`matrix_mirror()`][matrix_mirror]         | `matrix_mirror_? (d)`        | `d` - dimension
+| .                                          | `matrix_mirror_z ()`         | only in 3 dimension
+| [`matrix_scale()`][matrix_scale]           | `matrix_scale_? (f, d)`      | `f` - scale factor               <br> `d` - dimension
+| .                                          | `matrix_scale_z (f)`         | only in 3 dimension
+| [`matrix_projection()`][matrix_projection] | `matrix_projection_? (d)`    | `d` - dimension
+| .                                          | `matrix_projection_z (d)`    | only in 3 dimension
 
 ##### More multmatrix at fixed axis [^][contents]
 | Base function                            | with fixed axis                          | description

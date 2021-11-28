@@ -184,3 +184,34 @@ function matrix_scale (v, d=3) =
 	]]
 ;
 
+function matrix_projection (v, d=3) =
+	 (d==2) ? matrix_projection_2d (v)
+	:(d==3) ? matrix_projection_3d (v)
+	:undef
+;
+function matrix_projection_2d (v) =
+	let (
+		angle = is_num_2d(v) ? rotation_vector (v, [1,0]) :
+				is_num(v)    ? v :
+		        0,
+		sina  = sin(angle),
+		cosa  = cos(angle)
+	)
+	[[0, sina*sina + sina*cosa]
+	,[0, cosa*sina + cosa*cosa]
+	]
+;
+function matrix_projection_3d (v) =
+	let (
+		V = parameter_mirror_vector_3d(v, [0,0,1]),
+		angle = atan2(V.y,V.x)
+	)
+	matrix_rotate_to_vector(V, angle) *
+	[[1,0,0,0]
+	,[0,1,0,0]
+	,[0,0,0,0]
+	,[0,0,0,1]
+	] *
+	matrix_rotate_backwards_to_vector(V, angle)
+;
+

@@ -153,6 +153,68 @@ function matrix_scale_y (f, d=3) =     matrix_scale ([0,f,0], d=d);
 function matrix_scale_z (f) = let(d=3) matrix_scale ([0,0,f], d=d);
 //
 
+// Generate a matrix to create a projection at given axis
+function matrix_projection_x (d=3) =
+	d==3 ?
+		[[0,0,0,0]
+		,[0,1,0,0]
+		,[0,0,1,0]
+		,[0,0,0,1]
+		]
+	:d==2 ?
+		[[0,0,0]
+		,[0,1,0]
+		,[0,0,1]
+		]
+	:(!is_num(d)) ? undef
+	:(d<1)        ? undef
+	:
+		[ for (i=[0:d])
+		[ for (j=[0:d])
+		(j==i && j!=0) ? 1 : 0
+		] ]
+;
+function matrix_projection_y (d=3) =
+	d==3 ?
+		[[1,0,0,0]
+		,[0,0,0,0]
+		,[0,0,1,0]
+		,[0,0,0,1]
+		]
+	:d==2 ?
+		[[1,0,0]
+		,[0,0,0]
+		,[0,0,1]
+		]
+	:(!is_num(d)) ? undef
+	:(d<2)        ? undef
+	:
+		[ for (i=[0:d])
+		[ for (j=[0:d])
+		(j==i && j!=1) ? 1 : 0
+		] ]
+;
+function matrix_projection_z (d=3) =
+	d==3 ?
+		[[1,0,0,0]
+		,[0,1,0,0]
+		,[0,0,0,0]
+		,[0,0,0,1]
+		]
+	:d==2 ? // nothing to do
+		[[1,0,0]
+		,[0,1,0]
+		,[0,0,1]
+		]
+	:(!is_num(d)) ? undef
+	:(d<2)        ? undef
+	:
+		[ for (i=[0:d])
+		[ for (j=[0:d])
+		(j==i && j!=2) ? 1 : 0
+		] ]
+;
+
 // Generate a matrix to skew an object
 // v = vector, shear parallel to this axis
 //     3D: - as vector

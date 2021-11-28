@@ -3,6 +3,7 @@ BandedScad
 
 BandedScad is an OpenSCAD library.
 It contains functions and modules to extend the OpenSCAD language.
+It's a playground for experiments.
 
 ### Contents
 [contents]: #contents "Up to Contents"

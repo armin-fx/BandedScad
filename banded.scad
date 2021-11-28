@@ -1,6 +1,6 @@
 // Copyright (c) 2020 Armin Frenzel
 // License: LGPL-2.1-or-later
-// Version: 2021.05.02
+// Version: 2021.11
 //
 //
 // load the entire BandedScad-bibliothek
