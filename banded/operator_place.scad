@@ -41,28 +41,52 @@ module place_line(direction, distances)
 		:	[0,0,1]
 	);
 	//
-	for (i=[0:1:min( len(distances)-1, $children-1)])
-		translate (distances[i]*Direction)
-		children(i);
+	if (distances!=undef && is_list(distances))
+		// jedes Objekt der jeweiligen Position zuordnen
+		for (i=[0:1:min( len(distances)-1, $children-1)])
+			translate (distances[i]*Direction)
+			children(i);
+	else if (distances!=undef && is_num(distances))
+		// alle Objekte an der einen Position
+		translate (distances*Direction)
+		children();
 }
 // Platziert Objekte entlang der entsprechenden Achse an den angegebenen Entfernungen
 module place_x (distances)
 {
-	for (i=[0:1:min( len(distances)-1, $children-1)])
-		translate_x (distances[i])
-		children(i);
+	if (distances!=undef && is_list(distances))
+		// jedes Objekt der jeweiligen Position zuordnen
+		for (i=[0:1:min( len(distances)-1, $children-1)])
+			translate_x (distances[i])
+			children(i);
+	else if (distances!=undef && is_num(distances))
+		// alle Objekte an der einen Position
+		translate_x (distances)
+		children();
 }
 module place_y (distances)
 {
-	for (i=[0:1:min( len(distances)-1, $children-1)])
-		translate_y (distances[i])
-		children(i);
+	if (distances!=undef && is_list(distances))
+		// jedes Objekt der jeweiligen Position zuordnen
+		for (i=[0:1:min( len(distances)-1, $children-1)])
+			translate_y (distances[i])
+			children(i);
+	else if (distances!=undef && is_num(distances))
+		// alle Objekte an der einen Position
+		translate_y (distances)
+		children();
 }
 module place_z (distances)
 {
-	for (i=[0:1:min( len(distances)-1, $children-1)])
-		translate_z (distances[i])
-		children(i);
+	if (distances!=undef && is_list(distances))
+		// jedes Objekt der jeweiligen Position zuordnen
+		for (i=[0:1:min( len(distances)-1, $children-1)])
+			translate_z (distances[i])
+			children(i);
+	else if (distances!=undef && is_num(distances))
+		// alle Objekte an der einen Position
+		translate_z (distances)
+		children();
 }
 
 // Platziert und kopiert ein Objekt an den angegebenen Punkten in der Liste
