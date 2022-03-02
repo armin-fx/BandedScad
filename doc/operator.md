@@ -8,7 +8,7 @@ Transform and edit objects
 ` `| \
 ` `+--> `banded/operator_edit.scad`\
 ` `+--> `banded/operator_transform.scad`\
-` `+--> `banded/operator_place.scad`\
+` `+--> `banded/operator_place.scad`
 
 [<-- file overview](file_overview.md)
 
@@ -35,6 +35,11 @@ Transform and edit objects
     - [Buildin operator modules](#buildin-operator-modules-)
     - [More operator modules](#more-operator-modules-)
 - [Place objects](#place-objects-)
+  - [`connect()`][connect]
+  - [`place()`][place]
+  - [`place_line()`][place_line]
+  - [`place_copy()`][place_copy]
+  - [`place_copy_line()`][place_copy_line]
 - [Edit and test objects](#edit-and-test-objects-)
 
 
@@ -279,10 +284,51 @@ Axis = x, y or z. later named as '?'
 [matrix_skew]:                draft.md#matrix_skew-v-t-m-a-d-
 [matrix_skew_at]:             draft.md#matrix_skew_at-v-t-m-a-p-d-
 
+
 Place objects [^][contents]
 ---------------------------
+Modules which place objects in specific position
 
-...
+#### `connect (point, direction, orientation)` [^][contents]
+[connect]: #connect-point-direction-orientation-
+Move and rotate an object to a specific position.\
+The origin from the object will be moved to position `point`.\
+The Z-axis from the object is the arrow direction, it will be rotated into the vector of `direction`.\
+The X-axis is the direction of rotation, it will be rotated around the arrow direction to the point `orientation`.
+
+#### `place (points)` [^][contents]
+[place]: #place-points-
+Places the objects successively at the specified `points` in the list.\
+Object 1 set to point 1, object 2 set to point 2, and so on.
+
+#### `place_line (direction, distances)` [^][contents]
+[place_line]: #place_line-direction-distances-
+Places the objects successively onto a line at the specified distances in the list.
+- `direction` - direction of the line
+- `distances`
+  - distances as a list
+    place the specific objects at given distance in a list
+  - distances as a numeric value
+    place all objects at this distance
+
+There exist specialized modules which places objects along a fixed axis at the specified distances.\
+`place_? (distances)`\
+'?' means the axis. Axis = x, y or z.
+
+#### `place_copy (points)` [^][contents]
+[place_copy]: #place_copy-points-
+Places copies of an object at given `points` in the list.\
+
+#### `place_copy_line (direction, distances)` [^][contents]
+[place_copy_line]: #place_copy_line-direction-distances-
+Places copies of an objects onto a line at given distances in the list.
+- `direction` - direction of the line
+- `distances` - distances as a list
+
+There exist specialized modules which places copies of an object along a fixed axis at given distances.\
+`place_copy_? (distances)`\
+'?' means the axis. Axis = x, y or z.
+
 
 Edit and test objects [^][contents]
 -----------------------------------

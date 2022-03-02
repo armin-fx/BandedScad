@@ -33,7 +33,7 @@ module place (points)
 		children(i);
 }
 // Platziert Objekte nacheinander entlang der angegebenen Richtung an den angegebenen Entfernungen
-module place_line(direction, distances)
+module place_line (direction, distances)
 {
 	Direction = unit_vector(
 		(is_list(direction) && len(direction)>1) ?
@@ -97,7 +97,7 @@ module place_copy (points)
 		children();
 }
 // Platziert und kopiert ein Objekt entlang der angegebenen Richtung an den angegebenen Entfernungen
-module place_copy_line(direction, distances)
+module place_copy_line (direction, distances)
 {
 	Direction = unit_vector(
 		(is_list(direction) && len(direction)>1) ?
