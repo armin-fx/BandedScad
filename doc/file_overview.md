@@ -4,12 +4,13 @@ Overview of scad files
 `banded.scad`\
 ` `|\
 ` `+--> `banded/constants.scad`\
+` `| . . . +--> `banded/constants_helper.scad`\
 ` `|\
 ` `+--> [`banded/math.scad`](math.md "Math functions")\
 ` `| . . . +--> [`banded/math_common.scad`](math.md#more-math-functions- "Common math functions")\
 ` `| . . . +--> [`banded/math_vector.scad`](matrix.md#vector-operations- "Vector operations")\
 ` `| . . . +--> [`banded/math_matrix.scad`](matrix.md#matrix-operations- "Matrix operations")\
-` `| . . . +--> `banded/math_formula.scad`\
+` `| . . . +--> [`banded/math_formula.scad`](math.md#formula-functions- "Formula functions")\
 ` `| . . . +--> [`banded/complex.scad`](complex.md "Working with complex numbers")\
 ` `|\
 ` `+--> [`banded/list.scad`](list.md "Functions for work with lists")\
@@ -59,6 +60,6 @@ Overview of scad files
 ` `+--> [`banded/operator.scad`](operator.md "Transform and edit objects")\
 ` `| . . . +--> `banded/operator_edit.scad`\
 ` `| . . . +--> [`banded/operator_transform.scad`](operator.md#transform-operator- "Transform operator for affine transformations")\
-` `| . . . +--> `banded/operator_place.scad`\
+` `| . . . +--> [`banded/operator_place.scad`](operator.md#place-objects- "Modules which place objects in specific position")\
 ` `|\
 ` `+--> `banded/other.scad`\

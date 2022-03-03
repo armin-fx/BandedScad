@@ -59,10 +59,12 @@ Math functions
      - [`continued_fraction()`][continued_fraction]
      - [`gcd()`][gcd]
      - [`lcm()`][lcm]
+- [Formula functions][formula]
 
 [complex]: complex.md
 [matrix]:  matrix.md
 [math]:    #more-math-functions-
+[formula]: #formula-functions-
 
 
 More math functions [^][contents]
@@ -266,3 +268,19 @@ Calculate the greatest common divisor of two integers `a` and `b`\
 Calculate the least common multiple of two integers `a` and `b`\
 [=> Wikipedia - Least common multiple](https://en.wikipedia.org/wiki/Least_common_multiple)
 
+
+Formula functions [^][contents]
+-------------------------------
+
+#### `get_radius_from (chord, sagitta, angle)` [^][contents]
+[get_radius_from]: #get_radius_from-chord-saggitta-angle-
+Calculate the radius from a circle.\
+It requires 2 parameters each from these 3:
+- `chord`    - length of chord
+- `saggitta` - segment height
+- `angle`    - central angle from the center of the circle
+
+#### `get_circle_from_points (p1, p2, p3)` [^][contents]
+[get_circle_from_points]: #get_circle_from_points-p1-p2-p3-
+Calculate the parameter of a circle from 3 points.\
+Return the result as a list `[center of the circle, radius]`.
