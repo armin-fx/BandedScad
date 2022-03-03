@@ -9,19 +9,9 @@ function summation_fn (fn, n, k=0) =
 	:summation_fn_intern_big(fn, n, k)
 ;
 function summation_fn_intern (fn, n, k, value=0) =
-	is_select_function(fn) ? summation_fn_intern_select (fn, n, k, value)
-	:                        summation_fn_intern_direct (fn, n, k, value)
-;
-function summation_fn_intern_direct (fn, n, k, value=0) =
 	(k>n) ? value :
-	summation_fn_intern_direct(fn, n, k+1,
+	summation_fn_intern(fn, n, k+1,
 		value==0 ? fn(k) : value + fn(k)
-	)
-;
-function summation_fn_intern_select (fn, n, k, value=0) =
-	(k>n) ? value :
-	summation_fn_intern_select(fn, n, k+1,
-		value==0 ? select_function(fn, k) : value + select_function(fn, k)
 	)
 ;
 function summation_fn_intern_big (fn, n, k, slice=100000) =
@@ -31,8 +21,7 @@ function summation_fn_intern_big (fn, n, k, slice=100000) =
 ;
 
 function summation_auto_fn (fn, k=0) =
-	is_select_function(fn) ? summation_auto_fn_intern_select(fn, k+1, select_function(fn, k))
-	:                        summation_auto_fn_intern       (fn, k+1, fn(k) )
+	summation_auto_fn_intern (fn, k+1, fn(k) )
 ;
 function summation_auto_fn_intern (fn, k, value, value_old) =
 	(value==value_old) ? value
@@ -41,32 +30,14 @@ function summation_auto_fn_intern (fn, k, value, value_old) =
 			value
 		)
 ;
-function summation_auto_fn_intern_select (fn, k, value, value_old) =
-	(value==value_old) ? value
-	:	summation_auto_fn_intern_select (fn, k+1,
-			value + select_function(fn, k),
-			value
-		)
-;
 
 function product_fn (fn, n, k=0) =
-	is_select_function(fn) ? product_fn_intern_big_select (fn, n, k)
-	:                        product_fn_intern_big        (fn, n, k)
+	product_fn_intern_big (fn, n, k)
 ;
 function product_fn_intern (fn, n, k, value=1) =
-	is_select_function(fn) ? product_fn_intern_select (fn, n, k, value)
-	:                        product_fn_intern_direct (fn, n, k, value)
-;
-function product_fn_intern_direct (fn, n, k, value=1) =
 	(k>n) ? value :
-	product_fn_intern_direct(fn, n, k+1,
+	product_fn_intern(fn, n, k+1,
 		value * fn(k)
-	)
-;
-function product_fn_intern_select (fn, n, k, value=1) =
-	(k>n) ? value :
-	product_fn_intern_select(fn, n, k+1,
-		value * select_function(fn, k)
 	)
 ;
 function product_fn_intern_big (fn, n, k, slice=100000) =
@@ -76,8 +47,7 @@ function product_fn_intern_big (fn, n, k, slice=100000) =
 ;
 
 function taylor        (fn, x, n=0, k=0) =
-	is_select_function(fn) ? taylor_intern_select(fn, x, n, k)
-	:                        taylor_intern       (fn, x, n, k)
+	taylor_intern      (fn, x, n, k)
 ;
 function taylor_intern (fn, x, n, k, value=0) =
 	(k>n) ? value :
@@ -85,31 +55,16 @@ function taylor_intern (fn, x, n, k, value=0) =
 		value + fn(x, k)
 	)
 ;
-function taylor_intern_select (fn, x, n, k, value=0) =
-	(k>n) ? value :
-	taylor_intern_select (fn, x, n, k+1,
-		value + select_function(fn, x, k)
-	)
-;
 
 function taylor_auto (fn, x, n=undef, k=0) =
 	(n==undef) ?
-	 	is_select_function(fn) ? taylor_auto_intern_select (fn, x, 100000, k+1, select_function(fn, x, k) )
-	 	:                        taylor_auto_intern        (fn, x, 100000, k+1,                 fn (x, k) )
-	:	is_select_function(fn) ? taylor_auto_intern_select (fn, x, n,      k+1, select_function(fn, x, k) )
-	 	:                        taylor_auto_intern        (fn, x, n,      k+1,                 fn (x, k) )
+	 	taylor_auto_intern (fn, x, 100000, k+1, fn (x, k) )
+	:	taylor_auto_intern (fn, x, n,      k+1, fn (x, k) )
 ;
 function taylor_auto_intern (fn, x, n, k, value, value_old) =
 	(k>n || value==value_old) ? value :
 	taylor_auto_intern (fn, x, n, k+1,
 		value + fn(x, k),
-		value
-	)
-;
-function taylor_auto_intern_select (fn, x, n, k, value, value_old) =
-	(k>n || value==value_old) ? value :
-	taylor_auto_intern_select (fn, x, n, k+1,
-		value + select_function(fn, x, k),
 		value
 	)
 ;
@@ -126,20 +81,12 @@ function integrate_midpoint (fn, begin, end, constant=0, delta=delta_std) =
 	let(
 		delta_balanced = (end-begin)/ceil((end-begin)/delta)
 	)
-	is_select_function(fn) ?
-		integrate_midpoint_intern_select (fn, begin, end, delta_balanced) + constant
-	:	integrate_midpoint_intern        (fn, begin, end, delta_balanced) + constant
+	integrate_midpoint_intern      (fn, begin, end, delta_balanced) + constant
 ;
 function integrate_midpoint_intern (fn, begin, end, delta, value=0) =
 	(begin>=end) ? value :
 	integrate_midpoint_intern (fn, begin+delta, end, delta,
 		value + fn(begin+delta/2) * delta
-	)
-;
-function integrate_midpoint_intern_select (fn, begin, end, delta, value=0) =
-	(begin>=end) ? value :
-	integrate_midpoint_intern_select (fn, begin+delta, end, delta,
-		value + select_function(fn, begin+delta/2) * delta
 	)
 ;
 //
@@ -173,17 +120,10 @@ function integrate_simpson_2_intern (fn, begin, end, count, position=0, value=0)
 //
 function area_simpson (fn, begin, end) =
 	let( mid=(begin+end)/2 )
-	is_select_function(fn) ?
-		let( mid=(begin+end)/2 )
-		( select_function(fn, begin)
-		+ select_function(fn, mid) * 4
-		+ select_function(fn, end)
-		) * (end-begin) / 6
-	:
-		( fn(begin)
-		+ fn(mid) * 4
-		+ fn(end)
-		) * (end-begin) / 6
+	( fn(begin)
+	+ fn(mid) * 4
+	+ fn(end)
+	) * (end-begin) / 6
 ;
 
 function area_simpson_2 (fn, begin, end) =
@@ -197,21 +137,13 @@ function derivation (fn, value, delta=delta_std) =
 	derivation_symmetric_2(fn, value, delta)
 ;
 function derivation_symmetric (fn, value, delta=delta_std) =
-	is_select_function(fn) ?
-		(select_function(fn, value+delta) - select_function(fn, value-delta)) / (2*delta)
-	:
-		(fn(value+delta) - fn(value-delta)) / (2*delta)
+	(fn(value+delta) - fn(value-delta)) / (2*delta)
 ;
 function derivation_symmetric_2 (fn, value, delta=delta_std) =
 	// ( 4*derivation_symmetric(fn,value,delta) - derivation_symmetric(fn,value,delta*2) ) / 3
-	is_select_function(fn) ?
-		( (select_function(fn, value+  delta) - select_function(fn, value-  delta)) * 2
-		- (select_function(fn, value+2*delta) - select_function(fn, value-2*delta)) / 4
-		) / (3*delta)
-	:
-		( (fn(value+  delta) - fn(value-  delta)) * 2
-		- (fn(value+2*delta) - fn(value-2*delta)) / 4
-		) / (3*delta)
+	( (fn(value+  delta) - fn(value-  delta)) * 2
+	- (fn(value+2*delta) - fn(value-2*delta)) / 4
+	) / (3*delta)
 ;
 
 
@@ -222,19 +154,12 @@ function find_first_fn (fn, value, begin, end, step=1) =
 		,End   = is_num(end)   ? end   : 0
 		,Step  = is_num(step)&&step!=0 ? step : 1
 	)
-	is_select_function(fn) ? find_first_fn_intern_select (fn, value, Begin, End, Step)
-	:                        find_first_fn_intern        (fn, value, Begin, End, Step)
+	find_first_fn_intern        (fn, value, Begin, End, Step)
 ;
 function find_first_fn_intern (fn, value, begin, end, step=1) =
 	(sign(step)*begin>=sign(step)*end) ? undef :
 	(fn(begin) == value) ?
 		 begin
 		:find_first_fn_intern(fn, value, begin+step, end, step)
-;
-function find_first_fn_intern_select (fn, value, begin, end, step=1) =
-	(sign(step)*begin>=sign(step)*end) ? undef :
-	(select_function(fn, begin) == value) ?
-		 begin
-		:find_first_fn_intern_select(fn, value, begin+step, end, step)
 ;
 

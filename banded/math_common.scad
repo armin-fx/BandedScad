@@ -6,8 +6,6 @@
 include <banded/constants.scad>
 //
 use <banded/helper_native.scad>
-use <banded/function_algorithmus.scad>
-use <banded/function_select.scad>
 
 
 // - Testen und beschränken:
