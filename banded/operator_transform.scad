@@ -148,8 +148,11 @@ module rotate_backwards_at (a, p, v)
 // backwards = 'false': Standart, normale Drehung
 //             'true':  Drehung Rückwärts, kann normale Drehung rückgängig
 //                      machen mit gleichen Argumenten
+// d         = Dimensionszahl
+//             '3':     3D-Objekt - Standart
+//             '2':     2D-Objekt (muss in diesen Fall angegeben werden)
 //
-// Arbeitsweise:
+// Arbeitsweise 3D:
 // Fall 1, 'a' = Winkel:
 //  - Vektor 'v' wird aufgeteilt in
 //    - Neigungswinkel (inclination) gedreht um die Y-Achse
@@ -162,35 +165,41 @@ module rotate_backwards_at (a, p, v)
 //  - das Objekt wird um die eigene Achse 'v' gedreht, dass die
 //    ursprüngliche X-Achse in Richtung Vektor 'a' zeigt
 //
-module rotate_to_vector (v, a, backwards=false)
+// Arbeitsweise 2D:
+//  - Das Objekt wird von der X-Achse aus in Richtung Vektor 'v' gedreht
+//  - Argument 'a' wird ignoriert
+//  - Die Dimensionszahl muss mit d=2 angegeben werden, da sie
+//    nicht aus dem Objekt ermittelt werden kann.
+//
+module rotate_to_vector (v, a, backwards=false, d=3)
 {
-	multmatrix( matrix_rotate_to_vector (v, a, backwards) )
+	multmatrix( matrix_rotate_to_vector (v, a, backwards, d=d) )
 	children();
 }
 // Objekt von in Richtung Z-Achse in Richtung Vektor v rückwärts drehen
-module rotate_backwards_to_vector (v, a)
+module rotate_backwards_to_vector (v, a, d=3)
 {
-	rotate_to_vector (v, a, backwards=true);
+	rotate_to_vector (v, a, backwards=true, d=d);
 	children();
 }
 
 // Objekt von in Richtung Z-Achse in Richtung Vektor v drehen an der angegebenen Position
-module rotate_to_vector_at (v, p, a, backwards=false)
+module rotate_to_vector_at (v, p, a, backwards=false, d=3)
 {
 	if (! (backwards==true))
 		translate(p)
-		rotate_to_vector(v, a)
+		rotate_to_vector(v, a, d=d)
 		translate(-p)
 		children();
 	else
-		rotate_backwards_to_vector_at (v, p, a)
+		rotate_backwards_to_vector_at (v, p, a, d=d)
 		children();
 }
 // Objekt von in Richtung Z-Achse in Richtung Vektor v rückwärts drehen an der angegebenen Position
-module rotate_backwards_to_vector_at (v, p, a)
+module rotate_backwards_to_vector_at (v, p, a, d=3)
 {
 	translate(p)
-	rotate_backwards_to_vector(v, a)
+	rotate_backwards_to_vector(v, a, d=d)
 	translate(-p)
 	children();
 }

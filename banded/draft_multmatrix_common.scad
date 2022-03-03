@@ -34,15 +34,28 @@ function matrix_rotate_backwards_at (a, p, v, d=3) =
 ;
 
 // gibt die Matrix zurück zum von in Richtung Z-Achse in Richtung Vektor v drehen
-function matrix_rotate_to_vector (v, a, backwards=false) =
-	is_list(a) ?
-		matrix_rotate_to_vector_vo (v, a, backwards)
-	:	matrix_rotate_to_vector_yz (v, a, backwards)
+function matrix_rotate_to_vector (v, a, backwards=false, d=3) =
+	d==3 ?
+		is_list(a) ?
+			matrix_rotate_to_vector_vo (v, a, backwards)
+		:	matrix_rotate_to_vector_yz (v, a, backwards)
+	:d==2 ?
+			matrix_rotate_to_vector_2d (v, backwards)
+	:undef
+;
+// 2D: von X-Achse in Richtung Vektor v drehen
+function matrix_rotate_to_vector_2d (v, backwards=false) =
+	let(
+		V     = (is_list(v) && len(v)==2) ? v : [1,0],
+		angle = rotation_vector ([1,0], V)
+	)
+	! (backwards==true) ?
+		matrix_rotate_z( angle, d=2)
+	:	matrix_rotate_z(-angle, d=2)
 ;
 function matrix_rotate_to_vector_vo (v, o, backwards=false) =
 	let(
-	d     = 3,
-	V     = (is_list(v) && len(v)==3) ? v : [0,0,1],
+	V           = (is_list(v) && len(v)==3) ? v : [0,0,1],
 	orientation = (is_list(o) && len(o)==3) ? o : [1,0,0],
 	//
 	base_vector = [1,0],
@@ -76,33 +89,31 @@ function matrix_rotate_to_vector_yz (v, a, backwards=false) =
 			matrix_rotate_backwards  ([0, b, c], d=d)
 ;
 // gibt die Matrix zurück zum von in Richtung Z-Achse in Richtung Vektor v rückwärts drehen
-function matrix_rotate_backwards_to_vector (v, a) =
-	matrix_rotate_to_vector (v, a, backwards=true)
+function matrix_rotate_backwards_to_vector (v, a, d=3) =
+	matrix_rotate_to_vector (v, a, backwards=true, d=d)
 ;
 
 // gibt die Matrix zurück zum drehen von in Richtung Z-Achse in Richtung Vektor v
 // an der angegebenen Position
-function matrix_rotate_to_vector_at (v, p, a, backwards=false) =
-	let( d = 3 )
+function matrix_rotate_to_vector_at (v, p, a, backwards=false, d=3) =
 	! (backwards==true) ?
 		// forward
-		parameter_numlist(d,p,[0,0,0],true) != [0,0,0] ?
+		parameter_numlist(3,p,[0,0,0],true) != [0,0,0] ?
 			matrix_transform_at ( p=p, d=d, m=
-			matrix_rotate_to_vector( v, a) )
+			matrix_rotate_to_vector( v, a, d=d) )
 		:
-			matrix_rotate_to_vector( v, a)
+			matrix_rotate_to_vector( v, a, d=d)
 	:	// backwards
-		matrix_rotate_backwards_to_vector_at (v, p, a)
+		matrix_rotate_backwards_to_vector_at (v, p, a, d=d)
 ;
 // gibt die Matrix zurück zum rückwärts drehen von in Richtung Z-Achse in Richtung Vektor v
 // an der angegebenen Position
-function matrix_rotate_backwards_to_vector_at (v, p, a) =
-	let( d = 3 )
-	parameter_numlist(d,p,[0,0,0],true) != [0,0,0] ?
+function matrix_rotate_backwards_to_vector_at (v, p, a, d=3) =
+	parameter_numlist(3,p,[0,0,0],true) != [0,0,0] ?
 		matrix_transform_at ( p=p, d=d, m=
-		matrix_rotate_backwards_to_vector( v, a) )
+		matrix_rotate_backwards_to_vector( v, a, d=d) )
 	:
-		matrix_rotate_backwards_to_vector( v, a)
+		matrix_rotate_backwards_to_vector( v, a, d=d)
 ;
 
 // gibt die Matrix zurück zum rotieren um die jeweilige Achse wie die Hauptfunktion

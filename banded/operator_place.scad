@@ -9,19 +9,34 @@ use <banded/draft_transform_basic.scad>
 use <banded/operator_transform.scad>
 
 // bewegt und dreht das Objekt zum angegebenen Ort
-// Der Punkt im Koordinatenursprung wird nach point bewegt
-// Die Z-Achse ist die Pfeilrichtung, wird nach 'direction' gedreht,
-// Die X-Achse ist die Rotationsrichtung, wird um die Pfeilrichtung nach den Punkt 'orientation' gedreht
+// 3D:
+// - Der Punkt im Koordinatenursprung wird nach point bewegt
+// - Die Z-Achse ist die Pfeilrichtung, wird nach 'direction' gedreht,
+// - Die X-Achse ist die Rotationsrichtung, wird um die Pfeilrichtung nach den Punkt 'orientation' gedreht
+// 2D:
+// - Der Punkt im Koordinatenursprung wird nach point bewegt
+// - Die X-Achse ist die Pfeilrichtung, wird nach 'direction' gedreht,
 module connect (point=[0,0,0], direction=[0,0,1], orientation=[1,0,0])
 {
-	base_vector = [1,0];
-	up_to_z     = rotate_backwards_to_vector_points ( [orientation], direction);
-	plane       = projection_points (up_to_z);
-	angle_base  = rotation_vector (base_vector, plane[0]);
-	//
-	translate (point)
-	rotate_to_vector (direction, angle_base)
-	children();
+	if (len(point)==3)
+	{
+		// 3D
+		base_vector = [1,0];
+		up_to_z     = rotate_backwards_to_vector_points ( [orientation], direction);
+		plane       = projection_points (up_to_z);
+		angle_base  = rotation_vector (base_vector, plane[0]);
+		//
+		translate (point)
+		rotate_to_vector (direction, angle_base)
+		children();
+	}
+	else if (len(point)==2)
+	{
+		// 2D
+		translate (point)
+		rotate_to_vector (direction, d=2)
+		children();
+	}
 }
 
 // Platziert Objekte nacheinander den angegebenen Punkten in der Liste

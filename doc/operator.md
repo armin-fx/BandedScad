@@ -81,8 +81,8 @@ Rotate object at position `p`.
   - `false` - standard, normal forward rotate
   - `true`  - rotate backwards, undo forward rotate
 
-#### `rotate_to_vector (v, a, backwards)` [^][contents]
-[rotate_to_vector]: #rotate_to_vector-v-a-backwards-
+#### `rotate_to_vector (v, a, backwards, d)` [^][contents]
+[rotate_to_vector]: #rotate_to_vector-v-a-backwards-d-
 Rotate object from direction Z axis to direction at vector `v`.
 - `v` - direction as vector
 - `a`
@@ -91,19 +91,29 @@ Rotate object from direction Z axis to direction at vector `v`.
 - `backwards`
   - `false` - standard, normal forward rotate
   - `true`  - rotate backwards, undo forward rotate
+- `d` - dimension of the object
+  - `3`     - 3D object = standard
+  - `2`     - 2D object (must set in this case)
 
-procedure 1, `a` as angle:
-- vector `v` will split in
-  - inclination angle, rotate around Y axis
-  - and azimuthal angle, rotate around Z axis
-- make rotation around Y axis with inclination angle
-- make rotation around Z axis with azimuthal angle
-- make rotation around vector `v` with angle `a`
+___way of working in 3D:___
+- procedure 1, `a` as angle:
+  - vector `v` will split in
+    - inclination angle, rotate around Y axis
+    - and azimuthal angle, rotate around Z axis
+  - make rotation around Y axis with inclination angle
+  - make rotation around Z axis with azimuthal angle
+  - make rotation around vector `v` with angle `a`
 
-procedure 2, `a` as orientation vector:
-- make rotation from Z axis to vector `v`
-- make rotation around vector `v`, so that the originally X axis point to
-  orientation vector `a`
+- procedure 2, `a` as orientation vector:
+  - make rotation from Z axis to vector `v`
+  - make rotation around vector `v`, so that the originally X axis point to
+    orientation vector `a`
+
+___way of working in 2D:___
+- rotate the object from direction X axis to vector `v`
+- option `a` will be ignored
+- the dimension number must be specified with `d=2`,
+  since it cannot be determined from the object.
 
 #### `rotate_to_vector_at (v, p, a, backwards)` [^][contents]
 [rotate_to_vector_at]: #rotate_to_vector_at-v-p-a-backwards-
@@ -291,10 +301,16 @@ Modules which place objects in specific position
 
 #### `connect (point, direction, orientation)` [^][contents]
 [connect]: #connect-point-direction-orientation-
-Move and rotate an object to a specific position.\
+Move and rotate an object to a specific position.
+
+___3D:___
 The origin from the object will be moved to position `point`.\
 The Z-axis from the object is the arrow direction, it will be rotated into the vector of `direction`.\
 The X-axis is the direction of rotation, it will be rotated around the arrow direction to the point `orientation`.
+
+___2D:___
+The origin from the object will be moved to position `point`.\
+The X-axis from the object is the arrow direction, it will be rotated into the vector of `direction`.
 
 #### `place (points)` [^][contents]
 [place]: #place-points-

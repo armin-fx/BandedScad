@@ -446,18 +446,23 @@ Rotate every point in `list` from direction Z axis to direction at vector `v`.
   - `false` - default, normal forward rotate
   - `true`  - rotate backwards, undo forward rotate
 
-procedure 1, `a` as angle:
-- vector `v` will split in
-  - inclination angle, rotate around Y axis
-  - and azimuthal angle, rotate around Z axis
-- make rotation around Y axis with inclination angle
-- make rotation around Z axis with azimuthal angle
-- make rotation around vector `v` with angle `a`
+___way of working in 3D:___
+- procedure 1, `a` as angle:
+  - vector `v` will split in
+    - inclination angle, rotate around Y axis
+    - and azimuthal angle, rotate around Z axis
+  - make rotation around Y axis with inclination angle
+  - make rotation around Z axis with azimuthal angle
+  - make rotation around vector `v` with angle `a`
 
-procedure 2, `a` as orientation vector:
-- make rotation from Z axis to vector `v`
-- make rotation around vector `v`, so that the originally X axis point to
-  orientation vector `a`
+- procedure 2, `a` as orientation vector:
+  - make rotation from Z axis to vector `v`
+  - make rotation around vector `v`, so that the originally X axis point to
+    orientation vector `a`
+
+___way of working in 2D:___
+- rotate the object from direction X axis to vector `v`
+- option `a` will be ignored
 
 #### `rotate_to_vector_at_points (list, v, p, a, backwards)` [^][contents]
 [rotate_to_vector_at_points]: #rotate_to_vector_at_points-list-v-p-a-backwards-
