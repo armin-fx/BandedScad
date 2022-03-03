@@ -96,7 +96,6 @@ include <banded/constants.scad>
 ### To consider [^][contents]
 
 This library is designed for OpenSCAD version 2021.01.\
-It can used with OpenSCAD version 2019.05 or above but without new language features.\
 OpenSCAD can be downloaded from <https://www.openscad.org/>.
 
 
