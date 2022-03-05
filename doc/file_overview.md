@@ -48,8 +48,14 @@ Overview of scad files
 ` `| . . . | . . . . +--> [`banded/draft_multmatrix_basic.scad`](draft.md#basic-multmatrix-functions- "Generate matrix like OpenSCAD buildin affine transformation")\
 ` `| . . . | . . . . +--> [`banded/draft_multmatrix_common.scad`](draft.md#more-multmatrix-functions- "Generate matrix for more affine transformations")\
 ` `| . . . +--> [`banded/draft_transform.scad`](draft.md#transform-functions- "Transform functions on point lists for affine transformations")\
-` `| . . . . . . . . +--> [`banded/draft_transform_basic.scad`](draft.md#basic-multmatrix-functions- "OpenSCAD buildin transformation on point lists")\
-` `| . . . . . . . . +--> [`banded/draft_transform_common.scad`](draft.md#more-multmatrix-functions- "More functions for affine transformations on point lists")\
+` `| . . . | . . . . +--> [`banded/draft_transform_basic.scad`](draft.md#basic-multmatrix-functions- "OpenSCAD buildin transformation on point lists")\
+` `| . . . | . . . . +--> [`banded/draft_transform_common.scad`](draft.md#more-multmatrix-functions- "More functions for affine transformations on point lists")\
+` `| . . . |\
+` `| . . . +--> `banded/draft_color.scad`\
+` `| . . . +--> `banded/draft_primitives.scad`\
+` `| . . . . . . . . +--> `banded/draft_primitives_basic.scad`\
+` `| . . . . . . . . +--> `banded/draft_primitives_figure.scad`\
+` `| . . . . . . . . +--> `banded/draft_primitives_transform_common.scad`\
 ` `|\
 ` `+--> `banded/object.scad`\
 ` `| . . . +--> `banded/object_figure.scad`\
