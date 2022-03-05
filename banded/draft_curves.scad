@@ -130,11 +130,12 @@ function circle_point_r (r, angle=0) =
 //            false = Enden des Kreises verbinden
 //            0     = zum weiterverarbeiten, Enden nicht verbinden,
 //                    keine zusätzlichen Kanten
-//   outer  - 0...1 = 0 - Ecken auf der Kreislinie ...
+//   outer  - 0...1 = 0 - Ecken auf der Kreislinie (Standart)
 //                    1 - Tangenten auf der Kreislinie
-function circle_curve (r, angle=360, slices, piece=0, outer=0, d) =
+function circle_curve (r, angle=360, slices, piece=0, outer, align, d) =
 	let(
-		 R = parameter_circle_r(r,d)
+		 R     = parameter_circle_r (r,d)
+		,Align = parameter_align (align, [0,0])
 		,angles      = parameter_angle (angle, [360,0])
 		,angle_begin = angles[1]
 		,Angle       = angles[0]
@@ -144,26 +145,29 @@ function circle_curve (r, angle=360, slices, piece=0, outer=0, d) =
 			slices<2 ?
 				(piece==true || piece==0) ? 1 : 2
 			:slices
+		,Outer   = outer!=undef ? outer : 0
 		,r_outer =
 			(Angle==0) ? R
-			:            R * get_circle_factor(Slices*360/Angle, outer)
+			:            R * get_circle_factor(Slices*360/Angle, Outer)
 		,circle_list =
-			circle_curve_intern(r_outer, Angle, angle_begin, Slices)
+			circle_curve_intern(r_outer, Angle, angle_begin, Slices, Align)
 	)
 	(piece==true && Angle!=360) ?
 		concat( circle_list, [[0,0]])
 	:	circle_list
 ;
-function circle_curve_intern (r=1, angle=360, angle_begin=0, slices=5) =
+function circle_curve_intern (r=1, angle=360, angle_begin=0, slices=5, align=[0,0]) =
 	let (
 		 angle_pie = angle/slices
 		,end =
 			 angle==0   ? 0
 			:angle==360 ? max (slices-1, 0)
 			:            slices
+		,translate_align = align*r
 	)
 	[for (i = [0:1:end])
 		circle_point_r(r, angle_begin + i*angle_pie )
+		+ translate_align
 	]
 ;
 function get_circle_factor (slices, outer=0) = outer/cos(180/slices) + 1-outer;
@@ -347,15 +351,17 @@ function polynomial_curve (interval, a, n, slices) =
 
 // gibt ein 2D-Quadrat als Punkteliste zurück
 // Argumente wie von square() von OpenSCAD
-function square_curve (size, center=false) =
+// Drehrichtung ist gegen den Uhrzeigersinn
+function square_curve (size, center, align) =
 	let (
-		Size = parameter_size_2d(size),
+		Size  = parameter_size_2d(size),
+		Align = parameter_align  (align, [1,1], center),
+		a     = [for (i=[0:1:len(Size)-1]) Align[i]*Size[i]/2 ],
 		x=Size[0],
 		y=Size[1],
 		square_list=[[0,0], [x,0], [x,y], [0,y]]
 	)
-	(center!=true) ?   square_list
-	:translate_points( square_list, -Size/2 )
+	[for (i=[0:1:len(square_list)-1]) square_list[i] - Size/2 + a ]
 ;
 
 // gibt eine Helix als Punkteliste zurück

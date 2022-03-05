@@ -195,6 +195,27 @@ function parameter_size_2d (size) =
 	:                  [1,1]
 ;
 
+// Ausrichtung eines Objekts vom Mittelpunkt aus an der jeweiligen Achse.
+// An der jeweiligen Achse können Werte gegeben werden '-1...0...1'.
+// - '1' = Ausrichtung des Objekts an der positiven Seite der jeweiligen Achse.
+// - '0' = Das Objekt ist an der jeweiligen Achse im Mittelpunkt
+// [0,0,0] ist wie center=true, Standartverhalten ist center=false, angegeben in preset.
+// Angabe von 'align' überschreibt Angabe 'center'.
+function parameter_align (align, preset, center) =
+	 preset==undef ?
+		align==undef ? [0,0,0]
+		:              align
+	:align==undef ?
+		center!=undef ?
+			center==true ? [for (i=[0:1:len(preset)-1]) 0 ]
+			:              preset
+		:	preset
+	:[for (i=[0:1:len(preset)-1])
+		align[i]==undef ? preset[i]
+		:                 align[i]
+	]
+;
+
 // Wandelt das Argument 'value' in eine Liste mit 'dimension' Elementen
 // Falls das nicht geht, wird der Standartwert 'preset' genommen
 // Argumente:

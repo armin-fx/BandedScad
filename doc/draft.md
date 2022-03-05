@@ -160,7 +160,7 @@ __Options:__
 - `angle`
   - point at given angle
 
-#### `circle_curve (r, angle, slices, piece, outer, d)` [^][contents]
+#### `circle_curve (r, angle, slices, piece, outer, align, d)` [^][contents]
 Return a 2d point list of a circle.
 
 __Options:__
@@ -172,7 +172,8 @@ __Options:__
     - as list   -> range `[opening angle, begin angle]`
 - `slices`
    - count of segments, without specification it gets the same like `circle()`
-   - with `"x"` includes the extra special variables to automatically control the count of segments
+   - with `"x"` includes the [extra special variables](extend.md#special-variables-)
+     to automatically control the count of segments
 - `piece`
   - `true`  - like a pie, like `rotate_extrude()` in OpenSCAD
   - `false` - connect the ends of the circle
@@ -182,6 +183,10 @@ __Options:__
     - `0` - edges on real circle line, default like `circle()` in OpenSCAD
     - `1` - tangent on real circle line
     - any value between, such as `0.5` = middle around inner or outer circle
+- `align`
+  - Side from origin away that the part should be.
+  - [Extra arguments - align](extend.md#extra-arguments-)
+  - default = `[0,0]` = centered
 
 
 ### Superellipse [^][contents]
@@ -308,10 +313,14 @@ __Additional options:__
 
 ### Square [^][contents]
 
-#### `square_curve (size, center)` [^][contents]
+#### `square_curve (size, center, align)` [^][contents]
 Return a 2D square as point list.
 Options are like module `square()` from OpenSCAD.
 Rotation is mathematical direction = counter clockwise.
+- `align`
+  - Side from origin away that the part should be.
+  - [Extra arguments - align](extend.md#extra-arguments-)
+  - default = `[1,1]` = oriented on the positive side of axis
 
 
 ### Helix [^][contents]

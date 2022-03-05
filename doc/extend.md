@@ -12,9 +12,17 @@
 
 ### Contents
 [contents]: #contents "Contents"
-[Extra special Variables](#special-variables-)\
-[Defined modules](#defined-modules-)\
-[Functions](#functions-)
+- [Extra special variables](#special-variables-)
+- [Defined modules](#defined-modules-)
+  - [Extra arguments](#extra-arguments-)
+  - [Modules controlled with extra special variables](#modules-controlled-with-extra-special-variables-)
+    - [`circle_extend()`][circle]
+    - [`cylinder_extend()`][cylinder]
+    - [`sphere_extend()`][sphere]
+  - [Modules with extra arguments only ](#modules-with-extra-arguments-only-)
+    - [`square_extend()`][square]
+    - [`cube_extend()`][cube]
+- [Functions](#functions-)
 
 
 Special variables [^][contents]
@@ -58,14 +66,53 @@ with extra special variables, some modules have extra arguments
 | `cylinder()` | `cylinder_extend()`
 | `sphere()`   | `sphere_extend()`
 
+### Extra arguments [^][contents]
+- `align`
+  - Side from origin away that the part should be.
+    It will set as a vector.
+    Every axis can set with a value `-1...0...1`.
+    - `1` means for example the object will set into the positive side
+      of this axis and touch origin.
+    - `0` means this axis of the object is centered
+  - If the module has an argument `center`:
+    Specifying `align` replaces specifying `center`,
+    `center` is then ignored.
+
+### Modules controlled with extra special variables [^][contents]
+
 #### `circle_extend()` [^][contents]
+[circle]: #circle_extend-
 Creates a circle with [options of `circle_curve()`](draft.md#circle-)
 
 #### `cylinder_extend()` [^][contents]
+[cylinder]: #cylinder_extend-
 Creates a cylinder with ground circle [options of `circle_curve()`](draft.md#circle-)
 
 #### `sphere_extend()` [^][contents]
+[sphere]: #sphere_extend-
 Creates a sphere at moment only control with extra special variables.
+- `align`
+  - Side from origin away that the part should be.
+  - [Extra arguments - align](#extra-arguments-)
+  - default = `[0,0,0]` = centered
+
+### Modules with extra arguments only [^][contents]
+
+#### `square_extend (size, center, align)` [^][contents]
+[square]: #square_extend-size-center-align-
+Creates a square
+- `align`
+  - Side from origin away that the part should be.
+  - [Extra arguments - align](#extra-arguments-)
+  - default = `[1,1]` = oriented on the positive side of axis
+
+#### `cube_extend (size, center, align)` [^][contents]
+[cube]: #cube_extend-size-center-align-
+Creates a cube
+- `align`
+  - Side from origin away that the part should be.
+  - [Extra arguments - align](#extra-arguments-)
+  - default = `[1,1,1]` = oriented on the positive side of axis
 
 
 Functions [^][contents]

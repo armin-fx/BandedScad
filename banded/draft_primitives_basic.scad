@@ -20,17 +20,17 @@ use <banded/draft_color.scad>
 
 // - 2D:
 
-function square (size, center=false) =
+function square (size, center, align) =
 	let(
-		points = square_curve(size,center),
+		points = square_curve (size, center, align),
 		path   = [[for (i=[0:1:len(points)-1]) i ]]
 	)
 	[points, path]
 ;
 
-function circle (r, angle=360, slices, piece=0, outer=0, d) =
+function circle (r, angle=360, slices, piece=0, outer, align, d) =
 	let(
-		points = circle_curve (r, angle, slices, piece, outer, d),
+		points = circle_curve (r=r, angle=angle, slices=slices, piece=piece, outer=outer, align=align, d=d),
 		path   = [[for (i=[0:1:len(points)-1]) i ]]
 	)
 	[points, path]
@@ -39,9 +39,11 @@ function circle (r, angle=360, slices, piece=0, outer=0, d) =
 
 // - 3D:
 
-function cube (size, center) =
+function cube (size, center, align) =
 	let(
 		 Size = parameter_size_3d (size)
+		,Align = parameter_align  (align, [1,1,1], center)
+		,translate_align = [for (i=[0:1:len(Size)-1]) Align[i]*Size[i]/2 ]
 		,x    = Size.x
 		,y    = Size.y
 		,z    = Size.z
@@ -57,12 +59,12 @@ function cube (size, center) =
 			,[7,4,0,3]] // left
 	)
 	[
-		(center!=true) ? points : translate_points( points, -Size/2 )
+		translate_points( points, translate_align - Size/2 )
 	    , path
 	]
 ;
 
-function cylinder (h, r1, r2, center=false, r, d, d1, d2, angle, slices="x", piece=true) =
+function cylinder (h, r1, r2, center, r, d, d1, d2, angle=360, slices="x", piece=true, outer, align) =
 	let(
 		 R      = parameter_cylinder_r (r, r1, r2, d, d1, d2)
 		,R_max  = R[0]>R[1] ? R[0] : R[1]
@@ -76,8 +78,8 @@ function cylinder (h, r1, r2, center=false, r, d, d1, d2, angle, slices="x", pie
 			slices<2 ?
 				(piece==true || piece==0) ? 1 : 2
 			:slices
-		,c1 = circle_curve (r=R[0], angle=angles, slices=Slices, piece=piece)
-		,c2 = circle_curve (r=R[1], angle=angles, slices=Slices, piece=piece)
+		,c1 = circle_curve (r=R[0], angle=angles, slices=Slices, piece=piece, outer=outer, align=align)
+		,c2 = circle_curve (r=R[1], angle=angles, slices=Slices, piece=piece, outer=outer, align=align)
 		,n  = len(c1)
 	)
 	[
@@ -97,9 +99,11 @@ function cylinder (h, r1, r2, center=false, r, d, d1, d2, angle, slices="x", pie
 	]
 ;
 
-function sphere (r, d) =
+function sphere (r, d, align) =
 	let(
 		 R        = parameter_circle_r (r, d)
+		,Align    = parameter_align (align, [0,0,0])
+		,translate_align = R*Align
 		,fn       = get_fn_circle_current_x (R)
 		,fn_polar = fn + fn%2
 		,c =
@@ -111,6 +115,7 @@ function sphere (r, d) =
 				// von unten nach oben [Kreisscheiben]
 				[ for (e=circle_curve_intern (r=p[1], slices=fn))
 					[e[0],e[1],-p[0]]
+					+ translate_align
 				]
 			]
 	)
