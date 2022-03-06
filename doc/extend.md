@@ -82,11 +82,11 @@ with extra special variables, some modules have extra arguments
 
 #### `circle_extend()` [^][contents]
 [circle]: #circle_extend-
-Creates a circle with [options of `circle_curve()`](draft.md#circle-)
+Creates a circle with [options of `circle_curve()`](curves.md#circle-)
 
 #### `cylinder_extend()` [^][contents]
 [cylinder]: #cylinder_extend-
-Creates a cylinder with ground circle [options of `circle_curve()`](draft.md#circle-)
+Creates a cylinder with ground circle [options of `circle_curve()`](curves.md#circle-)
 
 #### `sphere_extend()` [^][contents]
 [sphere]: #sphere_extend-

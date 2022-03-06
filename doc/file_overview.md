@@ -42,20 +42,20 @@ Overview of scad files
 ` `| . . . +--> [`banded/extend_logic.scad`](extend.md#functions-)\
 ` `| . . . +--> [`banded/extend_object.scad`](extend.md#defined-modules-)\
 ` `|\
-` `+--> [`banded/draft.scad`](draft.md "Draft objects in a point list")\
-` `| . . . +--> [`banded/draft_curves.scad`](draft.md#curves- "Creates curves in a list")\
-` `| . . . +--> [`banded/draft_multmatrix.scad`](draft.md#multmatrix- "Multmatrix functions")\
-` `| . . . | . . . . +--> [`banded/draft_multmatrix_basic.scad`](draft.md#basic-multmatrix-functions- "Generate matrix like OpenSCAD buildin affine transformation")\
-` `| . . . | . . . . +--> [`banded/draft_multmatrix_common.scad`](draft.md#more-multmatrix-functions- "Generate matrix for more affine transformations")\
-` `| . . . +--> [`banded/draft_transform.scad`](draft.md#transform-functions- "Transform functions on point lists for affine transformations")\
-` `| . . . | . . . . +--> [`banded/draft_transform_basic.scad`](draft.md#basic-multmatrix-functions- "OpenSCAD buildin transformation on point lists")\
-` `| . . . | . . . . +--> [`banded/draft_transform_common.scad`](draft.md#more-multmatrix-functions- "More functions for affine transformations on point lists")\
+` `+--> `banded/draft.scad`\
+` `| . . . +--> [`banded/draft_curves.scad`](curves.md "Creates curves in a point list")\
+` `| . . . +--> [`banded/draft_multmatrix.scad`](multmatrix.md "Multmatrix functions")\
+` `| . . . | . . . . +--> [`banded/draft_multmatrix_basic.scad`](multmatrix.md#basic-multmatrix-functions- "Generate matrix like OpenSCAD buildin affine transformation")\
+` `| . . . | . . . . +--> [`banded/draft_multmatrix_common.scad`](multmatrix.md#more-multmatrix-functions- "Generate matrix for more affine transformations")\
+` `| . . . +--> [`banded/draft_transform.scad`](transform.md "Transform functions on point lists for affine transformations")\
+` `| . . . | . . . . +--> [`banded/draft_transform_basic.scad`](transform.md#basic-multmatrix-functions- "OpenSCAD buildin transformation on point lists")\
+` `| . . . | . . . . +--> [`banded/draft_transform_common.scad`](transform.md#more-multmatrix-functions- "More functions for affine transformations on point lists")\
 ` `| . . . |\
-` `| . . . +--> `banded/draft_color.scad`\
-` `| . . . +--> `banded/draft_primitives.scad`\
+` `| . . . +--> [`banded/draft_color.scad`](color.md "Convert colors")\
+` `| . . . +--> [`banded/draft_primitives.scad`](primitives.md "create and edit OpenSCAD primitives in data lists")\
 ` `| . . . . . . . . +--> `banded/draft_primitives_basic.scad`\
 ` `| . . . . . . . . +--> `banded/draft_primitives_figure.scad`\
-` `| . . . . . . . . +--> `banded/draft_primitives_transform_common.scad`\
+` `| . . . . . . . . +--> `banded/draft_primitives_transform.scad`\
 ` `|\
 ` `+--> `banded/object.scad`\
 ` `| . . . +--> `banded/object_figure.scad`\

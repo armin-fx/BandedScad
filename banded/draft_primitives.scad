@@ -6,5 +6,5 @@
 
 include <banded/draft_primitives_basic.scad>
 //
-include <banded/draft_primitives_transform_common.scad>
+include <banded/draft_primitives_transform.scad>
 include <banded/draft_primitives_figure.scad>

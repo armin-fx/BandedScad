@@ -17,13 +17,16 @@ What it does [^][contents]
 
 - [More control of the level of detail for a mesh][extend],
     extend the control of number of facets used to generate an arc
-- [Draft objects in a point list][draft]
-  - [Create curves][curves] in a point list with functions.
+- Draft objects in data lists
+  - [Create curves][curves] into a point list with functions.
     These can load with `polygon()`
-  - Create and edit objects as data in a list (not finished yet)
   - [Transform objects in a point list][transform] with affine transformations.
     Like transformation operator in OpenSCAD for object modules.
+  - Create and edit buildin [primitives from OpenSCAD with functions][primitives]
+    as data in a list.
+    (not finished yet)
   - [Working with multmatrix][multmatrix]
+  - [Convert colors][color]
 - [Transform and edit objects][operator]
 - Configurable object modules
 - [Edit and work with lists][list]
@@ -39,9 +42,11 @@ What it does [^][contents]
 
 [extend]:      doc/extend.md
 [draft]:       doc/draft.md
-[curves]:      doc/draft.md#curves-
-[transform]:   doc/draft.md#transform-functions-on-point-lists-
-[multmatrix]:  doc/draft.md#multmatrix-
+[curves]:      doc/curves.md
+[transform]:   doc/transform.md
+[multmatrix]:  doc/multmatrix.md
+[primitives]:  doc/primitives.md
+[color]:       doc/color.md
 [list]:        doc/list.md
 [string]:      doc/string.md
 [helper]:      doc/helper.md

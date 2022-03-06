@@ -18,7 +18,7 @@ Working with complex numbers
   - [`c_add()`, `c_sub()`][add]
   - [`c_mul()`, `c_div()`][mul]
   - [`c_sqrt()`][sqrt]
-  - [`c_sqr (c)`][sqr]
+  - [`c_sqr()`][sqr]
 
 
 Convention [^][contents]
