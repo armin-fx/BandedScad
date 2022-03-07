@@ -10,25 +10,15 @@ Draft objects as data list - Primitives
 ` `| . . . . +--> `banded/draft_primitives_transform.scad`\
 ` `. . .
 
-[<-- file overview](file_overview.md)
+[<-- file overview](file_overview.md)\
+[<-- table of contents](contents.md)
 
 ### Contents
 [contents]: #contents "Up to Contents"
-- [Curves in a point list ->][curves]
-- [Transform functions on point list ->][transform]
-- [Convert colors ->][color]
-- [Multmatrix ->][multmatrix]
-
-- [Primitives in data lists][primitives]
+- [Primitives in data lists](#primitives-)
   - [List convention](#list-convention-)
   - [Generate objects](#functions-to-generate-objects-)
   - [Functions to transform objects](#functions-to-transform-objects-)
-
-[curves]:     curves.md
-[transform]:  transform.md
-[multmatrix]: multmatrix.md
-[color]:      color.md
-[primitives]: #primitives-
 
 
 Primitives [^][contents]

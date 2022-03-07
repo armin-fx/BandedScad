@@ -13,12 +13,11 @@ Functions for working with lists
 ` `+--> `banded/list_math.scad`\
 ` `+--> `banded/list_mean.scad`
 
-[<-- file overview](file_overview.md)
+[<-- file overview](file_overview.md)\
+[<-- table of contents](contents.md)
 
 ### Contents
 [contents]: #contents "Up to Contents"
-- [Calculating mean ->][mean]
-
 - [Editing lists][edit]
   - [Repeating options](#repeating-options-)
   - [Different type of data][type]
@@ -56,7 +55,6 @@ Functions for working with lists
   - [Operand with functions from OpenSCAD](#operand-with-functions-from-openscad-)
   - [Extra functions](#extra-functions-)
 
-[mean]:      mean.md#calculating-mean-
 [edit]:      #editing-lists-
 [algorithm]: #algorithm-on-lists-
 [math]:      #math-on-lists-

@@ -7,9 +7,9 @@ It's a playground for experiments.
 
 ### Contents
 [contents]: #contents "Up to Contents"
-[What it does](#what-it-does-)\
-[Installation](#installation-)\
-[Use](#use-)
+- [What it does](#what-it-does-)
+- [Installation](#installation-)
+- [Use](#use-)
 
 
 What it does [^][contents]
@@ -38,6 +38,7 @@ What it does [^][contents]
 - [Helper functions][helper]
 - [Benchmark functions for speed][benchmark]
 
+[table of contents -->](contents.md)\
 [file overview -->](doc/file_overview.md)
 
 [extend]:      doc/extend.md

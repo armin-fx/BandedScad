@@ -8,16 +8,12 @@ Draft objects as data list - Curves
 ` `| \
 ` `. . .
 
-[<-- file overview](file_overview.md)
+[<-- file overview](file_overview.md)\
+[<-- table of contents](contents.md)
 
 ### Contents
 [contents]: #contents "Up to Contents"
-- [Transform functions on point list ->][transform]
-- [Multmatrix ->][multmatrix]
-- [Convert colors ->][color]
-- [Primitives in data lists ->][primitives]
-
-- [Creates curves in a point list][curves]
+- [Creates curves in a point list](#curves-)
   - [Bezier curve](#bezier-curve-)
   - [Circle](#circle-)
   - [Superellipse](#superellipse-)
@@ -25,12 +21,6 @@ Draft objects as data list - Curves
   - [Polynomial function](#polynomial-function-)
   - [Square](#square-)
   - [Helix](#helix-)
-
-[curves]:     #curves-
-[transform]:  transform.md
-[multmatrix]: multmatrix.md
-[color]:      color.md
-[primitives]: primitives.md
 
 
 Curves [^][contents]

@@ -9,16 +9,12 @@ Draft objects as data list - Multmatrix
 ` `| . . . . +--> `banded/draft_multmatrix_common.scad`\
 ` `. . .
 
-[<-- file overview](file_overview.md)
+[<-- file overview](file_overview.md)\
+[<-- table of contents](contents.md)
 
 ### Contents
 [contents]: #contents "Up to Contents"
-- [Curves in a point list ->][curves]
-- [Transform functions on point list ->][transform]
-- [Convert colors ->][color]
-- [Primitives in data lists ->][primitives]
-
-- [Multmatrix][multmatrix]
+- [Multmatrix](#multmatrix-)
   - [Basic multmatrix functions](#basic-multmatrix-functions-)
     - [`matrix_translate()`][matrix_translate]
     - [`matrix_rotate()`][matrix_rotate]
@@ -36,12 +32,6 @@ Draft objects as data list - Multmatrix
   - [Multmatrix with preset defaults](#multmatrix-with-preset-defaults-)
     - [Multmatrix function backwards](#multmatrix-function-backwards-)
     - [Multmatrix on a fixed axis](#multmatrix-on-a-fixed-axis-)
-
-[curves]:     curves.md
-[transform]:  transform.md
-[multmatrix]: #multmatrix-
-[color]:      color.md
-[primitives]: primitives.md
 
 
 Multmatrix [^][contents]

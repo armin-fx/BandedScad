@@ -1,7 +1,6 @@
 Transform and edit objects
 ==========================
 
-
 ### defined in file
 
 `banded/operator.scad`\
@@ -10,7 +9,8 @@ Transform and edit objects
 ` `+--> `banded/operator_transform.scad`\
 ` `+--> `banded/operator_place.scad`
 
-[<-- file overview](file_overview.md)
+[<-- file overview](file_overview.md)\
+[<-- table of contents](contents.md)
 
 ### Contents
 [contents]: #contents "Contents"

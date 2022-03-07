@@ -9,16 +9,12 @@ Draft objects as data list - Transform functions
 ` `| . . . . +--> `banded/draft_transform_common.scad`\
 ` `. . .
 
-[<-- file overview](file_overview.md)
+[<-- file overview](file_overview.md)\
+[<-- table of contents](contents.md)
 
 ### Contents
 [contents]: #contents "Up to Contents"
-- [Curves in a point list ->][curves]
-- [Multmatrix ->][multmatrix]
-- [Convert colors ->][color]
-- [Primitives in data lists ->][primitives]
-
-- [Transform functions on point list][transform]
+- [Transform functions on point list](#transform-functions-on-point-lists-)
   - [Basic transformation](#basic-transformation-)
     - [`translate_points()`][translate_points]
     - [`rotate_points()`][rotate_points]
@@ -38,12 +34,6 @@ Draft objects as data list - Transform functions
   - [Transformation with preset defaults](#transformation-with-preset-defaults-)
     - [Transformation function backwards](#transformation-function-backwards-)
     - [Transformation at a fixed axis](#transformation-at-a-fixed-axis-)
-
-[curves]:     curves.md
-[transform]:  #transform-functions-on-point-lists-
-[multmatrix]: multmatrix.md
-[color]:      color.md
-[primitives]: primitives.md
 
 
 Transform functions on point lists [^][contents]

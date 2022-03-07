@@ -1,5 +1,5 @@
-Draft objects as data list - Color
-==================================
+Color
+=====
 
 ### defined in file
 `banded/draft.scad`\
@@ -7,27 +7,17 @@ Draft objects as data list - Color
 ` `+--> `banded/draft_color.scad`\
 ` `. . .
 
-[<-- file overview](file_overview.md)
+[<-- file overview](file_overview.md)\
+[<-- table of contents](contents.md)
 
 ### Contents
 [contents]: #contents "Up to Contents"
-- [Curves in a point list ->][curves]
-- [Transform functions on point list ->][transform]
-- [Multmatrix ->][multmatrix]
-- [Primitives in data lists ->][primitives]
-
-- [Convert colors][color]
+- [Convert colors][#convert-colors-]
   - [`color_hsv_to_rgb()`][color_hsv_to_rgb]
   - [`color_rgb_to_hsv()`][color_rgb_to_hsv]
   - [`color_list_to_hex()`][color_list_to_hex]
   - [`color_hex_to_list()`][color_hex_to_list]
   - [`color_name()`][color_name]
-
-[curves]:     curves.md
-[transform]:  transform.md
-[multmatrix]: multmatrix.md
-[color]:      #convert-color-
-[primitives]: primitives.md
 
 
 Convert colors [^][contents]

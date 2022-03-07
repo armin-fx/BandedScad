@@ -10,7 +10,8 @@ Functions for editing strings
 ` `. . . . +--> `banded/string_edit_item.scad`\
 ` `. . . . +--> `banded/string_edit_data.scad`
 
-[<-- file overview](file_overview.md)
+[<-- file overview](file_overview.md)\
+[<-- table of contents](contents.md)
 
 ### Contents
 [contents]: #contents "Up to Contents"

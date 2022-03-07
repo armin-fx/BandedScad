@@ -1,6 +1,8 @@
 Overview of scad files
 ======================
 
+[<-- table of contents](contents.md)
+
 `banded.scad`\
 ` `|\
 ` `+--> `banded/constants.scad`\
@@ -36,7 +38,7 @@ Overview of scad files
 ` `| . . . +--> `banded/helper_native.scad`\
 ` `| . . . +--> `banded/helper_recondition.scad`\
 ` `|\
-` `+--> [`banded/benchmark.scad`](helper.md#benchmark-function- "Benchmark functions to measure speed")\
+` `+--> [`banded/benchmark.scad`](helper.md#benchmark-function- "Benchmark for functions to measure speed")\
 ` `|\
 ` `+--> [`banded/extend.scad`](extend.md "Control the level of detail of a mesh")\
 ` `| . . . +--> [`banded/extend_logic.scad`](extend.md#functions-)\

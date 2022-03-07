@@ -6,7 +6,8 @@ Functions for working with lists
 ` `| \
 ` `+--> `banded/list_mean.scad`
 
-[<-- file overview](file_overview.md)
+[<-- file overview](file_overview.md)\
+[<-- table of contents](contents.md)
 
 ### Contents
 [contents]: #contents "Up to Contents"

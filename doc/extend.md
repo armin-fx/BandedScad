@@ -8,7 +8,8 @@
 ` `+--> `banded/extend_logic.scad`\
 ` `+--> `banded/extend_object.scad`
 
-[<-- file overview](file_overview.md)
+[<-- file overview](file_overview.md)\
+[<-- table of contents](contents.md)
 
 ### Contents
 [contents]: #contents "Contents"
