@@ -33,9 +33,9 @@ Table of contents
     - Buildin OpenSCAD primitives
     - More objects
     - Transform and edit
-- Configurable objects
-  - Figures
-  - Rounded edges
+- [Configurable objects](object.md)
+  - [Figures](object.md#figures-)
+  - [Rounded edges](object.md#rounded-edges-)
 - [Operator to transform and edit objects](operator.md)
   - [Various operator to edit and test objects](operator.md#edit-and-test-objects-)
   - [Transform operator for affine transformations](operator.md#transform-operator-)

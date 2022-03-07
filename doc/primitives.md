@@ -66,6 +66,7 @@ build_object(x);
 - `resize()`
 - `projection()` - not working yet, only on point lists
 - `multmatrix()`
+- `color()`
 
 
 ### More functions to transform objects [^][contents]

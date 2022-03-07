@@ -28,7 +28,9 @@ What it does [^][contents]
   - [Working with multmatrix][multmatrix]
   - [Convert colors][color]
 - [Transform and edit objects][operator]
-- Configurable object modules
+- [Configurable object modules][object]
+  - Figures
+  - Rounded and chamfered edges
 - [Edit and work with lists][list]
 - [Edit and convert strings][string]
 - [Math functions][math]
@@ -38,7 +40,7 @@ What it does [^][contents]
 - [Helper functions][helper]
 - [Benchmark functions for speed][benchmark]
 
-[table of contents -->](contents.md)\
+[table of contents -->](doc/contents.md)\
 [file overview -->](doc/file_overview.md)
 
 [extend]:      doc/extend.md
@@ -57,6 +59,7 @@ What it does [^][contents]
 [matrix]:      doc/matrix.md
 [complex]:     doc/complex.md
 [operator]:    doc/operator.md
+[object]:      doc/object.md
 
 Installation [^][contents]
 --------------------------

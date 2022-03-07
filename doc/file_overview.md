@@ -54,15 +54,15 @@ Overview of scad files
 ` `| . . . | . . . . +--> [`banded/draft_transform_common.scad`](transform.md#more-multmatrix-functions- "More functions for affine transformations on point lists")\
 ` `| . . . |\
 ` `| . . . +--> [`banded/draft_color.scad`](color.md "Convert colors")\
-` `| . . . +--> [`banded/draft_primitives.scad`](primitives.md "create and edit OpenSCAD primitives in data lists")\
+` `| . . . +--> [`banded/draft_primitives.scad`](primitives.md "Create and edit OpenSCAD primitives in data lists")\
 ` `| . . . . . . . . +--> `banded/draft_primitives_basic.scad`\
 ` `| . . . . . . . . +--> `banded/draft_primitives_figure.scad`\
 ` `| . . . . . . . . +--> `banded/draft_primitives_transform.scad`\
 ` `|\
-` `+--> `banded/object.scad`\
-` `| . . . +--> `banded/object_figure.scad`\
+` `+--> [`banded/object.scad`](object.md "Configurable objects")\
+` `| . . . +--> [`banded/object_figure.scad`](object.md#figures- "Modules to create configurable objects")\
 ` `| . . . +--> `banded/object_circle.scad`\
-` `| . . . +--> `banded/object_rounded.scad`\
+` `| . . . +--> [`banded/object_rounded.scad`](object.md#rounded-edges- "Figures with rounded edges")\
 ` `|\
 ` `+--> [`banded/operator.scad`](operator.md "Transform and edit objects")\
 ` `| . . . +--> [`banded/operator_edit.scad`](operator.md#edit-and-test-objects- "Various operator to edit and test objects")\

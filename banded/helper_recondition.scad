@@ -284,8 +284,8 @@ function parameter_mirror_vector_3d (v, v_std=[1,0,0]) =
 // Argumente:
 //   r         - Radius oder Breite
 //   edge_list - 4-elementige Auswahlliste der jeweiligen Kanten,
-//               wird mit r multipliziert
-//             - als Zahl werden alle Elemente mit diesen Wert gesetzt
+//             - wird mit r multipliziert sofern angegeben
+//             - als Zahl werden alle Kanten auf diesen Wert gesetzt
 //             - andernfalls wird der Wert auf 0 gesetzt = nicht gefaste Kante
 function parameter_edges_radius (edge_list, r) =
 	is_list(edge_list) ?

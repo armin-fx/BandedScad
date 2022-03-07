@@ -218,7 +218,7 @@ module cube_rounded (size, r, edges_bottom=[1,1,1,1],  edges_top=[1,1,1,1], edge
 }
 // Quader mit abgeschrägten Kanten
 // Argumente wie bei cube_rounded()
-//   r  - Breite der Schräge
+//   c  - Breite der Schräge
 module cube_chamfer (size, c, edges_bottom=[1,1,1,1],  edges_top=[1,1,1,1], edges_side=[1,1,1,1],
                              corner_bottom=[1,1,1,1], corner_top=[1,1,1,1],
                      center=false)
