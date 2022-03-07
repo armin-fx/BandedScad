@@ -41,6 +41,17 @@ Transform and edit objects
   - [`place_copy()`][place_copy]
   - [`place_copy_line()`][place_copy_line]
 - [Edit and test objects](#edit-and-test-objects-)
+  - [Compose operations](#compose-operations-)
+    - [`combine()`][combine]
+    - [`xor()`][xor]
+  - [2D to 3D extrusion](#2d-to-2d-extrusion-)
+    - [`extrude_line()`][extrude_line]
+    - [`plain_trace_extrude()`][plain_trace_extrude]
+    - [`plain_trace_connect_extrude()`][plain_trace_connect_extrude]
+    - [`helix_extrude()`][helix_extrude]
+  - [Test objects](#test-objects-)
+    - [`object_slice()`][object_slice]
+    - [`object_pane()`][object_pane]
 
 
 Transform operator [^][contents]
@@ -341,7 +352,8 @@ Places copies of an objects onto a line at given distances in the list.
 - `direction` - direction of the line
 - `distances` - distances as a list
 
-There exist specialized modules which places copies of an object along a fixed axis at given distances.\
+There exist specialized modules which places copies of an object
+along a fixed axis at given distances.\
 `place_copy_? (distances)`\
 '?' means the axis. Axis = x, y or z.
 
@@ -349,5 +361,146 @@ There exist specialized modules which places copies of an object along a fixed a
 Edit and test objects [^][contents]
 -----------------------------------
 
-...
+### Compose operations [^][contents]
 
+#### `combine ()` [^][contents]
+[combine]: #combine-
+Put parts together to a main object.\
+This is helpful, if more than one operator is needet to do this.
+You can create a hole to the main object and put a part on this.
+Maybe you can define a common hull for the complete object and
+cut all parts outside of.
+Every place on this operator has his own operator.
+You can "jump over" a place with the defined module `empty()`.
+
+___sequence of operator:___
+```OpenSCAD
+combine() { main_object(); adding_part(); cutting_part(); common_hull(); }
+```
+
+___example:___
+```OpenSCAD
+include <banded.scad>
+$fn=24;
+d_inner=4;
+
+combine()
+{
+	cube_extend([7,7,2], align=[0,0,-1]);
+	ring_square(h=2, di=d_inner, w=1);
+	cylinder   (h=6, d =d_inner, center=true);
+}
+```
+
+#### `xor ()` [^][contents]
+[xor]: #xor-
+Create the exclusive or with 2 objects.\
+Experimental, works with 2 objects and make sometimes errors.
+
+
+### 2D to 3D extrusion [^][contents]
+
+#### `extrude_line (line, rotational, convexity, extra_h)` [^][contents]
+[extrude_line]: #extrude_line-line-rotational-convexity-extra_h-
+Extrudes and rotates the 2D object along the line.\
+The object will rotate around the arrow direction of the line
+till the stretched surface from X-axis of the 2D-object and the line
+will touch the point of `rotational`.
+- `line` - list with 2 points `[from, to]`
+- `rotational` - a vector, standard = X-axis
+- `extra_h`
+  - the line will make longer this length at both ends
+  - default = `0`
+- `convexity`
+  - Integer. The convexity parameter specifies the maximum number
+    of front sides (or back sides) a ray intersecting the object might penetrate.
+
+#### `plain_trace_extrude (trace, range, convexity, limit)` [^][contents]
+[plain_trace_extrude]: #plain_trace_extrude-trace-range-convexity-limit-
+This will extrude an 2D-object in the X-Y plane along a 2D-trace
+(keeping only the right half, X >= 0).
+Note that the object started on the X-Y plane but is tilted up
+(rotated +90 degrees around the X-axis) to extrude,
+then the new Y-axis is the direction which will set in the direction of the line.
+
+- `trace` - 2D point list, which compose the line
+- `range` - index range of the trace used to extrude
+  - You can use a part of the line `[first_point, last_point]`
+  - negative indexes will count backwards from the end of the trace
+  - default = `[0, -1]` the complete trace from the first to last point
+- `convexity`
+  - Integer. The convexity parameter specifies the maximum number
+    of front sides (or back sides) a ray intersecting the object might penetrate.
+- `limit` - internal parameter
+  - The module knows nothing about the children to extrude,
+    so internal objects to work on this must made much bigger then the
+    children could be.
+    The `limit` parameter can set to an other value if these internal objects
+    are to small.
+  - default = `1000`
+
+#### `plain_trace_connect_extrude (trace, range, convexity, limit)` [^][contents]
+[plain_trace_connect_extrude]: #plain_trace_connect_extrude-trace-range-convexity-limit-
+This will extrude an 2D-object in the X-Y plane along a 2D-trace
+like [plain_trace_extrude()][plain_trace_extrude] and connect both ends
+to a closed trace.
+
+#### `helix_extrude (angle, rotations, pitch, height, r, opposite, slices, convexity, scope, step)` [^][contents]
+[helix_extrude]: #helix_extrude-angle-rotations-pitch-height-r-opposite-slices-convexity-scope-step-
+Creates a helix with a 2D-polygon similar rotate_extrude.
+
+modified from Gael Lafond, <https://www.thingiverse.com/thing:2200395>\
+License: CC0 1.0 Universal
+
+- `angle`     - angle of helix in degrees - default: `360`°
+- `rotations` - rotations of helix, can be used instead `angle`
+- `height`    - height of helix - default: 0 like `rotate_extrude()`
+- `pitch`     - rise per rotation
+- `r`
+  - radius as number or `[r1, r2]`
+  - `r1` = bottom radius, `r2` = top radius
+- `opposite`  - if `true` reverse rotation of helix, `false` = standard
+- `slices`    - count of segments from helix per full rotation
+- `convexity`
+  - `0` - only concave polygon (default)
+  - `1` - can handle one convex polygon only
+  - `2` - can maybe handle more then one convex polygon
+    - This will slice the 2D-polygon in little pieces and hope they are concave.\
+      Experimental with some problems.\
+      It's better to split it in concave helixes with the same parameter
+      and make the difference with it.
+
+
+### Test objects [^][contents]
+
+#### `object_slice (axis, position, thickness, limit)` [^][contents]
+[object_slice]: #object_slice-axis-position-thickness-limit-
+Cuts a slice out of an object.\
+Useful for testing hidden details of an object.
+
+- `axis` - vector orthogonal out of the object_pane
+  - currently only exactly the X, Y and Z - axis
+  - default = Y-axis
+- `position`  - position of the slice along the axis away from origin
+- `thickness` - thickness of the pane, default = `1`
+- `limit` - internal parameter
+  - The module knows nothing about the children to slice,
+    so internal objects to work on this must made much bigger then the
+    children could be.
+    The `limit` parameter can set to an other value if these internal objects
+    are to small.
+  - default = `1000`
+
+#### `object_pane (position, thickness, limit)` [^][contents]
+[object_pane]: #object_pane-position-thickness-limit-
+Create a small pane in X-Y-plane of an object at given height.
+- `position`  - position of the slice along the Z-axis away from origin
+- `thickness` - thickness of the pane, default = constant `2 * epsilon`
+- `limit` - internal parameter
+  - The module knows nothing about the children to slice,
+    so internal objects to work on this must made much bigger then the
+    children could be.
+    The `limit` parameter can set to an other value if these internal objects
+    are to small.
+  - default = `1000`
+  - can set as size `[X, Y]`

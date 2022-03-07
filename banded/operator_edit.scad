@@ -7,6 +7,7 @@
 
 include <banded/constants.scad>
 //
+use <banded/extend.scad>
 use <banded/helper_native.scad>
 use <banded/math_vector.scad>
 use <banded/draft_transform_common.scad>
@@ -72,28 +73,34 @@ module xor()
 }
 
 // Schneidet eine Scheibe aus einem Objekt, geeignet um testweise versteckte Details eines Objekts ansehen zu können
-module object_slice (axis=[0,1,0], position=0, thickness=1, height=1000)
+module object_slice (axis=[0,1,0], position=0, thickness=1, limit=1000)
 {
 	trans_side = (thickness>=0) ? 0 : -thickness;
 	intersection()
 	{
 		children();
 		//
-		if      (axis[0]!=0) translate([position+trans_side,-height/2,-height/2]) cube([abs(thickness),height,height]);
-		else if (axis[1]!=0) translate([-height/2,position+trans_side,-height/2]) cube([height,abs(thickness),height]);
-		else if (axis[2]!=0) translate([-height/2,-height/2,position+trans_side]) cube([height,height,abs(thickness)]);
+		if      (axis[0]!=0) translate([position+trans_side,-limit/2,-limit/2]) cube([abs(thickness),limit,limit]);
+		else if (axis[1]!=0) translate([-limit/2,position+trans_side,-limit/2]) cube([limit,abs(thickness),limit]);
+		else if (axis[2]!=0) translate([-limit/2,-limit/2,position+trans_side]) cube([limit,limit,abs(thickness)]);
 	}
 }
 
-// create a small pane of an object at given height (Z-axis)
-module object_pane (pos=0, thickness=epsilon*2, size=[1000,1000])
+// create a small pane in X-Y-plane of an object at given height (Z-axis)
+module object_pane (position=0, thickness=epsilon*2, limit=1000)
 {
+	pane_size =
+		is_num(limit) ? [limit, limit] :
+		is_list(limit) && len(limit)==2 ? limit :
+		[1000, 1000]
+	;
+	
 	intersection()
 	{
 		children();
 		//
-		translate([-size[0]/2,-size[1]/2, -thickness/2 + pos])
-			cube([size[0],size[1],thickness]);
+		translate([-pane_size[0]/2,-pane_size[1]/2, -thickness/2 + position])
+			cube([pane_size[0],pane_size[1],thickness]);
 	}
 }
 
@@ -128,7 +135,7 @@ function get_angle_between (ratio, a, b) =
 ;
 
 //
-module plain_trace_extrude (trace, range=[0,-1], convexity, lenght=1000)
+module plain_trace_extrude (trace, range=[0,-1], convexity, limit=1000)
 {
 	begin = get_position(trace, range[0]);
 	last  = get_position(trace, range[1]) - 1;
@@ -141,7 +148,7 @@ module plain_trace_extrude (trace, range=[0,-1], convexity, lenght=1000)
 		{
 			translate(trace[i])
 			rotate_z(rotation_vector([0,1], trace[i+1]-trace[i]))
-			rotate_x(90) linear_extrude(height=lenght, center=true, convexity=convexity) children();
+			rotate_x(90) linear_extrude(height=limit, center=true, convexity=convexity) children();
 			//
 			translate(trace[i])
 			rotate_z(
@@ -149,7 +156,7 @@ module plain_trace_extrude (trace, range=[0,-1], convexity, lenght=1000)
 					rotation_vector([0,-1], trace[i+1]-trace[i])
 				:	get_angle_between(0.5, rotation_vector([0,-1], trace[i+1]-trace[i]), rotation_vector([0,-1], trace[i]-trace[i-1]))
 			)
-			translate([-lenght/2,overlap,-lenght/2]) cube([lenght,lenght,lenght]);
+			translate([-limit/2,overlap,-limit/2]) cube([limit,limit,limit]);
 			//
 			translate(trace[i+1])
 			rotate_z(
@@ -157,20 +164,169 @@ module plain_trace_extrude (trace, range=[0,-1], convexity, lenght=1000)
 					rotation_vector([0,-1], trace[i+1]-trace[i])
 				:	get_angle_between(0.5, rotation_vector([0,-1], trace[i+1]-trace[i]), rotation_vector([0,-1], trace[i+2]-trace[i+1]))
 			)
-			translate([-lenght/2,-lenght-overlap,-lenght/2]) cube([lenght,lenght,lenght]);
+			translate([-limit/2,-limit-overlap,-limit/2]) cube([limit,limit,limit]);
 		}
 	}
 }
-module plain_trace_connect_extrude (trace, range=[0,-1], convexity, lenght=1000)
+module plain_trace_connect_extrude (trace, range=[0,-1], convexity, limit=1000)
 {
 	if (is_list(trace) && len(trace)>1)
 	plain_trace_extrude (
 		trace=get_trace_connect(extract_list(trace, range=range))
-		,range=range_connect, convexity=convexity, lenght=lenght
+		,range=range_connect, convexity=convexity, limit=limit
 	) children();
 }
 
 /*
-module trace_extrude (trace, rotation, convexity, lenght=1000)
+module trace_extrude (trace, rotation, convexity, limit=1000)
 {}
 */
+
+// modified from Gael Lafond, https://www.thingiverse.com/thing:2200395
+// License: CC0 1.0 Universal
+//
+// creates a helix with a 2D-polygon similar rotate_extrude
+//
+//   angle     = angle of helix in degrees - default: 360°
+//   rotations = rotations of helix, can be used instead angle
+//   height    = height of helix - default: 0 like rotate_extrude
+//   pitch     = rise per rotation
+//   r         = radius as number or [r1, r2]
+//               r1 = bottom radius, r2 = top radius
+//
+//   opposite  = if true reverse rotation of helix, false = standard
+//   slices    = count of segments from helix per full rotation
+//   convexity = 0 - only concave polygon (default)
+//               1 - can handle one convex polygon only
+//               2 - can maybe handle more then one convex polygon
+//                   this will slice the 2D-polygon in little pieces and hope they are concave
+//                   experimental with some problems
+//               it's better to split it in concave helixes with the same parameter
+//               and make the difference with it
+module helix_extrude (angle, rotations, pitch, height, r, opposite, slices=32, convexity=0, scope, step)
+{
+	R  = parameter_cylinder_r_basic (r, r[0], r[1], preset=[0,0]);
+	rp = parameter_helix_to_rp (
+		is_num(angle) ? angle/360 : rotations,
+		pitch,
+		height
+	);
+	Rotations = abs(rp[0]);
+	Angle     = abs(rp[0] * 360);
+	Pitch     = rp[1];
+	Height    = Rotations * Pitch;
+	Opposite  = xor( (is_bool(opposite) ? opposite : false), rp[0]<0 );
+	R_max  = max(R)==0 ? 9 : max(R);
+	segment_count =
+		slices==undef ? get_fn_circle_current  (R_max, Angle) :
+		slices=="x"   ? get_fn_circle_current_x(R_max, Angle) :
+		max(2, ceil(slices * Rotations))
+	;
+	//
+	union()
+	{
+		segment_height = Height/segment_count;
+		segment_angle  = Angle /segment_count;
+		segment_angle_extra = segment_angle + min(epsilon, segment_angle/4);
+		segment_last = segment_count-1;
+		//
+		for (i = [0:1:segment_last])
+		{
+			segment_radius = [
+				 bezier_1( (i  )/(segment_count), R )
+				,bezier_1( (i+1)/(segment_count), R )
+			];
+			//
+			translate_z(segment_height * i)
+			rotate_z   (segment_angle * i * (Opposite==true ? -1 : 1))
+			render(convexity=2+2*convexity)
+			if (convexity>=2)
+				helix_segment_slice(i==segment_last ? segment_angle : segment_angle_extra,
+					segment_height, segment_radius, Opposite, scope,step)
+				children();
+			else
+				helix_segment      (i==segment_last ? segment_angle : segment_angle_extra,
+					segment_height, segment_radius, Opposite, convexity=convexity)
+				children();
+		}
+	}
+}
+
+module helix_segment_slice (angle, height, radius, opposite=false, scope, step)
+{
+	Scope = is_num(scope) ? scope : 128;
+	Step  = is_num(step)  ? step  :   4;
+	scope_x = [-Scope/2, Scope/2]; step_x = Step;
+	scope_y = [-Scope/2, Scope/2]; step_y = Step;
+	//
+	union()
+	{
+		for (x = [scope_x[0]:step_x:scope_x[1]], y = [scope_y[0]:step_y:scope_y[1]])
+			helix_segment(angle, height, radius, opposite, 1)
+			intersection()
+			{
+				children();
+				translate([x,y]) square([step_x,step_y]);
+			}
+	}
+}
+
+module helix_segment (angle, height, radius, opposite=false, convexity=0)
+{
+	Radius =
+		is_list(radius) ?
+			is_num(radius[0]) ?
+				is_num(radius[1]) ? radius
+				:[radius[0],radius[0]]
+			:[0,0]
+		:is_num(radius) ? [radius,radius]
+		:[0,0]
+	;
+	intersection()
+	{
+		difference()
+		{
+			hull()
+			{
+				helix_object_intern( opposite) translate_x(Radius[0]) children();
+				translate_z(height) rotate_z(angle * (opposite==true ? -1 : 1))
+				helix_object_intern(!opposite) translate_x(Radius[1]) children();
+			}
+			if (convexity>=1)
+			hull()
+			{
+				helix_object_diff_intern( opposite) translate_x(Radius[0]) children();
+				translate_z(height) rotate_z(angle * (opposite==true ? -1 : 1))
+				helix_object_diff_intern(!opposite) translate_x(Radius[1]) children();
+			}
+		}
+		linear_extrude(height=1000, center=true, convexity=2)
+		polygon([
+			[0,0],
+			[1000,0],
+			rotate_z_points([[1000,0]], angle * (opposite==true ? -1 : 1)) [0]
+		]);
+	}
+}
+
+module helix_object_intern (opposite)
+{
+	rotate_x(90)
+	translate_z( (is_bool(opposite) && opposite==false) ? 0 : -epsilon)
+	linear_extrude( is_bool(opposite) ? epsilon : epsilon*2) children();
+}
+module helix_object_diff_intern (opposite)
+{
+	minkowski()
+	{
+		sphere(d=epsilon,$fn=5);
+		//
+		rotate_x(90)
+		translate_z( (is_bool(opposite) && opposite==false) ? 0 : -epsilon)
+		difference()
+		{
+			hull()              linear_extrude( (is_bool(opposite) ? epsilon : epsilon*2)          ) children();
+			translate_z(-extra) linear_extrude( (is_bool(opposite) ? epsilon : epsilon*2) + extra*2) children();
+		}
+	}
+}

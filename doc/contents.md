@@ -37,7 +37,7 @@ Table of contents
   - Figures
   - Rounded edges
 - [Operator to transform and edit objects](operator.md)
-  - Various operator
+  - [Various operator to edit and test objects](operator.md#edit-and-test-objects-)
   - [Transform operator for affine transformations](operator.md#transform-operator-)
   - [place objects in specific position](operator.md#place-objects-)
 
