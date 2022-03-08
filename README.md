@@ -23,14 +23,14 @@ What it does [^][contents]
   - [Transform objects in a point list][transform] with affine transformations.
     Like transformation operator in OpenSCAD for object modules.
   - Create and edit buildin [primitives from OpenSCAD with functions][primitives]
-    as data in a list.
-    (not finished yet)
+    as data in a list.\
+    _(not finished yet)_
   - [Working with multmatrix][multmatrix]
   - [Convert colors][color]
 - [Transform and edit objects][operator]
 - [Configurable object modules][object]
-  - Figures
-  - Rounded and chamfered edges
+  - [Figures][figures] (torus, wedge, funnel, ... )
+  - [Rounded and chamfered edges][edges]
 - [Edit and work with lists][list]
 - [Edit and convert strings][string]
 - [Math functions][math]
@@ -60,6 +60,9 @@ What it does [^][contents]
 [complex]:     doc/complex.md
 [operator]:    doc/operator.md
 [object]:      doc/object.md
+[edges]:       doc/object.md#rounded-edges-
+[figures]:     doc/object.md#figures-
+
 
 Installation [^][contents]
 --------------------------

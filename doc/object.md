@@ -98,6 +98,7 @@ Creates a funnel.
   - opening angle in degree of the funnel. Default=`360`.
   - requires OpenSCAD version 2019.05 or above
 
+Example:
 ```OpenSCAD
 include <banded.scad>
 $fn=24;
@@ -204,15 +205,127 @@ with only one chamfer type.
 
 #### `edge_fillet (h, r, angle, type, center, extra)` [^][contents]
 [edge_fillet]: #edge_fillet-h-r-angle-type-center-extra-
+Creates a fillet edge, used for cutting or adding to edges.\
+Optionally rounded or chamfered.
+It does `linear_extrude()` with module [`edge_fillet_plane()`][edge_fillet_plane].
+- `h`     - heigth of the edge
+- `r`     - parameter of the chamfer
+- `angle` - angle of the edge in degree
+  - as number, default=`90` (right angle)
+  - as list, from-to `[begin_angle, end_angle]`
+- `type`  - specify, which chamfer type should be used for the edge
+  - `0` = no chamfer (default)
+  - `1` = rounding
+  - `2` = chamfer
+- `center` - `true` = center the edge shaft in the middle, default=`false`
+- `extra`  - set an amount extra overhang, because of z-fighting
+  - default = constant `extra`
+
+___Specialized modules with no argument `type`___
+- `edge_rounded()` - creates a rounded edges
+  - `d` - diameter of the rounded edge, optional parameter
+- `edge_chamfer()` - creates a chamfered edges
 
 #### `edge_ring_fillet (r_ring, r, angle, angle_ring, type, extra)` [^][contents]
 [edge_ring_fillet]: #edge_ring_fillet-r_ring-r-angle-angle_ring-type-extra-
+Creates a chamfered edge for a cylinder for cutting or gluing.\
+Optionally rounded or chamfered.
+It does `rotate_extrude()` with module [`edge_fillet_plane()`][edge_fillet_plane].
+- `r_ring`     - radius of the cylinder on the edge
+- `angle_ring` - angle of the cylinder in degree, default=`360`
+- `r`     - parameter of the chamfer
+- `angle` - angle of the edge in degree
+  - as number, default=`90` (right angle)
+  - as list, from-to `[begin_angle, end_angle]`
+- `type`  - specify, which chamfer type should be used for the edge
+  - `0` = no chamfer (default)
+  - `1` = rounding
+  - `2` = chamfer
+- `extra`  - set an amount extra overhang, because of z-fighting
+  - default = constant `extra`
 
-#### `edge_fillet_plane (r, angle, extra)` [^][contents]
-[edge_fillet_plane]: #edge_fillet_plane-r-angle-extra-
+___Specialized modules with no argument `type`___
+- `edge_ring_rounded()` - creates a rounded edges
+  - `d` - diameter of the rounded edge, optional parameter
+- `edge_ring_chamfer()` - creates a chamfered edges
 
-#### `edge_fillet_to (line, point1, point2, r, type, extra, extra_h)` [^][contents]
-[edge_fillet_to]: #edge_fillet_to-line-point1-point2-r-type-extra-extra_h-
+Example:
+```OpenSCAD
+include <banded.scad>
+
+angle=180; // [0:360]
+$fn=24;
+
+difference()
+{
+	union()
+	{
+		color("orange", 0.5)
+		{
+			cylinder       (r=7, h=2);
+			cylinder_extend(r=3, h=10, angle=angle);
+		}
+		
+		// fill the room on the edge with smooth transition
+		translate([0,0,2])
+		edge_ring_rounded (r_ring=3, r=2, angle_ring=angle);
+	}
+	
+	// cut the upper edge on the cylinder and make a round edge
+	#translate([0,0,10])
+	edge_ring_rounded (r_ring=3, r=2, angle=[90, 180] , angle_ring=angle);
+}
+```
+
+#### `edge_fillet_plane (r, angle, type, extra)` [^][contents]
+[edge_fillet_plane]: #edge_fillet_plane-r-angle-type-extra-
+Creates a profile of a chamfered edge as a 2D object.
+- `r`     - parameter of the chamfer
+- `angle` - angle of the edge in degree
+  - opening angle between `0...180`
+  - as number, default=`90` (right angle)
+  - as list, from-to `[begin_angle, end_angle]`
+- `type`  - specify, which chamfer type should be used for the edge
+  - `0` = no chamfer (default)
+  - `1` = rounding
+  - `2` = chamfer
+- `extra`  - set an amount extra overhang, because of z-fighting
+  - default = constant `extra`
+
+___Specialized modules with no argument `type`___
+- `edge_rounded_plane()` - creates a rounded edges
+  - `d` - diameter of the rounded edge, optional parameter
+- `edge_chamfer_plane()` - creates a chamfered edges
+
+#### `edge_fillet_to (line, point1, point2, r, type, extra, extra_h, directed)` [^][contents]
+[edge_fillet_to]: #edge_fillet_to-line-point1-point2-r-type-extra-extra_h-directed-
+Creates a chamfered edge from the data
+'line of the edge' and 2 vertices of the adjacent faces.
+- `line`   - 2 point list, line defined from first point to second point
+- `point1` - first point, begin of the edge
+- `point2` - second point, end of the edge
+- `r`     - parameter of the chamfer
+- `type`  - specify, which chamfer type should be used for the edge
+  - `0` = no chamfer (default)
+  - `1` = rounding
+  - `2` = chamfer
+- `extra`  - set an amount extra overhang, because of z-fighting
+  - default = constant `extra`
+- `extra_h`
+  - the line will make longer this length at both ends
+  - default = `0`
+- `directed`
+  - If the angle around the line from point1 to point2 counter clockwise
+    is greater then 180°, a chamfered edge is impossible to create.
+    This parameter controls the behavior.
+  - `true` = default, line is considered as directed
+    Create nothing if the angle is greater then 180°.
+  - `false`, line is considered as undirected
+    Flip the chamfered edge to the side with an angle < 180°
+
+___Specialized modules with no argument `type`___
+- `edge_rounded_to()` - creates a rounded edges
+- `edge_chamfer_to()` - creates a chamfered edges
 
 
 ### Figures with rounded edges [^][contents]
@@ -247,7 +360,7 @@ Based on `cube()`\
   - default = `-1` - use the entry from `type`
 - `center` - center the cube if set `true`
 
-Specialized modules with no arguments `type` and `type_xxx`
+___Specialized modules with no arguments `type` and `type_xxx`___
 - `cube_rounded()` - cube only with rounded edges
 - `cube_chamfer()` - cube only with chamfered edges
 
@@ -289,6 +402,6 @@ Based on `wedge()`
     on the bottom, top, side
   - default = `-1` - use the entry from `type`
 
-Specialized modules with no arguments `type` and `type_xxx`
+___Specialized modules with no arguments `type` and `type_xxx`___
 - `wedge_rounded()` - wedge only with rounded edges
 - `wedge_chamfer()` - wedge only with chamfered edges

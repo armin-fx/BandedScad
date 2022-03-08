@@ -129,10 +129,12 @@ __Options:__
    - count of segments, without specification it gets the same like `circle()`
    - with `"x"` includes the [extra special variables](extend.md#special-variables-)
      to automatically control the count of segments
+   - if an angle is specified, count of segments is like in `rotate_extrude()`
 - `piece`
   - `true`  - like a pie, like `rotate_extrude()` in OpenSCAD
-  - `false` - connect the ends of the circle
-  - `0`     - to work on, ends not connected, no edges, default
+  - `false` - connect the ends of the circle,
+            - generate an extra edge if count of segments is too small
+  - `0`     - curve only, no extra edges if "circle is only a line", default
 - `outer`
   - value `0`...`1`
     - `0` - edges on real circle line, default like `circle()` in OpenSCAD

@@ -127,9 +127,10 @@ function circle_point_r (r, angle=0) =
 //            mit Angabe "x" werden die erweiterten Variablen zum steuern der
 //            Auflösunsgenauigket mit herangezogen
 //   piece  - true  = wie ein Tortenstück
-//            false = Enden des Kreises verbinden
-//            0     = zum weiterverarbeiten, Enden nicht verbinden,
-//                    keine zusätzlichen Kanten
+//          - false = Enden des Kreises verbinden
+//                    Wenn die Segmentanzahl zu klein ist, wird eine zusätzliche Kante eingebaut
+//          - 0     = nur die Kurve, zum weiterverarbeiten
+//                    keine zusätzlichen Kanten, wenn die Segmentanzahl zu klein ist
 //   outer  - 0...1 = 0 - Ecken auf der Kreislinie (Standart)
 //                    1 - Tangenten auf der Kreislinie
 function circle_curve (r, angle=360, slices, piece=0, outer, align, d) =
