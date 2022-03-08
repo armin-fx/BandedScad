@@ -260,7 +260,6 @@ module cylinder_edges_rounded (h=1, r, r_bottom=0, r_top=0, center=false, d)
 	R_bottom = min (R, r_bottom);
 	R_top    = min (R, r_top);
 	fn = get_fn_circle_current_x (R);
-	segment_angle = (fn % 2) ? 180/fn : 0;
 	//
 	translate_z(center ? -h/2 : 0)
 	difference()
@@ -275,7 +274,7 @@ module cylinder_edges_rounded (h=1, r, r_bottom=0, r_top=0, center=false, d)
 				difference()
 				{
 					translate_z(-extra)  ring_square (ro=R+extra, ri=R-R_bottom, h=R_bottom+extra, $fn=fn);
-					translate_z(R_bottom) rotate_z(segment_angle)
+					translate_z(R_bottom)
 						torus (r=R-R_bottom, w=R_bottom*2-epsilon, center=true, fn_ring=fn_ring);
 				}
 			}
@@ -286,7 +285,7 @@ module cylinder_edges_rounded (h=1, r, r_bottom=0, r_top=0, center=false, d)
 				difference()
 				{
 					translate_z(h-R_top) ring_square (ro=R+extra, ri=R-R_top, h=R_top+extra, $fn=fn);
-					translate_z(h-R_top) rotate_z(segment_angle)
+					translate_z(h-R_top)
 						torus (r=R-R_top, w=R_top*2-epsilon, center=true, fn_ring=fn_ring);
 				}
 			}
@@ -404,7 +403,7 @@ module wedge_chamfer (v_min, v_max, v2_min, v2_max, c,
 //           1 = Rundung
 //           2 = Schräge
 //   center  true = den Kantenschaft mittig zentrieren, Standart=false
-//   extra   zusätzlichen Überstand abschneiden, wegen Z-Fighting
+//   extra   zusätzlichen Überstand anlegen, wegen Z-Fighting
 module edge_fillet (h=1, r, angle=90, type, center=false, extra=extra)
 {
 	Type = is_num(type) ? type : 0;
@@ -434,7 +433,7 @@ module edge_fillet_plane (r, angle=90, type, extra=extra)
 //   h       Höhe der Kante
 //   r, d    Radius oder Durchmesser der Rundung
 //   angle   Winkel der Kante, Standart=90° (rechter Winkel)
-//   extra   zusätzlichen Überstand abschneiden, wegen Z-Fighting
+//   extra   zusätzlichen Überstand anlegen, wegen Z-Fighting
 module edge_rounded (h=1, r, angle=90, center=false, extra=extra, d)
 {
 	R        = parameter_circle_r(r, d);
@@ -445,20 +444,19 @@ module edge_rounded (h=1, r, angle=90, center=false, extra=extra, d)
 }
 // erzeugt eine abgerundete Kante eines Zylinders zum auschneiden oder ankleben
 // Argumente:
-//   r_ring      Radius der Kante des Zylinders
+//   r_ring      Radius des Zylinders an der Kante
 //   angle_ring  Winkel des Zylinders, Standart=360°
 module edge_ring_rounded (r_ring, r, angle=90, angle_ring=360, extra=extra, d, d_ring)
 {
-	R        = parameter_circle_r(r, d);
-	R_ring   = parameter_circle_r(r_ring, d_ring);
+	R       = parameter_circle_r(r, d);
+	R_ring  = parameter_circle_r(r_ring, d_ring);
 	angles_ring = parameter_angle(angle_ring, 360);
 	fn      = get_fn_circle_current_x(R);
-	fn_ring = get_fn_circle_current_x(R_ring) + floor(360/angles_ring[0]);
+	fn_ring = get_fn_circle_current_x(R_ring);
 	//
 	if (R>0 && R_ring>0)
 	{
-		rotate_z (angles_ring[1])
-		rotate_extrude (angle=angles_ring[0], convexity=4, $fn=fn_ring)
+		rotate_extrude_extend (angle=angles_ring, convexity=4, $fn=fn_ring)
 		translate_x (R_ring)
 		edge_rounded_plane (R, angle, extra=extra, $fn=fn);
 	}
@@ -472,7 +470,7 @@ module edge_rounded_plane (r, angle, extra=extra, d)
 	rotation = angles[1];
 	t_factor = sin(90-Angle/2) / sin(Angle/2);
 	//
-	if (R>0)
+	if (R>0 && Angle<180)
 	rotate_z(rotation)
 	polygon( concat(
 		translate_points(
@@ -510,12 +508,11 @@ module edge_ring_chamfer (r_ring, c, angle=90, angle_ring=360, extra=extra, d_ri
 {
 	R_ring   = parameter_circle_r(r_ring, d_ring);
 	angles_ring = parameter_angle(angle_ring, 360);
-	fn_ring = get_fn_circle_current_x(R_ring) + floor(360/angles_ring[0]);
+	fn_ring = get_fn_circle_current_x(R_ring);
 	//
 	if (c>0 && R_ring>0)
 	{
-		rotate_z (angles_ring[1])
-		rotate_extrude (angle=angles_ring[0], convexity=2, $fn=fn_ring)
+		rotate_extrude_extend (angle=angles_ring, convexity=2, $fn=fn_ring)
 		translate_x (R_ring)
 		edge_chamfer_plane (c, angle, extra=extra);
 	}
@@ -529,7 +526,7 @@ module edge_chamfer_plane (c, angle=90, extra=extra)
 	t       = c/2 / sin(Angle/2);
 	h_extra = extra * cot(Angle/2);
 	//
-	if (c>0)
+	if (c>0 && Angle<180)
 	rotate_z(rotation)
 	polygon([
 		 [ t,       0]
@@ -544,7 +541,7 @@ module edge_chamfer_plane (c, angle=90, extra=extra)
 }
 
 // erzeugt eine gefaste Kante aus den Daten Linie der Kante und 2 Eckpunkten der angrenzenden Flächen
-module edge_fillet_to (line, point1, point2, r, type, extra=extra, extra_h=0)
+module edge_fillet_to (line, point1, point2, r, type, extra=extra, extra_h=0, directed=true)
 {
 	base_vector = [1,0];
 	origin      = line[0];
@@ -552,20 +549,24 @@ module edge_fillet_to (line, point1, point2, r, type, extra=extra, extra_h=0)
 	up_to_z     = rotate_backwards_to_vector_points ( translate_points ([point1,point2], -origin), line_vector);
 	plane       = projection_points (up_to_z);
 	angle_base  = rotation_vector (base_vector, plane[0]);
-	angle_fillet= rotation_vector (plane[0]   , plane[1]);
+	angle_points= rotation_vector (plane[0]   , plane[1]);
+	angle_fillet=    angle_vector (plane[0]   , plane[1]);
 	//
-	translate (origin)
-	rotate_to_vector (line_vector, angle_base)
-	translate_z (-extra_h)
-	edge_fillet (h=norm(line_vector)+extra_h*2, r=r, angle=angle_fillet, type=type, extra=extra);
+	if (directed==false ? true : angle_points<180)
+	{
+		translate (origin)
+		rotate_to_vector (line_vector, angle_base - (angle_points<180 ? 0 : angle_fillet))
+		translate_z (-extra_h)
+		edge_fillet (h=norm(line_vector)+extra_h*2, r=r, angle=angle_fillet, type=type, extra=extra);
+	}
 }
-module edge_rounded_to (line, point1, point2, r, extra=extra, extra_h=0)
+module edge_rounded_to (line, point1, point2, r, extra=extra, extra_h=0, directed=true)
 {
-	edge_fillet_to (line, point1, point2, r, type=1, extra=extra, extra_h=extra_h);
+	edge_fillet_to (line, point1, point2, r, type=1, extra=extra, extra_h=extra_h, directed);
 }
-module edge_chamfer_to (line, point1, point2, c, extra=extra, extra_h=0)
+module edge_chamfer_to (line, point1, point2, c, extra=extra, extra_h=0, directed=true)
 {
-	edge_fillet_to (line, point1, point2, c, type=2, extra=extra, extra_h=extra_h);
+	edge_fillet_to (line, point1, point2, c, type=2, extra=extra, extra_h=extra_h, directed);
 }
 
 

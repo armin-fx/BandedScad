@@ -23,6 +23,7 @@
   - [Modules with extra arguments only ](#modules-with-extra-arguments-only-)
     - [`square_extend()`][square]
     - [`cube_extend()`][cube]
+    - [`rotate_extrude_extend`][rotate_extrude_extend]
 - [Functions](#functions-)
 
 
@@ -114,6 +115,28 @@ Creates a cube
   - Side from origin away that the part should be.
   - [Extra arguments - align](#extra-arguments-)
   - default = `[1,1,1]` = oriented on the positive side of axis
+
+#### `rotate_extrude_extend (angle, convexity)` [^][contents]
+[rotate_extrude_extend]: #rotate_extrude_extend-angle-convexity-
+Modifies `rotate_extrude()`.\
+Objects created with `rotate_extrude()` are rotated differently
+as e.g. the object `cylinder()`.
+With `rotate_extrude_extend()` these objects can be connected correctly.
+
+___Additional options:___
+- `angle` - drawn angle in degree, default=`360`
+  - as number -> angle from `0` to `angle` = opening angle
+  - as list   -> range `[opening angle, begin angle]`
+
+___Example:___
+```OpenSCAD
+include <banded.scad>
+$fn=7;
+
+cylinder (r=2, h=1);
+%rotate_extrude_extend() square([2, 1.5]);
+#rotate_extrude()        square([2, 2]);
+```
 
 
 Functions [^][contents]

@@ -34,7 +34,7 @@ module torus (r, w, ri, ro, angle=360, center=false, fn_ring=undef)
 	fn_Ring = is_num(fn_ring) ? fn_ring : get_fn_circle_current_x(rw);
 	//
 	translate_z(center ? 0 : rw)
-	rotate_extrude(angle=angle, $fn=get_fn_circle_current_x(rm+rw))
+	rotate_extrude_extend (angle=angle, $fn=get_fn_circle_current_x(rm+rw))
 	difference()
 	{
 		translate([ rm,  0]) circle(r=rw, $fn=fn_Ring);
@@ -162,7 +162,7 @@ module funnel (h=1, ri1, ri2, ro1, ro2, w, angle=360, di1, di2, do1, do2)
 			2;
 	fn = get_fn_circle_current_x( max(_ri1, _ri2, _ro1, _ro2) );
 	
-	rotate_extrude(angle=angle, $fn=fn)
+	rotate_extrude_extend (angle=angle, $fn=fn)
 	{
 		polygon([
 			[_ri1,0], [_ro1,0],

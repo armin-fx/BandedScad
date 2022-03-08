@@ -14,9 +14,16 @@ function get_fn_circle_closed (r, fn, fa, fs) =
 	:
 		ceil(max (min (360/fa, r*2*PI/fs), 5))
 ;
-function get_fn_circle (r, angle=360, piece=true, fn, fa, fs) = 
-	max( ceil(get_fn_circle_closed(r, fn, fa, fs) * angle/360),
-	     (piece==true || piece==0) ? 1 : 2)
+function get_fn_circle (r, angle=360, piece=true, fn, fa, fs) =
+	get_fn_circle_pie (r, angle, piece, get_fn_circle_closed(r, fn, fa, fs))
+;
+// gibt die Anzahl der Segmente des Teilstücks eines Kreises zurück,
+// bei Angabe der Segmente eines vollen Kreises.
+// Angelehnt an das Verhalten von rotate_extrude()
+function get_fn_circle_pie (r, angle=360, piece=true, fn) =
+	max( floor(fn * angle/360),
+	     (piece==true || piece==0) ? 1 : 2
+	)
 ;
 
 // gibt die Anzahl der Segmente eines geschlossenen Kreises zurück
@@ -41,8 +48,7 @@ function get_fn_circle_closed_x (r, fn, fa, fs, fn_min, fn_max, fd, fa_enabled, 
 		)))
 ;
 function get_fn_circle_x (r, angle=360, piece=true, fn, fa, fs, fn_min, fn_max, fd, fa_enabled, fs_enabled) = 
-	max( ceil(get_fn_circle_closed_x(r, fn, fa, fs, fn_min, fn_max, fd, fa_enabled, fs_enabled) * angle/360),
-	     (piece==true || piece==0) ? 1 : 2)
+	get_fn_circle_pie (r, angle, piece, get_fn_circle_closed_x(r, fn, fa, fs, fn_min, fn_max, fd, fa_enabled, fs_enabled))
 ;
 
 // aktuelle Fragmentanzahl gemäß den Angaben in $fxxx zurückgeben bei angegeben Radius, optional Winkel

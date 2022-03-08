@@ -82,3 +82,22 @@ module sphere_extend (r, d, align)
 	translate (Align*R)
 	sphere (r=R, $fn=get_fn_circle_current_x(R));
 }
+
+// - 2D to 3D:
+
+// modifiziert rotate_extrude()
+// Objekte erstellt mit rotate_extrude() sind anders gedreht
+// als z.B. das Objekt cylinder().
+// Mit rotate_extrude_extend() können diese Objekte korrekt verbunden werden.
+//
+// Zusätzliche Angaben:
+//   angle  - gezeichneter Winkel in Grad, Standart=360
+//            als Zahl  = Winkel von 0 bis 'angle' = Öffnungswinkel
+//            als Liste = [Öffnungswinkel, Anfangswinkel]
+module rotate_extrude_extend (angle=360, convexity)
+{
+	angles = parameter_angle (angle, 360);
+	//
+	rotate ([0,0, angles[1] + (angles[0]==360 ? 180 : 0) ])
+	rotate_extrude (angle=angles[0], convexity=convexity) children();
+}
