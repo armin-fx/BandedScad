@@ -57,14 +57,14 @@ module cylinder_extend (h, r1, r2, center, r, d, d1, d2, angle=360, slices="x", 
 	angles = parameter_angle (angle, [360,0]);
 	Align  = parameter_align (align, [0,0,1], center);
 	//
-	module mirror_at_z_choice (p, choice)
+	module mirror_z_choice (choice)
 	{
-		if (choice==true) mirror_at_z(p) children();
+		if (choice==true) mirror_z() children();
 		else              children();
 	}
 	
 	translate ([ Align[0]*R_sorted[0], Align[1]*R_sorted[0], Align[2]*H/2 ])
-	mirror_at_z_choice ([0,0,H/2], R[0]<R[1])
+	mirror_z_choice (R[0]<R[1])
 	linear_extrude (height=H, center=true
 		,scale=R_sorted[1]/R_sorted[0]
 		,convexity=(piece==true && angles[0]>180) ? 4 : 2)
