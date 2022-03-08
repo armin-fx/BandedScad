@@ -11,6 +11,10 @@ use <banded/math_common.scad>
 //                     0 1 2    0 1 2     0  1  2
 function extract_axis (list, axis) = [ for (n=list) n[axis] ];
 
+// Wandelt eine Bereichsangabe in eine Liste um
+//     [0:3]  ==>  [0,1,2,3]
+function range (value) = [ for (e=value) e ];
+
 // gibt den größten Abstand der einzelnen Werte innerhalb einer Liste zurück
 function diff_list (list) = max(list) - min(list);
 // gibt den größten Abstand jeder einzelnen Achse in einer Vektoren-Liste
