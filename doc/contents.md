@@ -15,7 +15,7 @@ Table of contents
   - [Math on lists](list.md#math-on-lists-)
   - [Calculating mean](list.md#calculating-mean-)
 - [Functions for edit and convert strings](string.md)
-- Algorithm with function literals
+- [Algorithmus with function literals](function.md)
 - [Helper functions](helper.md)
   - Various helper
   - Argument recondition

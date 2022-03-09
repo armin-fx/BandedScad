@@ -5,7 +5,7 @@ Overview of scad files
 
 `banded.scad`\
 ` `|\
-` `+--> [`banded/constants.scad`][constants.md "Define some constants"]\
+` `+--> [`banded/constants.scad`](constants.md "Define some constants")\
 ` `| . . . +--> `banded/constants_helper.scad`\
 ` `|\
 ` `+--> [`banded/math.scad`](math.md "Math functions")\
@@ -31,7 +31,7 @@ Overview of scad files
 ` `| . . . . . . . +--> [`banded/string_edit_data.scad`](string.md#edit-strings-with-use-of-data- "Edit strings with use of data")\
 ` `|\
 ` `+--> `banded/function.scad`\
-` `| . . . +--> `banded/function_algorithmus.scad`\
+` `| . . . +--> [`banded/function_algorithmus.scad`](function.md "Algorithmus with function literals")\
 ` `| . . . +--> `banded/function_list_edit.scad`\
 ` `|\
 ` `+--> [`banded/helper.scad`](helper.md "Helper functions")\

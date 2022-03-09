@@ -136,7 +136,7 @@ Returns `1` or `-1` if the condition of `n` fits
 [sqr]: #sqr-x-
 Square a value `x`. A function name for `x*x`
 
-#### reverse_norm (n, v) [^][contents]
+#### `reverse_norm (n, v)` [^][contents]
 [reverse_norm]: #reverse_norm-n-v-
 Invert the euclidean norm
 - `n` - diagonal value or value of euclidean norm
@@ -159,12 +159,12 @@ Calculates the modulo.\
 Get the remainder of `x / n` with floored division.
 The remainder would have the same sign as the divisor `n`.
 
-#### xor (bool, bool2) [^][contents]
+#### `xor (bool, bool2)` [^][contents]
 [xor]: #xor-bool-bool2-
 return a boolean value of operation xor
 - `bool`, `bool2` - boolean value
 
-#### normal_distribution (x, mean, sigma) [^][contents]
+#### `normal_distribution (x, mean, sigma)` [^][contents]
 [normal_distribution]: #normal_distribution-x-mean-sigma-
 Calculate the Gauss normal distribution
 - `x`     - numeric value
@@ -187,22 +187,22 @@ Calculate the Gauss normal distribution
 #### Hyperbolic [^][contents]
 [=> Wikipedia - Hyperbolic functions](https://en.wikipedia.org/wiki/Hyperbolic_functions)
 
-| function | description
-|----------|-------------
-| sinh (x) | hyperbolic sine of `x`
-| cosh (x) | hyperbolic cosine of `x`
-| tanh (x) | hyperbolic tangent of `x`
-| coth (x) | hyperbolic cotangent of `x`
+| function   | description
+|------------|-------------
+| `sinh (x)` | hyperbolic sine of `x`
+| `cosh (x)` | hyperbolic cosine of `x`
+| `tanh (x)` | hyperbolic tangent of `x`
+| `coth (x)` | hyperbolic cotangent of `x`
 
 #### Inverse hyperbolic [^][contents]
 [=> Wikipedia - Inverse hyperbolic functions](https://en.wikipedia.org/wiki/Inverse_hyperbolic_functions)
 
-| function   | description
-|------------|-------------
-| arsinh (x) | Inverse hyperbolic sine of `x`
-| arcosh (x) | Inverse hyperbolic cosine of `x`
-| artanh (x) | Inverse hyperbolic tangent of `x`
-| arcoth (x) | Inverse hyperbolic cotangent of `x`
+| function     | description
+|--------------|-------------
+| `arsinh (x)` | Inverse hyperbolic sine of `x`
+| `arcosh (x)` | Inverse hyperbolic cosine of `x`
+| `artanh (x)` | Inverse hyperbolic tangent of `x`
+| `arcoth (x)` | Inverse hyperbolic cotangent of `x`
 
 #### `sinc (x)` [^][contents]
 [sinc]: #sinc-x-

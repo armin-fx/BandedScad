@@ -37,6 +37,7 @@ What it does [^][contents]
   - [More common math functions][math_common]
   - Functions for [matrices and vector][matrix]
   - Work with [complex numbers][complex]
+- [Algorithmus with function literals][function]
 - [Helper functions][helper]
 - [Benchmark functions for speed][benchmark]
 
@@ -52,6 +53,7 @@ What it does [^][contents]
 [color]:       doc/color.md
 [list]:        doc/list.md
 [string]:      doc/string.md
+[function]:    doc/function.md
 [helper]:      doc/helper.md
 [benchmark]:   doc/helper.md#benchmark-function-
 [math]:        doc/math.md

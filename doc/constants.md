@@ -79,6 +79,7 @@ in console if constants has changed.
 | `extra`             | 0.02
 | `epsilon`           | 0.000075
 | `deviation`         | 1e-14
+| `delta_std`         | 0.001
 
 ___`extra`:___
 - Number to add or subtract if clipping objects need to be slightly larger
@@ -90,6 +91,10 @@ ___`epsilon`:___
 
 ___`deviation`:___
 - Smallest number that occurs when calculations are inaccurate.
+
+___`delta_std`:___
+- Step amount for calculation of approximate values.
+- Used in functions `integrate()` and `derivation()`.
 
 
 ### Auxiliary constants [^][contents]
@@ -109,10 +114,14 @@ ___`deviation`:___
 [axis]: #axis-n-d-
 Returns a vector with axis n.
 - `n` - number of axis (X=`0`, Y=`1`, Z=`2`)
-- `d` - count of dimensions (2D plane = `2`; 3D room, default = `3`)
+- `d` - count of dimensions
+  - `2` = 2D plane
+  - `3` = 3D room, default
+
+`axis (1)` returns `[0,1,0]`
 
 ___Spezialized functions with fixed axis `n`:___
-`x (d)` - X-axis
-`y (d)` - X-axis
-`z (d)` - X-axis
+- `x (d)` - X-axis
+- `y (d)` - Y-axis
+- `z (d)` - Z-axis
 
