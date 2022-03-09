@@ -1,6 +1,7 @@
 // Copyright (c) 2020 Armin Frenzel
 // License: LGPL-2.1-or-later
 
+include <banded/constants.scad>
 use <banded/list_algorithmus.scad>
 
 function summation_fn (fn, n, k=0) =
@@ -46,33 +47,31 @@ function product_fn_intern_big (fn, n, k, slice=100000) =
 	:product_fn_intern(fn, n, k)
 ;
 
-function taylor        (fn, x, n=0, k=0) =
-	taylor_intern      (fn, x, n, k)
+function taylor        (fn, x, n=0, k=0, step=1) =
+	taylor_intern      (fn, x, n, k, step)
 ;
-function taylor_intern (fn, x, n, k, value=0) =
+function taylor_intern (fn, x, n, k, step, value=0) =
 	(k>n) ? value :
-	taylor_intern (fn, x, n, k+1,
+	taylor_intern (fn, x, n, k+step, step,
 		value + fn(x, k)
 	)
 ;
 
-function taylor_auto (fn, x, n=undef, k=0) =
+function taylor_auto (fn, x, n=undef, k=0, step=1) =
 	(n==undef) ?
-	 	taylor_auto_intern (fn, x, 100000, k+1, fn (x, k) )
-	:	taylor_auto_intern (fn, x, n,      k+1, fn (x, k) )
+	 	taylor_auto_intern (fn, x, 10000, k+step, step, fn (x, k) )
+	:	taylor_auto_intern (fn, x, n,     k+step, step, fn (x, k) )
 ;
-function taylor_auto_intern (fn, x, n, k, value, value_old) =
+function taylor_auto_intern (fn, x, n, k, step, value, value_old) =
 	(k>n || value==value_old) ? value :
-	taylor_auto_intern (fn, x, n, k+1,
+	taylor_auto_intern (fn, x, n, k+step, step,
 		value + fn(x, k),
 		value
 	)
 ;
 
-delta_std = 0.001;
-
 function integrate (fn, begin, end, constant=0, delta=delta_std) =
-	integrate_simpson (fn, begin, end, delta, constant)
+	integrate_simpson (fn, begin, end, constant, delta)
 ;
 //
 function integrate_midpoint (fn, begin, end, constant=0, delta=delta_std) =

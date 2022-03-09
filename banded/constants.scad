@@ -16,6 +16,8 @@ euler = exp(1);
 euler_mascheroni = 0.577215664901;
 // Goldener Schnitt = 1.61803398875
 golden = (1 + sqrt(5)) / 2;
+// Schrittweite für Infinitsimalrechnung
+delta_std = 0.001;
 
 // - Maßeinheiten umrechnen:
 
