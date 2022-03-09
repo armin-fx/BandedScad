@@ -401,6 +401,17 @@ ___Specialized modules with no arguments `type` and `type_xxx`___
 - `cylinder_edges_rounded()` - cylinder only with rounded edges
 - `cylinder_edges_chamfer()` - cylinder only with chamfered edges
 
+Example:
+```OpenSCAD
+include <banded.scad>
+$fn=24;
+
+cylinder_edges_fillet (
+	h=10, r1=3, r2=4,
+	type=[1,2], r_edges=2, angle=240, align=[1,0,1]
+);
+```
+
 #### `wedge_fillet (v_min, v_max, v2_min, v2_max, r, type, edges_xx, corner_xxx, type_xxx)` [^][contents]
 [wedge_fillet]: #wedge_fillet-v_min-v_max-v2_min-v2_max-r-type-edges_xx-corner_xxx-type_xxx-
 Creates a wedge with the parameter form FreeCAD's wedge
