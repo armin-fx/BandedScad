@@ -5,7 +5,7 @@ Overview of scad files
 
 `banded.scad`\
 ` `|\
-` `+--> `banded/constants.scad`\
+` `+--> [`banded/constants.scad`][constants.md "Define some constants"]\
 ` `| . . . +--> `banded/constants_helper.scad`\
 ` `|\
 ` `+--> [`banded/math.scad`](math.md "Math functions")\

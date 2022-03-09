@@ -1,7 +1,7 @@
 Table of contents
 =================
 
-- Constants
+- [Constants](constants.md)
 - Math functions
   - [Common math functions](math.md)
   - [Vector and Matrix operations](matrix.md)

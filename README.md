@@ -17,6 +17,10 @@ What it does [^][contents]
 
 - [More control of the level of detail for a mesh][extend],
     extend the control of number of facets used to generate an arc
+- [Configurable object modules][object]
+  - [Figures][figures] (torus, wedge, funnel, ... )
+  - [Rounded and chamfered edges][edges]
+- [Transform and edit objects][operator]
 - Draft objects in data lists
   - [Create curves][curves] into a point list with functions.
     These can load with `polygon()`
@@ -27,10 +31,6 @@ What it does [^][contents]
     _(not finished yet)_
   - [Working with multmatrix][multmatrix]
   - [Convert colors][color]
-- [Transform and edit objects][operator]
-- [Configurable object modules][object]
-  - [Figures][figures] (torus, wedge, funnel, ... )
-  - [Rounded and chamfered edges][edges]
 - [Edit and work with lists][list]
 - [Edit and convert strings][string]
 - [Math functions][math]
