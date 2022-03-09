@@ -34,6 +34,8 @@ Configurable objects
     - [`cylinder_edges_rounded()`][cylinder_edges_rounded]
     - [`wedge_fillet()`][wedge_fillet]
 
+[cylinder_extend]: extend.md#cylinder_extend-
+
 
 Figures [^][contents]
 ---------------------
@@ -373,13 +375,31 @@ Based on `cylinder()`
 - `r`, `d` - radius or diameter of the cylinder
 - `center` - center the cylinder if set `true`
 
-#### `cylinder_edges_rounded (h, r, r_bottom, r_top, center, d)` [^][contents]
-[cylinder_edges_rounded]: #cylinder_edges_rounded-h-r-r_bottom-r_top-center-d-
-Cylinder with rounded edges on bottom and top,
-all edges with the same radius like the cylinder radius.\
-Based on `cylinder()`
-- `r_bottom` - radius of the edge on the bottom
-- `r_top`    - radius of the edge on the top
+#### `cylinder_edges_fillet (h, r1, r2, r_edges, type, center, r, d, d1, d2, angle, align)` [^][contents]
+[cylinder_edges_fillet]: #cylinder_edges_fillet-h-r1-r2-r_edges-type-center-r-d-d1-d2-angle-align-
+Cylinder with chamfered edges on bottom and top.\
+Based on [`cylinder_extend()`][cylinder_extend], compatible with `cylinder()`
+- `r_edges` - radius of both edges
+  - as number: set the same radius for both edges
+  - as list:   set the edge radius individually - `[bottom_radius, top_radius]`
+- `type` - specify, which chamfer type should be used for the edges
+  - `0` = no chamfer (default)
+  - `1` = rounding
+  - `2` = chamfer
+  - as value: set the same edge type for both edges
+  - as list:  set the edge type individually - `[bottom_edge, top_edge]`
+- `angle`
+  - drawed angle in degree, default=`360`
+    - as number -> angle from `0` to `angle` = opening angle
+    - as list   -> range `[opening angle, begin angle]`
+- `align`
+  - Side from origin away that the part should be.
+  - [Extra arguments - align](extend.md#extra-arguments-)
+  - default = `[0,0,1]` = X-Y-axis centered
+
+___Specialized modules with no arguments `type` and `type_xxx`___
+- `cylinder_edges_rounded()` - cylinder only with rounded edges
+- `cylinder_edges_chamfer()` - cylinder only with chamfered edges
 
 #### `wedge_fillet (v_min, v_max, v2_min, v2_max, r, type, edges_xx, corner_xxx, type_xxx)` [^][contents]
 [wedge_fillet]: #wedge_fillet-v_min-v_max-v2_min-v2_max-r-type-edges_xx-corner_xxx-type_xxx-

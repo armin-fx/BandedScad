@@ -253,44 +253,56 @@ module cylinder_rounded (h=3, r, center=false, d)
 	}
 }
 
-// Zylinder mit abgerundeten Kanten, mit angegebenen Radius
-module cylinder_edges_rounded (h=1, r, r_bottom=0, r_top=0, center=false, d)
+
+// Zylinder mit gefasten Kanten, wahlweise abgerundet oder angeschrägt
+// fehlt noch: outer, piece
+module cylinder_edges_fillet (h, r1, r2, r_edges=0, type=0, center, r, d, d1, d2, angle=360, align)
 {
-	R = parameter_circle_r (r, d);
-	R_bottom = min (R, r_bottom);
-	R_top    = min (R, r_top);
-	fn = get_fn_circle_current_x (R);
-	//
-	translate_z(center ? -h/2 : 0)
+	R        = parameter_cylinder_r (r, r1, r2, d, d1, d2);
+	R_max    = max(R);
+	H        = get_first_num (h, 1);
+	Types    = parameter_types (type, 0, 2);
+	a        = atan ( H / (R[0]-R[1]) );
+	angle_bottom = a<0 ? a+180 : a;
+	angle_edges  = [angle_bottom, 180-angle_bottom];
+	R_edges  = parameter_numlist (2, r_edges, [0,0], true);
+	R_both   = [for (i=[0:1])
+		Types[i]==1 ? min (  R[i]*tan(angle_edges[i]/2), R_edges[i])
+		:             min (2*R[i]*sin(angle_edges[i]/2), R_edges[i])
+		];
+	angles   = parameter_angle (angle, [360,0]);
+	Align    = parameter_align (align, [0,0,1], center);
+	fn = get_fn_circle_current_x (R_max);
+	
+	echo(R_both);
+	
+	translate ([ Align[0]*R_max, Align[1]*R_max, Align[2]*H/2 - H/2])
 	difference()
 	{
-		cylinder_extend (r=R, h=h);
-		union()
+		cylinder_extend (r1=R[0], r2=R[1], h=H, angle=angles);
+		//
+		if (R_both[0] > 0)
 		{
-			if (R_bottom > 0)
-			{
-				fn_ring=ceil((get_fn_circle_current_x(R_bottom) - 1) / 4) * 4;
-				//
-				difference()
-				{
-					translate_z(-extra)  ring_square (ro=R+extra, ri=R-R_bottom, h=R_bottom+extra, $fn=fn);
-					translate_z(R_bottom)
-						torus (r=R-R_bottom, w=R_bottom*2-epsilon, center=true, fn_ring=fn_ring);
-				}
-			}
-			if (R_top > 0)
-			{
-				fn_ring=ceil((get_fn_circle_current_x(R_top) - 1) / 4) * 4;
-				//
-				difference()
-				{
-					translate_z(h-R_top) ring_square (ro=R+extra, ri=R-R_top, h=R_top+extra, $fn=fn);
-					translate_z(h-R_top)
-						torus (r=R-R_top, w=R_top*2-epsilon, center=true, fn_ring=fn_ring);
-				}
-			}
+			edge_ring_fillet (r_ring=R[0], r=R_both[0], angle=[angle_edges[0],180-angle_edges[0]],
+				angle_ring=angles, type=Types[0]);
+		}
+		if (R_both[1] > 0)
+		{
+			translate_z (H)
+			edge_ring_fillet (r_ring=R[1], r=R_both[1], angle=[angle_edges[1],180],
+				angle_ring=angles, type=Types[1]);
 		}
 	}
+}
+// Zylinder mit abgerundeten Kanten
+module cylinder_edges_rounded (h, r1, r2, r_edges=0, center, r, d, d1, d2, angle=360, align)
+{
+	cylinder_edges_fillet (h, r1, r2, r_edges, type=1, center, r, d, d1, d2, angle, align);
+}
+// Zylinder mit abgeschrägten Kanten
+module cylinder_edges_chamfer (h, r1, r2, r_edges=0, center, r, d, d1, d2, angle=360, align)
+{
+	cylinder_edges_fillet (h, r1, r2, r_edges, type=2, center, r, d, d1, d2, angle, align);
 }
 
 // Erzeugt einen Keil mit den Parametern von FreeCAD mit gefasten Kanten

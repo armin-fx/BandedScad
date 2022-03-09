@@ -302,11 +302,11 @@ function parameter_edge_radius (edge, r) =
 ;
 
 // Wertet die Parameter type_xxx vom Module cube_fillet() aus,
-// gibt eine 4 elementige Liste zurück
-function parameter_types (type_list, type) =
+// gibt eine n elementige Liste zurück
+function parameter_types (type_list, type, n=4) =
 	is_list(type_list) ?
-		[ for (i=[0:3]) parameter_type (type_list[i], type) ]
-	:	[ for (i=[0:3]) parameter_type (type_list,    type) ]
+		[ for (i=[0:1:n-1]) parameter_type (type_list[i], type) ]
+	:	[ for (i=[0:1:n-1]) parameter_type (type_list,    type) ]
 ;
 function parameter_type (type_x, type) =
 	 (type_x == undef) ? parameter_type (type, 0)

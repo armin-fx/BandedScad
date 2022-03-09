@@ -89,6 +89,10 @@ Creates a circle with [options of `circle_curve()`](curves.md#circle-)
 #### `cylinder_extend()` [^][contents]
 [cylinder]: #cylinder_extend-
 Creates a cylinder with ground circle [options of `circle_curve()`](curves.md#circle-)
+- `align`
+  - Side from origin away that the part should be.
+  - [Extra arguments - align](#extra-arguments-)
+  - default = `[0,0,1]` = X-Y-axis centered
 
 #### `sphere_extend()` [^][contents]
 [sphere]: #sphere_extend-
