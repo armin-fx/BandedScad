@@ -140,6 +140,7 @@ function parameter_helix_to_rp (rotations, pitch, height) =
 //   d  - Durchmesser oben und unten 
 //   d1 - Durchmesser unten
 //   d2 - Durchmesser oben
+//   preset - optional, wird als Radius genommen, wenn nichts passt
 // Regeln wie bei cylinder() von OpenSCAD
 // - Durchmesser geht vor Radius
 // - spezielle Angaben (r1, r2) gehen vor allgemeine Angaben (r)
@@ -174,7 +175,7 @@ function parameter_circle_r (r, d) =
 	1
 ;
 
-// wandelt das Argument 'size' um in einen Tupel [1,2,3]
+// wandelt das Argument 'size' um in einen Tripel [1,2,3]
 // aus size=3       wird   [3,3,3]
 // aus size=[1,2,3] bleibt [1,2,3]
 function parameter_size_3d (size) =
@@ -189,6 +190,9 @@ function parameter_size_3d (size) =
 	:	 [1,1,1]               // f(undef)
 
 ;
+// wandelt das Argument 'size' um in einen Dupel [1,2]
+// aus size=3       wird   [3,3]
+// aus size=[1,2]   bleibt [1,2]
 function parameter_size_2d (size) =
 	 is_num_2d(size) ? size
 	:is_num   (size) ? [size, size]
@@ -228,8 +232,9 @@ function parameter_align (align, preset, center) =
 //                - true  = fehlende Werte werden mit preset aufgefüllt
 //                - false = es wird 'preset' genommen
 //                - undef = value so lassen (Standart)
-//                - Zahl  = mit den Wert aus dieser Position in 'value' auffüllen
-//                          geht das nicht, wird 'preset' genommen
+//                - Zahl  = Positionsangabe, einen Wert nehmen aus `value` an
+//                          dieser Positionsangabe und die Liste damit auffüllen.
+//                          Geht das nicht, wird 'preset' genommen
 //                - Liste = mit den Werten aus der Liste 'fill' an den entsprechenden Positionen auffüllen
 function parameter_numlist (dimension, value, preset, fill) =
 	 is_num(value)  ? [for (i=[0:dimension-1]) value]
@@ -257,8 +262,8 @@ function parameter_numlist (dimension, value, preset, fill) =
 //             - Als Liste = [Öffnungswinkel, Anfangswinkel]
 //   angle_std - Standartangabe des Winkels, wenn angle nicht gesetzt wurde
 //               (Standart = [360, 0])
-function parameter_angle (angle, angle_std) =
-	(is_num (angle))  ? [angle   , 0] :
+function parameter_angle (angle, angle_std=360) =
+	is_num (angle) ?    [angle   , 0] :
 	is_list(angle) ?
 		len(angle)==2 ? angle         :
 		len(angle)==1 ? [angle[0], 0] :
@@ -287,12 +292,13 @@ function parameter_mirror_vector_3d (v, v_std=[1,0,0]) =
 //             - wird mit r multipliziert sofern angegeben
 //             - als Zahl werden alle Kanten auf diesen Wert gesetzt
 //             - andernfalls wird der Wert auf 0 gesetzt = nicht gefaste Kante
-function parameter_edges_radius (edge_list, r) =
+//   n         - Es kann hier eine andere Elementanzahl als standardmäßig 4 angegeben werden
+function parameter_edges_radius (edge_list, r, n=4) =
 	is_list(edge_list) ?
-		[ for (i=[0:3]) parameter_edge_radius (edge_list[i], r) ]
+		[ for (i=[0:n-1]) parameter_edge_radius (edge_list[i], r) ]
 	:is_num(edge_list) ?
-		[ for (i=[0:3]) parameter_edge_radius (edge_list,    r) ]
-	:	[ for (i=[0:3]) 0 ]
+		[ for (i=[0:n-1]) parameter_edge_radius (edge_list,    r) ]
+	:	[ for (i=[0:n-1]) 0 ]
 ;
 function parameter_edge_radius (edge, r) =
 	is_num(edge) ?
@@ -302,7 +308,13 @@ function parameter_edge_radius (edge, r) =
 ;
 
 // Wertet die Parameter type_xxx vom Module cube_fillet() aus,
-// gibt eine n elementige Liste zurück
+// gibt eine 4 elementige Liste zurück
+// Argumente:
+//   type_list - 4 elementige Liste mit den Typ der jeweiligen Ecke
+//             - als einzelner Typ = dieser Wert wird für alle Elemente genommen
+//             - als Liste = fehlerhafte Werte werden mit 'type' ersetzt
+//   type      - vordefinierter Typ einer Ecke, Standart = keine Ecke
+//   n         - Es kann hier eine andere Elementanzahl als standardmäßig 4 angegeben werden
 function parameter_types (type_list, type, n=4) =
 	is_list(type_list) ?
 		[ for (i=[0:1:n-1]) parameter_type (type_list[i], type) ]

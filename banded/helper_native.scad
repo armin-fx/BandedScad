@@ -74,29 +74,29 @@ function is_range (value) =
 
 // testet eine Variable, ob sie eine Liste mit einer angegebenen
 // Verschachtelungstiefe enthält.
-// dimension - Tiefe der verschachtelten Listen,
-//             ohne Angabe (= 1) wird auf eine einfache unverschachtelte Liste getestet
-//             bei 0 wird die Variable getestet, ob sie nicht undef und keine Liste ist
-function is_list_depth (value, dimension=1) =
-	dimension==0 ? value!=undef && !is_list(value) :
-	is_list_depth_intern (value, dimension)
+// depth - Tiefe der verschachtelten Listen,
+//         ohne Angabe (= 1) wird auf eine einfache unverschachtelte Liste getestet
+//         bei 0 wird die Variable getestet, ob sie nicht undef und keine Liste ist
+function is_list_depth (value, depth=1) =
+	depth==0 ? value!=undef && !is_list(value) :
+	is_list_depth_intern (value, depth)
 ;
-function is_list_depth_intern (value, dimension=1) =
-	dimension==1 ? (!is_list(value[0]) && is_list(value))
-	:              is_list_depth_intern (value[0], dimension-1)
+function is_list_depth_intern (value, depth=1) =
+	depth==1 ? (!is_list(value[0]) && is_list(value))
+	:          is_list_depth_intern (value[0], depth-1)
 ;
 // testet eine Variable, ob sie eine Liste mit einer angegebenen
-// Verschachtelungstiefe enthält.
-// dimension - Tiefe der verschachtelten Listen,
-//             ohne Angabe (= 1) wird auf eine einfache unverschachtelte Liste getestet
-//             bei 0 wird die Variable getestet, ob sie eine Zahl enthält
-function is_list_depth_num (value, dimension=1) =
-	dimension==0 ? is_num(value) :
-	is_list_depth_num (value, dimension)
+// Verschachtelungstiefe enthält und die letzte Liste numerische Werte enthält.
+// depth - Tiefe der verschachtelten Listen,
+//         ohne Angabe (= 1) wird auf eine einfache unverschachtelte Liste getestet
+//         bei 0 wird die Variable getestet, ob sie eine Zahl enthält
+function is_list_depth_num (value, depth=1) =
+	depth==0 ? is_num(value) :
+	is_list_depth_num (value, depth)
 ;
-function is_list_depth_num_intern (value, dimension=1) =
-	dimension==1 ? (is_num(value[0]) && is_list(value))
-	:              is_list_depth_num_intern (value[0], dimension-1)
+function is_list_depth_num_intern (value, depth=1) =
+	depth==1 ? (is_num(value[0]) && is_list(value))
+	:          is_list_depth_num_intern (value[0], depth-1)
 ;
 
 // gibt die Verschachtelungstiefe einer Liste zurück
@@ -140,10 +140,29 @@ function get_first_num (a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) =
 	undef
 ;
 
-// gibt einen Wert für mehrere gleichartige Parameter zurück
-// Die Parameter sind hier 1-Dimensionale Vektoren
-// Alle einzelnen Parameter im Vektor müssen einen Wert haben, um akzeptiert zu werden.
-// Sind mehrere Parameter gesetzt, wird der erste genommen, der gesetzt ist.
+// gibt das erste Argument 'a?' zurück, das eine Liste enthält,
+// die 'length' groß sind und alle Werte in dieser nicht undef sind
+function get_first_good_list (length, a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) =
+	length==1 ? get_first_good_1d (a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) :
+	length==2 ? get_first_good_2d (a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) :
+	length==3 ? get_first_good_3d (a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) :
+	length!=undef && is_num(length) && length>=4 ?
+		get_first_good_in_list ([a0, a1, a2, a3, a4, a5, a6, a7, a8, a9], length)
+	:	undef
+;
+// gibt das erste Argument 'a?' zurück, das eine Liste enthält,
+// die 'length' groß sind und alle Werte in dieser nicht undef sind
+// und alle einen numerischen Wert enthalten
+function get_first_num_list (length, a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) =
+	length==1 ? get_first_num_1d (a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) :
+	length==2 ? get_first_num_2d (a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) :
+	length==3 ? get_first_num_3d (a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) :
+	length!=undef && is_num(length) && length>=4 ?
+		get_first_num_in_list ([a0, a1, a2, a3, a4, a5, a6, a7, a8, a9], length)
+	:	undef
+;
+
+// spezialisierte Funktion von get_first_good_list () für Listen mit 1 Element
 function get_first_good_1d (a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) =
 	// get_first_good_in_list ([a0, a1, a2, a3, a4, a5, a6, a7, a8, a9], 1)
 	a0!=undef && is_list(a0) && len(a0)==1 && a0[0]!=undef ? a0 :
@@ -173,10 +192,7 @@ function get_first_num_1d   (a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) =
 	undef
 ;
 
-// gibt einen Wert für mehrere gleichartige Parameter zurück
-// Die Parameter sind hier 2-Dimensionale Vektoren
-// Alle 2 Parameter im Vektor müssen einen Wert haben, um akzeptiert zu werden.
-// Sind mehrere Parameter gesetzt, wird der erste genommen, der gesetzt ist.
+// spezialisierte Funktion von get_first_good_list () für Listen mit 2 Elementen
 function get_first_good_2d (a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) =
 	// get_first_good_in_list ([a0, a1, a2, a3, a4, a5, a6, a7, a8, a9], 2)
 	a0!=undef && is_list(a0) && len(a0)==2 && a0[0]!=undef && a0[1]!=undef ? a0 :
@@ -206,10 +222,7 @@ function get_first_num_2d (a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) =
 	undef
 ;
 
-// gibt einen Wert für mehrere gleichartige Parameter zurück
-// Die Parameter sind hier 3-Dimensionale Vektoren
-// Alle 3 Parameter im Vektor müssen einen Wert haben, um akzeptiert zu werden.
-// Sind mehrere Parameter gesetzt, wird der erste genommen, der gesetzt ist.
+// spezialisierte Funktion von get_first_good_list () für Listen mit 3 Elementen
 function get_first_good_3d (a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) =
 	// get_first_good_in_list ([a0, a1, a2, a3, a4, a5, a6, a7, a8, a9], 3)
 	a0!=undef && is_list(a0) && len(a0)==3 && a0[0]!=undef && a0[1]!=undef && a0[2]!=undef ? a0 :
@@ -303,28 +316,6 @@ function get_first_good_in_list_intern_list (list, size, begin=0) =
 	:	get_first_good_in_list_intern_list(list, size, begin+1)
 ;
 
-// testet eine Liste durch, ob alle Werte darin nicht undef sind
-// gibt true zurück bei Erfolg
-// Argumente:
-//  - list    - Liste mit den Werten
-//  - begin   - das erste Element das getestet wird
-//              Standard = vom ersten Element an
-//  - end     - das erste Element das nicht mehr getestet wird
-//              Standart = bis zum letzten Element
-function is_good_list (list, begin=0, end=undef) =
-	 list==undef      ? false
-	:!is_list(list)   ? false
-	:begin==undef     ? false
-	:end==undef       ? is_good_list_intern (list, begin, len(list))
-	:! len(list)>=end ? false
-	:is_good_list_intern (list, begin, end)
-;
-function is_good_list_intern (list, begin, end) =
-	 begin>=end         ? true
-	:list[begin]==undef ? false
-	:is_good_list_intern (list, begin+1, end)
-;
-
 // wie get_first_good_in_list () aber
 //  - ein gültiger Wert: -> eine Zahl
 function get_first_num_in_list (list, size=0, begin=0) =
@@ -377,6 +368,29 @@ function get_first_num_in_list_intern_list (list, size, begin=0) =
 		list[begin]
 	:	get_first_num_in_list_intern_list(list, size, begin+1)
 ;
+
+// testet eine Liste durch, ob alle Werte darin nicht undef sind
+// gibt true zurück bei Erfolg
+// Argumente:
+//  - list    - Liste mit den Werten
+//  - begin   - das erste Element das getestet wird
+//              Standard = vom ersten Element an
+//  - end     - das erste Element das nicht mehr getestet wird
+//              Standart = bis zum letzten Element
+function is_good_list (list, begin=0, end=undef) =
+	 list==undef      ? false
+	:!is_list(list)   ? false
+	:begin==undef     ? false
+	:end==undef       ? is_good_list_intern (list, begin, len(list))
+	:! len(list)>=end ? false
+	:is_good_list_intern (list, begin, end)
+;
+function is_good_list_intern (list, begin, end) =
+	 begin>=end         ? true
+	:list[begin]==undef ? false
+	:is_good_list_intern (list, begin+1, end)
+;
+
 // testet eine Liste durch, ob alle Werte darin eine numerische Zahl sind
 // gibt true zurück bei Erfolg
 // Argumente wie is_good_list()
@@ -409,6 +423,10 @@ function is_good_3d (list) =
 	 list!=undef && is_list(list) && len(list)==3
 	 && list[0]!=undef && list[1]!=undef && list[2]!=undef
 ;
+function is_good_4d (list) =
+	 list!=undef && is_list(list) && len(list)==4
+	 && list[0]!=undef && list[1]!=undef && list[2]!=undef && list[4]!=undef
+;
 
 // testet eine Liste mit fester Größe, ob alle Werte darin eine numerische Zahl sind
 // gibt true zurück bei Erfolg
@@ -423,6 +441,10 @@ function is_num_2d (list) =
 function is_num_3d (list) =
 	 list!=undef && is_list(list) && len(list)==3
 	 && is_num(list[0]) && is_num(list[1]) && is_num(list[2])
+;
+function is_num_4d (list) =
+	 list!=undef && is_list(list) && len(list)==4
+	 && is_num(list[0]) && is_num(list[1]) && is_num(list[2]) && is_num(list[3])
 ;
 
 

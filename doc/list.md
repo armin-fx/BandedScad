@@ -20,6 +20,7 @@ Functions for working with lists
 [contents]: #contents "Up to Contents"
 - [Editing lists][edit]
   - [Repeating options](#repeating-options-)
+    - [Range Arguments][range_args]
   - [Different type of data][type]
   - [List functions with specified `type`](#list-functions-with-specified-type-)
   - [Edit list independent from the data][list_edit_item]
@@ -83,13 +84,19 @@ Editing lists [^][contents]
   - Specify how the data from an element in a list will be used.
   - [see entry - Different type of data][type]
 - `value` - nothing to say, value used for
-- `'range_args'`
-  - Contain a set of arguments which defines a range in a list. Choose which you need.
-  - Needs only 2 arguments of:
-    - `begin` - first element from a list
-    - `last`  - last element
-    - `count` - count of elements
-    - `range` - a list with: `[begin, last]`
+
+#### Range arguments [^][contents]
+[range_args]: #range-arguments-
+Contain a set of arguments which defines a range in a list.
+Choose which you need.
+
+Needs only 2 arguments of:
+- `begin` - first element from a list
+- `last`  - last element
+- `count` - count of elements
+
+or:
+- `range` - a list with: `[begin, last]`
 
 
 Different type of data [^][contents]
@@ -219,7 +226,7 @@ Replace elements in a list with `list_insert` or part of it
 #### `extract_list (list, 'range_args')` [^][contents]
 [extract_list]: #extract_list-list-range_args-
 Extract a sequence from a list
-- [`'range_args'`](#repeating-options-) - sets the range to extract
+- [`'range_args'`][range_args] - sets the range to extract
 
 #### `fill_list (count, value)` [^][contents]
 [fill_list]: #fill_list-count-value-
@@ -287,7 +294,7 @@ but return always the position of the first hit.
 #### `count_list (list, value, type, 'range_args')` [^][contents]
 [count_list]: #count_list-list-value-type-range_args-
 Count how often a value is in list
-- [`'range_args'`](#repeating-options-) - sets the range in which will count, standard = full list
+- [`'range_args'`][range_args] - sets the range in which will count, standard = full list
 
 #### `remove_duplicate_list (list, type)` [^][contents]
 [remove_duplicate_list]: #remove_duplicate_list-list-type-

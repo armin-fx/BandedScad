@@ -17,8 +17,8 @@ Table of contents
 - [Functions for edit and convert strings](string.md)
 - [Algorithmus with function literals](function.md)
 - [Helper functions](helper.md)
-  - Various helper
-  - Argument recondition
+  - [Various helper](helper.md#native-helper-functions-)
+  - [Argument recondition](helper.md#recondition-arguments-of-functions-)
   - [Benchmark for functions](helper.md#benchmark-function-)
 - [Control the level of detail of a mesh](extend.md)
   - [Extra special variables](extend#special-variables-)

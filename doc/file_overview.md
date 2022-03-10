@@ -35,8 +35,8 @@ Overview of scad files
 ` `| . . . +--> `banded/function_list_edit.scad`\
 ` `|\
 ` `+--> [`banded/helper.scad`](helper.md "Helper functions")\
-` `| . . . +--> `banded/helper_native.scad`\
-` `| . . . +--> `banded/helper_recondition.scad`\
+` `| . . . +--> [`banded/helper_native.scad`](helper.md#native-helper-functions- "Contains various helper functions")\
+` `| . . . +--> [`banded/helper_recondition.scad`](helper.md#helper.md#recondition-arguments-of-functions- "Recondition arguments of functions and modules")\
 ` `|\
 ` `+--> [`banded/benchmark.scad`](helper.md#benchmark-function- "Benchmark for functions to measure speed")\
 ` `|\
