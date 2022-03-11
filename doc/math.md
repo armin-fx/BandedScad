@@ -64,7 +64,7 @@ Math functions
 
 [complex]: complex.md
 [matrix]:  matrix.md
-[math]:    #more-math-functions-
+[math]:    #Various-math-functions-
 [formula]: #formula-functions-
 
 

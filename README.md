@@ -34,7 +34,7 @@ What it does [^][contents]
 - [Edit and work with lists][list]
 - [Edit and convert strings][string]
 - [Math functions][math]
-  - [More common math functions][math_common]
+  - [Various common math functions][math_common]
   - Functions for [matrices and vector][matrix]
   - Work with [complex numbers][complex]
 - [Algorithmus with function literals][function]
@@ -57,7 +57,7 @@ What it does [^][contents]
 [helper]:      doc/helper.md
 [benchmark]:   doc/helper.md#benchmark-function-
 [math]:        doc/math.md
-[math_common]: doc/math.md#more-math-functions-
+[math_common]: doc/math.md#various-math-functions-
 [matrix]:      doc/matrix.md
 [complex]:     doc/complex.md
 [operator]:    doc/operator.md

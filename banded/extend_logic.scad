@@ -14,6 +14,7 @@ function get_fn_circle_closed (r, fn, fa, fs) =
 	:
 		ceil(max (min (360/fa, r*2*PI/fs), 5))
 ;
+// gibt die Anzahl der Segmente des Teilstücks eines Kreises zurück,
 function get_fn_circle (r, angle=360, piece=true, fn, fa, fs) =
 	get_fn_circle_pie (r, angle, piece, get_fn_circle_closed(r, fn, fa, fs))
 ;
@@ -31,20 +32,20 @@ function get_fn_circle_pie (r, angle=360, piece=true, fn) =
 // Code (x!=false)  ->  Rückgabe: true = true, false = false, Standartwert bei undefiniert = true
 function get_fn_circle_closed_x (r, fn, fa, fs, fn_min, fn_max, fd, fa_enabled, fs_enabled) =
 	r==undef ? 3 :
-	is_sfx_activated(fn) ? get_fn_circle_closed(r, fn, fa, fs)
+	is_sf_activated(fn) ? get_fn_circle_closed(r, fn, fa, fs)
 	:
 		let (
 			fa_value = 360/fa,
 			fs_value = r*2*PI/fs,
 			fd_value = (fd!=undef)&&(fd<r) ? 360/(2*asin(sqrt( 2*fd*(r-fd) )/r)) : 0
 		)
-		sf_minmax(fn_min, fn_max,
+		sf_constrain_minmax(fn_min, fn_max,
 		ceil(max (5
 			,	(  (fa_enabled!=false) && !(fs_enabled!=false)) ? fa_value
 				:( (fs_enabled!=false) && !(fa_enabled!=false)) ? fs_value
-				:(!(fs_enabled!=false) && !(fa_enabled!=false)) ? if_sfx_value(fd, fd_value)
+				:(!(fs_enabled!=false) && !(fa_enabled!=false)) ? if_sf_value(fd, fd_value)
 				:min (fa_value, fs_value)
-			,	(  (fs_enabled!=false) ||  (fa_enabled!=false)) ? if_sfx_value(fd, fd_value, 0) : 0
+			,	(  (fs_enabled!=false) ||  (fa_enabled!=false)) ? if_sf_value(fd, fd_value, 0) : 0
 		)))
 ;
 function get_fn_circle_x (r, angle=360, piece=true, fn, fa, fs, fn_min, fn_max, fd, fa_enabled, fs_enabled) = 
@@ -61,33 +62,40 @@ function get_fn_circle_current_x (r, angle=360, piece=true) = get_fn_circle_x (r
 	is_undef($fs_enabled) ? undef : $fs_enabled
 );
 
-// gibt die Begrenzung für $fn_min und $fn_max zurück
-function sf_minmax(fn_min, fn_max, v) =
-	  (is_sfx_activated(fn_min) && is_sfx_activated(fn_max)) ? constrain(v, fn_min, fn_max)
-	: (is_sfx_activated(fn_min)) ? max(fn_min, v)
-	: (is_sfx_activated(fn_max)) ? min(fn_max, v)
-	: v
+// Gibt die Begrenzung einer Fragmentanzahl n zwischen $fn_min und $fn_max zurück.
+// Abhängig davon, ob diese Begrenzungen aktiviert sind.
+function sf_constrain_minmax (fn_min, fn_max, n) =
+	  (is_sf_activated(fn_min) && is_sf_activated(fn_max)) ? constrain(n, fn_min, fn_max)
+	: (is_sf_activated(fn_min)) ? max(fn_min, n)
+	: (is_sf_activated(fn_max)) ? min(fn_max, n)
+	: n
 ;
 
 // gibt zurück, ob eine Variable $fxxx aktiviert ist
-function is_sfx_activated (fn_base) =
+function is_sf_activated (fn_base) =
 	  (fn_base == undef)       ? false
 	: (fn_base <= 0)           ? false
 	: (fn_base == 1e200*1e200) ? false // inf
+	: (fn_base ==-1e200*1e200) ? false // -inf
+	: (fn_base != fn_base)     ? false // nan
 	: true
 ;
-// gibt zurück, ob eine Variable $fxxx_enabled aktiviert ist
-// Alternative: (fn_base_enabled!=false)
-function is_sfx_enabled (fn_base_enabled) =
-	  (is_bool(fn_base_enabled)) ? fn_base_enabled
-	: true
+// gibt den Status einer Variable $fxxx_enabled zurück
+//   true  = $fxxx aktiviert, Standartwert, wenn undef
+//   false = $fxxx deaktiviert
+function is_sf_enabled (fn_base_enabled) =
+	(fn_base_enabled!=false)
+	//
+	//  (is_bool(fn_base_enabled)) ? fn_base_enabled
+	//: true
 ;
 
-// gibt den Wert v zurück, wenn $fxxx aktiviert ist, sonst wird ein Sicherheitswert zurückgegeben
-function if_sfx_value (base, v, safe=sf_safe()) = is_sfx_activated(base) ? v : safe;
+// gibt die Fragmentanzahl 'n' zurück, wenn $fxxx (angegeben in 'base') aktiviert ist,
+// sonst wird ein Sicherheitswert zurückgegeben
+function if_sf_value (base, n, safe=sf_safe()) = is_sf_activated(base) ? n : safe;
 //
 function sf_safe () =
-	is_sfx_activated( is_undef($fn_safe) ? undef : $fn_safe)
+	is_sf_activated( is_undef($fn_safe) ? undef : $fn_safe)
 	? $fn_safe : 12;
 
 // gibt den Winkel eines Kreisfragments zurück, bei welcher die Abweichung

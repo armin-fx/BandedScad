@@ -21,7 +21,7 @@ Table of contents
   - [Argument recondition](helper.md#recondition-arguments-of-functions-)
   - [Benchmark for functions](helper.md#benchmark-function-)
 - [Control the level of detail of a mesh](extend.md)
-  - [Extra special variables](extend#special-variables-)
+  - [Extra special variables](extend.md#special-variables-)
   - [Functions](extend.md#functions-)
   - [Defined modules](extend.md#defined-modules-)
 - Draft objects as data list

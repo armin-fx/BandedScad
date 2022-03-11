@@ -122,7 +122,7 @@ __Options:__
 - `r, d`
   - radius or diameter of circle
 - `angle`
-  - drawed angle in degree, default=`360`
+  - drawed angle in degrees, default=`360`
     - as number -> angle from `0` to `angle` = opening angle
     - as list   -> range `[opening angle, begin angle]`
 - `slices`
