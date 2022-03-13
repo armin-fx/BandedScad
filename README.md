@@ -31,7 +31,13 @@ What it does [^][contents]
     _(not finished yet)_
   - [Working with multmatrix][multmatrix]
   - [Convert colors][color]
-- [Edit and work with lists][list]
+- [Editing lists][list]
+  - [Edit list independent from the data][list_edit_item]
+  - [Edit list with use of data, depend on type][list_edit_data]
+- Functions for [Math operations on lists][list_math]
+  - [Algorithm on lists][list_algorithm]
+  - [Math operation on each list element][list_math]
+  - [Calculating mean][mean]
 - [Edit and convert strings][string]
 - [Math functions][math]
   - [Various common math functions][math_common]
@@ -51,7 +57,13 @@ What it does [^][contents]
 [multmatrix]:  doc/multmatrix.md
 [primitives]:  doc/primitives.md
 [color]:       doc/color.md
-[list]:        doc/list.md
+[list]:           doc/list.md
+[list_edit_item]: doc/list.md#edit-list-independent-from-the-data-
+[list_edit_data]: doc/list.md#edit-list-with-use-of-data-depend-on-type-
+[list_math]:      doc/list_math.md
+[list_algorithm]: doc/list_math.md#algorithm-on-lists-
+[list_math_each]: doc/list_math.md#math-operation-on_each-list-element-
+[mean]:           doc/mean.md
 [string]:      doc/string.md
 [function]:    doc/function.md
 [helper]:      doc/helper.md

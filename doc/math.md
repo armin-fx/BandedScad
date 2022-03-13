@@ -18,6 +18,7 @@ Math functions
 - [Complex numbers ->][complex]
 - [Matrix and vector operations ->][matrix]
 
+
 - [More math functions][math]
   - [Test and restrict](#test-and-restrict-)
     - [`constrain()`][constrain]

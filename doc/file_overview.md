@@ -15,14 +15,14 @@ Overview of scad files
 ` `| . . . +--> [`banded/math_formula.scad`](math.md#formula-functions- "Formula functions")\
 ` `| . . . +--> [`banded/complex.scad`](complex.md "Working with complex numbers")\
 ` `|\
-` `+--> [`banded/list.scad`](list.md "Functions for work with lists")\
-` `| . . . +--> [`banded/list_edit.scad`](list.md#editing-lists- "Editing lists")\
+` `+--> `banded/list.scad`\
+` `| . . . +--> [`banded/list_edit.scad`](list.md "Editing lists")\
 ` `| . . . | . . . . +--> [`banded/list_edit_type.scad`](list.md#different-type-of-data- "Type-dependent access to the content of lists")\
 ` `| . . . | . . . . +--> [`banded/list_edit_item.scad`](list.md#edit-list-independent-from-the-data- "Edit list independent from the data")\
-` `| . . . | . . . . +--> [`banded/list_edit_data.scad`](list.md#edit-list-with-use-of-data- "Edit list with use of data, type-dependent")\
-` `| . . . +--> [`banded/list_algorithmus.scad`](list.md#algorithm-on-lists- "Algorithm on lists")\
-` `| . . . +--> [`banded/list_math.scad`](list.md#math-on-lists- "Math on lists")\
-` `| . . . +--> [`banded/list_mean.scad`](list.md#calculating-mean- "Calculating mean")\
+` `| . . . | . . . . +--> [`banded/list_edit_data.scad`](list.md#edit-list-with-use-of-data-depend-on-type-- "Edit list with use of data, type-dependent")\
+` `| . . . +--> [`banded/list_algorithmus.scad`](list_math.md#algorithm-on-lists- "Algorithm on lists")\
+` `| . . . +--> [`banded/list_math.scad`](list.md#math-operation-on_each-list-element- "Math operation on each list element")\
+` `| . . . +--> [`banded/list_mean.scad`](mean.md "Calculating mean")\
 ` `|\
 ` `+--> [`banded/string.scad`](string.md "Functions for edit and convert strings")\
 ` `| . . . +--> [`banded/string_convert.scad`](string.md#convert-strings- "Convert strings")\
@@ -32,7 +32,6 @@ Overview of scad files
 ` `|\
 ` `+--> `banded/function.scad`\
 ` `| . . . +--> [`banded/function_algorithmus.scad`](function.md "Algorithmus with function literals")\
-` `| . . . +--> `banded/function_list_edit.scad`\
 ` `|\
 ` `+--> [`banded/helper.scad`](helper.md "Helper functions")\
 ` `| . . . +--> [`banded/helper_native.scad`](helper.md#native-helper-functions- "Contains various helper functions")\

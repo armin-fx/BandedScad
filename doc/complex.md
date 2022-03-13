@@ -89,6 +89,7 @@ Return real part or imaginary part from complex number
 
 ### Absolute value [^][contents]
 [abs]: #absolute-value- "Absolute value"
+Return the absolute value as numeric value.
 
 #### Common function:
 `c_abs (c)`
@@ -103,6 +104,7 @@ Return real part or imaginary part from complex number
 
 ### Conjugate complex number [^][contents]
 [conjugate]: #conjugate-complex-number- "Conjugate complex number"
+Swap the sign of the imaginary part of a complex number.
 
 #### Common function:
 `c_conjugate (c)`

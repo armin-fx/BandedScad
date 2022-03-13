@@ -5,4 +5,3 @@
 //
 
 include <banded/function_algorithmus.scad>
-include <banded/function_list_edit.scad>

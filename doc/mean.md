@@ -1,5 +1,5 @@
-Functions for working with lists
-================================
+Math on lists - mean
+====================
 
 ### defined in file
 `banded/list.scad`\
@@ -11,11 +11,7 @@ Functions for working with lists
 
 ### Contents
 [contents]: #contents "Up to Contents"
-- [Editing lists ->][edit]
-- [Algorithm on lists ->](algorithm)
-- [Math on lists ->][math]
-
-- [Calculating mean][mean]
+- [Calculating mean](#calculating-mean-)
   - [List of mean functions](#list-of-mean-functions-)
     - [`mean_arithmetic()`][mean_arithmetic]
     - [`mean_geometric()`][mean_geometric]
@@ -28,11 +24,6 @@ Functions for working with lists
     - [`mid_range()`][mid_range]
     - [`truncate_outlier()`][truncate_outlier]
     - [`truncate()`][truncate]
-
-[mean]:      #calculating-mean-
-[edit]:      list.md#editing-lists-
-[algorithm]: list.md#algorithm-on-lists-
-[math]:      list.md#math-on-lists-
 
 
 Calculating mean [^][contents]
@@ -146,7 +137,6 @@ mean  = mean_arithmetic  (trunc);
 echo (trunc); // [2,4,6]
 echo (mean);  // 5
 ```
-
 
 #### `truncate (list, ratio)` [^][contents]
 [truncate]: #truncate-list-ratio-
