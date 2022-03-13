@@ -11,19 +11,19 @@ function repair_matrix_3d (m) =
 	len(m[0])==4 ?
 		len(m)==4 ? m :
 		len(m)==3 ? concat (m,[0,0,0,1]) :
-		fill_matrix_with (m, identity_matrix(4)) :
-	fill_matrix_with     (m, identity_matrix(4))
+		fill_missing_matrix (m, identity_matrix(4)) :
+	fill_missing_matrix     (m, identity_matrix(4))
 ;
 function repair_matrix_2d (m) =
 	m[0][0]==undef ? identity_matrix(3) :
 	len(m[0])==3 ?
 		len(m)==3 ? m :
 		len(m)==2 ? concat (m,[0,0,1]) :
-		fill_matrix_with (m, identity_matrix(3)) :
-	fill_matrix_with     (m, identity_matrix(3))
+		fill_missing_matrix (m, identity_matrix(3)) :
+	fill_missing_matrix     (m, identity_matrix(3))
 ;
 
-function fill_matrix_with (m, c) =
+function fill_missing_matrix (m, c) =
 	!is_list(m) ? c :
 	[ for (i=[0:len(c)-1])
 		[ for (j=[0:len(c[i])-1])
@@ -31,7 +31,7 @@ function fill_matrix_with (m, c) =
 		]
 	]
 ;
-function fill_list_with (list, c) =
+function fill_missing_list (list, c) =
 	!is_list(list) ? c :
 	[ for (i=[0:len(c)-1])
 		is_num(list[i]) ? list[i] : c[i]

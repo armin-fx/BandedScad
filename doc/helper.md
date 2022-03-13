@@ -47,8 +47,8 @@ Helper functions
     - [`get_first_num_in_list()`][get_first_num_in_list]
 - [Recondition arguments of functions](#recondition-arguments-of-functions-)
   - [`repair_matrix_XX()`][repair_matrix_XX]
-  - [`fill_matrix_with()`][fill_matrix_with]
-  - [`fill_list_with()`][fill_list_with]
+  - [`fill_missing_matrix()`][fill_missing_matrix]
+  - [`fill_missing_list()`][fill_missing_list]
   - [`parameter_range()`][parameter_range]
   - [`parameter_range_safe()`][parameter_range_safe]
   - [`parameter_circle_r()`][parameter_circle_r]
@@ -315,13 +315,16 @@ Fill missing elements with elements from the unity matrix.
 - `repair_matrix_2d()` - 2D-matrices, return 3x3 matrix
 - `repair_matrix_3d()` - 3D-matrices, return 4x4 matrix
 
-#### `fill_matrix_with (m, c)` [^][contents]
-[fill_matrix_with]: #fill_matrix_with-m-c-
-Fill missing elements in matrix `m` with elements from matrix `c`.
+#### `fill_missing_matrix (m, c)` [^][contents]
+[fill_missing_matrix]: #fill_missing_matrix-m-c-
+Fill missing elements in matrix `m` with elements from matrix `c`.\
+The size of the matrix is used from `c`.
+An entry in the matrix must be a numeric value.
 
-#### `fill_list_with (list, c)` [^][contents]
-[fill_list_with]: #fill_list_with-list-c-
-Fill missing elements a list with elements from list `c`.
+#### `fill_missing_list (list, c)` [^][contents]
+[fill_missing_list]: #fill_missing_list-list-c-
+Fill missing elements in a list with elements from list `c`.
+An entry in the list must be a numeric value.
 
 #### `parameter_range (list, 'range_args')` [^][contents]
 [parameter_range]: #parameter_range-list-range_args-
