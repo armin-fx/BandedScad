@@ -154,7 +154,7 @@ Replace elements in a string `txt` with `txt_insert` or part of it
 #### `extract_str (txt, 'range_args')` [^][contents]
 [extract_str]: #extract_str-txt-range_args-
 Extract a sequence from a string `txt`
-- [`'range_args'`](list.md#repeating-options-) - sets the range to extract
+- [`'range_args'`](list.md#repeating-options-) - arguments to set the range to extract
 
 #### `fill_str (count, value)` [^][contents]
 [fill_str]: #fill_str-count-value-
@@ -200,7 +200,7 @@ but return always the position of the first hit.
 #### `count_str (txt, letter, 'range_args')` [^][contents]
 [count_str]: #count_str-txt-letter-range_args-
 Count how often a `letter` is in string `txt`
-- [`'range_args'`](list.md#repeating-options-) - sets the range in which will count, standard = full list
+- [`'range_args'`](list.md#repeating-options-) - arguments to set the range in which will count, standard = full list
 
 #### `remove_duplicate_str (txt)` [^][contents]
 [remove_duplicate_str]: #remove_duplicate_str-txt-

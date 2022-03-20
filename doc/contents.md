@@ -14,6 +14,7 @@ Table of contents
   - [Type-dependent access to the content](list.md#different-type-of-data-)
   - [Independent from the data](list.md#edit-list-independent-from-the-data-)
   - [With use of data, type-dependent](list.md#edit-list-with-use-of-data-depend-on-type-)
+  - [Use function literal on data](list.md#edit-list-use-function-literal-on-data-)
 - [Functions for edit and convert strings](string.md)
 - [Algorithmus with function literals](function.md)
 - [Helper functions](helper.md)

@@ -19,7 +19,8 @@ Overview of scad files
 ` `| . . . +--> [`banded/list_edit.scad`](list.md "Editing lists")\
 ` `| . . . | . . . . +--> [`banded/list_edit_type.scad`](list.md#different-type-of-data- "Type-dependent access to the content of lists")\
 ` `| . . . | . . . . +--> [`banded/list_edit_item.scad`](list.md#edit-list-independent-from-the-data- "Edit list independent from the data")\
-` `| . . . | . . . . +--> [`banded/list_edit_data.scad`](list.md#edit-list-with-use-of-data-depend-on-type-- "Edit list with use of data, type-dependent")\
+` `| . . . | . . . . +--> [`banded/list_edit_data.scad`](list.md#edit-list-with-use-of-data-depend-on-type- "Edit list with use of data, type-dependent")\
+` `| . . . | . . . . +--> [`banded/list_edit_predicate.scad`](list.md#edit-list-use-function-literal-on-data- "Edit list, use function literal on data")\
 ` `| . . . +--> [`banded/list_algorithmus.scad`](list_math.md#algorithm-on-lists- "Algorithm on lists")\
 ` `| . . . +--> [`banded/list_math.scad`](list.md#math-operation-on_each-list-element- "Math operation on each list element")\
 ` `| . . . +--> [`banded/list_mean.scad`](mean.md "Calculating mean")\

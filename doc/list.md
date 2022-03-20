@@ -52,6 +52,8 @@ Functions for edit lists
     - [`remove_values_list()`][remove_values_list]
     - [`replace_value_list()`][replace_value_list]
     - [`replace_values_list()`][replace_values_list]
+  - [Edit list, use function literal on data](#edit-list-use-function-literal-on-data-)
+    - [`for_each_list()`][for_each_list]
   - [Pair functions](#pair-functions-)
 
 [type]:           #different-type-of-data-
@@ -224,7 +226,7 @@ Replace elements in a list with `list_insert` or part of it
 #### `extract_list (list, 'range_args')` [^][contents]
 [extract_list]: #extract_list-list-range_args-
 Extract a sequence from a list
-- [`'range_args'`][range_args] - sets the range to extract
+- [`'range_args'`][range_args] - arguments to set the range to extract
 
 #### `fill_list (count, value)` [^][contents]
 [fill_list]: #fill_list-count-value-
@@ -267,8 +269,8 @@ Returns the size of list if nothing was found.
   - Same values are skipped `index` times
   - Standard = get first hit, `index` = 0
 
-#### `find_first_once_list (list, value, index, type)` [^][contents]
-[find_first_once_list]: #find_first_once_list-list-value-index-type-
+#### `find_first_once_list (list, value, type)` [^][contents]
+[find_first_once_list]: #find_first_once_list-list-value-type-
 Search at a value in a list and returns the position.\
 Returns the size of list if nothing was found.\
 Like [`find_first_list()`][find_first_list],
@@ -282,8 +284,8 @@ Returns `-1` if nothing was found.
   - Same values are skipped `index` times
   - Standard = get first hit, `index` = 0
 
-#### `find_last_once_list (list, value, index, type)` [^][contents]
-[find_last_once_list]: #find_last_once_list-list-value-index-type-
+#### `find_last_once_list (list, value, type)` [^][contents]
+[find_last_once_list]: #find_last_once_list-list-value-type-
 Search at a value in a list backwards from the end to first value and returns the position.\
 Returns `-1` if nothing was found.\
 Like [`find_last_list()`][find_last_list],
@@ -292,7 +294,7 @@ but return always the position of the first hit.
 #### `count_list (list, value, type, 'range_args')` [^][contents]
 [count_list]: #count_list-list-value-type-range_args-
 Count how often a value is in list
-- [`'range_args'`][range_args] - sets the range in which will count, standard = full list
+- [`'range_args'`][range_args] - arguments to set the range in which will count, standard = full list
 
 #### `remove_duplicate_list (list, type)` [^][contents]
 [remove_duplicate_list]: #remove_duplicate_list-list-type-
@@ -315,6 +317,16 @@ Replace every entry with a given value in a list to a new value
 [replace_values_list]: #replace_values_list-list-value_list-new-type-
 Replace every entry with a given list of values in a list to a new value
 - `value_list` - a list with values to replace with value `new`
+
+
+Edit list, use function literal on data [^][contents]
+-----------------------------------------------------
+
+#### `for_each_list (list, f, type, 'range_args')` [^][contents]
+[for_each_list]: #for_each_list-list-f-type-range_args-
+Run function `f()` on each item in the list.\
+Return the list of results.
+- [`'range_args'`][range_args] - arguments to set the range of list, standard = full list
 
 
 Pair functions [^][contents]

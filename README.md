@@ -34,6 +34,7 @@ What it does [^][contents]
 - [Editing lists][list]
   - [Edit list independent from the data][list_edit_item]
   - [Edit list with use of data, depend on type][list_edit_data]
+  - [Edit list, use function literal on data][list_edit_pred]
 - Functions for [Math operations on lists][list_math]
   - [Algorithm on lists][list_algorithm]
   - [Math operation on each list element][list_math]
@@ -60,6 +61,7 @@ What it does [^][contents]
 [list]:           doc/list.md
 [list_edit_item]: doc/list.md#edit-list-independent-from-the-data-
 [list_edit_data]: doc/list.md#edit-list-with-use-of-data-depend-on-type-
+[list_edit_pred]: doc/list.md#edit-list-use-function-literal-on-data-
 [list_math]:      doc/list_math.md
 [list_algorithm]: doc/list_math.md#algorithm-on-lists-
 [list_math_each]: doc/list_math.md#math-operation-on_each-list-element-
