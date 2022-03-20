@@ -67,7 +67,7 @@ function parameter_range (list, begin, last, count, range) =
 function parameter_range_safe (list, begin, last, count, range) =
 	let(
 		Count = count==undef||!is_num(count) ? undef : count<0 ? 0 : count,
-		Begin = get_position_safe(list,
+		Begin = get_position(list,
 			begin   !=undef                 ? begin :
 			range[0]!=undef                 ? range[0] :
 			last    !=undef && Count!=undef ? last-Count :
