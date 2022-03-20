@@ -2,8 +2,16 @@
 // License: LGPL-2.1-or-later
 //
 // Enthält Funktionen zum Bearbeiten von Listen mit Zugriff auf den Inhalt
+//
+// Die Funktionen für typabhängigen Zugriff wurden zum Teil inline eingesetzt
+// um die Ausführgeschwindigkeit zu erhöhen,
+// lässt sich bei Änderungen an den internen Typdaten aber schlecht warten.
+// Funktionsaufrufe sind teuer.
+// Außerdem wurden für jeden bekannten Typ eine eigene Version der Funktion
+// erstellt, aus dem selben Grund.
 
-use <banded/helper_native.scad>
+use <banded/helper.scad>
+
 use <banded/list_edit_type.scad>
 
 
@@ -14,9 +22,10 @@ function max_list(list, type=0) = max (value_list(list, type));
 // Position des kleinsten Wertes einer Liste gemäß des Typs zurückgeben
 function min_position (list, type=0) =
 	list==undef ? -1 :
-	 type==0    ? min_position_intern_direct (list)
-	:type[0]>=0 ? min_position_intern_list   (list, type[0])
-	:             min_position_intern_type   (list, type)
+	 type   == 0 ? min_position_intern_direct   (list)
+	:type[0]>= 0 ? min_position_intern_list     (list, type[0])
+	:type[0]==-1 ? min_position_intern_function (list, type[1])
+	:              min_position_intern_type     (list, type)
 ;
 function min_position_intern_direct (list, pos=0, i=0) =
 	i>=len(list) ? pos :
@@ -32,6 +41,13 @@ function min_position_intern_list (list, position=0, pos=0, i=0) =
 		,i+1
 		)
 ;
+function min_position_intern_function (list, fn, pos=0, i=0) =
+	i>=len(list) ? pos :
+	min_position_intern_function (list, fn
+		,fn(list[pos])<=fn(list[i]) ? pos : i
+		,i+1
+		)
+;
 function min_position_intern_type (list, type, pos=0, i=0) =
 	i>=len(list) ? pos :
 	min_position_intern_type (list, type
@@ -43,7 +59,7 @@ function min_position_intern_type (list, type, pos=0, i=0) =
 // Position des größten Wertes einer Liste gemäß des Typs zurückgeben
 function max_position (list, type=0) =
 	list==undef ? -1 :
-	 type==0    ? max_position_intern_direct (list)
+	 type   ==0 ? max_position_intern_direct (list)
 	:type[0]>=0 ? max_position_intern_list   (list, type[0])
 	:             max_position_intern_type   (list, type)
 ;
@@ -61,6 +77,13 @@ function max_position_intern_list (list, position=0, pos=0, i=0) =
 		,i+1
 		)
 ;
+function max_position_intern_function (list, fn, pos=0, i=0) =
+	i>=len(list) ? pos :
+	max_position_intern_function (list, fn
+		,fn(list[pos])>=fn(list[i]) ? pos : i
+		,i+1
+		)
+;
 function max_position_intern_type (list, type, pos=0, i=0) =
 	i>=len(list) ? pos :
 	max_position_intern_type (list, type
@@ -75,7 +98,7 @@ function sort_list (list, type=0) = sort_list_quicksort (list, type);
 // stabiles sortieren mit Quicksort
 function sort_list_quicksort (list, type=0) =
 	list==undef ? list :
-	 type==0    ? sort_list_quicksort_direct (list)
+	 type   ==0 ? sort_list_quicksort_direct (list)
 	:type[0]>=0 ? sort_list_quicksort_list   (list, type[0])
 	:             sort_list_quicksort_type   (list, type)
 ;
@@ -198,10 +221,9 @@ function find_first_list (list, value, index=0, type=0) =
 	list==undef ? 0 :
 	index==0 ? find_first_once_list (list, value, type) :
 	//
-	 type==0     ? find_first_list_intern_direct   (list, value, index)
-	:type[0]>=0  ? find_first_list_intern_list     (list, value, index, type[0])
-	:type[0]==-1 ? let( fn=type[1] )
-	               find_first_list_intern_function (list, value, index, fn)
+	 type   == 0 ? find_first_list_intern_direct   (list, value, index)
+	:type[0]>= 0 ? find_first_list_intern_list     (list, value, index, type[0])
+	:type[0]==-1 ? find_first_list_intern_function (list, value, index, type[1])
 	:              find_first_list_intern_type     (list, value, index, type)
 ;
 function find_first_list_intern_direct (list, value, index=0, n=0) =
@@ -236,10 +258,9 @@ function find_first_list_intern_type (list, value, index=0, type, n=0) =
 // sucht nach dem ersten Auftreten eines Wertes und gibt die Position des Treffers aus einer Liste heraus
 function find_first_once_list (list, value, type=0) =
 	list==undef ? 0 :
-	 type==0     ? find_first_once_list_intern_direct (list, value)
-	:type[0]>=0  ? find_first_once_list_intern_list   (list, value, type[0])
-	:type[0]==-1 ? let( fn=type[1] )
-	               find_first_once_list_intern_type   (list, value, fn)
+	 type   == 0 ? find_first_once_list_intern_direct (list, value)
+	:type[0]>= 0 ? find_first_once_list_intern_list   (list, value, type[0])
+	:type[0]==-1 ? find_first_once_list_intern_type   (list, value, type[1])
 	:              find_first_once_list_intern_type   (list, value, type)
 ;
 function find_first_once_list_intern_direct   (list, value, n=0) =
@@ -271,10 +292,9 @@ function find_last_list (list, value, index=0, type=0) =
 	list==undef ? -1 :
 	index==0 ? find_last_once_list (list, value, type) :
 	//
-	 type==0     ? find_last_list_intern_direct   (list, value, index,          n=len(list)-1)
-	:type[0]>=0  ? find_last_list_intern_list     (list, value, index, type[0], n=len(list)-1)
-	:type[0]==-1 ? let( fn=type[1] )
-	               find_last_list_intern_function (list, value, index, fn,      n=len(list)-1)
+	 type   == 0 ? find_last_list_intern_direct   (list, value, index,          n=len(list)-1)
+	:type[0]>= 0 ? find_last_list_intern_list     (list, value, index, type[0], n=len(list)-1)
+	:type[0]==-1 ? find_last_list_intern_function (list, value, index, type[1], n=len(list)-1)
 	:              find_last_list_intern_type     (list, value, index, type,    n=len(list)-1)
 ;
 function find_last_list_intern_direct (list, value, index=0, n=-2) =
@@ -309,10 +329,9 @@ function find_last_list_intern_type (list, value, index=0, type, n=-2) =
 // sucht nach dem ersten Auftreten eines Wertes und gibt die Position des Treffers aus einer Liste heraus
 function find_last_once_list (list, value, type=0) =
 	list==undef ? -1 :
-	 type==0     ? find_last_once_list_intern_direct (list, value,          n=len(list)-1)
-	:type[0]>=0  ? find_last_once_list_intern_list   (list, value, type[0], n=len(list)-1)
-	:type[0]==-1 ? let( fn=type[1] )
-	               find_last_once_list_intern_type   (list, value, fn,      n=len(list)-1)
+	 type   == 0 ? find_last_once_list_intern_direct (list, value,          n=len(list)-1)
+	:type[0]>= 0 ? find_last_once_list_intern_list   (list, value, type[0], n=len(list)-1)
+	:type[0]==-1 ? find_last_once_list_intern_type   (list, value, type[1], n=len(list)-1)
 	:              find_last_once_list_intern_type   (list, value, type,    n=len(list)-1)
 ;
 function find_last_once_list_intern_direct   (list, value, n=-2) =
@@ -350,16 +369,15 @@ function count_list        (list, value, type=0, begin, last, count, range) =
 // Zähle alles durch von Position n nach k
 function count_list_intern (list, value, type=0, n=0, k=-1) =
 	n>k ? 0 :
-	 type==0     ? len([for(i=[n:1:k]) if (list[i]                ==value) 0])
-	:type[0]>=0  ? len([for(i=[n:1:k]) if (list[i][type[0]]       ==value) 0])
-	:type[0]==-1 ? let( fn=type[1] )
-	               len([for(i=[n:1:k]) if (fn(list[i])            ==value) 0])
-	:              len([for(i=[n:1:k]) if (get_value(list[i],type)==value) 0])
+	 type   == 0                   ? len([for(i=[n:1:k]) if (list[i]                ==value) 0])
+	:type[0]>= 0                   ? len([for(i=[n:1:k]) if (list[i][type[0]]       ==value) 0])
+	:type[0]==-1 ? let( fn=type[1] ) len([for(i=[n:1:k]) if (fn(list[i])            ==value) 0])
+	:                                len([for(i=[n:1:k]) if (get_value(list[i],type)==value) 0])
 ;
 function count_list_intern_old (list, value, type=0, n=0, k=-1, count=0) =
-	 type==0    ?  count_list_intern_direct   (list, value,          n, k)
-	:type[0]>=0 ?  count_list_intern_list     (list, value, type[0], n, k)
-	:type[0]==-1 ? count_list_intern_function (list, value, type,    n, k)
+	 type   == 0 ? count_list_intern_direct   (list, value,          n, k)
+	:type[0]>= 0 ? count_list_intern_list     (list, value, type[0], n, k)
+	:type[0]==-1 ? count_list_intern_function (list, value, type[1], n, k)
 	:              count_list_intern_type     (list, value, type,    n, k)
 ;
 function count_list_intern_direct (list, value, n=0, k=-1, count=0) =
@@ -394,8 +412,8 @@ function count_list_intern_type (list, value, type, n=0, k=-1, count=0) =
 // Entfernt alle Duplikate aus der Liste
 function remove_duplicate_list (list, type=0) =
 	list==undef || len(list)==0 ? list :
-	 type==0     ? remove_duplicate_list_intern_direct   (list)
-	:type[0]>=0  ? remove_duplicate_list_intern_list     (list, type[0])
+	 type   == 0 ? remove_duplicate_list_intern_direct   (list)
+	:type[0]>= 0 ? remove_duplicate_list_intern_list     (list, type[0])
 	:type[0]==-1 ? remove_duplicate_list_intern_function (list, type[1])
 	:              remove_duplicate_list_intern_type     (list, type)
 ;
@@ -435,43 +453,39 @@ function remove_duplicate_list_intern_type (list, type, i=0, new=[], values=[], 
 // Entfernt alle Vorkommen eines Wertes
 function remove_value_list (list, value, type=0) =
 	list==undef || len(list)==0 ? list :
-	 type==0     ? [ for (e=list) if (e                !=value) e ]
-	:type[0]>=0  ? [ for (e=list) if (e[type[0]]       !=value) e ]
-	:type[0]==-1 ? let( fn=type[1] )
-	               [ for (e=list) if (fn(e)!=value)             e ]
-	:              [ for (e=list) if (get_value(e,type)!=value) e ]
+	 type   == 0                   ? [ for (e=list) if (e                !=value) e ]
+	:type[0]>= 0                   ? [ for (e=list) if (e[type[0]]       !=value) e ]
+	:type[0]==-1 ? let( fn=type[1] ) [ for (e=list) if (fn(e)            !=value) e ]
+	:                                [ for (e=list) if (get_value(e,type)!=value) e ]
 ;
 
 // Entfernt alle Vorkommen von Werten aus einer Liste
 function remove_values_list (list, value_list, type=0) =
 	list==undef || len(list)==0 ? list :
 	value_list==undef || len(value_list)==0 ? list :
-	 type==0     ? [ for (e=list)                             if ( len([for(value=value_list) if (e ==value) 0]) == 0 ) e ]
-	:type[0]>=0  ? [ for (e=list) let(ev = e[type[0]])        if ( len([for(value=value_list) if (ev==value) 0]) == 0 ) e ]
-	:type[0]==-1 ? let( fn=type[1] )
-	               [ for (e=list) let(ev = fn(e))             if ( len([for(value=value_list) if (ev==value) 0]) == 0 ) e ]
-	:              [ for (e=list) let(ev = get_value(e,type)) if ( len([for(value=value_list) if (ev==value) 0]) == 0 ) e ]
+	 type   == 0 ?                   [ for (e=list)                             if ( len([for(value=value_list) if (e ==value) 0]) == 0 ) e ]
+	:type[0]>= 0 ?                   [ for (e=list) let(ev = e[type[0]])        if ( len([for(value=value_list) if (ev==value) 0]) == 0 ) e ]
+	:type[0]==-1 ? let( fn=type[1] ) [ for (e=list) let(ev = fn(e))             if ( len([for(value=value_list) if (ev==value) 0]) == 0 ) e ]
+	:                                [ for (e=list) let(ev = get_value(e,type)) if ( len([for(value=value_list) if (ev==value) 0]) == 0 ) e ]
 ;
 
 // Ersetzt alle Vorkommen eines Wertes durch einen anderen Wert
 function replace_value_list (list, value, new, type=0) =
 	list==undef || len(list)==0 ? list :
-	 type==0     ? [ for (e=list) if (e                !=value) e else new ]
-	:type[0]>=0  ? [ for (e=list) if (e[type[0]]       !=value) e else new ]
-	:type[0]==-1 ? let( fn=type[1] )
-	               [ for (e=list) if (fn(e)!=value)             e else new ]
-	:              [ for (e=list) if (get_value(e,type)!=value) e else new ]
+	 type   == 0 ?                   [ for (e=list) if (e                !=value) e else new ]
+	:type[0]>= 0 ?                   [ for (e=list) if (e[type[0]]       !=value) e else new ]
+	:type[0]==-1 ? let( fn=type[1] ) [ for (e=list) if (fn(e)            !=value) e else new ]
+	:                                [ for (e=list) if (get_value(e,type)!=value) e else new ]
 ;
 
 // Ersetzt alle Vorkommen von Werten aus einer Liste durch einen anderen Wert
 function replace_values_list (list, value_list, new, type=0) =
 	list==undef || len(list)==0 ? list :
 	value_list==undef || len(value_list)==0 ? list :
-	 type==0     ? [ for (e=list)                             if ( len([for(value=value_list) if (e ==value) 0]) == 0 ) e else new ]
-	:type[0]>=0  ? [ for (e=list) let(ev = e[type[0]])        if ( len([for(value=value_list) if (ev==value) 0]) == 0 ) e else new ]
-	:type[0]==-1 ? let( fn=type[1] )
-	               [ for (e=list) let(ev = fn(e))             if ( len([for(value=value_list) if (ev==value) 0]) == 0 ) e else new ]
-	:              [ for (e=list) let(ev = get_value(e,type)) if ( len([for(value=value_list) if (ev==value) 0]) == 0 ) e else new ]
+	 type   == 0 ?                   [ for (e=list)                             if ( len([for(value=value_list) if (e ==value) 0]) == 0 ) e else new ]
+	:type[0]>= 0 ?                   [ for (e=list) let(ev = e[type[0]])        if ( len([for(value=value_list) if (ev==value) 0]) == 0 ) e else new ]
+	:type[0]==-1 ? let( fn=type[1] ) [ for (e=list) let(ev = fn(e))             if ( len([for(value=value_list) if (ev==value) 0]) == 0 ) e else new ]
+	:                                [ for (e=list) let(ev = get_value(e,type)) if ( len([for(value=value_list) if (ev==value) 0]) == 0 ) e else new ]
 ;
 
 // pair-Funktionen

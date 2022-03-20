@@ -3,7 +3,7 @@
 //
 // Enthält Funktionen zum Bearbeiten von Listen ohne Zugriff auf den Inhalt
 
-use <banded/helper_native.scad>
+use <banded/helper.scad>
 
 
 // verbindet einzelne Listen innerhalb einer Liste miteinander
