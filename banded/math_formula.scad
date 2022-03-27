@@ -4,6 +4,8 @@
 // Enthält Formeln zum Berechnen von Kreisen, ...
 
 use <banded/draft_transform_common.scad>
+use <banded/math_common.scad>
+use <banded/math_matrix.scad>
 
 
 // Radius eines Kreises berechnen
@@ -67,7 +69,10 @@ function get_circle_from_points_3d (p1, p2, p3) =
 
 // gibt [Mittelpunkt, Radius] einer Kugel zurück
 // mit 4 Punkten auf der Außenfläche
-function get_sphere_from_points (p1, p2, p3, p4) =
+function get_sphere_from_points   (p1, p2, p3, p4) =
+	get_sphere_from_points_system (p1, p2, p3, p4)
+;
+function get_sphere_from_points_geometric (p1, p2, p3, p4) =
 	let(
 		// circle with first 3 points
 		normal  = cross (p2-p1, p3-p1),
@@ -85,4 +90,18 @@ function get_sphere_from_points (p1, p2, p3, p4) =
 		px   = rotate_to_vector_points ([concat(px_a, z), concat(px_b, z)], normal, backwards=false)
 	)
 	get_circle_from_points_3d (px[0], px[1], p4)
+;
+function get_sphere_from_points_system (p1, p2, p3, p4) =
+	let(
+		m = [
+			concat (1, 2*p1, sqr(norm(p1)) ),
+			concat (1, 2*p2, sqr(norm(p2)) ),
+			concat (1, 2*p3, sqr(norm(p3)) ),
+			concat (1, 2*p4, sqr(norm(p4)) ),
+			],
+		result = transpose( gauss_jordan_elimination (m, clean=true) )[0],
+		midpoint = [for (i=[1:3]) result[i]],
+		radius = sqrt( result[0] + sqr(norm(midpoint)) )
+	)
+	[midpoint, radius]
 ;
