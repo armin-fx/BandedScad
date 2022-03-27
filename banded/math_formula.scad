@@ -105,3 +105,18 @@ function get_sphere_from_points_system (p1, p2, p3, p4) =
 	)
 	[midpoint, radius]
 ;
+
+// gibt [Mittelpunkt, Radius] einer n-Kugel zurück
+// mit n+1 Punkten auf der Außenkante
+function get_hypersphere_from_points (p) =
+	let(
+		size=len(p),
+		m = [for (i=[0:1:size-1])
+			concat (1, 2*p[i], sqr(norm(p[i])) )
+			],
+		result = transpose( gauss_jordan_elimination (m, clean=true) )[0],
+		midpoint = [for (i=[1:1:size-1]) result[i]],
+		radius = sqrt( result[0] + sqr(norm(midpoint)) )
+	)
+	[midpoint, radius]
+;

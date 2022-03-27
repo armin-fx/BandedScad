@@ -66,6 +66,7 @@ Math functions
   - [`get_radius_from()`][get_radius_from]
   - [`get_circle_from_points()`][get_circle_from_points]
   - [`get_sphere_from_points()`][get_sphere_from_points]
+  - [`get_hypersphere_from_points()`][get_hypersphere_from_points]
 
 
 More math functions [^][contents]
@@ -297,4 +298,10 @@ ___Specialized functions:___
 Calculate the parameter of a sphere from 4 points.\
 Return the result as a list `[center of the sphere, radius]`.\
 The points can be only in 3D space.
+
+#### `get_hypersphere_from_points (p)` [^][contents]
+[get_hypersphere_from_points]: #get_hypersphere_from_points-p-
+Calculate the parameter of a n-sphere (hypersphere) from n+1 points in a list.\
+Return the result as a list `[center of the n-sphere, radius]`.\
+The points must be in n dimensions.
 
