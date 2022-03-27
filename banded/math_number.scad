@@ -4,8 +4,6 @@
 // Enthält mathematische Funktionen mit natürlichen Zahlen
 
 include <banded/constants.scad>
-//
-use <banded/helper_native.scad>
 
 
 // errechnet die Fakultät einer natürlichen Zahl
@@ -74,13 +72,13 @@ function continued_fraction (a, b=undef) =
 ;
 function continued_fraction_intern (a, b, pos=0) =
 	(pos+1 >= len(a)) ? a[pos]
-	:a[pos] + get_first_good(b[pos], 1) / continued_fraction_intern(a, b, pos+1)
+	:a[pos] + (b[pos]!=undef ? b[pos] : 1) / continued_fraction_intern(a, b, pos+1)
 ;
 /*
 function continued_fraction_intern_ (b, a, pos=0) =
 	 (pos==0) ? b[0] + continued_fraction_intern(b, a, pos+1)
 	:(pos >= len(b)) ? 0
-	:get_first_good(a[pos-1], 1) / (b[pos] +  continued_fraction_intern_(b, a, pos+1) )
+	:(a[pos-1]!=undef ? a[pos-1] : 1) / (b[pos] +  continued_fraction_intern_(b, a, pos+1) )
 ;
 */
 
