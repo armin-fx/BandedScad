@@ -26,7 +26,7 @@ function get_value (data, type=0) =
 // schreibt einen Wert an der Stelle des eines angegebenen Typs ein
 function set_value (data, value, type=0) =
 	 type   == 0 ? value
-	:type[0]>= 0 ? [ for (i=0:1:len(data)) i==type[0] ? value : data[i] ]
+	:type[0]>= 0 ? [ for (i=[0:1:len(data)]) i==type[0] ? value : data[i] ]
 	:type[0]==-1 ?
 		type[2]==undef ? value : // write value direct if write function is not defined
 	//	type[2](data)
