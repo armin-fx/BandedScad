@@ -62,6 +62,9 @@ Math functions
      - [`gcd()`][gcd]
      - [`lcm()`][lcm]
 - [Formula functions][formula]
+  - [`get_radius_from()`][get_radius_from]
+  - [`get_circle_from_points()`][get_circle_from_points]
+  - [`get_sphere_from_points()`][get_sphere_from_points]
 
 [complex]: complex.md
 [matrix]:  matrix.md
@@ -275,7 +278,7 @@ Formula functions [^][contents]
 -------------------------------
 
 #### `get_radius_from (chord, sagitta, angle)` [^][contents]
-[get_radius_from]: #get_radius_from-chord-saggitta-angle-
+[get_radius_from]: #get_radius_from-chord-sagitta-angle-
 Calculate the radius from a circle.\
 It requires 2 parameters each from these 3:
 - `chord`    - length of chord
@@ -285,4 +288,16 @@ It requires 2 parameters each from these 3:
 #### `get_circle_from_points (p1, p2, p3)` [^][contents]
 [get_circle_from_points]: #get_circle_from_points-p1-p2-p3-
 Calculate the parameter of a circle from 3 points.\
-Return the result as a list `[center of the circle, radius]`.
+Return the result as a list `[center of the circle, radius]`.\
+The points can be only in 2D or 3D space.
+
+___Specialized functions:___
+- `get_circle_from_points_2d (p1, p2, p3)` - all points must be in 2D space
+- `get_circle_from_points_3d (p1, p2, p3)` - all points must be in 3D space
+
+#### `get_sphere_from_points (p1, p2, p3, p4)` [^][contents]
+[get_sphere_from_points]: #get_sphere_from_points-p1-p2-p3-p4-
+Calculate the parameter of a sphere from 4 points.\
+Return the result as a list `[center of the sphere, radius]`.\
+The points can be only in 3D space.
+

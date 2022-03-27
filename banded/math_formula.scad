@@ -3,6 +3,8 @@
 //
 // Enthält Formeln zum Berechnen von Kreisen, ...
 
+use <banded/draft_transform_common.scad>
+
 
 // Radius eines Kreises berechnen
 // benötigt je 2 Parameter:
@@ -23,8 +25,15 @@ function get_radius_from (chord, sagitta, angle) =
 ;
 
 // gibt [Mittelpunkt, Radius] eines Kreises zurück
-// mit 3 Punkten in einer Liste
+// mit 3 Punkten auf der Außenlinie
 function get_circle_from_points (p1, p2, p3) =
+	 len(p1)==2 ?
+		get_circle_from_points_2d (p1, p2, p3)
+	:len(p1)==3 ?
+		get_circle_from_points_3d (p1, p2, p3)
+	:undef
+;
+function get_circle_from_points_2d (p1, p2, p3) =
 	let(
 		// get bisection point and bisection direction to midpoint of circle
 		sub_a = p2-p1,
@@ -45,4 +54,35 @@ function get_circle_from_points (p1, p2, p3) =
 		radius = norm ( p1-midpoint )
 	)
 	[midpoint, radius]
+;
+function get_circle_from_points_3d (p1, p2, p3) =
+	let(
+		normal   = cross (p2-p1, p3-p1),
+		p_flat   = rotate_to_vector_points ([p1,p2,p3], normal, backwards=true),
+		c_flat   = get_circle_from_points_2d (p_flat[0], p_flat[1], p_flat[2]),
+		midpoint = rotate_to_vector_points ([concat(c_flat[0], p_flat[0].z)], normal, backwards=false)[0]
+	)
+	[midpoint, c_flat[1]]
+;
+
+// gibt [Mittelpunkt, Radius] einer Kugel zurück
+// mit 4 Punkten auf der Außenfläche
+function get_sphere_from_points (p1, p2, p3, p4) =
+	let(
+		// circle with first 3 points
+		normal  = cross (p2-p1, p3-p1),
+		p_flat  = rotate_to_vector_points ([p1,p2,p3,p4], normal, backwards=true),
+		c_flat  = get_circle_from_points_2d (p_flat[0], p_flat[1], p_flat[2]),
+		// find both points on circle which is in line with last point
+		z    = p_flat[0].z,
+		r    = c_flat[1],
+		m    = c_flat[0],
+		p    = [p_flat[3].x, p_flat[3].y],
+		px_a =
+			p==m ? [p_flat[0].x, p_flat[0].y]
+			:      r/norm(p-m) * (p-m) + m,
+		px_b = 2*m - px_a,
+		px   = rotate_to_vector_points ([concat(px_a, z), concat(px_b, z)], normal, backwards=false)
+	)
+	get_circle_from_points_3d (px[0], px[1], p4)
 ;
