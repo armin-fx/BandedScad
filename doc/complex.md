@@ -1,5 +1,5 @@
-Working with complex numbers
-============================
+Calculating with complex numbers
+================================
 
 ### defined in file
 `banded/complex.scad`

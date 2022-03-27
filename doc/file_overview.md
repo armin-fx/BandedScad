@@ -9,10 +9,11 @@ Overview of scad files
 ` `| . . . +--> `banded/constants_helper.scad`\
 ` `|\
 ` `+--> [`banded/math.scad`](math.md "Math functions")\
-` `| . . . +--> [`banded/math_common.scad`](math.md#various-math-functions- "Various common math functions")\
+` `| . . . +--> [`banded/math_common.scad`](math.md#more-math-functions- "Various common math functions")\
+` `| . . . +--> [`banded/math_formula.scad`](math.md#formula-functions- "Formula functions")\
+` `| . . . +--> [`banded/math_number.scad`](math.md#number-functions- "Number functions")\
 ` `| . . . +--> [`banded/math_vector.scad`](matrix.md#vector-operations- "Vector operations")\
 ` `| . . . +--> [`banded/math_matrix.scad`](matrix.md#matrix-operations- "Matrix operations")\
-` `| . . . +--> [`banded/math_formula.scad`](math.md#formula-functions- "Formula functions")\
 ` `| . . . +--> [`banded/complex.scad`](complex.md "Working with complex numbers")\
 ` `|\
 ` `+--> `banded/list.scad`\

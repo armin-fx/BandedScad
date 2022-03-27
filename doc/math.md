@@ -5,9 +5,11 @@ Math functions
 `banded/math.scad`\
 ` `| \
 ` `+--> `banded/math_common.scad`\
+` `+--> `banded/math_formula.scad`\
+` `+--> `banded/math_number.scad`\
+` `| \
 ` `+--> `banded/math_vector.scad`\
 ` `+--> `banded/math_matrix.scad`\
-` `+--> `banded/math_formula.scad`\
 ` `+--> `banded/complex.scad`
 
 [<-- file overview](file_overview.md)\
@@ -15,11 +17,10 @@ Math functions
 
 ### Contents
 [contents]: #contents "Up to Contents"
-- [Complex numbers ->][complex]
-- [Matrix and vector operations ->][matrix]
+- [Complex numbers ->](complex.md)
+- [Matrix and vector operations ->](matrix.md)
 
-
-- [More math functions][math]
+- [More math functions](#more-math-functions-)
   - [Test and restrict](#test-and-restrict-)
     - [`constrain()`][constrain]
     - [`constrain_bidirectional()`][constrain_bi]
@@ -52,24 +53,19 @@ Math functions
       - `arcoth()`
     - [`sinc()`][sinc]
     - [`Si()`][si]
-  - [Number functions](#number-functions-)
-     - [`factorial()`][factorial]
-     - [`double_factorial()`][double_factorial]
-     - [`multi_factorial()`][multi_factorial]
-     - [`binomial_coefficient()`][binomial_coefficient]
-     - [`fibonacci()`][fibonacci]
-     - [`continued_fraction()`][continued_fraction]
-     - [`gcd()`][gcd]
-     - [`lcm()`][lcm]
-- [Formula functions][formula]
+- [Number functions](#number-functions-)
+   - [`factorial()`][factorial]
+   - [`double_factorial()`][double_factorial]
+   - [`multi_factorial()`][multi_factorial]
+   - [`binomial_coefficient()`][binomial_coefficient]
+   - [`fibonacci()`][fibonacci]
+   - [`continued_fraction()`][continued_fraction]
+   - [`gcd()`][gcd]
+   - [`lcm()`][lcm]
+- [Formula functions](#formula-functions-)
   - [`get_radius_from()`][get_radius_from]
   - [`get_circle_from_points()`][get_circle_from_points]
   - [`get_sphere_from_points()`][get_sphere_from_points]
-
-[complex]: complex.md
-[matrix]:  matrix.md
-[math]:    #Various-math-functions-
-[formula]: #formula-functions-
 
 
 More math functions [^][contents]
@@ -223,7 +219,8 @@ Trigonometric integral\
 [=> Wikipedia - Trigonometric integral](https://en.wikipedia.org/wiki/Trigonometric_integral)
 
 
-### Number functions [^][contents]
+Number functions [^][contents]
+------------------------------
 
 #### `factorial (n)` [^][contents]
 [factorial]: #factorial-n-

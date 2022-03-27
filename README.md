@@ -43,7 +43,7 @@ What it does [^][contents]
 - [Math functions][math]
   - [Various common math functions][math_common]
   - Functions for [matrices and vector][matrix]
-  - Work with [complex numbers][complex]
+  - Calculate with [complex numbers][complex]
 - [Algorithmus with function literals][function]
 - [Helper functions][helper]
 - [Benchmark functions for speed][benchmark]
@@ -71,7 +71,7 @@ What it does [^][contents]
 [helper]:      doc/helper.md
 [benchmark]:   doc/helper.md#benchmark-function-
 [math]:        doc/math.md
-[math_common]: doc/math.md#various-math-functions-
+[math_common]: doc/math.md#more-math-functions-
 [matrix]:      doc/matrix.md
 [complex]:     doc/complex.md
 [operator]:    doc/operator.md
