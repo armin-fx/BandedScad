@@ -6,7 +6,7 @@ Matrix and vector operations
 ` `| \
 ` `+--> ...\
 ` `+--> `banded/math_vector.scad`\
-` `+--> `banded/math_matrix.scad`\
+` `+--> `banded/math_matrix.scad`
 
 [<-- file overview](file_overview.md)\
 [<-- table of contents](contents.md)
@@ -38,6 +38,15 @@ Matrix and vector operations
     - [`gauss_jordan_elimination()`][gauss_jordan_elimination]
     - [`reduced_row_echelon_form()`][reduced_row_echelon_form]
     - [`back_substitution()`][back_substitution]
+  - [Edit the content of a matrix][matrix_edit]
+    - [`matrix_cut_row()`][matrix_cut_row]
+    - [`matrix_cut_column()`][matrix_cut_column]
+    - [`matrix_minor()`][matrix_minor]
+    - [`matrix_insert_row()`][matrix_insert_row]
+    - [`matrix_insert_column()`][matrix_insert_column]
+    - [`matrix_replace_row()`][matrix_replace_row]
+    - [`matrix_replace_column()`][matrix_replace_column]
+    - [`concat_matrix()`][concat_matrix]
 
 
 Vector operations [^][contents]
@@ -177,10 +186,17 @@ The identity matrix of size `n` is the n × n square matrix with ones on the mai
 
 #### `determinant (m)` [^][contents]
 [determinant]: #determinant-m-
-Return the determinant of a n × n matrix `m`.
-The entries in matrix `m` accept numeric values and vectors.
-Short name: `det (m)`\
+Return the determinant of a n × n matrix `m`.\
+The entries in matrix `m` accept numeric values and vectors.\
+A value of a determinant is the directed n dimensional volume of all
+spanned vectors of the matrix.\
 [=> Wikipedia - Determinant](https://en.wikipedia.org/wiki/Determinant)
+
+Short name: `det (m)`
+
+___Specialized function with fixed matrix size:___
+- `det_2x2 (m)` - determinant of a 2 × 2 matrix
+- `det_3x3 (m)` - determinant of a 3 × 3 matrix
 
 #### `transpose (m)` [^][contents]
 [transpose]: #transpose-m-
@@ -188,10 +204,16 @@ Transpose a matrix `m`.\
 The transpose of a matrix is an operator which flips a matrix over its diagonal.\
 [=> Wikipedia - Transpose](https://en.wikipedia.org/wiki/Transpose)
 
+```
+  [1 2 3]  transpose   [1 4]
+  [4 5 6] ---------->  [2 5]
+                       [3 6]
+```
+
 #### `inverse (m)` [^][contents]
 [inverse]: #inverse-m-
-Return the inverse of a matrix `m`.
-Return `undef` if `m` is not invertible.
+Return the inverse of a matrix `m`.\
+Return `undef` if `m` is not invertible.\
 The multiplication of `m * inverse(m)` get the identity matrix.\
 [=> Wikipedia - Invertible matrix](https://en.wikipedia.org/wiki/Invertible_matrix)
 
@@ -227,9 +249,81 @@ Options:
 Bring a matrix `m` in reduced row echelon form.\
 [=> Wikipedia - Row echelon form](https://en.wikipedia.org/wiki/Row_echelon_form)
 
-
 #### `back_substitution (m)` [^][contents]
 [back_substitution]: #back_substitution-m-
 Run back substitution on matrix `m` which is set in row echelon form.\
 The upper triangle will set to zeros and the main diagonal will set to 1.
+
+
+### Edit the content of a matrix [^][contents]
+[matrix_edit]: #edit-the-content-of-a-matrix-
+
+#### `matrix_cut_row (m, i)` [^][contents]
+[matrix_cut_row]: #matrix_cut_row-m-i-
+Cut out a row at position `i` from the matrix `m`.
+```
+matrix_cut_row (m, 1):
+
+    [1 2 3]
+--> [2 3 4] <--
+    [4 5 6]
+
+Result:
+
+    [1 2 3]
+    [4 5 6]
+```
+
+#### `matrix_cut_column (m, j)` [^][contents]
+[matrix_cut_column]: #matrix_cut_column-m-j-
+Cut out a column at position `j` from the matrix `m`.
+```
+matrix_cut_column (m, 1):
+     |
+  [1 2 3]  Result:  [1 3]
+  [2 3 4] --------> [2 4]
+  [4 5 6]           [4 6]
+     |
+```
+
+#### `matrix_minor (m, i, j)` [^][contents]
+[matrix_minor]: #matrix_minor-m-i-j-
+Cut out a row `i` and a column `j` from the matrix `m` = minor matrix.
+```
+matrix_minor (m, 0, 1):
+       |
+--> [1 2 3] <---
+    [2 3 4]
+    [4 5 6]
+       |
+Result:
+
+    [2 4]
+    [4 6]
+```
+
+#### `matrix_insert_row (m, x, i)` [^][contents]
+[matrix_insert_row]: #matrix_insert_row-m-x-i-
+Insert a line `x` into matrix `m` at row position `i`.
+
+#### `matrix_insert_column (m, x, j)` [^][contents]
+[matrix_insert_column]: #matrix_insert_column-m-x-j-
+Insert a line `x` into matrix `m` at column position `j`.
+
+#### `matrix_replace_row (m, x, i)` [^][contents]
+[matrix_replace_row]: #matrix_replace_row-m-x-i-
+Replace a row in matrix `m` at position `i` with line `x`.
+
+#### `matrix_replace_column (m, x, i)` [^][contents]
+[matrix_replace_column]: #matrix_replace_column-m-x-i-
+Replace a column in matrix `m` at position `i` with line `x`.
+
+#### `concat_matrix (m, a)` [^][contents]
+[concat_matrix]: #concat_matrix-m-a-
+Append matrix `a` to matrix `m` in each row.
+```
+  m:      a:
+ [1 2]   [5 5]  Result:  [1 2 5 5]
+ [2 3]   [6 6] --------> [2 3 6 6]
+```
 

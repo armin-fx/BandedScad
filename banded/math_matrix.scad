@@ -91,9 +91,9 @@ function matrix_replace_row    (m, x, i) =
 function matrix_replace_column (m, x, j) = [ for (I=[0:1:len(m)-1]) matrix_replace_row(m[I],x[I],j) ];
 
 // an Matrix m in jeder Zeile Matrix a anhängen
-function concat_matrix (m,a) =
-	m[0][0]==undef ? undef :
-	a[0][0]==undef ? m     :
+function concat_matrix (m, a) =
+	(m==undef || m[0][0]==undef) ? undef :
+	(a==undef || a[0][0]==undef) ? m     :
 	[ for (i=[0:1:len(m)-1]) concat (m[i],a[i]) ]
 ;
 
