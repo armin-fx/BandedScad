@@ -16,8 +16,8 @@ use <banded/list_edit_type.scad>
 
 
 // Maximum oder Minimum einer Liste gemäß des Typs
-function min_list(list, type=0) = min (value_list(list, type));
-function max_list(list, type=0) = max (value_list(list, type));
+function min_list (list, type=0) = min (value_list(list, type));
+function max_list (list, type=0) = max (value_list(list, type));
 
 // Position des kleinsten Wertes einer Liste gemäß des Typs zurückgeben
 function min_position (list, type=0) =
@@ -487,35 +487,3 @@ function replace_values_list (list, value_list, new, type=0) =
 	:type[0]==-1 ? let( fn=type[1] ) [ for (e=list) let(ev = fn(e))             if ( len([for(value=value_list) if (ev==value) 0]) == 0 ) e else new ]
 	:                                [ for (e=list) let(ev = get_value(e,type)) if ( len([for(value=value_list) if (ev==value) 0]) == 0 ) e else new ]
 ;
-
-// pair-Funktionen
-//
-// Aufbau eines Paares: [key, value]
-// list = Liste mehrerer Schlüssel-Wert-Paare z.B. [ [key1,value1], [key2,value2], ... ]
-
-// Typ-Konstanten für die Listenfunktionen
-type_pair_key  = set_type_list(0);
-type_pair_value= set_type_list(1);
-
-// gibt den Wert eines Schlüssels aus einer Liste heraus
-// Argumente:
-//   list    -Liste aus Schlüssel-Wert-Paaren
-//   key     -gesuchter Schlüssel zum Wert
-//   index   -Bei gleichen Schlüsselwerten wird index-mal übersprungen
-//            standartmäßig wird der erste gefundene Schlüssel genommen (index=0)
-function pair_value     (list, key, index=0) =
-	list[find_first_list(list, key, index, type=type_pair_key)] [get_position_type(type_pair_value)];
-
-// gibt den Schlüssel eines Wertes aus einer Liste heraus
-// Argumente:
-//   list    -Liste aus Schlüssel-Wert-Paaren
-//   key     -gesuchter Wert zum Schlüssel
-//   index   -Bei gleichen Werten wird index-mal übersprungen
-//            standartmäßig wird der erste gefundene Wert genommen (index=0)
-function pair_key       (list, value, index=0) =
-	list[find_first_list(list, value, index, type=type_pair_value)] [get_position_type(type_pair_key)];
-
-// erzeugt ein Schlüssel-Werte-Paare
-function pair (key, value) = [key, value];
-
-

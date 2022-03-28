@@ -31,7 +31,7 @@ Configurable objects
     - [`cube_rounded_full()`][cube_rounded_full]
     - [`cube_fillet()`][cube_fillet]
     - [`cylinder_rounded()`][cylinder_rounded]
-    - [`cylinder_edges_rounded()`][cylinder_edges_rounded]
+    - [`cylinder_edges_fillet()`][cylinder_edges_fillet]
     - [`wedge_fillet()`][wedge_fillet]
 
 [cylinder_extend]: extend.md#cylinder_extend-

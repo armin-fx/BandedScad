@@ -7,3 +7,4 @@ include <banded/list_edit_type.scad>
 include <banded/list_edit_item.scad>
 include <banded/list_edit_data.scad>
 include <banded/list_edit_predicate.scad>
+include <banded/list_edit_pair.scad>

@@ -8,6 +8,8 @@ Functions for edit lists
 ` `| . . . +--> `banded/list_edit_type.scad`\
 ` `| . . . +--> `banded/list_edit_item.scad`\
 ` `| . . . +--> `banded/list_edit_data.scad`\
+` `| . . . +--> `banded/list_edit_predicate.scad`\
+` `| . . . +--> `banded/list_edit_pair.scad`\
 ` `| \
 ` `. . .
 
@@ -55,6 +57,9 @@ Functions for edit lists
   - [Edit list, use function literal on data](#edit-list-use-function-literal-on-data-)
     - [`for_each_list()`][for_each_list]
   - [Pair functions](#pair-functions-)
+    - [`pair()`][pair]
+    - [`pair_value()`][pair_value]
+    - [`pair_key()`][pair_key]
 
 [type]:           #different-type-of-data-
 
@@ -336,15 +341,18 @@ Pair functions [^][contents]
 - `list` - list of several key-value-pair s.a. `[ [key1,value1], [key2,value2], ... ]`
 
 #### `pair (key, value)` [^][contents]
+[pair]: #pair-key-value-
 creates a key-value-pair
 
 #### `pair_value (list, key, index)` [^][contents]
+[pair_value]: #pair_value-list-key-index-
 get a value from a pair list with given key
 - `index`
   - same key are skipped `index` times
   - default = get first hit, `index` = 0
 
 #### `pair_key (list, value, index)` [^][contents]
+[pair_key]: #pair_key-list-key-index-
 get a key from a pair list with contained value
 - `index`
   - same values are skipped `index` times
