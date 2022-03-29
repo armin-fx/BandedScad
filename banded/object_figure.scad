@@ -10,6 +10,7 @@ use <banded/math_vector.scad>
 use <banded/draft_curves.scad>
 use <banded/operator_transform.scad>
 
+
 // leeres Modul
 module empty () {}
 
@@ -23,17 +24,17 @@ module empty () {}
 // Angegeben müssen:
 //   genau 2 Angaben von r oder r1 oder r2 oder w
 // weitere Argumente:
-//   angle   - Öffnungswinkel des Torus, Standart=360°. Benötigt Version 2019.05
+//   angle   - Öffnungswinkel des Torus, Standart=360°. Benötigt Version ab 2019.05
 //   center  - Torus in der Mitte (Z-Achse) zentrieren (bei center=true)
 //   fn_ring - optionale Anzahl der Segmente des Rings
-module torus (r, w, ri, ro, angle=360, center=false, fn_ring=undef)
+module torus (r, w, ri, ro, angle=360, center=false, fn_ring)
 {
 	rx = parameter_ring_2r(r, w, ri, ro);
 	rm = (rx[1] + rx[0]) / 2;
 	rw = (rx[1] - rx[0]) / 2;
 	fn_Ring = is_num(fn_ring) ? fn_ring : get_fn_circle_current_x(rw);
 	//
-	translate_z(center ? 0 : rw)
+	translate_z(center==true ? 0 : rw)
 	rotate_extrude_extend (angle=angle, $fn=get_fn_circle_current_x(rm+rw))
 	difference()
 	{
@@ -102,12 +103,12 @@ module wedge (v_min, v_max, v2_min, v2_max)
 module ring_square (h, r, w, ri, ro, angle=360, center=false, d, di, do)
 {
 	rx = parameter_ring_2r(r, w, ri, ro, d, di, do);
-	translate_z(center ? -h/2 : 0)
+	translate_z(center==true ? -h/2 : 0)
 	linear_extrude(height=h, convexity=4)
 	difference()
 	{
-		polygon(circle_curve(r = rx[1], angle=angle, slices="x"));
-		polygon(circle_curve(r = rx[0], angle=angle, slices="x"));
+		polygon(circle_curve(r = rx[1], angle=angle, piece=true, slices="x"));
+		polygon(circle_curve(r = rx[0], angle=angle, piece=true, slices="x"));
 	}
 }
 

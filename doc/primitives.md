@@ -49,12 +49,20 @@ like OpenSCAD modules.
   - `sphere()`
 - more objects:
   - `wedge()`
+  - `torus()`
+  - `ring_square()`
+  - `funnel()`
 
 ___example:___
 ```OpenSCAD
 include <banded.scad>
-x = cylinder (h=10, r=4);
-build_object(x);
+
+a = cylinder (h=10, r=4);
+b = translate (a, v=[10,0,0]);
+c = color (b, "yellowgreen");
+
+build_object(a);
+build_object(c);
 ```
 
 
