@@ -120,19 +120,21 @@ function color_list_to_hex (rgb, alpha) =
 
 // convert a hex color string to a rgb color list
 function color_hex_to_list (hex, alpha) =
-	let( c =
+	let(
+		len_hex=len(hex),
+		c =
 		hex[0]!="#" ? undef
 		// r - red
 		// g - green
 		// b - blue
 		// a - alpha
-		:len(hex)==4 ? // "#rgb"
+		:len_hex==4 ? // "#rgb"
 			[
 				hex_letter_to_value (hex, 1, error=0),
 				hex_letter_to_value (hex, 2, error=0),
 				hex_letter_to_value (hex, 3, error=0)
 			] / 15
-		:len(hex)==5 ? // "#rgba"
+		:len_hex==5 ? // "#rgba"
 			[
 				hex_letter_to_value (hex, 1, error=0),
 				hex_letter_to_value (hex, 2, error=0),
@@ -140,13 +142,13 @@ function color_hex_to_list (hex, alpha) =
 				alpha!=undef ? alpha * 15 :
 				hex_letter_to_value (hex, 4, error=15)
 			] / 15
-		:len(hex)==7 ? // "#rrggbb"
+		:len_hex==7 ? // "#rrggbb"
 			[
 				hex_to_value (hex, 1, 2, error=0),
 				hex_to_value (hex, 3, 2, error=0),
 				hex_to_value (hex, 5, 2, error=0)
 			] / 255
-		:len(hex)==9 ? // "#rrggbbaa"
+		:len_hex==9 ? // "#rrggbbaa"
 			[
 				hex_to_value (hex, 1, 2, error=0),
 				hex_to_value (hex, 3, 2, error=0),
