@@ -194,6 +194,56 @@ function projection (object, cut, plane) =
 	Object
 ;
 
+function rotate_extrude_points (list, angle=360, slices) =
+	angle==360 ?
+		rotate_extrude_extend_points (list, [360,180], slices)
+	:	rotate_extrude_extend_points (list, angle    , slices)
+;
+function rotate_extrude_extend_points (list, angle=360, slices="x") =
+	let (
+		 r_max       = max_list (list, type=[0])
+		,angles      = parameter_angle (angle, [360,0])
+		,Angle_begin = angles[1]
+		,Angle       = angles[0]
+		,Slices =
+			slices==undef ? get_fn_circle_current  (r_max,Angle) :
+			slices=="x"   ? get_fn_circle_current_x(r_max,Angle) :
+			slices<2 ? Angle<180 ? 2 : 3
+			:slices
+		,is_full = Angle==360
+		// Y-Axis --to--> Z-Axis
+		// TODO: use only right side
+		,base     = [ for (e=list) [e[0],0,e[1]] ]
+		,len_base = len(base)
+		,points =
+			[ for (n=[0:1: Slices - (is_full ? 1 : 0) ])
+				let ( m = matrix_rotate_z (Angle_begin + Angle * n/Slices, d=2) )
+				for (e=base) m * e
+			]
+		,faces =
+			[ for (n=[0:1:Slices-1])
+				let(
+				 n_a = n*len_base
+				,n_b = is_full ?
+					 (n+1)%Slices*len_base
+					:(n+1)       *len_base
+				)
+			  for (k=[0:1:len_base-1])
+				[ n_a +  k
+				, n_a + (k+1)%len_base
+				, n_b + (k+1)%len_base
+				, n_b +  k
+				]
+			]
+		,faces_ends = is_full ? [] :
+			[[ for (i=[len_base-1:-1:0]) i]
+			,[ for (i=[0:1:len_base-1])  i + Slices*len_base ]
+			]
+	)
+	is_full ? [points, faces]
+	:         [points, concat(faces,faces_ends)]
+;
+
 function color (object, c, alpha) =
 	[ for (i=[0:1:max(3,len(object)-1)])
 		i!=2 ? object[i] :

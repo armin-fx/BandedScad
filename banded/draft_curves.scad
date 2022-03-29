@@ -138,7 +138,7 @@ function circle_curve (r, angle=360, slices, piece=0, outer, align, d) =
 		 R     = parameter_circle_r (r,d)
 		,Align = parameter_align (align, [0,0])
 		,angles      = parameter_angle (angle, [360,0])
-		,angle_begin = angles[1]
+		,Angle_begin = angles[1]
 		,Angle       = angles[0]
 		,Slices =
 			slices==undef ? get_fn_circle_current  (R,Angle,piece) :
@@ -151,7 +151,7 @@ function circle_curve (r, angle=360, slices, piece=0, outer, align, d) =
 			(Angle==0) ? R
 			:            R * get_circle_factor(Slices*360/Angle, Outer)
 		,circle_list =
-			circle_curve_intern(r_outer, Angle, angle_begin, Slices, Align)
+			circle_curve_intern(r_outer, Angle, Angle_begin, Slices, Align)
 	)
 	(piece==true && Angle!=360) ?
 		concat( circle_list, [[0,0]])
