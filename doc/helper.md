@@ -56,6 +56,7 @@ Helper functions
   - [`parameter_cylinder_r_basic()`][parameter_cylinder_r_basic]
   - [`parameter_ring_2r()`][parameter_ring_2r]
   - [`parameter_ring_2r_basic()`][parameter_ring_2r_basic]
+  - [`parameter_funnel_r()`][parameter_funnel_r]
   - [`parameter_helix_to_rp()`][parameter_helix_to_rp]
   - [`parameter_size_3d()`][parameter_size_3d]
   - [`parameter_size_2d()`][parameter_size_2d]
@@ -395,7 +396,7 @@ Rules like OpenSCAD's `cylinder()`
 
 #### `parameter_ring_2r (r, w, r1, r2, d, d1, d2)` [^][contents]
 [parameter_ring_2r]: #parameter_ring_2r-r-w-r1-r2-d-d1-d2-
-Returns [inner radius, outer radius] of a Ring.
+Returns `[inner radius, outer radius]` of a Ring.
 
 ```
     __-––  ----------+  ------------+
@@ -437,6 +438,22 @@ Must specify:
 
 Rules based on OpenSCAD:
 - without specification: `r1`=`1`, `r2`=`2`
+
+#### `parameter_funnel_r (ri1, ri2, ro1, ro2, w, di1, di2, do1, do2)` [^][contents]
+[parameter_funnel_r]: #parameter_funnel_r-ri1-ri2-ro1-ro2-w-di1-di2-do1-do2-
+Returns `[ri1, ri2, ro1, ro2]` of a funnel.
+
+Arguments:
+- `ri1`, `ri2` - inner radius bottom, top
+- `ro1`, `ro2` - outer radius bottom, top
+- `w`          - width of the wall. Optional
+- `di1`, `di2` - inner diameter bottom, top. Optional
+- `do1`, `do2` - outer diameter bottom, top. Optional
+
+Rules:
+- Radius comes before diameter
+- missing radius or diameter is taken from
+  the wall parameter and the opposite radius or diameter
 
 #### `parameter_helix_to_rp (rotations, pitch, height)` [^][contents]
 [parameter_helix_to_rp]: #parameter_helix_to_rp-rotations-pitch-height-

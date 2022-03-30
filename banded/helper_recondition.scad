@@ -112,6 +112,62 @@ function parameter_ring_2r_basic (r, w, r1, r2) =
 	:[1, 2]
 ;
 
+// Rückgabe:
+//   [ri1, ri2, ro1, ro2]
+// Argumente:
+//   ri1, ri2 - Innenradius unten, oben
+//   ro1, ro2 - Außenradius unten, oben
+//   w        - Breite der Wand. Optional
+// Regeln:
+// - Radius geht vor Durchmesser
+// - fehlender Radius oder Durchmesser wird mit Wandparameter aus dem
+//   gegenüberliegenden Radius oder Durchmesser ermittelt
+function parameter_funnel_r (ri1, ri2, ro1, ro2, w, di1, di2, do1, do2) =
+	let (
+		// easier to read, but warnings since OpenSCAD version 2021.01
+		// _ri1 = get_first_num (ri1, ro1-w, di1/2, do1/2-w, 1)
+		//,_ri2 = get_first_num (ri2, ro2-w, di2/2, do2/2-w, 1)
+		//,_ro1 = get_first_num (ro1, ri1+w, do1/2, di1/2+w, 2)
+		//,_ro2 = get_first_num (ro2, ri2+w, do2/2, di2/2+w, 2)
+		
+		,is_ri1 = ri1!=undef && is_num(ri1)
+		,is_ri2 = ri2!=undef && is_num(ri2)
+		,is_ro1 = ro1!=undef && is_num(ro1)
+		,is_ro2 = ro2!=undef && is_num(ro2)
+		,is_w   =   w!=undef && is_num(w)
+		,is_di1 = di1!=undef && is_num(di1)
+		,is_di2 = di2!=undef && is_num(di2)
+		,is_do1 = do1!=undef && is_num(do1)
+		,is_do2 = do2!=undef && is_num(do2)
+		//
+		,_ri1 =
+			is_ri1         ? ri1 :
+			is_ro1 && is_w ? ro1-w :
+			is_di1         ? di1/2 :
+			is_do1 && is_w ? do1/2-w :
+				1
+		,_ri2 =
+			is_ri2         ? ri2 :
+			is_ro2 && is_w ? ro2-w :
+			is_di2         ? di2/2 :
+			is_do2 && is_w ? do2/2-w :
+				1
+		,_ro1 =
+			is_ro1         ? ro1 :
+			is_ri1 && is_w ? ri1+w :
+			is_do1         ? do1/2 :
+			is_di1 && is_w ? di1/2+w :
+				2
+		,_ro2 =
+			is_ro2         ? ro2 :
+			is_ri2 && is_w ? ri2+w :
+			is_do2         ? do2/2 :
+			is_di2 && is_w ? di2/2+w :
+				2
+	)
+	[_ri1, _ri2, _ro1, _ro2]
+;
+
 // gibt [rotations, pitch] einer Helix zurück
 // Argumente:
 //   rotations - Anzahl der Umdrehungen

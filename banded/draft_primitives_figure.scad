@@ -3,7 +3,12 @@
 //
 // Enthält einige zusätzliche Objekte in Listen
 
+use <banded/extend_logic.scad>
+use <banded/helper_recondition.scad>
 use <banded/math_vector.scad>
+use <banded/draft_curves.scad>
+use <banded/draft_transform.scad>
+use <banded/draft_primitives_basic.scad>
 
 
 // Erzeugt einen Keil mit den Parametern von FreeCAD
@@ -78,14 +83,12 @@ function torus (r, w, ri, ro, angle=360, center=false, fn_ring) =
 	)
 	circle_angle==undef ? undef :
 	//
-	rotate_extrude_extend_points (
-		angle=angle,
-		$fn  =get_fn_circle_current_x(rm+rw),
+	rotate_extrude_extend_points (angle=angle, $fn=get_fn_circle_current_x(rm+rw),
 		list =
-			translate_points(
-				v    = [ rm, center==true ? 0 : rw],
-				list = circle_curve (r=rw, angle=circle_angle, piece=false, slices=fn_Ring)
-			)
+		translate_points(
+			v    = [ rm, center==true ? 0 : rw],
+			list = circle_curve (r=rw, angle=circle_angle, piece=false, slices=fn_Ring)
+		)
 	)
 ;
 
@@ -123,51 +126,13 @@ function ring_square (h, r, w, ri, ro, angle=360, center=false, d, di, do) =
 //   angle    - Öffnungswinkel des Trichters. Standard=360°. Benötigt Version 2019.05
 function funnel (h=1, ri1, ri2, ro1, ro2, w, angle=360, di1, di2, do1, do2) =
 	let (
-		// easier to read, but warnings since OpenSCAD version 2021.01
-		// _ri1 = get_first_num (ri1, ro1-w, di1/2, do1/2-w, 1)
-		//,_ri2 = get_first_num (ri2, ro2-w, di2/2, do2/2-w, 1)
-		//,_ro1 = get_first_num (ro1, ri1+w, do1/2, di1/2+w, 2)
-		//,_ro2 = get_first_num (ro2, ri2+w, do2/2, di2/2+w, 2)
-	
-		,is_ri1 = ri1!=undef && is_num(ri1)
-		,is_ri2 = ri2!=undef && is_num(ri2)
-		,is_ro1 = ro1!=undef && is_num(ro1)
-		,is_ro2 = ro2!=undef && is_num(ro2)
-		,is_w   =   w!=undef && is_num(w)
-		,is_di1 = di1!=undef && is_num(di1)
-		,is_di2 = di2!=undef && is_num(di2)
-		,is_do1 = do1!=undef && is_num(do1)
-		,is_do2 = do2!=undef && is_num(do2)
-		//
-		,_ri1 =
-			is_ri1         ? ri1 :
-			is_ro1 && is_w ? ro1-w :
-			is_di1         ? di1/2 :
-			is_do1 && is_w ? do1/2-w :
-				1
-		,_ri2 =
-			is_ri2         ? ri2 :
-			is_ro2 && is_w ? ro2-w :
-			is_di2         ? di2/2 :
-			is_do2 && is_w ? do2/2-w :
-				1
-		,_ro1 =
-			is_ro1         ? ro1 :
-			is_ri1 && is_w ? ri1+w :
-			is_do1         ? do1/2 :
-			is_di1 && is_w ? di1/2+w :
-				2
-		,_ro2 =
-			is_ro2         ? ro2 :
-			is_ri2 && is_w ? ri2+w :
-			is_do2         ? do2/2 :
-			is_di2 && is_w ? di2/2+w :
-				2
-		,fn = get_fn_circle_current_x( max(_ri1, _ri2, _ro1, _ro2) )
+		// return [ri1, ri2, ro1, ro2]
+		 r  = parameter_funnel_r (ri1, ri2, ro1, ro2, w, di1, di2, do1, do2)
+		,fn = get_fn_circle_current_x( max(r) )
 	)
 	rotate_extrude_extend_points (angle=angle, $fn=fn,
 		list=[
-			[_ri1,0], [_ro1,0],
-			[_ro2,h], [_ri2,h]
+			[r[0],0], [r[2],0],
+			[r[3],h], [r[1],h]
 		] )
 ;
