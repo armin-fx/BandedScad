@@ -6,7 +6,6 @@ Math on lists
 ` `| \
 ` `+--> `banded/list_algorithm.scad`\
 ` `+--> `banded/list_math.scad`\
-` `+--> `banded/list_mean.scad`\
 ` `| \
 ` `. . .
 
@@ -69,42 +68,50 @@ Returns a list with the result.
 
 ### Operand with functions from OpenSCAD [^][contents]
 
-| function                   | description
-|----------------------------|-------------
-| `sqrt_each (list)`         | square root
-| `ln_each (list)`           | natural logarithm
-| `log_each (list)`          | logarithm with base 10
-| `exp_each (list)`          | natural exponent
-| `pow_each (list1,list2) `  | power `list1[*] ^ list2[*]`
-| `sin_each (list)`          | sine function
-| `cos_each (list)`          | cosine
-| `tan_each (list)`          | tangent
-| `asin_each (list)`         | arcus sine
-| `acos_each (list)`         | arcus cosine
-| `atan_each (list)`         | arcus tangent
-| `atan2_each (list1,list2)` | 2-argument arcus tangent
-| `floor_each (list)`        | floor function
-| `ceil_each (list)`         | ceiling function
-| `round_each (list)`        | rounding function
-| `abs_each (list)`          | absolute values
-| `norm_each (list)`         | calculate the norm of a vector in every entry in a list
+| function                                 | description
+|------------------------------------------|-------------
+| `sqrt_each (list)`                       | square root
+| `ln_each (list)`                         | natural logarithm
+| `log_each (list)`                        | logarithm with base 10
+| `exp_each (list)`                        | natural exponent
+| `pow_each (base,exponent)`               | power `base[n] ^ exponent[n]`.
+| `pow_each_with_base     (base,exponent)` | power numeric value `base` with every entry in list `exponent`.
+| `pow_each_with_exponent (base,exponent)` | power every entry in list `base[n]` with numeric value in list `exponent`.
+| `sin_each (list)`                        | sine function
+| `cos_each (list)`                        | cosine
+| `tan_each (list)`                        | tangent
+| `asin_each (list)`                       | arcus sine
+| `acos_each (list)`                       | arcus cosine
+| `atan_each (list)`                       | arcus tangent
+| `atan2_each (list_y,list_x)`             | 2-argument arcus tangent.
+| `atan2_each_with_x (list_y,x)`           | 2-argument arcus tangent. With `x` as numeric value.
+| `atan2_each_with_y (y,list_x)`           | 2-argument arcus tangent. With `y` as numeric value.
+| `floor_each (list)`                      | floor function
+| `ceil_each (list)`                       | ceiling function
+| `round_each (list)`                      | rounding function
+| `abs_each (list)`                        | absolute values
+| `norm_each (list)`                       | calculate the norm of a vector in every entry in a list
 
 
 ### Operand with extra functions [^][contents]
 
-| function                      | description
-|-------------------------------|-------------
-| `multiply_each (list1,list2)` | multiply each value `list1[*] * list2[*]`
-| `divide_each (list1, list2)`  | divide each value `list1[*] / list2[*]`
-| `reciprocal_each (list)`      | reciprocate each value `1 / list[*]`
-| `sqr_each (list)`             | square each value `list[*] ^ 2`
-| `sum_each_next (list)`        | every next value contains the summation of all previous values in list
+| function                             | description
+|--------------------------------------|-------------
+| `multiply_each      (list1,list2)`   | multiply each value `list1[n] * list2[n]`.
+| `multiply_each_with (list,value)`    | multiply each value in the list with a (numeric) value.
+| `multiply_with_each (value,list)`    | multiply a value with each value in the list.
+| `divide_each      (list1,list2)`     | divide each value `list1[n] / list2[n]`.
+| `divide_each_with (list,value)`      | divide each value in the list with a numeric value.
+| `reciprocal_each (list,numerator=1)` | reciprocate each value `1 / list[n]`. Optional argument `numerator` can set with a value: `numerator / list[n]`
+| `sqr_each (list)`                    | square each value `list[n] ^ 2`
+| `sum_each_next (list)`               | every next value contains the summation of all previous values in list
 
 
 #### Call function on each list element [^][contents]
 
-| function                      | description
-|-------------------------------|-------------
-| `fn_each   (list, fn)`        | call a function literal `fn` with one argument with every entry in a list
-| `fn_2_each (list1,list2, fn)` | call a function literal `fn` with two arguments with every entries from the same position in `list1` and `list2`
+| function                           | description
+|------------------------------------|-------------
+| `fn_each        (list, fn)`        | call a function literal `fn` with one argument with every entry in a list
+| `fn_2_each      (list1,list2, fn)` | call a function literal `fn` with two arguments with every entries from the same position in `list1` and `list2`
+| `fn_2_each_with (list,value, fn)`  | call a function literal `fn` with two arguments with every entry from `list` with `value`
 
