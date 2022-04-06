@@ -22,5 +22,6 @@ function get_max_accuracy_pi (n=21, pi1=0, pi2=1) =
 		pi1
 	:	get_max_accuracy_pi(n+1, pi2, calculate_pi(n))
 ;
-function check_accuracy_pi(n=21) = calculate_pi(n)==calculate_pi(n+1);
+function check_accuracy_pi (n=21) = calculate_pi(n)==calculate_pi(n+1);
 
+function calculate_golden () = (1 + sqrt(5)) / 2;

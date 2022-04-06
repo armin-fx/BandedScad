@@ -15,15 +15,19 @@ euler = exp(1);
 // Euler-Mascheroni-Konstante = 0.577215664901
 euler_mascheroni = 0.577215664901;
 // Goldener Schnitt = 1.61803398875
-golden = (1 + sqrt(5)) / 2;
+golden = calculate_golden();
 // Schrittweite für Infinitsimalrechnung
 delta_std = 0.001;
 
 // - Maßeinheiten umrechnen:
 
-mm_per_inch = 25.4;
+mm_per_inch =   25.4;
+inch_per_mm = 1/25.4;
 degree_per_radian = 180/PI;
-percent = 0.01;
+radian_per_degree = PI/180;
+percent  = 1/100;
+permille = 1/1000;
+ppm      = 1/1000000;
 
 // - Naturkonstanten:
 
@@ -114,16 +118,20 @@ function test_message_constants_console (s) =
 	)
 ;
 function test_message_constants_str() = str (
-	PI == get_max_accuracy_pi() ? "" : "WARNING: Constant 'PI' has changed.\n",
-	tau == 2*PI                 ? "" : "WARNING: Constant 'tau' has changed.\n",
-	euler == exp(1)             ? "" : "WARNING: Constant 'euler' has changed.\n",
+	PI == get_max_accuracy_pi()  ? "" : "WARNING: Constant 'PI' has changed.\n",
+	tau == 2*PI                  ? "" : "WARNING: Constant 'tau' has changed.\n",
+	euler == exp(1)              ? "" : "WARNING: Constant 'euler' has changed.\n",
 	euler_mascheroni == 0.577215664901 ? "" :
 		"WARNING: Constant 'euler_mascheroni' has changed.\n",
-	golden == (1 + sqrt(5)) / 2 ? "" : "WARNING: Constant 'golden' has changed.\n",
+	golden == calculate_golden() ? "" : "WARNING: Constant 'golden' has changed.\n",
 	//
-	mm_per_inch == 25.4         ? "" : "WARNING: Constant 'mm_per_inch' has changed.\n",
+	mm_per_inch ==   25.4       ? "" : "WARNING: Constant 'mm_per_inch' has changed.\n",
+	inch_per_mm == 1/25.4       ? "" : "WARNING: Constant 'inch_per_mm' has changed.\n",
 	degree_per_radian == 180/PI ? "" : "WARNING: Constant 'degree_per_radian' has changed.\n",
-	percent == 0.01             ? "" : "WARNING: Constant 'percent' has changed.\n",
+	radian_per_degree == PI/180 ? "" : "WARNING: Constant 'radian_per_degree' has changed.\n",
+	percent  == 1/100           ? "" : "WARNING: Constant 'percent' has changed.\n",
+	permille == 1/1000          ? "" : "WARNING: Constant 'permille' has changed.\n",
+	ppm      == 1/1000000       ? "" : "WARNING: Constant 'ppm' has changed.\n",
 	//
 	lightspeed == 299792458   ? "" : "WARNING: Constant 'lightspeed' has changed. Welcome to a different world!\n",
 	planck == 6.62607015E-34  ? "" : "WARNING: Constant 'planck' has changed. Welcome to a different world!\n",

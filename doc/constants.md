@@ -55,9 +55,13 @@ in console if constants has changed.
 
 | constant            | number          | description
 |---------------------|-----------------|-------------
-| `mm_per_inch`       | 25.4            |
-| `degree_per_radian` | 180 / PI        |
+| `mm_per_inch`       | 25.4            | multiplicate to get mm from inch
+| `inch_per_mm`       | 1 / 25.4        | multiplicate to get inch from mm
+| `degree_per_radian` | 180 / PI        | multiplicate to get angle in degree from angle in radian
+| `radian_per_degree` | PI / 180        | multiplicate to get angle in radian from angle in degree
 | `percent`           | 1 / 100         | e.g. 30% to ratio - `30 * percent`
+| `permille`          | 1 / 1000        | e.g.  2% to ratio - `2 * permille`
+| `ppm`               | 1 / 1000000     | e.g. 10ppm to ratio - `10 * ppm`
 
 
 ### Natural constants [^][contents]
