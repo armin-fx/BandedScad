@@ -81,6 +81,12 @@ function reverse_norm_intern (v, index=0) =
 	:	0 - v[index]*v[index] + reverse_norm_intern(v, index+1)
 ;
 
+// gibt die quadrierte Euklidische Norm zurück
+function norm_sqr (v) =
+	let( n = norm(v) )
+	n*n
+;
+
 // Rechnet den modulo 'x%n'
 // = Rest von 'x / n'
 // Das Vorzeichen vom Rest ist das selbe wie vom Teiler 'n'.
