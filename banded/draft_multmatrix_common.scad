@@ -13,8 +13,8 @@ use <banded/draft_multmatrix_basic.scad>
 use <banded/draft_transform_basic.scad>
 
 // gibt die Matrix zurück zum rückwärts rotieren von Objekten
-function matrix_rotate_backwards (a, v, d=3) =
-	matrix_rotate (a, v, backwards=true, d=d)
+function matrix_rotate_backwards (a, v, d=3, short=false) =
+	matrix_rotate (a, v, backwards=true, d=d, short=short)
 ;
 
 // gibt die Matrix zurück zum rotieren an der angegebenen Position p
@@ -34,26 +34,26 @@ function matrix_rotate_backwards_at (a, p, v, d=3) =
 ;
 
 // gibt die Matrix zurück zum von in Richtung Z-Achse in Richtung Vektor v drehen
-function matrix_rotate_to_vector (v, a, backwards=false, d=3) =
+function matrix_rotate_to_vector (v, a, backwards=false, d=3, short=false) =
 	d==3 ?
 		is_list(a) ?
-			matrix_rotate_to_vector_vo (v, a, backwards)
-		:	matrix_rotate_to_vector_yz (v, a, backwards)
+			matrix_rotate_to_vector_vo (v, a, backwards, short=short)
+		:	matrix_rotate_to_vector_yz (v, a, backwards, short=short)
 	:d==2 ?
-			matrix_rotate_to_vector_2d (v, backwards)
+			matrix_rotate_to_vector_2d (v, backwards, short=short)
 	:undef
 ;
 // 2D: von X-Achse in Richtung Vektor v drehen
-function matrix_rotate_to_vector_2d (v, backwards=false) =
+function matrix_rotate_to_vector_2d (v, backwards=false, short=false) =
 	let(
 		V     = (is_list(v) && len(v)==2) ? v : [1,0],
 		angle = rotation_vector ([1,0], V)
 	)
 	! (backwards==true) ?
-		matrix_rotate_z( angle, d=2)
-	:	matrix_rotate_z(-angle, d=2)
+		matrix_rotate_z( angle, d=2, short=short)
+	:	matrix_rotate_z(-angle, d=2, short=short)
 ;
-function matrix_rotate_to_vector_vo (v, o, backwards=false) =
+function matrix_rotate_to_vector_vo (v, o, backwards=false, short=false) =
 	let(
 	V           = (is_list(v) && len(v)==3) ? v : [0,0,1],
 	orientation = (is_list(o) && len(o)==3) ? o : [1,0,0],
@@ -63,9 +63,9 @@ function matrix_rotate_to_vector_vo (v, o, backwards=false) =
 	plane       = projection_points (up_to_z),
 	angle_base  = rotation_vector (base_vector, plane[0])
 	)
-	matrix_rotate_to_vector_yz (V, angle_base, backwards)
+	matrix_rotate_to_vector_yz (V, angle_base, backwards, short=short)
 ;
-function matrix_rotate_to_vector_yz (v, a, backwards=false) =
+function matrix_rotate_to_vector_yz (v, a, backwards=false, short=false) =
 	let(
 	d     = 3,
 	V     = (is_list(v) && len(v)==3) ? v : [0,0,1],
@@ -77,20 +77,20 @@ function matrix_rotate_to_vector_yz (v, a, backwards=false) =
 	! (backwards==true) ?
 		// forward
 		angle==0 ?
-			matrix_rotate  ([0, b, c], d=d)
+			matrix_rotate  ([0, b, c], d=d, short=short)
 		:
-			matrix_rotate  ([0, b, c], d=d) *
-			matrix_rotate_z(angle,     d=d)
+			matrix_rotate  ([0, b, c], d=d, short=short) *
+			matrix_rotate_z(angle,     d=d, short=short)
 	:	// backwards
 		angle==0 ?
-			matrix_rotate_backwards  ([0, b, c], d=d)
+			matrix_rotate_backwards  ([0, b, c], d=d, short=short)
 		:
-			matrix_rotate_backwards_z(angle,     d=d) *
-			matrix_rotate_backwards  ([0, b, c], d=d)
+			matrix_rotate_backwards_z(angle,     d=d, short=short) *
+			matrix_rotate_backwards  ([0, b, c], d=d, short=short)
 ;
 // gibt die Matrix zurück zum von in Richtung Z-Achse in Richtung Vektor v rückwärts drehen
-function matrix_rotate_backwards_to_vector (v, a, d=3) =
-	matrix_rotate_to_vector (v, a, backwards=true, d=d)
+function matrix_rotate_backwards_to_vector (v, a, d=3, short=false) =
+	matrix_rotate_to_vector (v, a, backwards=true, d=d, short=short)
 ;
 
 // gibt die Matrix zurück zum drehen von in Richtung Z-Achse in Richtung Vektor v
@@ -117,9 +117,9 @@ function matrix_rotate_backwards_to_vector_at (v, p, a, d=3) =
 ;
 
 // gibt die Matrix zurück zum rotieren um die jeweilige Achse wie die Hauptfunktion
-function matrix_rotate_backwards_x (a) = let(d=3) !is_num(a) ? identity_matrix(d+1) : matrix_rotate_backwards([a,0,0], d=d);
-function matrix_rotate_backwards_y (a) = let(d=3) !is_num(a) ? identity_matrix(d+1) : matrix_rotate_backwards([0,a,0], d=d);
-function matrix_rotate_backwards_z (a, d=3) =     !is_num(a) ? identity_matrix(d+1) : matrix_rotate_backwards(a,       d=d);
+function matrix_rotate_backwards_x (a,      short=false) = let(d=3) !is_num(a) ? identity_matrix(short==true ? d : d+1) : matrix_rotate_backwards([a,0,0], d=d, short=short);
+function matrix_rotate_backwards_y (a,      short=false) = let(d=3) !is_num(a) ? identity_matrix(short==true ? d : d+1) : matrix_rotate_backwards([0,a,0], d=d, short=short);
+function matrix_rotate_backwards_z (a, d=3, short=false) =          !is_num(a) ? identity_matrix(short==true ? d : d+1) : matrix_rotate_backwards(a,       d=d, short=short);
 //
 function matrix_rotate_at_x (a, p) = let(d=3) !is_num(a) ? identity_matrix(d+1) : matrix_rotate_at([a,0,0], p, d=d);
 function matrix_rotate_at_y (a, p) = let(d=3) !is_num(a) ? identity_matrix(d+1) : matrix_rotate_at([0,a,0], p, d=d);
@@ -147,9 +147,9 @@ function matrix_mirror_at (v, p, d=3) =
 ;
 
 // gibt die Matrix zurück zum spiegeln an der jeweiligen Achse wie die Hauptfunktion
-function matrix_mirror_x (d=3) =       matrix_mirror ([1,0,0], d=d);
-function matrix_mirror_y (d=3) =       matrix_mirror ([0,1,0], d=d);
-function matrix_mirror_z () = let(d=3) matrix_mirror ([0,0,1], d=d);
+function matrix_mirror_x (d=3, short=false) =     matrix_mirror ([1,0,0], d=d, short=short);
+function matrix_mirror_y (d=3, short=false) =     matrix_mirror ([0,1,0], d=d, short=short);
+function matrix_mirror_z (short=false) = let(d=3) matrix_mirror ([0,0,1], d=d, short=short);
 // gibt die Matrix zurück zum spiegeln an der jeweiligen Achse bei gewählter Position
 // p = Position als Vektor
 //     oder als Abstand auf der jeweiligen Achse vom Koordinatenursprung
@@ -159,69 +159,100 @@ function matrix_mirror_at_z (p) = let(d=3) matrix_mirror_at ([0,0,1], !is_num(p)
 
 // gibt die Matrix zurück zum skalieren an der jeweiligen Achse wie die Hauptfunktion
 // f = Skalierfaktor
-function matrix_scale_x (f, d=3) =     matrix_scale ([f,0,0], d=d);
-function matrix_scale_y (f, d=3) =     matrix_scale ([0,f,0], d=d);
-function matrix_scale_z (f) = let(d=3) matrix_scale ([0,0,f], d=d);
+function matrix_scale_x (f, d=3, short=false) =     matrix_scale ([f,0,0], d=d, short=short);
+function matrix_scale_y (f, d=3, short=false) =     matrix_scale ([0,f,0], d=d, short=short);
+function matrix_scale_z (f, short=false) = let(d=3) matrix_scale ([0,0,f], d=d, short=short);
 //
 
 // Generate a matrix to create a projection at given axis
-function matrix_projection_x (d=3) =
-	d==3 ?
+function matrix_projection_x (d=3, short=false) =
+	let (
+		D = short==true ? d : d+1
+	)
+	D==4 ?
 		[[0,0,0,0]
 		,[0,1,0,0]
 		,[0,0,1,0]
 		,[0,0,0,1]
 		]
-	:d==2 ?
+	:D==3 ?
 		[[0,0,0]
 		,[0,1,0]
 		,[0,0,1]
 		]
+	:D==2 ?
+		[[0,0]
+		,[0,1]
+		]
 	:(!is_num(d)) ? undef
 	:(d<1)        ? undef
 	:
-		[ for (i=[0:d])
-		[ for (j=[0:d])
+		[ for (i=[0:D-1])
+		[ for (j=[0:D-1])
 		(j==i && j!=0) ? 1 : 0
 		] ]
 ;
-function matrix_projection_y (d=3) =
-	d==3 ?
+function matrix_projection_y (d=3, short=false) =
+	let (
+		D = short==true ? d : d+1
+	)
+	D==4 ?
 		[[1,0,0,0]
 		,[0,0,0,0]
 		,[0,0,1,0]
 		,[0,0,0,1]
 		]
-	:d==2 ?
+	:D==3 ?
 		[[1,0,0]
 		,[0,0,0]
 		,[0,0,1]
 		]
+	:D==2 ?
+		[[1,0]
+		,[0,0]
+		]
 	:(!is_num(d)) ? undef
 	:(d<2)        ? undef
 	:
-		[ for (i=[0:d])
-		[ for (j=[0:d])
+		[ for (i=[0:D-1])
+		[ for (j=[0:D-1])
 		(j==i && j!=1) ? 1 : 0
 		] ]
 ;
-function matrix_projection_z (d=3) =
+function matrix_projection_z (d=3, short=false) =
+	let (
+		is_short = short==true
+	)
 	d==3 ?
-		[[1,0,0,0]
-		,[0,1,0,0]
-		,[0,0,0,0]
-		,[0,0,0,1]
-		]
+		is_short ?
+			[[1,0,0]
+			,[0,1,0]
+			,[0,0,0]
+			]
+		:
+			[[1,0,0,0]
+			,[0,1,0,0]
+			,[0,0,0,0]
+			,[0,0,0,1]
+			]
 	:d==2 ? // nothing to do
-		[[1,0,0]
-		,[0,1,0]
-		,[0,0,1]
-		]
+		is_short ?
+			[[1,0]
+			,[0,1]
+			]
+		:
+			[[1,0,0]
+			,[0,1,0]
+			,[0,0,1]
+			]
 	:(!is_num(d)) ? undef
 	:(d<2)        ? undef
 	:
-		[ for (i=[0:d])
-		[ for (j=[0:d])
+		let (
+			D = is_short ? d : d+1
+		)
+		[ for (i=[0:D-1])
+		[ for (j=[0:D-1])
 		(j==i && j!=2) ? 1 : 0
 		] ]
 ;
@@ -244,8 +275,9 @@ function matrix_projection_z (d=3) =
 //     alternative to 'm'
 // standard 3D = shear X along Z
 // standard 2D = shear X along Y
-function matrix_skew (v, t, m, a, d=3) =
+function matrix_skew (v, t, m, a, d=3, short=false) =
 	let(
+	is_short = short==true,
 	M =	  is_num(m) ? m
 		: is_num(a) ? tan(a)
 		: 0,
@@ -264,16 +296,26 @@ function matrix_skew (v, t, m, a, d=3) =
 		: undef
 	)
 	d==3 ?
-		matrix_rotate_to_vector (V, T) *
-		[[1,0,M,0],
-		,[0,1,0,0]
-		,[0,0,1,0]
-		,[0,0,0,1]]
-		* matrix_rotate_backwards_to_vector (V, T)
+		matrix_rotate_to_vector (V, T, short=short) *
+		( is_short ?
+			[[1,0,M],
+			,[0,1,0]
+			,[0,0,1]]
+		:
+			[[1,0,M,0],
+			,[0,1,0,0]
+			,[0,0,1,0]
+			,[0,0,0,1]]
+		)
+		* matrix_rotate_backwards_to_vector (V, T, short=short)
 	: d==2 ?
-		[[1,M*cos(V),0]
-		,[M*sin(V),1,0]
-		,[0,0,1]]
+		is_short ?
+			[[1,M*cos(V)]
+			,[M*sin(V),1]]
+		:
+			[[1,M*cos(V),0]
+			,[M*sin(V),1,0]
+			,[0,0       ,1]]
 	: undef
 ;
 

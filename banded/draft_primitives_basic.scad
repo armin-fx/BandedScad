@@ -217,7 +217,7 @@ function rotate_extrude_extend_points (list, angle=360, slices="x") =
 		,len_base = len(base)
 		,points =
 			[ for (n=[0:1: Slices - (is_full ? 1 : 0) ])
-				let ( m = matrix_rotate_z (Angle_begin + Angle * n/Slices, d=2) )
+				let ( m = matrix_rotate_z (Angle_begin + Angle * n/Slices, d=3, short=true) )
 				for (e=base) m * e
 			]
 		,faces =

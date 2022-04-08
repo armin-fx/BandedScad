@@ -46,7 +46,7 @@ Helper functions
     - [`get_first_good_in_list()`][get_first_good_in_list]
     - [`get_first_num_in_list()`][get_first_num_in_list]
 - [Recondition arguments of functions](#recondition-arguments-of-functions-)
-  - [`repair_matrix_XX()`][repair_matrix_XX]
+  - [`repair_matrix()`][repair_matrix]
   - [`fill_missing_matrix()`][fill_missing_matrix]
   - [`fill_missing_list()`][fill_missing_list]
   - [`parameter_range()`][parameter_range]
@@ -307,14 +307,14 @@ Recondition arguments of functions [^][contents]
 Contains functions that evaluate the passed arguments
 from modules and functions.
 
-#### `repair_matrix_XX (m)` [^][contents]
-[repair_matrix_XX]: #-repair_matrix_XX-m-
+#### `repair_matrix (m, d)` [^][contents]
+[repair_matrix]: #-repair_matrix-m-d-
 Test an repair matrices for affine transformation.\
 Fill missing elements with elements from the unity matrix.
-
-`XX` in function name stands for:
-- `repair_matrix_2d()` - 2D-matrices, return 3x3 matrix
-- `repair_matrix_3d()` - 3D-matrices, return 4x4 matrix
+- `d`
+  - dimension of the matrix, d×d matrix
+  - if not set, use length of first line from the matrix
+    to determine the d×d size of the matrix
 
 #### `fill_missing_matrix (m, c)` [^][contents]
 [fill_missing_matrix]: #fill_missing_matrix-m-c-

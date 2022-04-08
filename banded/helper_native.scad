@@ -17,9 +17,9 @@ function range (value) = [ for (e=value) e ];
 
 // gibt den größten Abstand der einzelnen Werte innerhalb einer Liste zurück
 function diff_list (list) = max(list) - min(list);
-// gibt den größten Abstand jeder einzelnen Achse in einer Vektoren-Liste
+// gibt den größten Abstand jeder einzelnen Achse aus einer Vektoren-Liste
 function diff_axis_list (list) = [
-	for (axis=[0 : len(list[0])-1]) diff_list(extract_axis(list, axis))
+	for (axis=[0:1:len(list[0])-1]) diff_list (extract_axis (list, axis))
 ];
 // gibt die maximal mögliche Raumdiagonale zurück
 function max_norm (list) = norm(diff_axis_list(list));

@@ -15,6 +15,7 @@ Draft objects as data list - Multmatrix
 ### Contents
 [contents]: #contents "Up to Contents"
 - [Multmatrix](#multmatrix-)
+  - [Parameter `short`, size of the matrix][short]
   - [Basic multmatrix functions](#basic-multmatrix-functions-)
     - [`matrix_translate()`][matrix_translate]
     - [`matrix_rotate()`][matrix_rotate]
@@ -49,6 +50,33 @@ translate() rotate() scale()
 The functions of OpenSCAD modules for transformation are reproduced.\
 [=> Wikipedia - Transformation matrix](https://en.wikipedia.org/wiki/Transformation_matrix)
 
+#### Parameter `short`, size of the matrix [^][contents]
+[short]: #parameter-short-size-of-the-matrix-
+
+Some functions can generate a "short" matrix.\
+They have the same n×n size like a n-dimensional point and
+can directly multiplicated in OpenSCAD to get the transformed point.
+E.g. `matrix * point`
+Calculations are twice as fast, but they can only generate transformations around origin.
+
+You can:
+- rotate
+- mirror
+- scale
+- scew
+
+You can _not_:
+- translate
+  - inclusive all matrix functions with name endings `_at`
+
+If you want to mix with translate transformation,
+you must use the default matrix with size n+1.
+Matrices with different size can not mixed.\
+The size of a short n×n matrix can pushed up to default size n+1 with:
+```OpenSCAD
+m = repair_matrix (m_short, n + 1);
+```
+
 
 ### Basic multmatrix functions [^][contents]
 
@@ -61,8 +89,8 @@ Generate a matrix to translate to `v`.
     - `3` - spatial (3D) - default
     - `2` - flat (2D)
 
-#### `matrix_rotate (a, v, backwards, d)` [^][contents]
-[matrix_rotate]: #matrix_rotate-a-v-backwards-d-
+#### `matrix_rotate (a, v, backwards, d, short)` [^][contents]
+[matrix_rotate]: #matrix_rotate-a-v-backwards-d-short-
 Generate a matrix to rotate.
 - `a` - angle
 - `v` - vector where rotating around
@@ -73,27 +101,36 @@ Generate a matrix to rotate.
   - dimensions of vector which will transformed with matrix
     - `3` - spatial (3D) - default
     - `2` - flat (2D)
+- [`short`][short]
+  - `false` = default, size of matrix = `d` + 1
+  - `true`  = short d×d matrix
 
-#### `matrix_mirror (v, d)` [^][contents]
-[matrix_mirror]: #matrix_mirror-v-d-
+#### `matrix_mirror (v, d, short)` [^][contents]
+[matrix_mirror]: #matrix_mirror-v-d-short-
 Generate a matrix to mirror at origin along a vector `v`.
 - `v` - mirror along this direction, default = X axis
 - `d`
   - dimensions of vector which will transformed with matrix
     - `3` - spatial (3D) - default
     - `2` - flat (2D)
+- [`short`][short]
+  - `false` = default, size of matrix = `d` + 1
+  - `true`  = short d×d matrix
 
-#### `matrix_scale (v, d)` [^][contents]
-[matrix_scale]: #matrix_scale-v-d-
+#### `matrix_scale (v, d, short)` [^][contents]
+[matrix_scale]: #matrix_scale-v-d-short-
 Generate a matrix to scale to a given axis in vector `v`.
 - `v` - vector with scale factor for each axis
 - `d`
   - dimensions of vector which will transformed with matrix
     - `3` - spatial (3D) - default
     - `2` - flat (2D)
+- [`short`][short]
+  - `false` = default, size of matrix = `d` + 1
+  - `true`  = short d×d matrix
 
-#### `matrix_projection (v, d)` [^][contents]
-[matrix_projection]: #matrix_projection-v-d-
+#### `matrix_projection (v, d, short)` [^][contents]
+[matrix_projection]: #matrix_projection-v-d-short-
 Generate a matrix to get a projection on a plane (3D) or on a line (2D)
 which crosses origin.
 - `v` - normal vector of the plane (3D) or the line (2D)
@@ -103,12 +140,15 @@ which crosses origin.
   - dimensions of vector which will transformed with matrix
     - `3` - spatial (3D) - default
     - `2` - flat (2D)
+- [`short`][short]
+  - `false` = default, size of matrix = `d` + 1
+  - `true`  = short d×d matrix
 
 
 ### More multmatrix functions [^][contents]
 
-#### `matrix_rotate_backwards (a, v, d)` [^][contents]
-[matrix_rotate_backwards]: #matrix_rotate_backwards-a-v-d-
+#### `matrix_rotate_backwards (a, v, d, short)` [^][contents]
+[matrix_rotate_backwards]: #matrix_rotate_backwards-a-v-d-short-
 Generate a matrix to rotate backwards.
 - `a` - angle
 - `v` - vector where it rotating around
@@ -116,6 +156,9 @@ Generate a matrix to rotate backwards.
   - dimensions of vector which will transformed with matrix
     - `3` - spatial (3D) - default
     - `2` - flat (2D)
+- [`short`][short]
+  - `false` = default, size of matrix = `d` + 1
+  - `true`  = short d×d matrix
 
 #### `matrix_rotate_at (a, p, v, backwards, d)` [^][contents]
 [matrix_rotate_at]: #matrix_rotate_at-a-p-v-backwards-d-
@@ -131,8 +174,8 @@ Generate a matrix to rotate at position `p`.
   - `false` - default, normal forward rotate
   - `true`  - rotate backwards, undo forward rotate
 
-#### `matrix_rotate_to_vector (v, a, backwards)` [^][contents]
-[matrix_rotate_to_vector]: #matrix_rotate_to_vector-v-a-backwards-
+#### `matrix_rotate_to_vector (v, a, backwards, short)` [^][contents]
+[matrix_rotate_to_vector]: #matrix_rotate_to_vector-v-a-backwards-short-
 Generate a matrix to rotate from direction Z axis to direction at vector `v`.
 - `v` - direction as vector
 - `a`
@@ -141,6 +184,9 @@ Generate a matrix to rotate from direction Z axis to direction at vector `v`.
 - `backwards`
   - `false` - default, normal forward rotate
   - `true`  - rotate backwards, undo forward rotate
+- [`short`][short]
+  - `false` = default, size of matrix = `d` + 1
+  - `true`  = short d×d matrix
 
 procedure 1, `a` as angle:
 - vector `v` will split in
@@ -176,8 +222,8 @@ Generate a matrix to mirror along a vector `v` at origin position `p`.
     - `3` - spatial (3D) - default
     - `2` - flat (2D)
 
-#### `matrix_skew (v, t, m, a, d)` [^][contents]
-[matrix_skew]: #matrix_skew-v-t-m-a-d-
+#### `matrix_skew (v, t, m, a, d, short)` [^][contents]
+[matrix_skew]: #matrix_skew-v-t-m-a-d-short-
 Generate a matrix to skew an object.\
 default for 3D = shear X along Z\
 default for 2D = shear X along Y
@@ -203,6 +249,9 @@ default for 2D = shear X along Y
   - dimensions of vector which will transformed with matrix
     - `3` - spatial (3D) - default
     - `2` - flat (2D)
+- [`short`][short]
+  - `false` = default, size of matrix = `d` + 1
+  - `true`  = short d×d matrix
 
 #### `matrix_skew_at (v, t, m, a, p, d)` [^][contents]
 [matrix_skew_at]: #matrix_skew_at-v-t-m-a-p-d-
@@ -215,14 +264,14 @@ see [`matrix_skew()`][matrix_skew]
 
 #### Multmatrix function backwards [^][contents]
 Contains functions that define known functions with operation backwards.\
-Option `backwards` is removed and internally set to `true`.
-Name convention: 'base operation' + '_backwards' + 'additional operations'\
+Option `backwards` is removed and internally set to `true`.\
+Name convention: 'base operation' + '_backwards' + 'additional operations'
 
 | Base function                                                | operation backwards
 |--------------------------------------------------------------|---------------------
-| [`matrix_rotate()`][matrix_rotate]                           | [`matrix_rotate_backwards (a, v, d)`][matrix_rotate_backwards]
+| [`matrix_rotate()`][matrix_rotate]                           | [`matrix_rotate_backwards (a, v, d, short)`][matrix_rotate_backwards]
 | [`matrix_rotate_at()`][matrix_rotate_at]                     | `matrix_rotate_backwards_at (a, p, v, d)`
-| [`matrix_rotate_to_vector()`][matrix_rotate_to_vector]       | `matrix_rotate_backwards_to_vector (v, a)`
+| [`matrix_rotate_to_vector()`][matrix_rotate_to_vector]       | `matrix_rotate_backwards_to_vector (v, a, short)`
 | [`matrix_rotate_to_vector_at()`][matrix_rotate_to_vector_at] | `matrix_rotate_backwards_to_vector_at (v, p, a)`
 
 #### Multmatrix on a fixed axis [^][contents]
@@ -231,28 +280,28 @@ Name convention: 'function operation name' + '_axis'\
 Axis = x, y or z. later named as '?'
 
 ##### Basic multmatrix at fixed axis [^][contents]
-| Base function                              | with fixed axis              | description
-|--------------------------------------------|------------------------------|-------------
-| [`matrix_translate()`][matrix_translate]   | `matrix_translate_?  (l, d)` | `l` - length to translate        <br> `d` - dimension
-| .                                          | `matrix_translate_z  (l)`    | only in 3 dimension
-| .                                          | `matrix_translate_xy (t, d)` | `t` - 2D position at X and Y axis<br> `d` - dimension
-| [`matrix_rotate()`][matrix_rotate]         | `matrix_rotate_? (a, d)`     | `a` - angle to rotate in degree  <br> `d` - dimension
-| [`matrix_mirror()`][matrix_mirror]         | `matrix_mirror_? (d)`        | `d` - dimension
-| .                                          | `matrix_mirror_z ()`         | only in 3 dimension
-| [`matrix_scale()`][matrix_scale]           | `matrix_scale_? (f, d)`      | `f` - scale factor               <br> `d` - dimension
-| .                                          | `matrix_scale_z (f)`         | only in 3 dimension
-| [`matrix_projection()`][matrix_projection] | `matrix_projection_? (d)`    | `d` - dimension
-| .                                          | `matrix_projection_z (d)`    | only in 3 dimension
+| Base function                              | with fixed axis                  | description
+|--------------------------------------------|----------------------------------|-------------
+| [`matrix_translate()`][matrix_translate]   | `matrix_translate_?  (l, d)`     | `l` - length to translate        <br> `d` - dimension
+| .                                          | `matrix_translate_z  (l)`        | only in 3 dimension
+| .                                          | `matrix_translate_xy (t, d)`     | `t` - 2D position at X and Y axis<br> `d` - dimension
+| [`matrix_rotate()`][matrix_rotate]         | `matrix_rotate_? (a, d, short)`  | `a` - angle to rotate in degree  <br> `d` - dimension
+| [`matrix_mirror()`][matrix_mirror]         | `matrix_mirror_? (d, short)`     | `d` - dimension
+| .                                          | `matrix_mirror_z (short)`        | only in 3 dimension
+| [`matrix_scale()`][matrix_scale]           | `matrix_scale_? (f, d, short)`   | `f` - scale factor               <br> `d` - dimension
+| .                                          | `matrix_scale_z (f, short)`      | only in 3 dimension
+| [`matrix_projection()`][matrix_projection] | `matrix_projection_? (d, short)` | `d` - dimension
+| .                                          | `matrix_projection_z (d, short)` | only in 3 dimension
 
 ##### More multmatrix at fixed axis [^][contents]
-| Base function                            | with fixed axis                          | description
-|------------------------------------------|------------------------------------------|-------------
-| `matrix_rotate_backwards()`              | `matrix_rotate_backwards_? (a)`          | `a` - angle <br> only in 3 dimension
-| .                                        | `matrix_rotate_backwards_z (a, d)`       | `d` - dimension
-| [`matrix_rotate_at()`][matrix_rotate_at] | `matrix_rotate_at_?           (a, p)`    | `a` - angle <br> `p` - position <br> only in 3 dimension
-| .                                        | `matrix_rotate_at_z           (a, p, d)` | `d` - dimension
-| `matrix_rotate_backwards_at()`           | `matrix_rotate_backwards_at_? (a, p)`    | `a` - angle <br> `p` - position <br> only in 3 dimension
-| .                                        | `matrix_rotate_backwards_at_z (a, p, d)` | `d` - dimension
-| [`matrix_mirror_at()`][matrix_mirror_at] | `matrix_mirror_at_? (p, d)`              | `p` - position <br> `d` - dimension
-| .                                        | `matrix_mirror_at_z (p)`                 | only in 3 dimension
+| Base function                            | with fixed axis                           | description
+|------------------------------------------|-------------------------------------------|-------------
+| `matrix_rotate_backwards()`              | `matrix_rotate_backwards_? (a, short)`    | `a` - angle <br> only in 3 dimension
+| .                                        | `matrix_rotate_backwards_z (a, d, short)` | `d` - dimension
+| [`matrix_rotate_at()`][matrix_rotate_at] | `matrix_rotate_at_?           (a, p)`     | `a` - angle <br> `p` - position <br> only in 3 dimension
+| .                                        | `matrix_rotate_at_z           (a, p, d)`  | `d` - dimension
+| `matrix_rotate_backwards_at()`           | `matrix_rotate_backwards_at_? (a, p)`     | `a` - angle <br> `p` - position <br> only in 3 dimension
+| .                                        | `matrix_rotate_backwards_at_z (a, p, d)`  | `d` - dimension
+| [`matrix_mirror_at()`][matrix_mirror_at] | `matrix_mirror_at_? (p, d)`               | `p` - position <br> `d` - dimension
+| .                                        | `matrix_mirror_at_z (p)`                  | only in 3 dimension
 

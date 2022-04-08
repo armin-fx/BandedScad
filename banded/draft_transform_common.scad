@@ -4,8 +4,8 @@
 // Enthält zusätzliche Funktionen zum Transformieren von Punktlisten
 
 use <banded/draft_transform_basic.scad>
-use <banded/draft_multmatrix_common.scad>
-use <banded/draft_multmatrix_basic.scad>
+use <banded/draft_multmatrix.scad>
+
 
 // jeden Punkt in der Liste <list> rückwärts rotieren
 // funktioniert wie rotate_backwards()
@@ -16,14 +16,11 @@ function rotate_backwards_points (list, a, v) =
 // jeden Punkt in der Liste <list> rotieren an der angegebenen Position p
 // funktioniert wie rotate_at()
 function rotate_at_points (list, a, p, v, backwards=false) =
-	! (backwards==true) ?
-		// forward
-		translate_points( v=p,      list=
-		rotate_points    (a=a, v=v, list=
-		translate_points( v=-p,     list=
-		list )))
-	:	// backwards
-		rotate_backwards_at_points (list, a, p, v)
+	// direct transformation is faster then with matrices
+	translate_points( v=p,                           list=
+	rotate_points    (a=a, v=v, backwards=backwards, list=
+	translate_points( v=-p,                          list=
+	list )))
 ;
 // jeden Punkt in der Liste <list> rückwärts rotieren an der angegebenen Position p
 // funktioniert wie rotate_at()
@@ -37,9 +34,8 @@ function rotate_backwards_at_points (list, a, p, v) =
 // jeden Punkt in der Liste <list> von in Richtung Z-Achse in Richtung Vektor v drehen
 // funktioniert wie rotate_to_vector()
 function rotate_to_vector_points (list, v, a, backwards=false) =
-	let (d=len(list[0]))
 	multmatrix_points (list,
-		matrix_rotate_to_vector (v, a, backwards, d=d)
+		matrix_rotate_to_vector (v, a, backwards, d=len(list[0]), short=true)
 	)
 ;
 // jeden Punkt in der Liste <list> von in Richtung Z-Achse in Richtung Vektor v rückwärts drehen
@@ -50,9 +46,8 @@ function rotate_backwards_to_vector_points (list, v, a) =
 // jeden Punkt in der Liste <list> von in Richtung Z-Achse in Richtung Vektor v
 // drehen an der angegebenen Position
 function rotate_to_vector_at_points (list, v, p, a, backwards=false) =
-	let (d=len(list[0]))
 	multmatrix_points (list,
-		matrix_rotate_to_vector_at (v, p, a, backwards, d=d)
+		matrix_rotate_to_vector_at (v, p, a, backwards, d=len(list[0]))
 	)
 ;
 // jeden Punkt in der Liste <list> von in Richtung Z-Achse in Richtung Vektor v
@@ -92,11 +87,8 @@ function translate_xy_points (list, t) =
 function mirror_at_points (list, v, p) =
 	(!is_list(list) || !is_list(list[0])) ? undef :
 	p!=undef ?
-		let (d=len(list[0]))
 		multmatrix_points (list,
-			matrix_translate( p, d=d) *
-			matrix_mirror   ( v, d=d) *
-			matrix_translate(-p, d=d)
+			matrix_mirror_at (v, p, d=len(list[0]))
 		)
 	:
 		mirror_points(list, v)
@@ -129,7 +121,7 @@ function resize_z_points (list, l) = resize_points (list, [0,0,l]);
 function skew_points (list, v, t, m, a) =
 	(!is_list(list) || !is_list(list[0])) ? undef :
 	multmatrix_points (list,
-		matrix_skew (v, t, m, a, d=len(list[0]))
+		matrix_skew (v, t, m, a, d=len(list[0]), short=true)
 	)
 ;
 

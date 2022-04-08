@@ -31,9 +31,9 @@ function rotate_points (list, a, v, backwards=false) =
 		// forward
 		is_list(a) ?
 			multmatrix_points (list,
-				matrix_rotate_z(a.z, d=3) *
-				matrix_rotate_y(a.y, d=3) *
-				matrix_rotate_x(a.x, d=3)
+				matrix_rotate_z(a.z, d=3, short=true) *
+				matrix_rotate_y(a.y, d=3, short=true) *
+				matrix_rotate_x(a.x, d=3, short=true)
 			)
 		:is_num(a)  ?
 			is_list(v) ?
@@ -44,9 +44,9 @@ function rotate_points (list, a, v, backwards=false) =
 		// backwards
 		is_list(a) ?
 			multmatrix_points (list,
-				matrix_rotate_x(-a.x, d=3) *
-				matrix_rotate_y(-a.y, d=3) *
-				matrix_rotate_z(-a.z, d=3)
+				matrix_rotate_x(-a.x, d=3, short=true) *
+				matrix_rotate_y(-a.y, d=3, short=true) *
+				matrix_rotate_z(-a.z, d=3, short=true)
 			)
 		:is_num(a)  ?
 			is_list(v) ?
@@ -119,20 +119,10 @@ function rotate_v_points (list, a, v, backwards=false) =
 	:!is_list(v) ? list
 	:
 	let (
-		u=unit_vector(v),
-		x=u.x, y=u.y, z=u.z,
-		A = !(backwards==true) ? a : -a,
-		sina=sin(-A),
-		cosa=cos(-A),
-		matrix=
-		[
-			[ x*x*(1-cosa)+  cosa, x*y*(1-cosa)-z*sina, x*z*(1-cosa)+y*sina ],
-			[ y*x*(1-cosa)+z*sina, y*y*(1-cosa)+  cosa, y*z*(1-cosa)-x*sina ],
-			[ z*x*(1-cosa)-y*sina, z*y*(1-cosa)+x*sina, z*z*(1-cosa)+  cosa ]
-		]
+		matrix = matrix_rotate_v (A, v, backwards, d=3, short=true)
 	)
 	[ for (p=list)
-		p * matrix
+		matrix * p
 	]
 ;
 
@@ -142,12 +132,13 @@ function rotate_v_points (list, a, v, backwards=false) =
 //  v    = Vektor, in dieser Richtung wird gespiegelt
 function mirror_points (list, v) =
 	(list==undef || list[0]==undef) ? undef
-	:len(list[0])==3 ? multmatrix_points (list, matrix_mirror_3d (v))
-	:len(list[0])==2 ? multmatrix_points (list, matrix_mirror_2d (v))
+	:len(list[0])==3 ? multmatrix_points (list, matrix_mirror_3d (v, short=true))
+	:len(list[0])==2 ? multmatrix_points (list, matrix_mirror_2d (v, short=true))
 	:len(list[0])==1 ? -list
 	:undef
 	
 ;
+/*
 function mirror_2d_points (list, v) =
 	let (
 		V = parameter_mirror_vector_2d(v),
@@ -168,6 +159,7 @@ function mirror_3d_points (list, v) =
 	)
 	list_result
 ;
+*/
 
 // jeden Punkt in der Liste <list> an der jeweiligen Achse vergrößern
 // funktioniert wie scale()
@@ -178,7 +170,7 @@ function scale_points (list, v) =
 	(v   ==undef || len(v) ==0)     ? list :
 	let (
 		last = len(list[0])-1,
-		scale_factor = [ for (i=[0:last]) (len(v)>i && v[i]!=0 && is_num(v[i])) ? v[i] : 1 ]
+		scale_factor = [ for (i=[0:last]) (len(v)>i && is_num(v[i])) ? v[i] : 1 ]
 	)
 	[ for (p=list)
 		[ for (i=[0:last])
@@ -224,39 +216,77 @@ function get_bounding_box_points (list) =
 //  m    = 4x3 oder 4x4 Matrix
 function multmatrix_points (list, m) =
 	(list==undef || list[0]==undef) ? undef :
-	 m==undef ? list :
-	 (len(list[0]) == 3) ? multmatrix_3d_points (list, repair_matrix_3d(m))
-	:(len(list[0]) == 2) ? multmatrix_2d_points (list, repair_matrix_2d(m))
+	m==undef ? list :
+	let(
+		n = len(m[0])
+	)
+	 (len(list[0]) == 3) ? multmatrix_3d_points (list, repair_matrix(m, n<3 ? 3 : n) )
+	:(len(list[0]) == 2) ? multmatrix_2d_points (list, repair_matrix(m, n<2 ? 2 : n) )
 	:undef
 ;
 
 function multmatrix_2d_points (list, m) =
-	[ for (p=list)
-		let (
-			a = [ p.x,p.y, 1 ],
-			c = m * a,
-			p_new = [ c.x,c.y ]
-		)
-		p_new
-	]
+	let (
+		n = len(m[0])
+	)
+	n==2 ?
+		[ for (p=list)
+			m * p
+		]
+	:n==3 ?
+		[ for (p=list)
+			let ( q = m * [p.x,p.y, 1] )
+			[q.x,q.y]
+		]
+	:list
 ;
 function multmatrix_3d_points (list, m) =
-	[ for (p=list)
-		let (
-			a = [ p.x,p.y,p.z, 1 ],
-			c = m * a,
-			p_new = [ c.x,c.y,c.z ]
-		)
-		p_new
-	]
+	let (
+		n = len(m[0])
+	)
+	n==3 ?
+		[ for (p=list)
+			m * p
+		]
+	:n==4 ?
+		[ for (p=list)
+			let ( q = m * [p.x,p.y,p.z, 1] )
+			[q.x,q.y,q.z]
+		]
+	:n==2 ?
+		[ for (p=list)
+			let ( a = m * [p.x,p.y] )
+			[a.x,a.y, p.z]
+		]
+	:list
 ;
+
 function multmatrix_2d_point (p, m) =
-	let ( v = m * [ p.x,p.y, 1 ] )
-	[v.x,v.y]
+	let (
+		n = len(m[0])
+	)
+	n==2 ?
+		m * p
+	:n==3 ?
+		let ( v = m * [p.x,p.y, 1] )
+		[v.x,v.y]
+	:list
 ;
 function multmatrix_3d_point (p, m) =
-	let ( v = m * [ p.x,p.y,p.z, 1 ] )
-	[v.x,v.y,v.z]
+	let (
+		n = len(m[0])
+	)
+	n==3 ?
+		m * p
+	:n==4 ?
+		let ( q = m * [p.x,p.y,p.z, 1] )
+		[q.x,q.y,q.z]
+	:n==2 ?
+		let ( a = m * [p.x,p.y] )
+		[a.x,a.y, p.z]
+		//
+		//concat (m * [p.x,p.y], p.z)
+	:list
 ;
 
 // jeden Punkt in der Liste <list> auf die xy-Ebene projizieren

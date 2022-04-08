@@ -6,35 +6,39 @@
 use <banded/helper_native.scad>
 use <banded/math_matrix.scad>
 
-function repair_matrix_3d (m) =
-	m[0][0]==undef ? identity_matrix(4) :
-	len(m[0])==4 ?
-		len(m)==4 ? m :
-		len(m)==3 ? concat (m,[0,0,0,1]) :
-		fill_missing_matrix (m, identity_matrix(4)) :
-	fill_missing_matrix     (m, identity_matrix(4))
-;
-function repair_matrix_2d (m) =
-	m[0][0]==undef ? identity_matrix(3) :
-	len(m[0])==3 ?
-		len(m)==3 ? m :
-		len(m)==2 ? concat (m,[0,0,1]) :
-		fill_missing_matrix (m, identity_matrix(3)) :
-	fill_missing_matrix     (m, identity_matrix(3))
+function repair_matrix (m, d) =
+	m[0][0]==undef ? identity_matrix(d) :
+	let (
+		n = len(m[0]),
+		D = d!=undef ? d : n
+	)
+	n==D ?
+		len(m)==D ? m :
+		len(m)==D-1 ?
+			D==2 ? [m[0],           [0,1]] :
+			D==3 ? [m[0],m[1],      [0,0,1]] :
+			D==4 ? [m[0],m[1],m[2], [0,0,0,1]] :
+			//	concat (m, [concat([for (i=[0:1:D-2]) 0], 1)] ) :
+			//	concat (m, [                       [for (i=[0:1:D-1]) i<D-1 ? 0 : 1] ] ) :
+				[ for (k=[0:1:D-1]) k<D-1 ? m[k] : [for (i=[0:1:D-1]) i<D-1 ? 0 : 1] ] :
+		fill_missing_matrix (m, identity_matrix(D)) :
+	fill_missing_matrix     (m, identity_matrix(D))
 ;
 
 function fill_missing_matrix (m, c) =
 	!is_list(m) ? c :
 	[ for (i=[0:len(c)-1])
 		[ for (j=[0:len(c[i])-1])
-			is_num(m[i][j]) ? m[i][j] : c[i][j]
+		//	is_num(m[i][j])                     ? m[i][j] : c[i][j] // slow, safe
+			(m[i][j]!=undef && is_num(m[i][j])) ? m[i][j] : c[i][j] // middle, safe
+		//	m[i][j]!=undef                      ? m[i][j] : c[i][j] // fast, no type test
 		]
 	]
 ;
 function fill_missing_list (list, c) =
 	!is_list(list) ? c :
 	[ for (i=[0:len(c)-1])
-		is_num(list[i]) ? list[i] : c[i]
+		(list[i]!=undef || is_num(list[i])) ? list[i] : c[i]
 	]
 ;
 

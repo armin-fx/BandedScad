@@ -4,10 +4,8 @@
 // Funktionen zum transformieren von Objekte in Listen,
 // die an polygon() oder polyhedron() übergeben werden können.
 
-use <banded/draft_transform_common.scad>
-use <banded/draft_transform_basic.scad>
-use <banded/draft_multmatrix_common.scad>
-use <banded/draft_multmatrix_basic.scad>
+use <banded/draft_transform.scad>
+use <banded/draft_multmatrix.scad>
 use <banded/draft_primitives_basic.scad>
 
 
