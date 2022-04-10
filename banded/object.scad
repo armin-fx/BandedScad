@@ -9,5 +9,7 @@
 
 
 include <banded/object_figure.scad>
-include <banded/object_circle.scad>
+include <banded/object_figure_rounded.scad>
 include <banded/object_rounded.scad>
+//
+include <banded/object_circle.scad>
