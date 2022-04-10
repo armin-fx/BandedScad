@@ -29,12 +29,12 @@
     - [`get_angle_from_percent()`][get_angle_from_percent]
   - [Get fragments of a circle](#get-fragments-of-a-circle-)
     - [Recurring arguments](#recurring-arguments-)
-    - [`get_fn_circle_current()`][get_fn_circle_current]
-    - [`get_fn_circle_current_x()`][get_fn_circle_current_x]
-    - [`get_fn_circle_closed()`][get_fn_circle_closed]
-    - [`get_fn_circle_closed_x()`][get_fn_circle_closed_x]
-    - [`get_fn_circle()`][get_fn_circle]
-    - [`get_fn_circle_x()`][get_fn_circle_x]
+    - [`get_slices_circle_current()`][get_slices_circle_current]
+    - [`get_slices_circle_current_x()`][get_slices_circle_current_x]
+    - [`get_slices_circle_closed()`][get_slices_circle_closed]
+    - [`get_slices_circle_closed_x()`][get_slices_circle_closed_x]
+    - [`get_slices_circle()`][get_slices_circle]
+    - [`get_slices_circle_x()`][get_slices_circle_x]
   - [Internal use](#internal-use-)
     - [`is_sf_activated()`][is_sf_activated]
     - [`is_sf_enabled()`][is_sf_enabled]
@@ -200,36 +200,36 @@ Control the fragment count of a circle (extend):
 - `fs_enabled` - like `$fs_enabled`, `fs` can be disabled with `false`
 - `fn_safe`    - like `$fn_safe`
 
-#### `get_fn_circle_current (r, angle, piece)` [^][contents]
-[get_fn_circle_current]: #get_fn_circle_current-r-angle-piece-
+#### `get_slices_circle_current (r, angle, piece)` [^][contents]
+[get_slices_circle_current]: #get_slices_circle_current-r-angle-piece-
 Returns the number of fragment on a part of a circle
 with the current _buildin special variables_ `$fn`, `$fa` and `$fs`.
 
-#### `get_fn_circle_current_x (r, angle, piece)` [^][contents]
-[get_fn_circle_current_x]: #get_fn_circle_current_x-r-angle-piece-
+#### `get_slices_circle_current_x (r, angle, piece)` [^][contents]
+[get_slices_circle_current_x]: #get_slices_circle_current_x-r-angle-piece-
 Returns the number of fragment on a part of a circle
 with the current _buildin special variables_ `$fn`, `$fa` and `$fs`,
 and the _extra special variables_ `$fn_min`, `$fn_max`, `$fd`, `$fa_enabled`, `$fs_enabled`.
 
-#### `get_fn_circle_closed (r, fn, fa, fs)` [^][contents]
-[get_fn_circle_closed]: #get_fn_circle_closed-r-fn-fa-fs-
+#### `get_slices_circle_closed (r, fn, fa, fs)` [^][contents]
+[get_slices_circle_closed]: #get_slices_circle_closed-r-fn-fa-fs-
 Returns the number of fragment on a closed circle
 with the _buildin special variables_.\
 Original OpenSCAD function.
 
-#### `get_fn_circle_closed_x (r, fn, fa, fs, fn_min, fn_max, fd, fa_enabled, fs_enabled)` [^][contents]
-[get_fn_circle_closed_x]: #get_fn_circle_closed_x-r-fn-fa-fs-fn_min-fn_max-fd-fa_enabled-fs_enabled-
+#### `get_slices_circle_closed_x (r, fn, fa, fs, fn_min, fn_max, fd, fa_enabled, fs_enabled)` [^][contents]
+[get_slices_circle_closed_x]: #get_slices_circle_closed_x-r-fn-fa-fs-fn_min-fn_max-fd-fa_enabled-fs_enabled-
 Returns the number of fragment on a closed circle
 with the _extra special variables_.
 
-#### `get_fn_circle (r, angle, piece, fn, fa, fs)` [^][contents]
-[get_fn_circle]: #get_fn_circle-r-angle-piece-fn-fa-fs-
+#### `get_slices_circle (r, angle, piece, fn, fa, fs)` [^][contents]
+[get_slices_circle]: #get_slices_circle-r-angle-piece-fn-fa-fs-
 Returns the number of fragment on a part of a circle
 with the _buildin special variables_.\
 Based on the behavior of rotate_extrude() in OpenSCAD.
 
-#### `get_fn_circle_x (r, angle, piece, fn, fa, fs, fn_min, fn_max, fd, fa_enabled, fs_enabled)` [^][contents]
-[get_fn_circle_x]: #get_fn_circle_x-r-angle-piece-fn-fa-fs-fn_min-fn_max-fd-fa_enabled-fs_enabled-
+#### `get_slices_circle_x (r, angle, piece, fn, fa, fs, fn_min, fn_max, fd, fa_enabled, fs_enabled)` [^][contents]
+[get_slices_circle_x]: #get_slices_circle_x-r-angle-piece-fn-fa-fs-fn_min-fn_max-fd-fa_enabled-fs_enabled-
 Returns the number of fragment on a part of a circle
 with the _extra special variables_.
 

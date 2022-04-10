@@ -50,9 +50,9 @@ module torus (r, w, ri, ro, angle=360, center=false, fn_ring)
 		let( alpha=acos(rm/rw) )  [2*(180-alpha), 180+alpha];
 	fn_Ring =
 		is_num(fn_ring) ? fn_ring
-		: get_fn_circle_current_x (rw, angle=circle_angle[0], piece=false);
+		: get_slices_circle_current_x (rw, angle=circle_angle[0], piece=false);
 	//
-	rotate_extrude_extend (angle=angle, $fn=get_fn_circle_current_x(rm+rw))
+	rotate_extrude_extend (angle=angle, $fn=get_slices_circle_current_x(rm+rw))
 	polygon (
 		translate_points(
 			v    = [ rm, center==true ? 0 : rw],
@@ -97,7 +97,7 @@ module funnel (h=1, ri1, ri2, ro1, ro2, w, angle=360, di1, di2, do1, do2)
 {
 	// return [ri1, ri2, ro1, ro2]
 	r  = parameter_funnel_r (ri1, ri2, ro1, ro2, w, di1, di2, do1, do2);
-	fn = get_fn_circle_current_x( max(r) );
+	fn = get_slices_circle_current_x( max(r) );
 	
 	rotate_extrude_extend (angle=angle, $fn=fn)
 	{

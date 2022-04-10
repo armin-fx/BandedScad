@@ -28,7 +28,7 @@ module cube_rounded_full (size, r, center=false, d)
 	
 	center_offset = (center==false) ? [0,0,0] : [-Size[0]/2, -Size[1]/2, -Size[2]/2];
 	
-	fn=get_fn_circle_current (R);
+	fn=get_slices_circle_current (R);
 	fn_polar=ceil(fn / 2) * 2;
 	//
 	segment_angle = 180/fn_polar;
@@ -242,7 +242,7 @@ module cylinder_rounded (h=3, r, center=false, d)
 		if (h <= 2*R) scale([1,1,h/(2*R)]) translate_z(R) sphere_extend (R);
 		else union()
 			{
-				fn      = get_fn_circle_current_x (R);
+				fn      = get_slices_circle_current_x (R);
 				fn_polar= ceil(fn / 2) * 2;
 				r_polar = (fn_polar/2 % 2 != 0) ? R : R * 1/cos(180/fn_polar);
 				//
@@ -272,7 +272,7 @@ module cylinder_edges_fillet (h, r1, r2, r_edges=0, type=0, center, r, d, d1, d2
 		];
 	angles   = parameter_angle (angle, [360,0]);
 	Align    = parameter_align (align, [0,0,1], center);
-	fn = get_fn_circle_current_x (R_max);
+	fn = get_slices_circle_current_x (R_max);
 	
 	echo(R_both);
 	
@@ -463,8 +463,8 @@ module edge_ring_rounded (r_ring, r, angle=90, angle_ring=360, extra=extra, d, d
 	R       = parameter_circle_r(r, d);
 	R_ring  = parameter_circle_r(r_ring, d_ring);
 	angles_ring = parameter_angle(angle_ring, 360);
-	fn      = get_fn_circle_current_x(R);
-	fn_ring = get_fn_circle_current_x(R_ring);
+	fn      = get_slices_circle_current_x(R);
+	fn_ring = get_slices_circle_current_x(R_ring);
 	//
 	if (R>0 && R_ring>0)
 	{
@@ -520,7 +520,7 @@ module edge_ring_chamfer (r_ring, c, angle=90, angle_ring=360, extra=extra, d_ri
 {
 	R_ring   = parameter_circle_r(r_ring, d_ring);
 	angles_ring = parameter_angle(angle_ring, 360);
-	fn_ring = get_fn_circle_current_x(R_ring);
+	fn_ring = get_slices_circle_current_x(R_ring);
 	//
 	if (c>0 && R_ring>0)
 	{
@@ -601,7 +601,7 @@ module corner_rounded_cube (r=[1,1,1])
 	//
 	if (c==max(a,b,c))  render(convexity=8) intersection()
 	{
-		fn_c = get_fn_circle_current_x (c, 90);
+		fn_c = get_slices_circle_current_x (c, 90);
 		//
 		for (i=[0.5:fn_c])
 		{

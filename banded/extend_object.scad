@@ -80,7 +80,7 @@ module sphere_extend (r, d, align)
 	Align = parameter_align (align, [0,0,0]);
 	
 	translate (Align*R)
-	sphere (r=R, $fn=get_fn_circle_current_x(R));
+	sphere (r=R, $fn=get_slices_circle_current_x(R));
 }
 
 // - 2D to 3D:

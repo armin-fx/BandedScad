@@ -50,8 +50,8 @@ function bezier_point_intern (t, p, n, j) =
 function bezier_curve (p, n, slices) =
 	let (
 	Slices =
-		slices==undef ? max(2, get_fn_circle_current  (max_norm(p)/4) ) :
-		slices=="x"   ? max(2, get_fn_circle_current_x(max_norm(p)/4) ) :
+		slices==undef ? max(2, get_slices_circle_current  (max_norm(p)/4) ) :
+		slices=="x"   ? max(2, get_slices_circle_current_x(max_norm(p)/4) ) :
 		slices< 2     ? 2 :
 		slices
 	)
@@ -141,8 +141,8 @@ function circle_curve (r, angle=360, slices, piece=0, outer, align, d) =
 		,Angle_begin = angles[1]
 		,Angle       = angles[0]
 		,Slices =
-			slices==undef ? get_fn_circle_current  (R,Angle,piece) :
-			slices=="x"   ? get_fn_circle_current_x(R,Angle,piece) :
+			slices==undef ? get_slices_circle_current  (R,Angle,piece) :
+			slices=="x"   ? get_slices_circle_current_x(R,Angle,piece) :
 			slices<2 ?
 				(piece==true || piece==0) ? 1 : 2
 			:slices
@@ -236,8 +236,8 @@ function superellipse_curve (interval, r, a, n, s, slices, piece=0) =
 		,N = parameter_numlist(2, n, [2,2])
 		,S = parameter_numlist(2, s, undef)
 		,Slices =
-			slices==undef ? get_fn_circle_current  (R*max(A),I[1]-I[0],piece) :
-			slices=="x"   ? get_fn_circle_current_x(R*max(A),I[1]-I[0],piece) :
+			slices==undef ? get_slices_circle_current  (R*max(A),I[1]-I[0],piece) :
+			slices=="x"   ? get_slices_circle_current_x(R*max(A),I[1]-I[0],piece) :
 			slices<2 ?
 				(piece==true || piece==0) ? 1 : 2
 			:slices
@@ -297,8 +297,8 @@ function superformula_curve (interval, a, m, n, slices, piece=true) =
 		,M = parameter_numlist(2, m, [1,1]  , fill=true)
 		,N = parameter_numlist(3, n, [1,1,1], fill=true)
 		,Slices = // TODO An die Funktion anpassen
-			slices==undef ? get_fn_circle_current  (max(A),I[1]-I[0],piece) :
-			slices=="x"   ? get_fn_circle_current_x(max(A),I[1]-I[0],piece) :
+			slices==undef ? get_slices_circle_current  (max(A),I[1]-I[0],piece) :
+			slices=="x"   ? get_slices_circle_current_x(max(A),I[1]-I[0],piece) :
 			slices<2 ?
 				(piece==true || piece==0) ? 1 : 2
 			:slices
@@ -394,8 +394,8 @@ function helix_curve (r, rotations, pitch, height, opposite, slices, angle) =
 		,Height    = Rotations * Pitch
 		,Opposite  = xor( (is_bool(opposite) ? opposite : false), rp[0]<0 )
 		,Slices =
-			slices==undef ? get_fn_circle_current  (max(R), 360*Rotations) :
-			slices=="x"   ? get_fn_circle_current_x(max(R), 360*Rotations) :
+			slices==undef ? get_slices_circle_current  (max(R), 360*Rotations) :
+			slices=="x"   ? get_slices_circle_current_x(max(R), 360*Rotations) :
 			max(2, ceil(slices * Rotations))
 		,angle_direction = 360 * Rotations * (Opposite==true ? -1 : 1)
 	)

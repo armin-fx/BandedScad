@@ -73,8 +73,8 @@ function cylinder (h, r1, r2, center, r, d, d1, d2, angle=360, slices="x", piece
 		,angles = parameter_angle (angle, [360,0])
 		,Angle  = angles[0]
 		,Slices = // copy and paste from circle_curve():
-			slices==undef ? get_fn_circle_current  (R_max,Angle,piece) :
-			slices=="x"   ? get_fn_circle_current_x(R_max,Angle,piece) :
+			slices==undef ? get_slices_circle_current  (R_max,Angle,piece) :
+			slices=="x"   ? get_slices_circle_current_x(R_max,Angle,piece) :
 			slices<2 ?
 				(piece==true || piece==0) ? 1 : 2
 			:slices
@@ -104,7 +104,7 @@ function sphere (r, d, align) =
 		 R        = parameter_circle_r (r, d)
 		,Align    = parameter_align (align, [0,0,0])
 		,translate_align = R*Align
-		,fn       = get_fn_circle_current_x (R)
+		,fn       = get_slices_circle_current_x (R)
 		,fn_polar = fn + fn%2
 		,c =
 			[ for (a=[1:2:fn_polar])
@@ -206,8 +206,8 @@ function rotate_extrude_extend_points (list, angle=360, slices="x") =
 		,Angle_begin = angles[1]
 		,Angle       = angles[0]
 		,Slices =
-			slices==undef ? get_fn_circle_current  (r_max,Angle) :
-			slices=="x"   ? get_fn_circle_current_x(r_max,Angle) :
+			slices==undef ? get_slices_circle_current  (r_max,Angle) :
+			slices=="x"   ? get_slices_circle_current_x(r_max,Angle) :
 			slices<2 ? Angle<180 ? 2 : 3
 			:slices
 		,is_full = Angle==360

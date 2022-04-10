@@ -23,7 +23,7 @@ use <banded/helper_recondition.scad>
 module circle_middle (r, d)
 {
 	rx = parameter_circle_r (r, d);
-	fn = get_fn_circle_current (rx);
+	fn = get_slices_circle_current (rx);
 	fudge = (1+1/cos(180/fn))/2;
 	circle(r=r*fudge, $fn=fn);
 }
@@ -31,7 +31,7 @@ module circle_middle (r, d)
 module circle_outer (r, d)
 {
 	rx = parameter_circle_r (r, d);
-	fn = get_fn_circle_current (rx);
+	fn = get_slices_circle_current (rx);
 	fudge = 1/cos(180/fn);
 	circle (r=r*fudge, $fn=fn);
 }
@@ -44,7 +44,7 @@ module cylinder_middle (h=1, r1, r2, center, r, d, d1, d2)
 	ra = parameter_cylinder_r (r, r1, r2, d, d1, d2);
 	ra1= ra[0];
 	ra2= ra[1];
-	fn = get_fn_circle_current (max (ra1, ra2));
+	fn = get_slices_circle_current (max (ra1, ra2));
 	fudge = (1+1/cos(180/fn))/2;
 	cylinder (h=h, r1=ra1*fudge, r2=ra2*fudge, center=center, $fn=fn);
 }
@@ -54,7 +54,7 @@ module cylinder_outer (h=1, r1, r2, center, r, d, d1, d2)
 	ra = parameter_cylinder_r (r, r1, r2, d, d1, d2);
 	ra1= ra[0];
 	ra2= ra[1];
-	fn = get_fn_circle_current (max (ra1, ra2));
+	fn = get_slices_circle_current (max (ra1, ra2));
 	fudge = 1/cos(180/fn);
 	cylinder (h=h, r1=ra1*fudge, r2=ra2*fudge, center=center, $fn=fn);
 }
@@ -63,7 +63,7 @@ module cylinder_outer (h=1, r1, r2, center, r, d, d1, d2)
 module sphere_middle (r, d)
 {
 	rx = parameter_circle_r (r, d);
-	fn = get_fn_circle_current (rx);
+	fn = get_slices_circle_current (rx);
 	fn_polar= ceil(fn / 2) * 2;
 	fudge_pol = (1+1/cos(180/fn_polar))/2;
 	fudge_mid = (1+1/cos(180/fn))/2;
@@ -75,7 +75,7 @@ module sphere_middle (r, d)
 module sphere_outer (r, d)
 {
 	rx = parameter_circle_r (r, d);
-	fn = get_fn_circle_current (rx);
+	fn = get_slices_circle_current (rx);
 	fn_polar= ceil(fn / 2) * 2;
 	fudge_pol = 1/cos(180/fn_polar);
 	fudge_mid = 1/cos(180/fn);

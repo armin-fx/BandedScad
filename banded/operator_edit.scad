@@ -218,8 +218,8 @@ module helix_extrude (angle, rotations, pitch, height, r, opposite, slices=32, c
 	Opposite  = xor( (is_bool(opposite) ? opposite : false), rp[0]<0 );
 	R_max  = max(R)==0 ? 9 : max(R);
 	segment_count =
-		slices==undef ? get_fn_circle_current  (R_max, Angle) :
-		slices=="x"   ? get_fn_circle_current_x(R_max, Angle) :
+		slices==undef ? get_slices_circle_current  (R_max, Angle) :
+		slices=="x"   ? get_slices_circle_current_x(R_max, Angle) :
 		max(2, ceil(slices * Rotations))
 	;
 	//
