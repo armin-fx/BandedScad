@@ -6,3 +6,4 @@
 
 include <banded/extend_logic_helper.scad>
 include <banded/extend_logic_circle.scad>
+include <banded/extend_logic_linear_extrude.scad>

@@ -15,7 +15,14 @@
 //  [1] - Zusammengehörigkeit der Punkte
 //  [2] - Farbe des Objekts
 
+use <banded/draft_curves.scad>
+use <banded/draft_multmatrix.scad>
+use <banded/draft_transform.scad>
 use <banded/draft_color.scad>
+//
+use <banded/helper.scad>
+use <banded/extend.scad>
+use <banded/list_edit_data.scad>
 
 
 // - 2D:
@@ -242,6 +249,55 @@ function rotate_extrude_extend_points (list, angle=360, slices="x") =
 	)
 	is_full ? [points, faces]
 	:         [points, concat(faces,faces_ends)]
+;
+
+function linear_extrude_points (list, height, center, twist, slices, scale) =
+	(list==undef || len(list)<3) ? undef :
+	let(
+		 H     = height!=undef ? height : 100
+		,Twist = twist !=undef ? twist  : 0
+		,Scale = parameter_scale (scale, 2)
+		,Center = center==true
+		,Slices = get_slices_extrude (list, H, Twist, slices, Scale, $fn, $fs, $fa)
+		//
+		,base     = [ for (e=list) [e[0],e[1],0] ]
+		,len_base = len(base)
+		//
+		,points =
+			[ for (n=[0:1:Slices])
+				let (
+					 m_r = matrix_rotate_z  (-Twist * n/Slices, d=2, short=true)
+				//	,m_s = matrix_scale     (bezier_1 (n/Slices, [[1,1],Scale]), d=2, short=true)
+					,m_s = matrix_scale     ([1,1] * ((Slices-n)/Slices) + Scale * (n/Slices), d=2, short=true)
+					,z   = H * n/Slices
+				)
+				for (e=list) let( b = m_s * m_r * e ) [b.x,b.y, z]
+			]
+		,faces =
+			[ for (n=[0:1:Slices-1])
+				let(
+				 n_a =  n   *len_base
+				,n_b = (n+1)*len_base
+				)
+			  for (k=[0:1:len_base-1])
+			  for (a=[0,1])
+				a==0 ?
+				[ n_a +  k
+				, n_b + (k+1)%len_base
+				, n_a + (k+1)%len_base
+				]
+				:
+				[ n_a +  k
+				, n_b +  k
+				, n_b + (k+1)%len_base
+				]
+			]
+		,faces_ends =
+			[[ for (i=[0:1:len_base-1])  i]
+			,[ for (i=[len_base-1:-1:0]) i + Slices*len_base]
+			]
+	)
+	[points, concat(faces,faces_ends)]
 ;
 
 function color (object, c, alpha) =
