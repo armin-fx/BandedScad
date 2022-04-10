@@ -31,8 +31,6 @@ Math functions
     - [`positiv_if_xxx()`][positiv_if]
   - [Various math functions](#various-math-functions-)
     - [`sqr()`][sqr]
-    - [`reverse_norm()`][reverse_norm]
-    - [`norm_sqr()`][norm_sqr]
     - [`mod()`][mod]
     - [`xor()`][xor]
     - [`normal_distribution()`][normal_distribution]
@@ -137,27 +135,6 @@ Returns `1` or `-1` if the condition of `n` fits
 #### `sqr (x)` [^][contents]
 [sqr]: #sqr-x-
 Square a value `x`. A function name for `x*x`
-
-#### `reverse_norm (n, v)` [^][contents]
-[reverse_norm]: #reverse_norm-n-v-
-Invert the euclidean norm
-- `n` - diagonal value or value of euclidean norm
-- `v` - cathetus or a list of cathetus
-
-Example:
-```OpenSCAD
-include <banded.scad>
-
-echo( norm         (  [4,3]) ); // 5
-echo( reverse_norm (5, 4   ) ); // 3
-
-echo( norm         (    [12,4,3]) ); // 13
-echo( reverse_norm (13, [12,4]  ) ); // 3
-```
-
-#### `norm_sqr (v)` [^][contents]
-[norm_sqr]: #norm_sqr-v-
-Returns the squared euclidean norm of a vector.
 
 #### `mod (x, n)` [^][contents]
 [mod]: #mod-x-n-

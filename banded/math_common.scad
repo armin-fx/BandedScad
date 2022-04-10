@@ -67,26 +67,6 @@ function negativ_if_even (n) =  n   %2==0 ? -1 :  1;
 // Zum Quadrat nehmen
 function sqr (x) = x*x;
 
-// Euklidische Norm umkehren
-// n = "Diagonale"
-// v = "Kathete" oder Liste von "Katheten"
-function reverse_norm (n, v) =
-	 is_num(v)   ? sqrt( n*n - v*v )
-	:!(len(v)>0) ? n
-	:              sqrt( n*n + reverse_norm_intern(v))
-;
-function reverse_norm_intern (v, index=0) =
-	index==len(v)-1 ?
-		0 - v[index]*v[index]
-	:	0 - v[index]*v[index] + reverse_norm_intern(v, index+1)
-;
-
-// gibt die quadrierte Euklidische Norm zurück
-function norm_sqr (v) =
-	let( n = norm(v) )
-	n*n
-;
-
 // Rechnet den modulo 'x%n'
 // = Rest von 'x / n'
 // Das Vorzeichen vom Rest ist das selbe wie vom Teiler 'n'.

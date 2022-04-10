@@ -26,6 +26,11 @@ Matrix and vector operations
     - [`rotation_around_line()`][rotation_around_line]
     - [`triple_product()`][triple_product]
     - [`cross_universal()`][cross_universal]
+  - [Euclidean norm](#euclidean-norm-)
+    - [`reverse_norm()`][reverse_norm]
+    - [`norm_sqr()`][norm_sqr]
+    - [`max_norm()`][max_norm]
+    - [`max_norm_sqr()`][max_norm_sqr]
 - [Matrix operations][matrix]
   - [Buildin matrix operations in OpenSCAD][matrix_buildin]
     - [Matrix addition and subtraction][matrix_add]
@@ -140,6 +145,38 @@ Characteristic in this version:
 - it uses the right hand rule in every dimension
 - if will set in order the n-1 unit vector,
   then the last missing unit vector will be the result
+
+
+### Euclidean norm [^][contents]
+
+#### `reverse_norm (n, v)` [^][contents]
+[reverse_norm]: #reverse_norm-n-v-
+Invert the euclidean norm
+- `n` - diagonal value or value of euclidean norm
+- `v` - cathetus or a list of cathetus
+
+Example:
+```OpenSCAD
+include <banded.scad>
+
+echo( norm         (  [4,3]) ); // 5
+echo( reverse_norm (5, 4   ) ); // 3
+
+echo( norm         (    [12,4,3]) ); // 13
+echo( reverse_norm (13, [12,4]  ) ); // 3
+```
+
+#### `norm_sqr (v)` [^][contents]
+[norm_sqr]: #norm_sqr-v-
+Returns the squared euclidean norm of a vector.
+
+#### `max_norm (list)` [^][contents]
+[max_norm]: #max_norm-list-
+Returns the maximum possible space diagonal of all vectors in a list.
+
+#### `max_norm_sqr (list)` [^][contents]
+[max_norm_sqr]: #max_norm_sqr-list-
+Returns the maximum possible squared space diagonal of all vectors in a list.
 
 
 Matrix operations [^][contents]

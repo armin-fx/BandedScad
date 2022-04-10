@@ -11,18 +11,16 @@ use <banded/math_common.scad>
 //                     0 1 2    0 1 2     0  1  2
 function extract_axis (list, axis) = [ for (n=list) n[axis] ];
 
-// Wandelt eine Bereichsangabe in eine Liste um
-//     [0:3]  ==>  [0,1,2,3]
-function range (value) = [ for (e=value) e ];
-
 // gibt den größten Abstand der einzelnen Werte innerhalb einer Liste zurück
 function diff_list (list) = max(list) - min(list);
 // gibt den größten Abstand jeder einzelnen Achse aus einer Vektoren-Liste
 function diff_axis_list (list) = [
 	for (axis=[0:1:len(list[0])-1]) diff_list (extract_axis (list, axis))
 ];
-// gibt die maximal mögliche Raumdiagonale zurück
-function max_norm (list) = norm(diff_axis_list(list));
+
+// Wandelt eine Bereichsangabe in eine Liste um
+//     [0:3]  ==>  [0,1,2,3]
+function range (value) = [ for (e=value) e ];
 
 // gibt die echte Position innerhalb einer Liste zurück
 // Kodierung wie in python:

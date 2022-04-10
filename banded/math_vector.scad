@@ -12,6 +12,7 @@
 // cross()  - Kreuzprodukt (Vektorielles Produkt)
 //
 
+use <banded/helper_native.scad>
 use <banded/math_matrix.scad>
 
 
@@ -115,4 +116,34 @@ function is_collinear (v1, v2) =
 // Testet im 3D Raum ob 3 aufgespannte Vektoren in der Ebene liegen
 function is_coplanar (v1, v2, v3) =
 	( v1 * cross(v2, v3) ) == 0
+;
+
+
+// Euklidische Norm umkehren
+// n = "Diagonale"
+// v = "Kathete" oder Liste von "Katheten"
+function reverse_norm (n, v) =
+	 is_num(v)   ? sqrt( n*n - v*v )
+	:!(len(v)>0) ? n
+	:              sqrt( n*n + reverse_norm_intern(v))
+;
+function reverse_norm_intern (v, index=0) =
+	index==len(v)-1 ?
+		0 - v[index]*v[index]
+	:	0 - v[index]*v[index] + reverse_norm_intern(v, index+1)
+;
+
+// gibt die quadrierte Euklidische Norm zurück
+function norm_sqr (v) =
+	let( n = norm(v) )
+	n*n
+;
+
+// gibt die maximal mögliche Raumdiagonale zurück
+function max_norm (list) = norm(diff_axis_list(list));
+
+// gibt die quadrierte maximal mögliche Raumdiagonale zurück
+function max_norm_sqr (list) =
+	let( l = norm(diff_axis_list(list)) )
+	l*l
 ;

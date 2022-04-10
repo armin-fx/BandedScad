@@ -26,10 +26,9 @@ Helper functions
     - [`get_list_depth()`][get_list_depth]
   - [Get data](#get-data-)
     - [`extract_axis()`][extract_axis]
-    - [`range()`][range]
     - [`diff_list()`][diff_list]
     - [`diff_axis_list()`][diff_axis_list]
-    - [`max_norm()`][max_norm]
+    - [`range()`][range]
   - [Get position on lists](#get-position-on-lists-)
     - [`get_position()`][get_position]
     - [`get_position_safe()`][get_position_safe]
@@ -125,11 +124,6 @@ extract_axis (list=[[x,y,z], [1,2,3], [11,12,13]], axis=1)  =>  [y,2,12]
                      0 1 2    0 1 2     0  1  2
 ```
 
-#### `range (value)` [^][contents]
-[range]: #range-value-
-Converts a range specification to a list.\
-`[0:3]  ==>  [0,1,2,3]`
-
 #### `diff_list (list)` [^][contents]
 [diff_list]: #diff_list-list-
 Returns the largest distance of each value within a list.\
@@ -149,9 +143,10 @@ diff_axis_list ([ [1,3],[6,9],[4,2] ])
   ==>  [5,7]
 ```
 
-#### `max_norm (list)` [^][contents]
-[max_norm]: #max_norm-list-
-Returns the maximum possible space diagonal of all vectors in list.
+#### `range (value)` [^][contents]
+[range]: #range-value-
+Converts a range specification to a list.\
+`[0:3]  ==>  [0,1,2,3]`
 
 
 ### Get position on lists [^][contents]
