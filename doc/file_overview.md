@@ -44,6 +44,8 @@ Overview of scad files
 ` `|\
 ` `+--> [`banded/extend.scad`](extend.md "Control the level of detail of a mesh")\
 ` `| . . . +--> [`banded/extend_logic.scad`](extend.md#functions-)\
+` `| . . . | . . . . +--> [`banded/extend_logic_helper.scad`](extend.md#convert-values- "Helper functions: convert values, and for internal use")\
+` `| . . . | . . . . +--> [`banded/extend_logic_circle.scad`](extend.md#get-fragments-of-a-circle- "Get fragments of a circle")\
 ` `| . . . +--> [`banded/extend_object.scad`](extend.md#defined-modules-)\
 ` `|\
 ` `+--> `banded/draft.scad`\

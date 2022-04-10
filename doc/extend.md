@@ -6,6 +6,8 @@
 `banded/extend.scad`\
 ` `| \
 ` `+--> `banded/extend_logic.scad`\
+` `| . . . . +--> `banded/extend_logic_helper.scad`\
+` `| . . . . +--> `banded/extend_logic_circle.scad`\
 ` `+--> `banded/extend_object.scad`
 
 [<-- file overview](file_overview.md)\
@@ -25,8 +27,6 @@
     - [`cube_extend()`][cube]
     - [`rotate_extrude_extend`][rotate_extrude_extend]
 - [Functions](#functions-)
-  - [Convert values](#convert-values-)
-    - [`get_angle_from_percent()`][get_angle_from_percent]
   - [Get fragments of a circle](#get-fragments-of-a-circle-)
     - [Recurring arguments](#recurring-arguments-)
     - [`get_slices_circle_current()`][get_slices_circle_current]
@@ -35,6 +35,8 @@
     - [`get_slices_circle_closed_x()`][get_slices_circle_closed_x]
     - [`get_slices_circle()`][get_slices_circle]
     - [`get_slices_circle_x()`][get_slices_circle_x]
+  - [Convert values](#convert-values-)
+    - [`get_angle_from_percent()`][get_angle_from_percent]
   - [Internal use](#internal-use-)
     - [`is_sf_activated()`][is_sf_activated]
     - [`is_sf_enabled()`][is_sf_enabled]
@@ -165,15 +167,6 @@ cylinder (r=2, h=1);
 Functions [^][contents]
 -----------------------
 
-### Convert values [^][contents]
-
-#### `get_angle_from_percent (value)` [^][contents]
-[get_angle_from_percent]: #get_angle_from_percent-value-
-Get the minimum angle for a fragment from maximum distance of deviation
-in percent to set value in special variable `$fa`.
-Angle for a fragment is equivalent to distance of deviation in percent.
-
-
 ### Get fragments of a circle [^][contents]
 
 #### Function name convention: [^][contents]
@@ -232,6 +225,15 @@ Based on the behavior of rotate_extrude() in OpenSCAD.
 [get_slices_circle_x]: #get_slices_circle_x-r-angle-piece-fn-fa-fs-fn_min-fn_max-fd-fa_enabled-fs_enabled-
 Returns the number of fragment on a part of a circle
 with the _extra special variables_.
+
+
+### Convert values [^][contents]
+
+#### `get_angle_from_percent (value)` [^][contents]
+[get_angle_from_percent]: #get_angle_from_percent-value-
+Get the minimum angle for a fragment from maximum distance of deviation
+in percent to set value in special variable `$fa`.
+Angle for a fragment is equivalent to distance of deviation in percent.
 
 
 ### Internal use [^][contents]
