@@ -281,16 +281,28 @@ function linear_extrude_points (list, height, center, twist, slices, scale) =
 				)
 			  for (k=[0:1:len_base-1])
 			  for (a=[0,1])
-				a==0 ?
-				[ n_a +  k
-				, n_b + (k+1)%len_base
-				, n_a + (k+1)%len_base
-				]
+				twist>=0 ?
+					a==0 ?
+					[ n_a +  k
+					, n_b + (k+1)%len_base
+					, n_a + (k+1)%len_base
+					]
+					:
+					[ n_a +  k
+					, n_b +  k
+					, n_b + (k+1)%len_base
+					]
 				:
-				[ n_a +  k
-				, n_b +  k
-				, n_b + (k+1)%len_base
-				]
+					a==0 ?
+					[ n_b +  k
+					, n_b + (k+1)%len_base
+					, n_a + (k+1)%len_base
+					]
+					:
+					[ n_b +  k
+					, n_a + (k+1)%len_base
+					, n_a +  k
+					]
 			]
 		,faces_ends =
 			[[ for (i=[0:1:len_base-1])  i]
