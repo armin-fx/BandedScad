@@ -92,19 +92,20 @@ Get projection of every point in `list` to xy-plane.
 Multiply every point in `list` with matrix `m`.
 Works like `multmatrix()`.
 - `m`
-  - 3D: 4x3 or 4x4 matrix
-  - 2D: 3x2 or 3x3 matrix
+  - 3D: 4x3 or 4x4 matrix (or 3x3)
+  - 2D: 3x2 or 3x3 matrix (or 2x2)
 
-#### `multmatrix_xx_point (p, m)` [^][contents]
-[multmatrix_xx_point]: multmatrix_xx_point-p-m- "multmatrix_xx_point (p, m)"
-Multiply one point in `p` with matrix `m`.
+#### `multmatrix_point (p, m)` [^][contents]
+[multmatrix_point]: multmatrix_point-p-m- "multmatrix_point (p, m)"
+Multiply one point `p` with matrix `m`.
 ```OpenSCAD
+multmatrix_point()     // common version
 multmatrix_2D_point()  // 2D version
 multmatrix_3D_point()  // 3D version
 ```
 - `m`
-  - 3D: 4x4 matrix
-  - 2D: 3x3 matrix
+  - 3D: 4x4 or 3x3 matrix
+  - 2D: 3x3 or 2x2 matrix
 
 
 ### More transformation [^][contents]

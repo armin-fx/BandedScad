@@ -222,7 +222,9 @@ function multmatrix_points (list, m) =
 	)
 	 (len(list[0]) == 3) ? multmatrix_3d_points (list, repair_matrix(m, n<3 ? 3 : n) )
 	:(len(list[0]) == 2) ? multmatrix_2d_points (list, repair_matrix(m, n<2 ? 2 : n) )
-	:undef
+	:
+		let( M = repair_matrix(m) )
+		[ for (p=list) multmatrix_point (p, M) ]
 ;
 
 function multmatrix_2d_points (list, m) =
@@ -238,7 +240,7 @@ function multmatrix_2d_points (list, m) =
 			let ( q = m * [p.x,p.y, 1] )
 			[q.x,q.y]
 		]
-	:list
+	:[ for (p=list) multmatrix_point (p, m) ]
 ;
 function multmatrix_3d_points (list, m) =
 	let (
@@ -258,9 +260,23 @@ function multmatrix_3d_points (list, m) =
 			let ( a = m * [p.x,p.y] )
 			[a.x,a.y, p.z]
 		]
-	:list
+	:[ for (p=list) multmatrix_point (p, m) ]
 ;
 
+function multmatrix_point (p, m) =
+	let(
+		n_p = len(p),
+		n_m = len(m)
+	)
+	n_p==n_m ?
+		m * p
+	:n_p<n_m ?
+		let( q = m * [for (i=[0:1:n_m-1]) i<n_p ? p[i] : 1] )
+		[for (i=[0:1:n_p-1]) q[i]]
+	://n_p>n_m ?
+		let ( a = m * [for (i=[0:1:n_m-1]) p[i]] )
+		[for (i=[0:1:n_p-1]) i<n_m ? a[i] : p[i]]
+;
 function multmatrix_2d_point (p, m) =
 	let (
 		n = len(m[0])
@@ -270,7 +286,7 @@ function multmatrix_2d_point (p, m) =
 	:n==3 ?
 		let ( v = m * [p.x,p.y, 1] )
 		[v.x,v.y]
-	:list
+	:multmatrix_point (p, m)
 ;
 function multmatrix_3d_point (p, m) =
 	let (
@@ -286,7 +302,7 @@ function multmatrix_3d_point (p, m) =
 		[a.x,a.y, p.z]
 		//
 		//concat (m * [p.x,p.y], p.z)
-	:list
+	:multmatrix_point (p, m)
 ;
 
 // jeden Punkt in der Liste <list> auf die xy-Ebene projizieren
