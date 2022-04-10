@@ -259,6 +259,36 @@ function parameter_size_2d (size) =
 	:                  [1,1]
 ;
 
+// wandelt das Argument 'scale' in einen d-Dimensionalen Vektor um
+// 'd' ist standartmäßig 3
+// aus scale=3        wird [3,3,3]
+// aus size=[1,2,2]   bleibt [1,2,2]
+// aus size=[2,2]     wird [2,2,1], fehlende Werte werden mit 1 aufgefüllt
+//
+// Ist scale=undef wird preset dafür genommen.
+// preset als Zahl: alle Werte von scale werden mit dieser Zahl belegt
+function parameter_scale (scale, d=3, preset) =
+	scale!=undef && scale[0]!=undef ?
+		let( len_scale = len(scale) )
+		len_scale==d ? scale :
+		[ for (i=[0:1:d-1]) (len_scale>i && is_num(scale[i])) ? scale[i] : 1 ]
+	:scale!=undef && is_num(scale) ?
+		 d==3 ? [scale, scale, scale]
+		:d==2 ? [scale, scale]
+		:       [ for (i=[0:1:d-1]) scale ]
+	:
+		 preset==undef    ?
+			 d==3 ? [1,1,1]
+			:d==2 ? [1,1]
+			:       [ for (i=[0:1:d-1]) 1 ]
+		:preset[0]!=undef ? preset
+		:is_num(preset) ?
+			 d==3 ? [preset,preset,preset]
+			:d==2 ? [preset,preset]
+			:       [ for (i=[0:1:d-1]) preset ]
+		:preset
+;
+
 // Ausrichtung eines Objekts vom Mittelpunkt aus an der jeweiligen Achse.
 // An der jeweiligen Achse können Werte gegeben werden '-1...0...1'.
 // - '1' = Ausrichtung des Objekts an der positiven Seite der jeweiligen Achse.

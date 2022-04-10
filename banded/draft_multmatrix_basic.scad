@@ -224,7 +224,7 @@ function matrix_scale (v, d=3, short=false) =
 	(!is_list(v) || len(v)==0) ? identity_matrix(d+1) :
 	let (
 		D = short==true ? d-1 : d,
-		scale_factor = [ for (i=[0:D]) (len(v)>i && is_num(v[i])) ? v[i] : 1 ]
+		scale_factor = parameter_scale (v, d)
 	)
 	[ for (i=[0:D])
 	[ for (j=[0:D])

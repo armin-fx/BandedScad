@@ -167,13 +167,13 @@ function mirror_3d_points (list, v) =
 //  v    = Vektor mit den Vergrößerungsfaktoren
 function scale_points (list, v) =
 	(list==undef || list[0]==undef) ? undef :
-	(v   ==undef || len(v) ==0)     ? list :
 	let (
-		last = len(list[0])-1,
-		scale_factor = [ for (i=[0:last]) (len(v)>i && is_num(v[i])) ? v[i] : 1 ]
+		d = len(list[0]),
+		scale_factor = parameter_scale (v, d, false)
 	)
+	(scale_factor==false) ? list :
 	[ for (p=list)
-		[ for (i=[0:last])
+		[ for (i=[0:1:d-1])
 			p[i] * scale_factor[i]
 		]
 	]
@@ -187,7 +187,7 @@ function resize_points (list, newsize) =
 	let (
 		bounding_box = get_bounding_box_points(list) [0],
 		scale_factor =
-		[ for (i=[0:len(bounding_box)-1])
+		[ for (i=[0:1:len(bounding_box)-1])
 			(is_num(newsize[i]) && newsize[i]!=0 && bounding_box[i]>0) ?
 				newsize[i] / bounding_box[i]
 				: 1
@@ -204,8 +204,8 @@ function resize_points (list, newsize) =
 function get_bounding_box_points (list) =
 	(list==undef || len(list)==0) ? [[0,0,0],[0,0,0]] :
 	let (
-		min_pos = [ for (i=[ 0:len(list[0])-1 ]) min ([for(e=list) e[i]]) ],
-		max_pos = [ for (i=[ 0:len(list[0])-1 ]) max ([for(e=list) e[i]]) ]
+		min_pos = [ for (i=[ 0:1:len(list[0])-1 ]) min ([for(e=list) e[i]]) ],
+		max_pos = [ for (i=[ 0:1:len(list[0])-1 ]) max ([for(e=list) e[i]]) ]
 	)
 	[ max_pos - min_pos, min_pos, max_pos ]
 ;

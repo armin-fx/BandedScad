@@ -59,6 +59,7 @@ Helper functions
   - [`parameter_helix_to_rp()`][parameter_helix_to_rp]
   - [`parameter_size_3d()`][parameter_size_3d]
   - [`parameter_size_2d()`][parameter_size_2d]
+  - [`parameter_scale`][parameter_scale]
   - [`parameter_align()`][parameter_align]
   - [`parameter_numlist()`][parameter_numlist]
   - [`parameter_angle()`][parameter_angle]
@@ -476,6 +477,24 @@ Converts the `size` argument to a duple `[1,2]`.\
 Used for e.g. the argument `size` in `square()`.
 - `size=3`     becomes `[3,3]`
 - `size=[1,2]` remains `[1,2]`
+
+#### `parameter_scale (scale, d, preset)` [^][contents]
+[parameter_scale]: parameter_scale-scale-d-preset-
+Evaluate the `scale` argument.
+- `d`
+  - Dimension of the vector `scale`, default = 3
+  - Set the scale vector to full `d` dimensions and fill missing values with `1`.
+- `scale`
+  - A list with scale values for every axis.
+  - A numeric value set in `scale` will set for all axis.
+  - e.g.
+    - `size=3`       becomes `[3,3]`
+    - `size=[1,2,2]` remains `[1,2,2]`
+    - `size=[2,2]`   becomes `[2,2,1]`, fill missing value with `1`
+- `preset`
+  - Use this value if scale is not set.
+  - A numeric value will set in list for all axis
+  - default = 1 for all axis
 
 #### `parameter_align (align, preset, center)` [^][contents]
 [parameter_align]: #parameter_align-align-preset-center-
