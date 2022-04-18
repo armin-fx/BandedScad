@@ -8,7 +8,7 @@
 include <banded/constants.scad>
 //
 use <banded/extend.scad>
-use <banded/helper_native.scad>
+use <banded/helper.scad>
 use <banded/math_vector.scad>
 use <banded/draft_transform_common.scad>
 use <banded/draft_transform_basic.scad>
@@ -109,8 +109,8 @@ module object_pane (position=0, thickness=epsilon*2, limit=1000)
 module extrude_line (line, rotational=[1,0,0], convexity, extra_h=0)
 {
 	base_vector = [1,0];
-	origin      = line[0];
-	line_vector = line[1] - line[0];
+	origin      = fill_missing_list (line[0]           , [0,0,0]);
+	line_vector = fill_missing_list (line[1] - line[0] , [0,0,0]);
 	up_to_z     = rotate_backwards_to_vector_points ( [rotational], line_vector);
 	plane       = projection_points (up_to_z);
 	angle_base  = rotation_vector (base_vector, plane[0]);

@@ -260,8 +260,7 @@ function linear_extrude_points (list, height, center, twist, slices, scale) =
 		,Center = center==true
 		,Slices = get_slices_extrude (list, H, Twist, slices, Scale, $fn, $fs, $fa)
 		//
-		,base     = [ for (e=list) [e[0],e[1],0] ]
-		,len_base = len(base)
+		,len_base = len(list)
 		//
 		,points =
 			[ for (n=[0:1:Slices])
@@ -281,7 +280,7 @@ function linear_extrude_points (list, height, center, twist, slices, scale) =
 				)
 			  for (k=[0:1:len_base-1])
 			  for (a=[0,1])
-				twist>=0 ?
+				Twist>=0 ?
 					a==0 ?
 					[ n_a +  k
 					, n_b + (k+1)%len_base
