@@ -31,6 +31,11 @@ Matrix and vector operations
     - [`norm_sqr()`][norm_sqr]
     - [`max_norm()`][max_norm]
     - [`max_norm_sqr()`][max_norm_sqr]
+  - [Vector test functions](#vector-test-functions-)
+    - [`is_collinear()`][is_collinear]
+    - [`is_nearly_collinear()`][is_nearly_collinear]
+    - [`is_coplanar()`][is_coplanar]
+    - [`is_nearly_coplanar()`][is_nearly_coplanar]
 - [Matrix operations][matrix]
   - [Buildin matrix operations in OpenSCAD][matrix_buildin]
     - [Matrix addition and subtraction][matrix_add]
@@ -177,6 +182,33 @@ Returns the maximum possible space diagonal of all vectors in a list.
 #### `max_norm_sqr (list)` [^][contents]
 [max_norm_sqr]: #max_norm_sqr-list-
 Returns the maximum possible squared space diagonal of all vectors in a list.
+
+
+### Vector test functions [^][contents]
+
+#### `is_collinear (v1, v2)` [^][contents]
+[is_collinear]: #is_collinear-v1-v2-
+Return `true` if the 2 vectors are collinear.
+This means they are parallel or anti parallel.
+
+#### `is_nearly_collinear (v1, v2)` [^][contents]
+[is_nearly_collinear]: #is_nearly_collinear-v1-v2-
+Return `true` if the 2 vectors are nearly collinear.
+- `deviation`
+  - deviation of the target from the normalized vectors,
+    as ratio - deviation per longest vector
+  - default = `1e-14`, calculation deviation
+
+#### `is_coplanar (v1, v2, v3)` [^][contents]
+[is_coplanar]: #is_coplanar-v1-v2-v3-
+Returns `true` if the 3 spanned vectors in 3D space are coplanar.
+This means they are in the same plane.
+
+#### `is_nearly_coplanar (v1, v2, v3)` [^][contents]
+[is_nearly_coplanar]: #is_nearly_coplanar-v1-v2-v3-
+Returns `true` if the 3 spanned vectors in 3D space are nearly coplanar.
+- `deviation`
+  - default = `1e-14`, calculation deviation
 
 
 Matrix operations [^][contents]

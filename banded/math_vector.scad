@@ -15,6 +15,8 @@
 use <banded/helper_native.scad>
 use <banded/math_matrix.scad>
 
+include <banded/constants_user.scad>
+
 
 // Vektor normieren auf die Länge 1
 function unit_vector (v) = v / norm(v);
@@ -107,15 +109,29 @@ function pick_vector (vx, vy, vz) = [vx.x, vy.y, vz.z] ;
 // Testet, ob zwei Vektoren in die gleiche Richtung oder genau entgegengesetzt zeigen.
 function is_collinear (v1, v2) =
 	let(
+		 u1 = v1 / norm(v1) // = unit_vector (v1)
+		,u2 = v2 / norm(v2) // = unit_vector (v2)
+	)
+	u1==u2 || u1==-u2
+;
+// Testet, ob zwei Vektoren näherungsweise in die gleiche Richtung oder genau entgegengesetzt zeigen.
+//   deviation = Abweichung der Vektoren (als Verhältnis - Abweichung pro längster Vektor)
+//               Standart = Rundungsfehler ausgleichen
+function is_nearly_collinear (v1, v2, deviation=deviation) =
+	let(
 		 u1 = v1 / norm(v1)
 		,u2 = v2 / norm(v2)
 	)
-	u1==u2 || u1==-u2
+	norm(u1-u2)<=deviation || norm(u1+u2)<=deviation
 ;
 
 // Testet im 3D Raum ob 3 aufgespannte Vektoren in der Ebene liegen
 function is_coplanar (v1, v2, v3) =
 	( v1 * cross(v2, v3) ) == 0
+;
+// Testet im 3D Raum ob 3 aufgespannte Vektoren näherungsweise in der Ebene liegen
+function is_nearly_coplanar (v1, v2, v3, deviation=deviation) =
+	abs ( v1 * cross(v2, v3) ) <= deviation
 ;
 
 
