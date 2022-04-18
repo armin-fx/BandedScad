@@ -24,6 +24,7 @@ Math functions
   - [Test and restrict](#test-and-restrict-)
     - [`constrain()`][constrain]
     - [`constrain_bidirectional()`][constrain_bi]
+    - [`is_constrain()`][is_constrain]
     - [`is_nearly()`][is_nearly]
     - [`quantize()`][quantize]
   - [Even or odd](#even-or-odd-)
@@ -95,11 +96,23 @@ Returns:
 - `value`    - If number is between `a` and `b`
 - `a` or `b` - If number exceeds `a` or `b`
 
+#### `is_constrain (value, a, b)` [^][contents]
+[is_constrain]: #is_constrain-value-a-b-
+Test a number and return `true` if this is in a limit (inclusive `a` and `b`).
+- `value` - The number to test.
+- `a`     - The lower end of the range.
+- `b`     - The upper end of the range.
+
+___Other functions:___
+- `is_constrain_left  (value, a, b)` - test the number in between `a` and `b`, but _without_ `b`
+- `is_constrain_right (value, a, b)` - test the number in between `a` and `b`, but _without_ `a`
+- `is_constrain_inner (value, a, b)` - test the number in between `a` and `b`, but _without_ `a` and _without_ `b`
+
 #### `is_nearly (a, b, deviation)` [^][contents]
 [is_nearly]: #is_nearly-a-b-deviation-
 Compares two values or two lists of values to see if they approximately match
 - `a`, `b`  - Values or lists to compare
-- deviation - Maximum deviation of the values, default = `1e-14`
+- deviation - Maximum deviation of the values, default = `1e-14`, calculation deviation
 
 #### `quantize (value, raster, offset)` [^][contents]
 [quantize]: #quantize-value-raster-offset-

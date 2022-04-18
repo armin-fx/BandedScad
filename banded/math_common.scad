@@ -30,9 +30,35 @@ function constrain_bidirectional (value, a, b) =
 		: value
 ;
 
+// testet, ob eine Variable innerhalb eines Bereichs ist
+function is_constrain (value, a, b) =
+	a<b ?
+		value>=a && value<=b
+	:
+		value>=b && value<=a
+;
+function is_constrain_left (value, a, b) =
+	a<b ?
+		value>=a && value<b
+	:
+		value>b && value<=a
+;
+function is_constrain_right (value, a, b) =
+	a<b ?
+		value>a && value<=b
+	:
+		value>=b && value<a
+;
+function is_constrain_inner (value, a, b) =
+	a<b ?
+		value>a && value<b
+	:
+		value>b && value<a
+;
+
 // testet zwei Werte oder zwei Listen mit Werten ob sie näherungsweise übereinstimmen
 // deviation - maximale Abweichung der Werte
-function is_nearly (a, b, deviation=1e-14) =
+function is_nearly (a, b, deviation=deviation) =
 	 is_num (a)&&is_num(b) ? min(a,b)+abs(deviation) >= max(a,b)
 	:is_list(a) ? min( [ for (e=[0:len(a)-1]) is_nearly(a[e],b[e],deviation) ] )
 	:a==b
