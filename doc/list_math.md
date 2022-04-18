@@ -97,6 +97,8 @@ Returns a list with the result.
 
 | function                             | description
 |--------------------------------------|-------------
+| `add_each_with      (list1,value)`   | add each value in a list with a (numeric) value.
+| `sub_each_with      (list1,value)`   | subtract each value in a list with a (numeric) value.
 | `multiply_each      (list1,list2)`   | multiply each value `list1[n] * list2[n]`.
 | `multiply_each_with (list,value)`    | multiply each value in the list with a (numeric) value.
 | `multiply_with_each (value,list)`    | multiply a value with each value in the list.

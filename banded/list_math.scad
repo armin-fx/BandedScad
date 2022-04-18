@@ -43,7 +43,8 @@ function ceil_each  (list) = [for (a=list) ceil(a)];
 function round_each (list) = [for (a=list) round(a)];
 function abs_each   (list) = [for (a=list) abs(a)];
 
-function reciprocal_each (list, numerator=1) = [for (a=list) numerator/a];
+function add_each_with (list, value)         = [ for (e=list) e + value ];
+function sub_each_with (list, value)         = [ for (e=list) e - value ];
 
 function multiply_each (list1, list2) =
 	[ for (i=[0:1:min(len(list1),len(list2))-1]) list1[i] * list2[i] ]
@@ -51,9 +52,10 @@ function multiply_each (list1, list2) =
 function divide_each (list1, list2) =
 	[ for (i=[0:1:min(len(list1),len(list2))-1]) list1[i] / list2[i] ]
 ;
-function multiply_each_with (list, value) = [ for (i=[0:1:len(list)-1]) list[i] * value   ];
-function multiply_with_each (value, list) = [ for (i=[0:1:len(list)-1]) value   * list[i] ];
-function divide_each_with (list, value)   = [ for (i=[0:1:len(list)-1]) list[i] / value ];
+function multiply_each_with (list, value)    = [ for (e=list) e * value ];
+function multiply_with_each (value, list)    = [ for (e=list) value * e ];
+function divide_each_with   (list, value)    = [ for (e=list) e / value ];
+function reciprocal_each (list, numerator=1) = [ for (e=list) numerator / e];
 
 function norm_each (list) = [for (a=list) norm(a)];
 
