@@ -4,6 +4,7 @@ Constants
 ### defined in file
 `banded/constants.scad`\
 ` `| \
+` `+--> `banded/constants_user.scad`\
 ` `+--> `banded/constants_helper.scad`
 
 [<-- file overview](file_overview.md)\

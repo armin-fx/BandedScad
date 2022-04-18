@@ -5,6 +5,8 @@
 
 use <banded/constants_helper.scad>
 
+include <banded/constants_user.scad>
+
 
 // - Mathematische Konstanten:
 
@@ -16,8 +18,6 @@ euler = exp(1);
 euler_mascheroni = 0.577215664901;
 // Goldener Schnitt = 1.61803398875
 golden = calculate_golden();
-// Schrittweite für Infinitsimalrechnung
-delta_std = 0.001;
 
 // - Maßeinheiten umrechnen:
 
@@ -45,18 +45,6 @@ avogadro = 6.02214076E-23;
 caesium_frequency = 9192631770;
 
 // - Hilfskonstanten:
-
-// Zahl zum addieren/subtrahieren,
-// falls Objekte zum Ausschneiden etwas größer sein müssen wegen Z-fighting
-extra=0.02;
-//
-// kleinste Zahl zum addieren/subtrahieren
-// z.B wenn sich 2 Objekte eine Ecke teilen und deshalb Fehler erzeugen
-//epsilon=0.00005;
-epsilon=  0.000075;
-
-// kleinste Zahl, die bei Rechenungenauigkeiten auftritt
-deviation=1e-14;
 
 // Wert unendlich
 inf = 1e200 * 1e200;
