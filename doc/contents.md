@@ -4,7 +4,8 @@ Table of contents
 - [Constants](constants.md)
 - Math functions
   - [Common math functions](math.md)
-  - [Vector and Matrix operations](matrix.md)
+  - [Vector operations](vector.md)
+  - [Matrix operations](matrix.md)
   - [Complex numbers](complex.md)
 - [Math on lists](list_math.md)
   - [Algorithm on lists](list_math.md#algorithm-on-lists-)

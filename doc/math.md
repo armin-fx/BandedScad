@@ -18,7 +18,9 @@ Math functions
 ### Contents
 [contents]: #contents "Up to Contents"
 - [Complex numbers ->](complex.md)
-- [Matrix and vector operations ->](matrix.md)
+- [Vector operations ->](vector.md)
+- [Matrix operations ->](matrix.md)
+- [Math on lists ->](list_math.md)
 
 - [More math functions](#more-math-functions-)
   - [Test and restrict](#test-and-restrict-)

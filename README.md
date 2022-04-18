@@ -42,7 +42,7 @@ What it does [^][contents]
 - [Edit and convert strings][string]
 - [Math functions][math]
   - [Various common math functions][math_common]
-  - Functions for [matrices and vector][matrix]
+  - Functions for [vector][vector] and [matrices][matrix]
   - Calculate with [complex numbers][complex]
 - [Algorithmus with function literals][function]
 - [Helper functions][helper]
@@ -72,6 +72,7 @@ What it does [^][contents]
 [benchmark]:   doc/helper.md#benchmark-function-
 [math]:        doc/math.md
 [math_common]: doc/math.md#more-math-functions-
+[vector]:      doc/vector.md
 [matrix]:      doc/matrix.md
 [complex]:     doc/complex.md
 [operator]:    doc/operator.md

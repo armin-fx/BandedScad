@@ -13,8 +13,8 @@ Overview of scad files
 ` `| . . . +--> [`banded/math_common.scad`](math.md#more-math-functions- "Various common math functions")\
 ` `| . . . +--> [`banded/math_formula.scad`](math.md#formula-functions- "Formula functions")\
 ` `| . . . +--> [`banded/math_number.scad`](math.md#number-functions- "Number functions")\
-` `| . . . +--> [`banded/math_vector.scad`](matrix.md#vector-operations- "Vector operations")\
-` `| . . . +--> [`banded/math_matrix.scad`](matrix.md#matrix-operations- "Matrix operations")\
+` `| . . . +--> [`banded/math_vector.scad`](vector.md "Vector operations")\
+` `| . . . +--> [`banded/math_matrix.scad`](matrix.md "Matrix operations")\
 ` `| . . . +--> [`banded/complex.scad`](complex.md "Working with complex numbers")\
 ` `|\
 ` `+--> `banded/list.scad`\
