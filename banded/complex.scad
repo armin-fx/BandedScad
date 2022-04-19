@@ -268,7 +268,10 @@ function c_div_polar_to_cartesian (c, d) =
 // return a list with 2 complex number
 function c_sqrt (c) =
 	is_num(c) ?
-		let( s = [sqrt(c), 0] )
+		let(
+		s = c>=0 ? [sqrt(c), 0]
+		         : [0, sqrt(-c)]
+		)
 		[s, -s]
 	:
 	c[2]==undef ? // c_sqrt_cartesian (c)
