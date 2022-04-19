@@ -14,12 +14,12 @@ Matrix and vector operations
 [contents]: #contents "Up to Contents"
 - [Matrix operations ->](matrix.md)
 
-- [Vector operations][vector]
-  - [Buildin vector operations in OpenSCAD][vector_buildin]
+- [Vector operations](#vector-operations-)
+  - [Buildin vector operations in OpenSCAD](#buildin-vector-operations-in-openscad-)
     - [Addition and subtraction][vector_add]
     - [Dot product or scalar multiplikation][vector_scalar]
     - [Cross product][vector_cross]
-  - [Defined operations][vector_defined]
+  - [Defined operations](#defined-operations-)
     - [`unit_vector()`][unit_vector]
     - [`angle_vector()`][angle_vector]
     - [`rotation_vector()`][rotation_vector]
@@ -27,24 +27,30 @@ Matrix and vector operations
     - [`rotation_around_line()`][rotation_around_line]
     - [`triple_product()`][triple_product]
     - [`cross_universal()`][cross_universal]
+  - [Test functions for vector and lines](#test-functions-for-vector-and-lines-)
+    - [`is_collinear()`][is_collinear]
+    - [`is_nearly_collinear()`][is_nearly_collinear]
+    - [`is_coplanar()`][is_coplanar]
+    - [`is_nearly_coplanar()`][is_nearly_coplanar]
+    - [`is_point_on_line()`][is_point_on_line]
+    - [`is_point_on_segment()`][is_point_on_segment]
+    - [`is_point_on_plane()`][is_point_on_plane]
+    - [`is_intersecting()`][is_intersecting]
+  - [Straight line and line segment](#straight-line-and-line-segment-)
+    - [`get_gradient()`][get_gradient]
+    - [`get_intersecting_point()`][get_intersecting_point]
   - [Euclidean norm](#euclidean-norm-)
     - [`reverse_norm()`][reverse_norm]
     - [`norm_sqr()`][norm_sqr]
     - [`max_norm()`][max_norm]
     - [`max_norm_sqr()`][max_norm_sqr]
-  - [Vector test functions](#vector-test-functions-)
-    - [`is_collinear()`][is_collinear]
-    - [`is_nearly_collinear()`][is_nearly_collinear]
-    - [`is_coplanar()`][is_coplanar]
-    - [`is_nearly_coplanar()`][is_nearly_coplanar]
 
 
 Vector operations [^][contents]
 -------------------------------
-[vector]: #vector-operations-
+
 
 ### Buildin vector operations in OpenSCAD [^][contents]
-[vector_buildin]: #buildin-vector-operations-in-openscad-
 
 #### Addition and subtraction [^][contents]
 [vector_add]: #addition-and-subtraction-
@@ -76,8 +82,8 @@ b = [1,1,2];
 echo( cross( a, b ) ); // cross product, return [1,1,-1]
 ```
 
+
 ### Defined operations [^][contents]
-[vector_defined]: #defined-operations-
 
 #### `unit_vector (v)` [^][contents]
 [unit_vector]: #unit_vector-v-
@@ -132,6 +138,82 @@ Characteristic in this version:
   then the last missing unit vector will be the result
 
 
+### Test functions for vector and lines [^][contents]
+
+#### `is_collinear (v1, v2)` [^][contents]
+[is_collinear]: #is_collinear-v1-v2-
+Return `true` if the 2 vectors are collinear.
+This means they are parallel or anti parallel.
+
+#### `is_nearly_collinear (v1, v2)` [^][contents]
+[is_nearly_collinear]: #is_nearly_collinear-v1-v2-
+Return `true` if the 2 vectors are nearly collinear.
+- `deviation`
+  - deviation of the target from the normalized vectors,
+    as ratio - deviation per longest vector
+  - default = `1e-14`, calculation deviation
+
+#### `is_coplanar (v1, v2, v3)` [^][contents]
+[is_coplanar]: #is_coplanar-v1-v2-v3-
+Returns `true` if the 3 spanned vectors in 3D space are coplanar.
+This means they are in the same plane.
+
+#### `is_nearly_coplanar (v1, v2, v3)` [^][contents]
+[is_nearly_coplanar]: #is_nearly_coplanar-v1-v2-v3-
+Returns `true` if the 3 spanned vectors in 3D space are nearly coplanar.
+- `deviation`
+  - default = `1e-14`, calculation deviation
+
+#### `is_point_on_line (line, point)` [^][contents]
+[is_point_on_line]: #is_point_on_line-line-point-
+Returns `true` if a point is exactly on a straight line.\
+In 2D or 3D.
+- `line` - a list with 2 points defines a straight line
+
+#### `is_point_on_segment (line, point)` [^][contents]
+[is_point_on_segment]: #is_point_on_segment-line-point-
+Returns `true` if a point is exactly on a line segment.\
+Inclusive on the points.
+In 2D or 3D.
+- `line` - a list with 2 points defines the line segment
+
+#### `is_point_on_plane (points_3, point)` [^][contents]
+[is_point_on_plane]: #is_point_on_plane-points_3-point-
+Returns `true` if a point lies exactly in a plane.\
+In 3D.
+- `points_3` - 3 points in a list defines the plane
+
+#### `is_intersecting (line1, line2, point, only)` [^][contents]
+[is_intersecting]: #is_intersecting-line1-line2-point-only-
+Returns `true` if two line segment intersect.
+- `line1` and `line2`
+  - a list with 2 points defines the line segment
+- `point`
+  - optional
+  - an already calculated intersection of both straight lines can be used
+- `only`
+  - optional, default = `false`
+  - `false` - if the lines are collinear then it tests whether the straight lines overlap
+  - `true`  - return always `false` if the lines are collinear
+
+
+### Straight line and line segment [^][contents]
+
+#### `get_gradient (line)` [^][contents]
+[get_gradient]: #get_gradient-line-
+Returns the gradient `[m, c]` of a line in the 2D plane, `(y = m*x + c )`.\
+Where `m` means the slope of the line
+and `c` means the intercept of the line throw the Y axis.
+Vertical lines don't work ;).
+
+#### `get_intersecting_point (line1, line2)` [^][contents]
+[get_intersecting_point]: #get_intersecting_point-line1-line2-
+Returns the crossing point where two straight lines intersect.\
+Only in 2D plane.
+- `line1` and `line2`
+  - a list with 2 points defines the straight line
+
+
 ### Euclidean norm [^][contents]
 
 #### `reverse_norm (n, v)` [^][contents]
@@ -162,31 +244,3 @@ Returns the maximum possible space diagonal of all vectors in a list.
 #### `max_norm_sqr (list)` [^][contents]
 [max_norm_sqr]: #max_norm_sqr-list-
 Returns the maximum possible squared space diagonal of all vectors in a list.
-
-
-### Vector test functions [^][contents]
-
-#### `is_collinear (v1, v2)` [^][contents]
-[is_collinear]: #is_collinear-v1-v2-
-Return `true` if the 2 vectors are collinear.
-This means they are parallel or anti parallel.
-
-#### `is_nearly_collinear (v1, v2)` [^][contents]
-[is_nearly_collinear]: #is_nearly_collinear-v1-v2-
-Return `true` if the 2 vectors are nearly collinear.
-- `deviation`
-  - deviation of the target from the normalized vectors,
-    as ratio - deviation per longest vector
-  - default = `1e-14`, calculation deviation
-
-#### `is_coplanar (v1, v2, v3)` [^][contents]
-[is_coplanar]: #is_coplanar-v1-v2-v3-
-Returns `true` if the 3 spanned vectors in 3D space are coplanar.
-This means they are in the same plane.
-
-#### `is_nearly_coplanar (v1, v2, v3)` [^][contents]
-[is_nearly_coplanar]: #is_nearly_coplanar-v1-v2-v3-
-Returns `true` if the 3 spanned vectors in 3D space are nearly coplanar.
-- `deviation`
-  - default = `1e-14`, calculation deviation
-
