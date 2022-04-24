@@ -5,6 +5,8 @@
 //
 
 use <banded/helper_native.scad>
+use <banded/list_algorithmus.scad>
+use <banded/list_edit_item.scad>
 use <banded/math_common.scad>
 use <banded/math_vector.scad>
 use <banded/math_matrix.scad>
@@ -102,3 +104,20 @@ function get_intersecting_point (line1, line2) =
 	)
 	[x, y]
 ;
+
+// - Streckenzüge:
+
+// gibt die Länge einer Kurve zurück
+function length_trace (points, path, closed=false) =
+	let (
+		is_path = path!=undef,
+		size = is_path ? len(path) : len(points),
+		pts  = is_path ? refer_list(points, path) : points
+	)
+	size<2 ? 0 :
+	summation_list(
+		[for (i=[0:1:size-2]) norm (pts[i+1]-pts[i]) ]
+	)
+	+ (closed==true ? norm (pts[size-1]-pts[0]) : 0)
+;
+

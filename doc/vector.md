@@ -47,6 +47,8 @@ Matrix and vector operations
   - [Straight line and line segment](#straight-line-and-line-segment-)
     - [`get_gradient()`][get_gradient]
     - [`get_intersecting_point()`][get_intersecting_point]
+  - [Polygon functions](#polygon-functions-)
+    - [`length_trace()`][length_trace]
 
 
 Vector operations [^][contents]
@@ -254,4 +256,18 @@ Returns the crossing point where two straight lines intersect.\
 Only in 2D plane.
 - `line1` and `line2`
   - a list with 2 points defines the straight line
+
+
+### Polygon functions [^][contents]
+
+#### `length_trace (points, path, closed)` [^][contents]
+[length_trace]: #length_trace-points-path-closed-
+Return the length of a trace.
+- `points` - a list with points
+- `trace`
+  - a list with the order to traverse the points
+  - is not defined, all points are used in the order listed
+- `closed`
+  - `false` - the trace from first to last point, default
+  - `true`  - the trace is a closed loop, the last point connect the first point
 
