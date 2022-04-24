@@ -20,6 +20,7 @@ Math on lists
   - [`summation_list()`][summation_list]
   - [`product_list()`][product_list]
   - [`unit_summation()`][unit_summation]
+  - [`unit_product()`][unit_product]
 - [Math operation on each list element](#math-operation-on_each-list-element-)
   - [Integrated in Openscad](#integrated-in-openscad-)
   - [Operand with functions from OpenSCAD](#operand-with-functions-from-openscad-)
@@ -48,6 +49,10 @@ Multiply all values in a list from position `k` to `n`
 #### `unit_summation (list)` [^][contents]
 [unit_summation]: #unit_summation-list-
 Scale the complete list that the summation of the list equals `1`
+
+#### `unit_product (list)` [^][contents]
+[unit_product]: unit_product-list-
+Scale the complete list that the product of the list equals `1`
 
 
 Math operation on each list element [^][contents]

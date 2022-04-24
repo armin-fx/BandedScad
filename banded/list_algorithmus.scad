@@ -10,7 +10,17 @@ function summation_list (list, n, k=0) =
 	       :            min(n, len(list)-1)
 	)
 	(k>last) ? undef :
-	summation_list_intern(list, last, k)
+	//summation_list_intern          (list, last, k)
+	//summation_list_intern_1        (list, last, k)
+	  summation_list_intern_generate (list, last, k)
+;
+function summation_list_intern_generate (list, n, k) =
+	[for (
+		i=k, sum=list[n];
+		i<=n;
+		sum=sum+list[i], i=i+1
+		) if (i==n) sum
+	] [0]
 ;
 function summation_list_intern (list, n, k) =
 	(k==n) ? list[k]
@@ -21,7 +31,7 @@ function summation_list_intern (list, n, k) =
 	:
 		summation_list_intern_1(list, n, k+1, list[k])
 ;
-function summation_list_intern_1 (list, n, k, value) =
+function summation_list_intern_1 (list, n, k, value=0) =
 	(k>n) ? value :
 	summation_list_intern_1(list, n, k+1, value + list[k])
 ;
@@ -41,7 +51,17 @@ function product_list (list, n, k=0) =
 	       :            min(n, len(list)-1)
 	)
 	(k>last) ? undef :
-	product_list_intern(list, last, k)
+	//product_list_intern          (list, last, k)
+	//product_list_intern_1        (list, last, k)
+	  product_list_intern_generate (list, last, k)
+;
+function product_list_intern_generate (list, n, k) =
+	[for (
+		i=k, prod=list[n];
+		i<=n;
+		prod=prod*list[i], i=i+1
+		) if (i==n) prod
+	] [0]
 ;
 function product_list_intern (list, n, k) =
 	(k==n) ? list[k]
@@ -68,4 +88,9 @@ function product_list_intern_8 (list, n, k) =
 // Ergebnis: summation(list)==1
 function unit_summation (list) =
 	list / summation_list(list)
+;
+
+// Ergebnis: product(list)==1
+function unit_product (list) =
+	list / pow (product_list(list), 1/len(list))
 ;
