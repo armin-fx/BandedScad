@@ -6,6 +6,7 @@ Table of contents
   - [Common math functions](math.md)
   - [Vector operations](vector.md)
   - [Matrix operations](matrix.md)
+  - [Polygones and Lines](vector.md#polygones-and-lines-)
   - [Complex numbers](complex.md)
 - [Math on lists](list_math.md)
   - [Algorithm on lists](list_math.md#algorithm-on-lists-)

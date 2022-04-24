@@ -15,6 +15,7 @@ Overview of scad files
 ` `| . . . +--> [`banded/math_number.scad`](math.md#number-functions- "Number functions")\
 ` `| . . . +--> [`banded/math_vector.scad`](vector.md "Vector operations")\
 ` `| . . . +--> [`banded/math_matrix.scad`](matrix.md "Matrix operations")\
+` `| . . . +--> [`banded/math_polygon.scad`](matrix.md#polygones-and-lines- "Polygones and lines operations")\
 ` `| . . . +--> [`banded/complex.scad`](complex.md "Working with complex numbers")\
 ` `|\
 ` `+--> `banded/list.scad`\

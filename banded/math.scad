@@ -9,4 +9,5 @@ include <banded/math_number.scad>
 include <banded/math_formula.scad>
 include <banded/math_vector.scad>
 include <banded/math_matrix.scad>
+include <banded/math_polygon.scad>
 include <banded/complex.scad>

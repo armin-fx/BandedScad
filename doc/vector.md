@@ -5,7 +5,8 @@ Matrix and vector operations
 `banded/math.scad`\
 ` `| \
 ` `+--> ...\
-` `+--> `banded/math_vector.scad`
+` `+--> `banded/math_vector.scad`\
+` `+--> `banded/math_polygon.scad`
 
 [<-- file overview](file_overview.md)\
 [<-- table of contents](contents.md)
@@ -27,11 +28,18 @@ Matrix and vector operations
     - [`rotation_around_line()`][rotation_around_line]
     - [`triple_product()`][triple_product]
     - [`cross_universal()`][cross_universal]
-  - [Test functions for vector and lines](#test-functions-for-vector-and-lines-)
+  - [Test functions for vector](#test-functions-for-vector-)
     - [`is_collinear()`][is_collinear]
     - [`is_nearly_collinear()`][is_nearly_collinear]
     - [`is_coplanar()`][is_coplanar]
     - [`is_nearly_coplanar()`][is_nearly_coplanar]
+  - [Euclidean norm](#euclidean-norm-)
+    - [`reverse_norm()`][reverse_norm]
+    - [`norm_sqr()`][norm_sqr]
+    - [`max_norm()`][max_norm]
+    - [`max_norm_sqr()`][max_norm_sqr]
+- [Polygones and Lines](#polygones-and-lines-)
+  - [Test functions for lines](#test-functions-for-lines-)
     - [`is_point_on_line()`][is_point_on_line]
     - [`is_point_on_segment()`][is_point_on_segment]
     - [`is_point_on_plane()`][is_point_on_plane]
@@ -39,11 +47,6 @@ Matrix and vector operations
   - [Straight line and line segment](#straight-line-and-line-segment-)
     - [`get_gradient()`][get_gradient]
     - [`get_intersecting_point()`][get_intersecting_point]
-  - [Euclidean norm](#euclidean-norm-)
-    - [`reverse_norm()`][reverse_norm]
-    - [`norm_sqr()`][norm_sqr]
-    - [`max_norm()`][max_norm]
-    - [`max_norm_sqr()`][max_norm_sqr]
 
 
 Vector operations [^][contents]
@@ -138,7 +141,7 @@ Characteristic in this version:
   then the last missing unit vector will be the result
 
 
-### Test functions for vector and lines [^][contents]
+### Test functions for vector [^][contents]
 
 #### `is_collinear (v1, v2)` [^][contents]
 [is_collinear]: #is_collinear-v1-v2-
@@ -163,6 +166,45 @@ This means they are in the same plane.
 Returns `true` if the 3 spanned vectors in 3D space are nearly coplanar.
 - `deviation`
   - default = `1e-14`, calculation deviation
+
+
+### Euclidean norm [^][contents]
+
+#### `reverse_norm (n, v)` [^][contents]
+[reverse_norm]: #reverse_norm-n-v-
+Invert the euclidean norm
+- `n` - diagonal value or value of euclidean norm
+- `v` - cathetus or a list of cathetus
+
+Example:
+```OpenSCAD
+include <banded.scad>
+
+echo( norm         (  [4,3]) ); // 5
+echo( reverse_norm (5, 4   ) ); // 3
+
+echo( norm         (    [12,4,3]) ); // 13
+echo( reverse_norm (13, [12,4]  ) ); // 3
+```
+
+#### `norm_sqr (v)` [^][contents]
+[norm_sqr]: #norm_sqr-v-
+Returns the squared euclidean norm of a vector.
+
+#### `max_norm (list)` [^][contents]
+[max_norm]: #max_norm-list-
+Returns the maximum possible space diagonal of all vectors in a list.
+
+#### `max_norm_sqr (list)` [^][contents]
+[max_norm_sqr]: #max_norm_sqr-list-
+Returns the maximum possible squared space diagonal of all vectors in a list.
+
+
+Polygones and Lines [^][contents]
+---------------------------------
+
+
+### Test functions for lines [^][contents]
 
 #### `is_point_on_line (line, point)` [^][contents]
 [is_point_on_line]: #is_point_on_line-line-point-
@@ -213,34 +255,3 @@ Only in 2D plane.
 - `line1` and `line2`
   - a list with 2 points defines the straight line
 
-
-### Euclidean norm [^][contents]
-
-#### `reverse_norm (n, v)` [^][contents]
-[reverse_norm]: #reverse_norm-n-v-
-Invert the euclidean norm
-- `n` - diagonal value or value of euclidean norm
-- `v` - cathetus or a list of cathetus
-
-Example:
-```OpenSCAD
-include <banded.scad>
-
-echo( norm         (  [4,3]) ); // 5
-echo( reverse_norm (5, 4   ) ); // 3
-
-echo( norm         (    [12,4,3]) ); // 13
-echo( reverse_norm (13, [12,4]  ) ); // 3
-```
-
-#### `norm_sqr (v)` [^][contents]
-[norm_sqr]: #norm_sqr-v-
-Returns the squared euclidean norm of a vector.
-
-#### `max_norm (list)` [^][contents]
-[max_norm]: #max_norm-list-
-Returns the maximum possible space diagonal of all vectors in a list.
-
-#### `max_norm_sqr (list)` [^][contents]
-[max_norm_sqr]: #max_norm_sqr-list-
-Returns the maximum possible squared space diagonal of all vectors in a list.
