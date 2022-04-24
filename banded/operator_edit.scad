@@ -14,6 +14,9 @@ use <banded/draft_transform_common.scad>
 use <banded/draft_transform_basic.scad>
 use <banded/operator_transform.scad>
 
+
+// - Objekte kombinieren:
+
 // Setzt ein Objekt mit anderen Objekten zusammen
 //
 // Reihenfolge: Hauptobjekt(); zugefuegtes_Objekt(); abzuschneidendes_Objekt(); gemeinsames_Objekt();
@@ -72,37 +75,7 @@ module xor()
 	}
 }
 
-// Schneidet eine Scheibe aus einem Objekt, geeignet um testweise versteckte Details eines Objekts ansehen zu können
-module object_slice (axis=[0,1,0], position=0, thickness=1, limit=1000)
-{
-	trans_side = (thickness>=0) ? 0 : -thickness;
-	intersection()
-	{
-		children();
-		//
-		if      (axis[0]!=0) translate([position+trans_side,-limit/2,-limit/2]) cube([abs(thickness),limit,limit]);
-		else if (axis[1]!=0) translate([-limit/2,position+trans_side,-limit/2]) cube([limit,abs(thickness),limit]);
-		else if (axis[2]!=0) translate([-limit/2,-limit/2,position+trans_side]) cube([limit,limit,abs(thickness)]);
-	}
-}
-
-// create a small pane in X-Y-plane of an object at given height (Z-axis)
-module object_pane (position=0, thickness=epsilon*2, limit=1000)
-{
-	pane_size =
-		is_num(limit) ? [limit, limit] :
-		is_list(limit) && len(limit)==2 ? limit :
-		[1000, 1000]
-	;
-	
-	intersection()
-	{
-		children();
-		//
-		translate([-pane_size[0]/2,-pane_size[1]/2, -thickness/2 + position])
-			cube([pane_size[0],pane_size[1],thickness]);
-	}
-}
+// - 2D zu 3D extrudieren:
 
 // extrudiert und dreht das 2D-Objekt die Linie 'line' entlang
 // Die X-Achse ist die Rotationsrichtung, wird um die Pfeilrichtung nach den Punkt 'rotational' gedreht

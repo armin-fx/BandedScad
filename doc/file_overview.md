@@ -75,4 +75,6 @@ Overview of scad files
 ` `| . . . +--> [`banded/operator_transform.scad`](operator.md#transform-operator- "Transform operator for affine transformations")\
 ` `| . . . +--> [`banded/operator_place.scad`](operator.md#place-objects- "Modules which place objects in specific position")\
 ` `|\
+` `+--> [`banded/debug.scad`](debug.md "Debug modules - make parts and points seeable")\
+` `|\
 ` `+--> `banded/other.scad`\

@@ -49,9 +49,6 @@ Transform and edit objects
     - [`plain_trace_extrude()`][plain_trace_extrude]
     - [`plain_trace_connect_extrude()`][plain_trace_connect_extrude]
     - [`helix_extrude()`][helix_extrude]
-  - [Test objects](#test-objects-)
-    - [`object_slice()`][object_slice]
-    - [`object_pane()`][object_pane]
 
 
 Transform operator [^][contents]
@@ -470,37 +467,3 @@ License: CC0 1.0 Universal
       It's better to split it in concave helixes with the same parameter
       and make the difference with it.
 
-
-### Test objects [^][contents]
-
-#### `object_slice (axis, position, thickness, limit)` [^][contents]
-[object_slice]: #object_slice-axis-position-thickness-limit-
-Cuts a slice out of an object.\
-Useful for testing hidden details of an object.
-
-- `axis` - vector orthogonal out of the object_pane
-  - currently only exactly the X, Y and Z - axis
-  - default = Y-axis
-- `position`  - position of the slice along the axis away from origin
-- `thickness` - thickness of the pane, default = `1`
-- `limit` - internal parameter
-  - The module knows nothing about the children to slice,
-    so internal objects to work on this must made much bigger then the
-    children could be.
-    The `limit` parameter can set to an other value if these internal objects
-    are to small.
-  - default = `1000`
-
-#### `object_pane (position, thickness, limit)` [^][contents]
-[object_pane]: #object_pane-position-thickness-limit-
-Create a small pane in X-Y-plane of an object at given height.
-- `position`  - position of the slice along the Z-axis away from origin
-- `thickness` - thickness of the pane, default = constant `2 * epsilon`
-- `limit` - internal parameter
-  - The module knows nothing about the children to slice,
-    so internal objects to work on this must made much bigger then the
-    children could be.
-    The `limit` parameter can set to an other value if these internal objects
-    are to small.
-  - default = `1000`
-  - can set as size `[X, Y]`

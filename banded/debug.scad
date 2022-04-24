@@ -1,0 +1,88 @@
+// Copyright (c) 2020 Armin Frenzel
+// License: LGPL-2.1-or-later
+//
+// enthält Objekte, um Punkte und Linien anzeigen zu lassen
+//
+
+include <banded/operator_edit.scad>
+
+
+// - Linien und Punkte sichtbar machen:
+
+module point (p, c, d=0.2)
+{
+	if (p!=undef)
+		color(c)
+		translate(p)
+		sphere(d=d, $fn=6);
+}
+
+module points (p_list, c, d=0.2)
+{
+	if (p_list!=undef)
+		for (p=p_list) { point (p, c, d); }
+}
+module line_points (p_list, c, closed=true, d=0.1, dp=0.15)
+{
+	if (p_list!=undef)
+	{
+		size=len(p_list);
+		for (i=[0:1:size-1+(closed==true ? 0 : -1) ])
+		{
+			p1=p_list[ i        ];
+			p2=p_list[(i+1)%size];
+			
+			if (p1!=p2)
+				{ line ([p1, p2], c, d); }
+			else
+				{ point (p1, c, dp); }
+		}
+	}
+}
+
+module line (l, c, d=0.1)
+{
+	if (l!=undef)
+		color(c)
+		extrude_line (l) circle(d=d, $fn=6);
+}
+
+module lines (l_list, c, d=0.1)
+{
+	if (l_list!=undef)
+		for (l=l_list) { line (l, c, d); }
+}
+
+// - Teile von Objekte testen:
+
+// Schneidet eine Scheibe aus einem Objekt, geeignet um testweise versteckte Details eines Objekts ansehen zu können
+module object_slice (axis=[0,1,0], position=0, thickness=1, limit=1000)
+{
+	trans_side = (thickness>=0) ? 0 : -thickness;
+	intersection()
+	{
+		children();
+		//
+		if      (axis[0]!=0) translate([position+trans_side,-limit/2,-limit/2]) cube([abs(thickness),limit,limit]);
+		else if (axis[1]!=0) translate([-limit/2,position+trans_side,-limit/2]) cube([limit,abs(thickness),limit]);
+		else if (axis[2]!=0) translate([-limit/2,-limit/2,position+trans_side]) cube([limit,limit,abs(thickness)]);
+	}
+}
+
+// create a small pane in X-Y-plane of an object at given height (Z-axis)
+module object_pane (position=0, thickness=epsilon*2, limit=1000)
+{
+	pane_size =
+		is_num(limit) ? [limit, limit] :
+		is_list(limit) && len(limit)==2 ? limit :
+		[1000, 1000]
+	;
+	
+	intersection()
+	{
+		children();
+		//
+		translate([-pane_size[0]/2,-pane_size[1]/2, -thickness/2 + position])
+			cube([pane_size[0],pane_size[1],thickness]);
+	}
+}

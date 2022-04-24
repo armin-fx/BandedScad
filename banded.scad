@@ -1,6 +1,6 @@
 // Copyright (c) 2020 Armin Frenzel
 // License: LGPL-2.1-or-later
-// Version: 2022.03
+// Version: 2022.04
 //
 //
 // load the entire BandedScad-bibliothek
@@ -20,6 +20,8 @@ include <banded/extend.scad>
 include <banded/draft.scad>
 include <banded/object.scad>
 include <banded/operator.scad>
+//
+include <banded/debug.scad>
 //
 include <banded/other.scad>
 //
