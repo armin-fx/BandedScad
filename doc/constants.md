@@ -58,6 +58,10 @@ in console if constants has changed.
 |---------------------|-----------------|-------------
 | `mm_per_inch`       | 25.4            | multiplicate to get mm from inch
 | `inch_per_mm`       | 1 / 25.4        | multiplicate to get inch from mm
+| `mm_per_foot`       | 25.4 * 12       | multiplicate to get mm from foot
+| `foot_per_mm`       | 1 / mm_per_foot | multiplicate to get foot from mm
+| `mm_per_yard`       | 25.4 * 12 * 3   | multiplicate to get mm from yard
+| `yard_per_mm`       | 1 / mm_per_yard | multiplicate to get yard from mm
 | `degree_per_radian` | 180 / PI        | multiplicate to get angle in degree from angle in radian
 | `radian_per_degree` | PI / 180        | multiplicate to get angle in radian from angle in degree
 | `percent`           | 1 / 100         | e.g. 30% to ratio - `30 * percent`

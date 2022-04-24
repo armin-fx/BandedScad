@@ -21,8 +21,12 @@ golden = calculate_golden();
 
 // - Maßeinheiten umrechnen:
 
-mm_per_inch =   25.4;
-inch_per_mm = 1/25.4;
+mm_per_inch = 25.4;
+inch_per_mm = 1 / mm_per_inch;
+mm_per_foot = 25.4*12;
+foot_per_mm = 1 / mm_per_foot;
+mm_per_yard = 25.4*12*3;
+yard_per_mm = 1 / mm_per_yard;
 degree_per_radian = 180/PI;
 radian_per_degree = PI/180;
 percent  = 1/100;
@@ -106,27 +110,30 @@ function test_message_constants_console (s) =
 	)
 ;
 function test_message_constants_str() = str (
-	PI == get_max_accuracy_pi()  ? "" : "WARNING: Constant 'PI' has changed.\n",
-	tau == 2*PI                  ? "" : "WARNING: Constant 'tau' has changed.\n",
-	euler == exp(1)              ? "" : "WARNING: Constant 'euler' has changed.\n",
-	euler_mascheroni == 0.577215664901 ? "" :
-		"WARNING: Constant 'euler_mascheroni' has changed.\n",
-	golden == calculate_golden() ? "" : "WARNING: Constant 'golden' has changed.\n",
+	PI  == get_max_accuracy_pi()       ? "" : "WARNING: Constant 'PI' has changed.\n",
+	tau == 2*PI                        ? "" : "WARNING: Constant 'tau' has changed.\n",
+	euler == exp(1)                    ? "" : "WARNING: Constant 'euler' has changed.\n",
+	euler_mascheroni == 0.577215664901 ? "" : "WARNING: Constant 'euler_mascheroni' has changed.\n",
+	golden == calculate_golden()       ? "" : "WARNING: Constant 'golden' has changed.\n",
 	//
-	mm_per_inch ==   25.4       ? "" : "WARNING: Constant 'mm_per_inch' has changed.\n",
-	inch_per_mm == 1/25.4       ? "" : "WARNING: Constant 'inch_per_mm' has changed.\n",
-	degree_per_radian == 180/PI ? "" : "WARNING: Constant 'degree_per_radian' has changed.\n",
-	radian_per_degree == PI/180 ? "" : "WARNING: Constant 'radian_per_degree' has changed.\n",
-	percent  == 1/100           ? "" : "WARNING: Constant 'percent' has changed.\n",
-	permille == 1/1000          ? "" : "WARNING: Constant 'permille' has changed.\n",
-	ppm      == 1/1000000       ? "" : "WARNING: Constant 'ppm' has changed.\n",
+	mm_per_inch ==    25.4       ? "" : "WARNING: Constant 'mm_per_inch' has changed.\n",
+	inch_per_mm == 1/ 25.4       ? "" : "WARNING: Constant 'inch_per_mm' has changed.\n",
+	mm_per_foot ==    25.4*12    ? "" : "WARNING: Constant 'mm_per_foot' has changed.\n",
+	foot_per_mm == 1/(25.4*12)   ? "" : "WARNING: Constant 'foot_per_mm' has changed.\n",
+	mm_per_yard ==    25.4*12*3  ? "" : "WARNING: Constant 'mm_per_yard' has changed.\n",
+	yard_per_mm == 1/(25.4*12*3) ? "" : "WARNING: Constant 'yard_per_mm' has changed.\n",
+	degree_per_radian == 180/PI  ? "" : "WARNING: Constant 'degree_per_radian' has changed.\n",
+	radian_per_degree == PI/180  ? "" : "WARNING: Constant 'radian_per_degree' has changed.\n",
+	percent  == 1/100            ? "" : "WARNING: Constant 'percent' has changed.\n",
+	permille == 1/1000           ? "" : "WARNING: Constant 'permille' has changed.\n",
+	ppm      == 1/1000000        ? "" : "WARNING: Constant 'ppm' has changed.\n",
 	//
-	lightspeed == 299792458   ? "" : "WARNING: Constant 'lightspeed' has changed. Welcome to a different world!\n",
-	planck == 6.62607015E-34  ? "" : "WARNING: Constant 'planck' has changed. Welcome to a different world!\n",
-	boltzmann == 1.380649E-23 ? "" : "WARNING: Constant 'boltzmann' has changed. Welcome to a different world!\n",
+	lightspeed        == 299792458       ? "" : "WARNING: Constant 'lightspeed' has changed. Welcome to a different world!\n",
+	planck            == 6.62607015E-34  ? "" : "WARNING: Constant 'planck' has changed. Welcome to a different world!\n",
+	boltzmann         == 1.380649E-23    ? "" : "WARNING: Constant 'boltzmann' has changed. Welcome to a different world!\n",
 	elementary_charge == 1.602176634E-19 ? "" : "WARNING: Constant 'elementary_charge' has changed. Welcome to a different world!\n",
-	avogadro = 6.02214076E-23 ? "" : "WARNING: Constant 'avogadro' has changed. Welcome to a different world!\n",
-	caesium_frequency = 9192631770       ? "" : "WARNING: Constant 'caesium_frequency' has changed. Welcome to a different world!\n",
+	avogadro          == 6.02214076E-23  ? "" : "WARNING: Constant 'avogadro' has changed. Welcome to a different world!\n",
+	caesium_frequency == 9192631770      ? "" : "WARNING: Constant 'caesium_frequency' has changed. Welcome to a different world!\n",
 	//
 	inf == 1e200 * 1e200 ? "" : "WARNING: Constant 'inf' has changed. Chuck Norris counted 2 times to infinity.\n",
 	nan != nan           ? "" : "WARNING: Constant 'nan' has changed.\n",
