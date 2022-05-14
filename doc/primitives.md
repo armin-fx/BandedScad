@@ -32,12 +32,16 @@ like OpenSCAD modules.
 
 #### List convention [^][contents]
 - default:
-  - `[ points, [path, path2, ...] ]`
+  - `[ points, [path, path2, ...], color ]`
 - other:
   - `[ points ]`
   - `[ points, path ]`
   - `[ [points, points2, ...], [path, path2, ...] ]`
-
+- color:
+  - color as list in `[red, green, blue]` or `[red, green, blue, alpha]`
+  - color entry as value between `0...1`, where
+    - `0` = dark
+    - `1` = bright
 
 ### Functions to generate objects [^][contents]
 - 2D:
@@ -97,3 +101,7 @@ build_object(c);
 - `union()`
 - `difference()`
 - `intersection()`
+
+### Not implemented [^][contents]
+- `text()`
+- `offset()`

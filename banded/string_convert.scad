@@ -148,5 +148,4 @@ function list_to_str_intern (list, index=0) =
 	:index==1 ?
 		list[0]
 	:""
-
 ;

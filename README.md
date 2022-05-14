@@ -71,7 +71,7 @@ What it does [^][contents]
 [helper]:      doc/helper.md
 [benchmark]:   doc/helper.md#benchmark-function-
 [math]:        doc/math.md
-[math_common]: doc/math.md#more-math-functions-
+[math_common]: doc/math.md#various-math-functions-
 [vector]:      doc/vector.md
 [matrix]:      doc/matrix.md
 [complex]:     doc/complex.md

@@ -1,7 +1,7 @@
 // Copyright (c) 2020 Armin Frenzel
 // License: LGPL-2.1-or-later
 //
-// Enthält einige Objekte zum erzeugen von abgerundeten Ecken und Kanten
+// Enthält einige Objekte zum Erzeugen von abgerundeten Ecken und Kanten
 
 include <banded/constants.scad>
 //

@@ -12,7 +12,7 @@ Color
 
 ### Contents
 [contents]: #contents "Up to Contents"
-- [Convert colors][#convert-colors-]
+- [Convert colors](#convert-colors-)
   - [`color_hsv_to_rgb()`][color_hsv_to_rgb]
   - [`color_rgb_to_hsv()`][color_rgb_to_hsv]
   - [`color_list_to_hex()`][color_list_to_hex]

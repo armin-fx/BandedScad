@@ -333,7 +333,7 @@ ___Specialized modules with no argument `type`___
 ### Figures with rounded edges [^][contents]
 
 #### `cube_rounded_full (size, r, center, d)` [^][contents]
-[cube_rounded_full]: #cube_rounded_full-
+[cube_rounded_full]: #cube_rounded_full-size-r-center-d-
 Cube with rounded edges, all edges with the same radius/diameter.\
 Based on `cube()`\
 _needs a rework_
@@ -345,7 +345,7 @@ _needs a rework_
 #### `cube_fillet (size, r, type, edges_xxx, corner_xxx, type_xxx, center)` [^][contents]
 [cube_fillet]: #cube_fillet-size-r-type-edges_xxx-corner_xxx-type_xxx-center-
 Cube with rounded edges, every edge can be configured.\
-Based on `cube()`\
+Based on `cube()`
 - `size` - size of cube like in `cube()`
 - `r`    - parameter of the chamfer
 - `type` - specify, which chamfer type should be used for all edges
@@ -416,7 +416,7 @@ cylinder_edges_fillet (
 [wedge_fillet]: #wedge_fillet-v_min-v_max-v2_min-v2_max-r-type-edges_xx-corner_xxx-type_xxx-
 Creates a wedge with the parameter form FreeCAD's wedge
 with rounded edges, every edge can be configured.\
-Based on `wedge()`
+Based on [`wedge()`][wedge]
 - `v_min`  = `[Xmin, Ymin, Zmin]`
 - `v_max`  = `[Xmax, Ymax, Zmax]`
 - `v2_min` = `[X2min, Z2min]`

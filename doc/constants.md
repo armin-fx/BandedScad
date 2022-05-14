@@ -17,7 +17,7 @@ Constants
   - [Mathematical constants](#mathematical-constants-)
   - [Convert units of measure](#convert-units-of-measure-)
   - [Natural constants](#natural-constants-)
-  - [Customizable auxiliary constants](#customizable-auxiliary-constants-)
+  - [Customizable constants](#customizable-constants-)
   - [Auxiliary constants](#auxiliary-constants-)
   - [Functions](#functions-)
     - [`axis()`][axis]
@@ -81,7 +81,7 @@ in console if constants has changed.
 | `caesium_frequency` | 9192631770      | 1/s   | Frequency of the radiation of the cesium atom
 
 
-### Customizable auxiliary constants [^][contents]
+### Customizable constants [^][contents]
 
 | constant            | default number
 |---------------------|----------------
@@ -112,9 +112,9 @@ ___`delta_std`:___
 |----------|-----------|-------------
 | `inf`    |           | value positive infinity
 | `nan`    |           | value not-a-number
-| `X`      | `[1,0,0]` | X-axis as 3D vextor
-| `Y`      | `[0,1,0]` | Y-axis as 3D vextor
-| `Z`      | `[0,0,1]` | Z-axis as 3D vextor
+| `X`      | `[1,0,0]` | X-axis as 3D vector
+| `Y`      | `[0,1,0]` | Y-axis as 3D vector
+| `Z`      | `[0,0,1]` | Z-axis as 3D vector
 
 
 ### Functions [^][contents]
