@@ -4,10 +4,13 @@
 // Enthält Funktionen, die Kurven beschreiben
 
 use <banded/extend_logic.scad>
-use <banded/helper_native.scad>
-use <banded/helper_recondition.scad>
+use <banded/helper.scad>
 use <banded/math_common.scad>
+use <banded/math_number.scad>
+use <banded/math_polygon.scad>
 use <banded/draft_transform_basic.scad>
+
+// - Kurven:
 
 // ermittelt den Punkt einer Bezierkurve n. Grades abhängig von den Parametern
 // Argumente:
@@ -407,5 +410,70 @@ function helix_curve (r, rotations, pitch, height, opposite, slices, angle) =
 		)
 		[r_ * cos(Angle), r_ * sin(Angle), t * Height]
 	]
+;
+
+// - Fraktale:
+
+// Koch Kurve
+//
+function koch_curve (trace, iteration=1, closed=false) =
+	trace_lines (
+		koch_lines (
+			 points_to_lines (closed!=true ? trace : concat (trace, [trace[0]]) )
+			,iteration
+		)
+	)
+;
+
+function koch_lines (lines, iteration=1) =
+	iteration<=0 ? lines :
+	[for (line=lines)
+		let(
+			 koch_point_0 = line[0]
+			,koch_point_1 = line[0]*2/3 + line[1]*1/3
+			,koch_point_2 = line[0]/2+line[1]/2 + normal_vector(line[1]-line[0])/3
+			,koch_point_3 = line[0]*1/3 + line[1]*2/3
+			,koch_point_4 = line[1]
+		)
+		each [
+			each koch_lines ([ [koch_point_0, koch_point_1] ], iteration-1),
+			each koch_lines ([ [koch_point_1, koch_point_2] ], iteration-1),
+			each koch_lines ([ [koch_point_2, koch_point_3] ], iteration-1),
+			each koch_lines ([ [koch_point_3, koch_point_4] ], iteration-1),
+		]
+	]
+;
+
+// Hilbert Kurve
+function hilbert_curve (r=1, iteration=1) =
+	[ for (e=hilbert_points(r/2, iteration)) e[0] ]
+;
+
+points_hilbert = [
+[-1,-1],
+[-1, 1],
+[ 1, 1],
+[ 1,-1]
+];
+
+function hilbert_points (r=1, iteration=1, data=[[[0,0], 0]]) =
+	iteration<=0 ? data :
+	hilbert_points (r/2, iteration-1, 
+		[ for (e=data)
+			each
+			e[1]>=0 ?
+			[
+				[ e[0] + r*points_hilbert[(e[1]+4)%4], (e[1]-3)%4 ],
+				[ e[0] + r*points_hilbert[(e[1]+5)%4], (e[1]  )%4 ],
+				[ e[0] + r*points_hilbert[(e[1]+6)%4], (e[1]  )%4 ],
+				[ e[0] + r*points_hilbert[(e[1]+7)%4], (e[1]-5)%4 ]
+			] : [
+				[ e[0] + r*points_hilbert[(e[1]+7)%4], (e[1]+3)%4 ],
+				[ e[0] + r*points_hilbert[(e[1]+6)%4], (e[1]  )%4 ],
+				[ e[0] + r*points_hilbert[(e[1]+5)%4], (e[1]  )%4 ],
+				[ e[0] + r*points_hilbert[(e[1]+4)%4], (e[1]+5)%4 ]
+			]
+		]
+	)
 ;
 

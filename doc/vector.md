@@ -50,6 +50,9 @@ Matrix and vector operations
     - [`get_intersecting_point()`][get_intersecting_point]
   - [Polygon functions](#polygon-functions-)
     - [`length_trace()`][length_trace]
+  - [Convert polygon data](#convert-polygon-data-)
+    - [`points_to_lines()`][points_to_lines]
+    - [`trace_lines()`][trace_lines]
 
 
 Vector operations [^][contents]
@@ -277,4 +280,20 @@ Return the length of a trace.
 - `closed`
   - `false` - the trace from first to last point, default
   - `true`  - the trace is a closed loop, the last point connect the first point
+
+
+### Convert polygon data [^][contents]
+
+#### `points_to_lines (trace, closed)` [^][contents]
+[points_to_lines]: #points_to_lines-trace-closed-
+Convert a trace to a list with line segment.
+- `trace`
+  - a point list
+- `closed`
+  - `false` - the trace from first to last point, default
+  - `true`  - the trace is a closed loop, the last point connect the first point
+
+#### `trace_lines (lines)` [^][contents]
+[trace_lines]: #trace_lines-lines-
+Connect all lines in a list and return the trace as a point list.
 

@@ -121,3 +121,32 @@ function length_trace (points, path, closed=false) =
 	+ (closed==true ? norm (pts[size-1]-pts[0]) : 0)
 ;
 
+// - Daten von Strecken umwandeln:
+
+// Wandelt eine Spur von Punkten in eine Liste mit Streckenzügen um
+function points_to_lines (trace, closed=false) =
+	let (
+		size = len(trace)
+	)
+	closed!=true ?
+		[ for (i=[0:1:size-2]) [trace[i],trace[i+1]] ]
+	:	[ for (i=[0:1:size-1]) [trace[i],trace[(i+1)%size]] ]
+		
+;
+
+// Verbindet Strecken in einer Liste miteinander zu einer Spur aus Punkten
+function trace_lines (lines) =
+	let (
+		size = len(lines)
+	)
+	concat(
+		lines[0],
+		[ for (i=[1:1:size-1])
+			if (lines[i-1][1]==lines[i][0])
+				lines[i][1]
+			else
+				each lines[i]
+		]
+	)
+;
+

@@ -21,6 +21,9 @@ Draft objects as data list - Curves
   - [Polynomial function](#polynomial-function-)
   - [Square](#square-)
   - [Helix](#helix-)
+- [Creates fractal curves](#fractal-curves-)
+  - [Koch curve](#koch-curve-)
+  - [Hilbert curve](#hilbert-curve-)
 
 
 Curves [^][contents]
@@ -310,4 +313,68 @@ __Options:__
 __Required options:__
 - radius `r`
 - only 2 arguments each: `pitch`, `rotations` or `height`
+
+
+Fractal curves [^][contents]
+----------------------------
+
+### Koch curve [^][contents]
+
+#### `koch_curve (trace, iteration, closed)` [^][contents]
+Generates a Koch curve on a line defined in `trace`.\
+[=> Wikipedia - Koch snowflake](https://en.wikipedia.org/wiki/Koch_snowflake)
+
+__Options:__
+- `trace`
+  - a point list
+- `iteration`
+  - defines the nested iteration of the curve
+  - default = 1 = one step
+- `closed`
+  - `true`  - for a closed trace = the end point is connected with the begin point
+  - `false` - default, a line with open ends
+
+__Example:__
+```OpenSCAD
+include <banded.scad>
+
+iteration = 3;
+
+// Triangle
+trace = [
+	[0  ,0],
+	[1  ,0],
+	[0.5,-sqrt(3)/2]
+];
+
+// Koch snowflake
+polygon (
+	koch_curve (trace * 10, iteration, closed=true) );
+```
+
+
+### Hilbert curve [^][contents]
+
+#### `hilbert_curve (r, iteration)` [^][contents]
+Generates a Hilbert curve.\
+[=> Wikipedia - Hilbert curve](https://en.wikipedia.org/wiki/Hilbert_curve)
+
+__Options:__
+- `r`
+  - the radius of the square which is filled with the hilbert curve
+- `iteration`
+  - defines the nested iteration of the curve
+  - default = 1 = one step
+
+__Example:__
+```OpenSCAD
+include <banded.scad>
+
+iteration = 4;
+r = 10;
+
+show_trace (
+	hilbert_curve (r, iteration)
+	, c="green", d=r/pow(2,iteration) );
+```
 
