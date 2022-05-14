@@ -9,7 +9,7 @@ include <banded/operator_edit.scad>
 
 // - Linien und Punkte sichtbar machen:
 
-module point (p, c, d=0.2)
+module show_point (p, c, d=0.2)
 {
 	if (p!=undef)
 		color(c)
@@ -17,12 +17,12 @@ module point (p, c, d=0.2)
 		sphere(d=d, $fn=6);
 }
 
-module points (p_list, c, d=0.2)
+module show_points (p_list, c, d=0.2)
 {
 	if (p_list!=undef)
 		for (p=p_list) { point (p, c, d); }
 }
-module line_points (p_list, c, closed=true, d=0.1, dp=0.15)
+module show_line_points (p_list, c, closed=true, d=0.1, dp=0.15)
 {
 	if (p_list!=undef)
 	{
@@ -40,14 +40,14 @@ module line_points (p_list, c, closed=true, d=0.1, dp=0.15)
 	}
 }
 
-module line (l, c, d=0.1)
+module show_line (l, c, d=0.1)
 {
 	if (l!=undef)
 		color(c)
 		extrude_line (l) circle(d=d, $fn=6);
 }
 
-module lines (l_list, c, d=0.1)
+module show_lines (l_list, c, d=0.1)
 {
 	if (l_list!=undef)
 		for (l=l_list) { line (l, c, d); }
