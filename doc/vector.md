@@ -26,6 +26,7 @@ Matrix and vector operations
     - [`rotation_vector()`][rotation_vector]
     - [`rotation_around_vector()`][rotation_around_vector]
     - [`rotation_around_line()`][rotation_around_line]
+    - [`normal_vector()`][normal_vector]
     - [`triple_product()`][triple_product]
     - [`cross_universal()`][cross_universal]
   - [Test functions for vector](#test-functions-for-vector-)
@@ -127,6 +128,12 @@ from point `p1` to `p2`.
 `line` - 2 point list, line defined from first point to second point
 `p1`   - first vector, rotate begin
 `p2`   - second vector, rotate end
+
+#### `normal_vector (v)` [^][contents]
+[normal_vector]: #normal_vector-v-
+Return the normal vector of vector `v`
+- 2D vector -> 2D normal vector
+- 3D vector -> 3D normal vector = cross product
 
 #### `triple_product (a, b, c)` [^][contents]
 [triple_product]: #triple_product-a-b-c-

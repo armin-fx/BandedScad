@@ -85,6 +85,18 @@ function rotation_around_line (line, p1, p2) =
 		p2     -line[0])
 ;
 
+// Ermittelt die Normale eines Vektors
+// 2D-Vektor -> 2D Normale
+// 3D-Vektor -> 3D Normale (Kreuzprodukt)
+function normal_vector (v) =
+	 len(v)==2 ? [ -v[1], v[0] ]
+	:len(v)==3 ? cross (v)
+	:undef
+;
+
+// rechnet das Spatprodukt aus
+function triple_product (a, b, c) = a * cross(b, c) ;
+
 // rechnet das Kreuzprodukt von n-dimensionale Vektoren aus
 // mit n-1 Vektoren in einer Liste 'list'
 // Besonderheit:
@@ -102,9 +114,6 @@ function cross_universal (list) =
 		) )
 	: undef
 ;
-
-// rechnet das Spatprodukt aus
-function triple_product (a, b, c) = a * cross(b, c) ;
 
 // Wählt aus 3 Vektoren die Reihe nach eine Achse aus
 function pick_vector (vx, vy, vz) = [vx.x, vy.y, vz.z] ;
