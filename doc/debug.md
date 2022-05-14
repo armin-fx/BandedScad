@@ -67,8 +67,8 @@ If the same point is twice in order, then it will create a visible point at this
 - `p_list` - a list with points
 - `c`  - optional, the color of the points
 - `closed`
-  - `true`  - the trace is a closed loop, the last point connect the first point, default
-  - `false` - the trace from first to last point
+  - `true`  - the trace is a closed loop, the last point connect the first point
+  - `false` - the trace from first to last point, default
 - `d`  - optional, the diameter of the line between the points, default = `0.1mm`
 - `dp` - optional, the diameter of the same points, default = `0.15mm`
 
