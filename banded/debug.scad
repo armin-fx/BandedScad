@@ -37,7 +37,7 @@ module show_points (p_list, c, d=0.2)
 	if (p_list!=undef)
 		for (p=p_list) { show_point (p, c, d); }
 }
-module show_line_points (p_list, c, closed=true, d=0.1, dp=0.15)
+module show_trace (p_list, c, closed=true, d=0.1, dp=0.15)
 {
 	if (p_list!=undef)
 	{

@@ -16,7 +16,7 @@ Debug
   - [Make points and lines visible](#make-points-visible-)
     - [`show_point()`][show_point]
     - [`show_points()`][show_points]
-    - [`show_line_points()`][show_line_points]
+    - [`show_trace()`][show_trace]
     - [`show_line()`][show_line]
     - [`show_lines()`][show_lines]
   - [Test parts of objects](#test-parts-of-objects-)
@@ -59,8 +59,8 @@ Module to create visible points.
 - `c` - optional, the color of the points
 - `d` - optional, the diameter of the points, default = `0.2mm`
 
-#### `show_line_points (p_list, c, closed, d, dp)` [^][contents]
-[show_line_points]: #show_line_points-p_list-c-closed-d-dp-
+#### `show_trace (p_list, c, closed, d, dp)` [^][contents]
+[show_trace]: #show_trace-p_list-c-closed-d-dp-
 Module to create visible points.\
 Create a line between the points.
 If the same point is twice in order, then it will create a visible point at this position.
