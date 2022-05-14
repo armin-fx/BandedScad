@@ -4,8 +4,23 @@
 // enthält Objekte, um Punkte und Linien anzeigen zu lassen
 //
 
-include <banded/operator_edit.scad>
+use <banded/operator_edit.scad>
 
+
+// - In der Konsole anzeigen
+
+module echo_line (length=50, char="-")
+{
+	function str_line (length, char, string="") =
+		length<=0 ? string :
+		str_line (length-1, char, str (string, char))
+	;
+	echo (str_line (length, char));
+}
+
+module echo_short_line (length=50) { echo_line (length/2, " -"); }
+module echo_bar        (length=50) { echo_line (length  , "=" ); }
+module echo_wall       (length=50) { echo_line (length  , "#" ); }
 
 // - Linien und Punkte sichtbar machen:
 
@@ -20,7 +35,7 @@ module show_point (p, c, d=0.2)
 module show_points (p_list, c, d=0.2)
 {
 	if (p_list!=undef)
-		for (p=p_list) { point (p, c, d); }
+		for (p=p_list) { show_point (p, c, d); }
 }
 module show_line_points (p_list, c, closed=true, d=0.1, dp=0.15)
 {
@@ -33,9 +48,9 @@ module show_line_points (p_list, c, closed=true, d=0.1, dp=0.15)
 			p2=p_list[(i+1)%size];
 			
 			if (p1!=p2)
-				{ line ([p1, p2], c, d); }
+				{ show_line ([p1, p2], c, d); }
 			else
-				{ point (p1, c, dp); }
+				{ show_point (p1, c, dp); }
 		}
 	}
 }
@@ -50,7 +65,7 @@ module show_line (l, c, d=0.1)
 module show_lines (l_list, c, d=0.1)
 {
 	if (l_list!=undef)
-		for (l=l_list) { line (l, c, d); }
+		for (l=l_list) { show_line (l, c, d); }
 }
 
 // - Teile von Objekte testen:
