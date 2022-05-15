@@ -415,7 +415,6 @@ function helix_curve (r, rotations, pitch, height, opposite, slices, angle) =
 // - Fraktale:
 
 // Koch Kurve
-//
 function koch_curve (trace, iteration=1, closed=false) =
 	trace_lines (
 		koch_lines (
@@ -474,6 +473,28 @@ function hilbert_points (r=1, iteration=1, data=[[[0,0], 0]]) =
 				[ e[0] + r*points_hilbert[(e[1]+4)%4], (e[1]+5)%4 ]
 			]
 		]
+	)
+;
+
+// Drachenkurve
+function dragon_curve (trace=[[0,0],[1,0]], iteration=1) =
+	iteration<=0 ? trace :
+	let (s = sqrt(1/4))
+	dragon_curve (
+		concat( [ trace[0] ],
+		[ for (i=[0:1:len(trace)-2])
+			if (i%2==0)
+				each [
+					(trace[i]+trace[i+1])/2 + s*normal_vector(trace[i+1]-trace[i])
+					,trace[i+1]
+				]
+			else
+				each [
+					(trace[i]+trace[i+1])/2 - s*normal_vector(trace[i+1]-trace[i])
+					,trace[i+1]
+				]
+		] )
+		, iteration-1
 	)
 ;
 

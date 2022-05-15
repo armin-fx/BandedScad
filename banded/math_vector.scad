@@ -89,7 +89,7 @@ function rotation_around_line (line, p1, p2) =
 // 2D-Vektor -> 2D Normale
 // 3D-Vektor -> 3D Normale (Kreuzprodukt)
 function normal_vector (v) =
-	 len(v)==2 ? [ -v[1], v[0] ]
+	 len(v)==2 ? [ -v.y, v.x ]
 	:len(v)==3 ? cross (v)
 	:undef
 ;

@@ -24,6 +24,7 @@ Draft objects as data list - Curves
 - [Creates fractal curves](#fractal-curves-)
   - [Koch curve](#koch-curve-)
   - [Hilbert curve](#hilbert-curve-)
+  - [Dragon curve][#dragon-curve-]
 
 
 Curves [^][contents]
@@ -356,7 +357,7 @@ polygon (
 ### Hilbert curve [^][contents]
 
 #### `hilbert_curve (r, iteration)` [^][contents]
-Generates a Hilbert curve.\
+Generates a trace of a Hilbert curve.\
 [=> Wikipedia - Hilbert curve](https://en.wikipedia.org/wiki/Hilbert_curve)
 
 __Options:__
@@ -376,5 +377,28 @@ r = 10;
 show_trace (
 	hilbert_curve (r, iteration)
 	, c="green", d=r/pow(2,iteration) );
+```
+
+### Dragon curve [^][contents]
+
+#### `dragon_curve (trace, iteration)` [^][contents]
+Generates a trace of a Dragon curve.\
+[=> Wikipedia - Dragon curve](https://en.wikipedia.org/wiki/Dragon_curve)
+
+__Options:__
+- `trace`
+  - a point list with the initial line
+- `iteration`
+  - defines the nested iteration of the curve
+  - default = 1 = one step
+
+__Example:__
+```OpenSCAD
+include <banded.scad>
+
+iteration=8;
+
+a = dragon_curve ([[0,0], [20,0]], iteration);
+show_trace (a, c="blue", d=8/pow(2,iteration/2));
 ```
 
