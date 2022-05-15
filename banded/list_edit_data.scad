@@ -211,144 +211,154 @@ function binary_search_list_intern (list, value, type, begin, end) =
 
 // sucht nach einem Wert und gibt die Position des Treffers aus einer Liste heraus
 // Die Liste wird vom Anfang aus durchsucht
-// Wurde der Wert nicht gefunden, wird die Größe der Liste zurückgegeben
+// Wurde der Wert nicht gefunden, wird die Position nach dem letzten Element zurückgegeben
 // Argumente:
 //   list    -Liste
 //   value   -gesuchter Wert
 //   index   -Bei gleichen Werten wird index-mal übersprungen
 //            standartmäßig wird der erste gefundene Schlüssel genommen (index=0)
-function find_first_list (list, value, index=0, type=0) =
+function find_first_list (list, value, index=0, type=0, begin, last, count, range) =
 	list==undef ? 0 :
-	index==0 ? find_first_once_list (list, value, type) :
+	let (Range = parameter_range_safe (list, begin, last, count, range))
+	index==0 ? find_first_once_list_intern (list, value, type, Range[0], Range[1]) :
 	//
-	 type   == 0 ? find_first_list_intern_direct   (list, value, index)
-	:type[0]>= 0 ? find_first_list_intern_list     (list, value, index, type[0])
-	:type[0]==-1 ? find_first_list_intern_function (list, value, index, type[1])
-	:              find_first_list_intern_type     (list, value, index, type)
+	 type   == 0 ? find_first_list_intern_direct   (list, value, index         , Range[0], Range[1])
+	:type[0]>= 0 ? find_first_list_intern_list     (list, value, index, type[0], Range[0], Range[1])
+	:type[0]==-1 ? find_first_list_intern_function (list, value, index, type[1], Range[0], Range[1])
+	:              find_first_list_intern_type     (list, value, index, type   , Range[0], Range[1])
 ;
-function find_first_list_intern_direct (list, value, index=0, n=0) =
-	(list[n]==undef) ? len(list)
-	:(list[n]==value) ?
+function find_first_list_intern_direct (list, value, index=0, n=0, last=-1) =
+	(n>last) ? n :
+	(list[n]==value) ?
 		(index==0) ? n
-		:	find_first_list_intern_direct (list, value, index-1, n+1)
-	:		find_first_list_intern_direct (list, value, index,   n+1)
+		:	find_first_list_intern_direct (list, value, index-1, n+1, last)
+	:		find_first_list_intern_direct (list, value, index,   n+1, last)
 ;
-function find_first_list_intern_list (list, value, index=0, position=0, n=0) =
-	(list[n]==undef) ? len(list)
-	:(list[n][position]==value) ?
+function find_first_list_intern_list (list, value, index=0, position=0, n=0, last=-1) =
+	(n>last) ? n :
+	(list[n][position]==value) ?
 		(index==0) ? n
-		:	find_first_list_intern_list (list, value, index-1, position, n+1)
-	:		find_first_list_intern_list (list, value, index,   position, n+1)
+		:	find_first_list_intern_list (list, value, index-1, position, n+1, last)
+	:		find_first_list_intern_list (list, value, index,   position, n+1, last)
 ;
-function find_first_list_intern_function (list, value, index=0, fn, n=-2) =
-	(list[n]==undef) ? len(list)
-	:(fn(list[n])==value) ?
+function find_first_list_intern_function (list, value, index=0, fn, n=0, last=-1) =
+	(n>last) ? n :
+	(fn(list[n])==value) ?
 		(index==0) ? n
-		:	find_first_list_intern_function (list, value, index-1, fn, n+1)
-	:		find_first_list_intern_function (list, value, index,   fn, n+1)
+		:	find_first_list_intern_function (list, value, index-1, fn, n+1, last)
+	:		find_first_list_intern_function (list, value, index,   fn, n+1, last)
 ;
-function find_first_list_intern_type (list, value, index=0, type, n=0) =
-	(list[n]==undef) ? len(list)
-	:(get_value(list[n],type)==value) ?
+function find_first_list_intern_type (list, value, index=0, type, n=0, last=-1) =
+	(n>last) ? n :
+	(get_value(list[n],type)==value) ?
 		(index==0) ? n
-		:	find_first_list_intern_type (list, value, index-1, type, n+1)
-	:		find_first_list_intern_type (list, value, index,   type, n+1)
+		:	find_first_list_intern_type (list, value, index-1, type, n+1, last)
+	:		find_first_list_intern_type (list, value, index,   type, n+1, last)
 ;
 //
 // sucht nach dem ersten Auftreten eines Wertes und gibt die Position des Treffers aus einer Liste heraus
-function find_first_once_list (list, value, type=0) =
+function find_first_once_list (list, value, type=0, begin, last, count, range) =
 	list==undef ? 0 :
-	 type   == 0 ? find_first_once_list_intern_direct (list, value)
-	:type[0]>= 0 ? find_first_once_list_intern_list   (list, value, type[0])
-	:type[0]==-1 ? find_first_once_list_intern_type   (list, value, type[1])
-	:              find_first_once_list_intern_type   (list, value, type)
+	let (Range = parameter_range_safe (list, begin, last, count, range))
+	find_first_once_list_intern (list, value, type, Range[0], Range[1])
 ;
-function find_first_once_list_intern_direct   (list, value, n=0) =
-	(n<0) || (list[n]                ==value) ? n :
-	find_first_once_list_intern_direct        (list, value, n+1)
+function find_first_once_list_intern (list, value, type=0, n=0, last=-1) =
+	 type   == 0 ? find_first_once_list_intern_direct   (list, value         , n, last)
+	:type[0]>= 0 ? find_first_once_list_intern_list     (list, value, type[0], n, last)
+	:type[0]==-1 ? find_first_once_list_intern_function (list, value, type[1], n, last)
+	:              find_first_once_list_intern_type     (list, value, type   , n, last)
 ;
-function find_first_once_list_intern_list     (list, value, position, n=0) =
-	(n<0) || (list[n][position]      ==value) ? n :
-	find_first_once_list_intern_list          (list, value, position, n+1)
+function find_first_once_list_intern_direct   (list, value, n=0, last=-1) =
+	(n>last) || (list[n]                ==value) ? n :
+	find_first_once_list_intern_direct        (list, value, n+1, last)
 ;
-function find_first_once_list_intern_function (list, value, fn, n=0) =
-	(n<0) || (fn(list[n])            ==value) ? n :
-	find_first_once_list_intern_function      (list, value, fn, n+1)
+function find_first_once_list_intern_list     (list, value, position, n=0, last=-1) =
+	(n>last) || (list[n][position]      ==value) ? n :
+	find_first_once_list_intern_list          (list, value, position, n+1, last)
 ;
-function find_first_once_list_intern_type     (list, value, type, n=0) =
-	(n<0) || (get_value(list[n],type)==value) ? n :
-	find_first_once_list_intern_type          (list, value, type, n+1)
+function find_first_once_list_intern_function (list, value, fn, n=0, last=-1) =
+	(n>last) || (fn(list[n])            ==value) ? n :
+	find_first_once_list_intern_function      (list, value, fn, n+1, last)
+;
+function find_first_once_list_intern_type     (list, value, type, n=0, last=-1) =
+	(n>last) || (get_value(list[n],type)==value) ? n :
+	find_first_once_list_intern_type          (list, value, type, n+1, last)
 ;
 
 // sucht nach einem Wert und gibt die Position des Treffers aus einer Liste heraus
 // Die Liste wird vom Ende aus rückwärts durchsucht
-// Wurde der Wert nicht gefunden, wird -1 zurückgegeben
+// Wurde der Wert nicht gefunden, wird die Position vor dem ersten Element zurückgegeben
 // Argumente:
 //   list    -Liste
 //   value   -gesuchter Wert
 //   index   -Bei gleichen Werten wird index-mal übersprungen
 //            standartmäßig wird der erste vom Ende aus gefundene Schlüssel genommen (index=0)
-function find_last_list (list, value, index=0, type=0) =
+function find_last_list (list, value, index=0, type=0, begin, last, count, range) =
 	list==undef ? -1 :
-	index==0 ? find_last_once_list (list, value, type) :
+	let (Range = parameter_range_safe (list, begin, last, count, range))
+	index==0 ? find_last_once_list_intern (list, value, type, Range[1], Range[0]) :
 	//
-	 type   == 0 ? find_last_list_intern_direct   (list, value, index,          n=len(list)-1)
-	:type[0]>= 0 ? find_last_list_intern_list     (list, value, index, type[0], n=len(list)-1)
-	:type[0]==-1 ? find_last_list_intern_function (list, value, index, type[1], n=len(list)-1)
-	:              find_last_list_intern_type     (list, value, index, type,    n=len(list)-1)
+	 type   == 0 ? find_last_list_intern_direct   (list, value, index         , Range[1], Range[0])
+	:type[0]>= 0 ? find_last_list_intern_list     (list, value, index, type[0], Range[1], Range[0])
+	:type[0]==-1 ? find_last_list_intern_function (list, value, index, type[1], Range[1], Range[0])
+	:              find_last_list_intern_type     (list, value, index, type   , Range[1], Range[0])
 ;
-function find_last_list_intern_direct (list, value, index=0, n=-2) =
-	(n<0) ? n
+function find_last_list_intern_direct (list, value, index=0, n=-2, first=0) =
+	(n<first) ? n
 	:(list[n]==value) ?
 		(index==0) ? n
-		:	find_last_list_intern_direct (list, value, index-1, n-1)
-	:		find_last_list_intern_direct (list, value, index,   n-1)
+		:	find_last_list_intern_direct (list, value, index-1, n-1, first)
+	:		find_last_list_intern_direct (list, value, index,   n-1, first)
 ;
-function find_last_list_intern_list (list, value, index=0, position=0, n=-2) =
-	(n<0) ? n
+function find_last_list_intern_list (list, value, index=0, position=0, n=-2, first=0) =
+	(n<first) ? n
 	:(list[n][position]==value) ?
 		(index==0) ? n
-		:	find_last_list_intern_list (list, value, index-1, position, n-1)
-	:		find_last_list_intern_list (list, value, index,   position, n-1)
+		:	find_last_list_intern_list (list, value, index-1, position, n-1, first)
+	:		find_last_list_intern_list (list, value, index,   position, n-1, first)
 ;
-function find_last_list_intern_function (list, value, index=0, fn, n=-2) =
-	(n<0) ? n
+function find_last_list_intern_function (list, value, index=0, fn, n=-2, first=0) =
+	(n<first) ? n
 	:(fn(list[n])==value) ?
 		(index==0) ? n
-		:	find_last_list_intern_function (list, value, index-1, fn, n-1)
-	:		find_last_list_intern_function (list, value, index,   fn, n-1)
+		:	find_last_list_intern_function (list, value, index-1, fn, n-1, first)
+	:		find_last_list_intern_function (list, value, index,   fn, n-1, first)
 ;
-function find_last_list_intern_type (list, value, index=0, type, n=-2) =
-	(n<0) ? n
+function find_last_list_intern_type (list, value, index=0, type, n=-2, first=0) =
+	(n<first) ? n
 	:(get_value(list[n],type)==value) ?
 		(index==0) ? n
-		:	find_last_list_intern_type (list, value, index-1, type, n-1)
-	:		find_last_list_intern_type (list, value, index,   type, n-1)
+		:	find_last_list_intern_type (list, value, index-1, type, n-1, first)
+	:		find_last_list_intern_type (list, value, index,   type, n-1, first)
 ;
 //
-// sucht nach dem ersten Auftreten eines Wertes und gibt die Position des Treffers aus einer Liste heraus
-function find_last_once_list (list, value, type=0) =
+// sucht rückwärts nach dem ersten Auftreten eines Wertes und gibt die Position des Treffers aus einer Liste heraus
+function find_last_once_list (list, value, type=0, begin, last, count, range) =
 	list==undef ? -1 :
-	 type   == 0 ? find_last_once_list_intern_direct (list, value,          n=len(list)-1)
-	:type[0]>= 0 ? find_last_once_list_intern_list   (list, value, type[0], n=len(list)-1)
-	:type[0]==-1 ? find_last_once_list_intern_type   (list, value, type[1], n=len(list)-1)
-	:              find_last_once_list_intern_type   (list, value, type,    n=len(list)-1)
+	let (Range = parameter_range_safe (list, begin, last, count, range))
+	find_last_once_list_intern (list, value, type=0, Range[1], Range[0])
 ;
-function find_last_once_list_intern_direct   (list, value, n=-2) =
-	(n<0) || (list[n]                ==value) ? n :
-	find_last_once_list_intern_direct        (list, value, n-1)
+function find_last_once_list_intern (list, value, type=0, n=-1, first=0) =
+	 type   == 0 ? find_last_once_list_intern_direct   (list, value         , n, first)
+	:type[0]>= 0 ? find_last_once_list_intern_list     (list, value, type[0], n, first)
+	:type[0]==-1 ? find_last_once_list_intern_function (list, value, type[1], n, first)
+	:              find_last_once_list_intern_type     (list, value, type   , n, first)
 ;
-function find_last_once_list_intern_list     (list, value, position, n=-2) =
-	(n<0) || (list[n][position]      ==value) ? n :
-	find_last_once_list_intern_list          (list, value, position, n-1)
+function find_last_once_list_intern_direct   (list, value, n=-2, first=0) =
+	(n<first) || (list[n]                ==value) ? n :
+	find_last_once_list_intern_direct        (list, value, n-1, first)
 ;
-function find_last_once_list_intern_function (list, value, fn, n=-2) =
-	(n<0) || (fn(list[n])            ==value) ? n :
-	find_last_once_list_intern_function      (list, value, fn, n-1)
+function find_last_once_list_intern_list     (list, value, position, n=-2, first=0) =
+	(n<first) || (list[n][position]      ==value) ? n :
+	find_last_once_list_intern_list          (list, value, position, n-1, first)
 ;
-function find_last_once_list_intern_type     (list, value, type, n=-2) =
-	(n<0) || (get_value(list[n],type)==value) ? n :
-	find_last_once_list_intern_type          (list, value, type, n-1)
+function find_last_once_list_intern_function (list, value, fn, n=-2, first=0) =
+	(n<first) || (fn(list[n])            ==value) ? n :
+	find_last_once_list_intern_function      (list, value, fn, n-1, first)
+;
+function find_last_once_list_intern_type     (list, value, type, n=-2, first=0) =
+	(n<first) || (get_value(list[n],type)==value) ? n :
+	find_last_once_list_intern_type          (list, value, type, n-1, first)
 ;
 
 // Zählt das Vorkommen eines Wertes in der Liste

@@ -56,6 +56,12 @@ Functions for edit lists
     - [`replace_values_list()`][replace_values_list]
   - [Edit list, use function literal on data](#edit-list-use-function-literal-on-data-)
     - [`for_each_list()`][for_each_list]
+    - [`find_first_if_list()`][find_first_if_list]
+    - [`find_first_once_if_list()`][find_first_once_if_list]
+    - [`find_last_if_list()`][find_last_if_list]
+    - [`find_last_once_if_list()`][find_last_once_if_list]
+    - [`remove_if_list()`][remove_if_list]
+    - [`replace_if_list()`][replace_if_list]
   - [Pair functions](#pair-functions-)
     - [`pair()`][pair]
     - [`pair_value()`][pair_value]
@@ -266,40 +272,42 @@ Merge 2 sorted lists into one list
 [binary_search_list]: #binary_search_list-list-value-type-
 Search a value in a sorted list
 
-#### `find_first_list (list, value, index, type)` [^][contents]
-[find_first_list]: #find_first_list-list-value-index-type-
+#### `find_first_list (list, value, index, type, 'range_args')` [^][contents]
+[find_first_list]: #find_first_list-list-value-index-type-range_args-
 Search at a value in a list and returns the position.\
-Returns the size of list if nothing was found.
+Returns the position after the last element in the defined range if nothing was found.
 - `index`
   - Same values are skipped `index` times
   - Standard = get first hit, `index` = 0
+- [`'range_args'`][range_args] - arguments to set the range in which will count, default = full list
 
-#### `find_first_once_list (list, value, type)` [^][contents]
-[find_first_once_list]: #find_first_once_list-list-value-type-
+#### `find_first_once_list (list, value, type, 'range_args')` [^][contents]
+[find_first_once_list]: #find_first_once_list-list-value-type-range_args-
 Search at a value in a list and returns the position.\
-Returns the size of list if nothing was found.\
+Returns the position after the last element in the defined range if nothing was found.\
 Like [`find_first_list()`][find_first_list],
 but return always the position of the first hit.
 
-#### `find_last_list (list, value, index, type)` [^][contents]
-[find_last_list]: #find_last_list-list-value-index-type-
+#### `find_last_list (list, value, index, type, 'range_args')` [^][contents]
+[find_last_list]: #find_last_list-list-value-index-type-range_args-
 Search at a value in a list backwards from the end to first value and returns the position.\
-Returns `-1` if nothing was found.
+Returns the position before the first element in the defined range if nothing was found.
 - `index`
   - Same values are skipped `index` times
   - Standard = get first hit, `index` = 0
+- [`'range_args'`][range_args] - arguments to set the range in which will count, default = full list
 
-#### `find_last_once_list (list, value, type)` [^][contents]
-[find_last_once_list]: #find_last_once_list-list-value-type-
+#### `find_last_once_list (list, value, type, 'range_args')` [^][contents]
+[find_last_once_list]: #find_last_once_list-list-value-type-range_args-
 Search at a value in a list backwards from the end to first value and returns the position.\
-Returns `-1` if nothing was found.\
+Returns the position before the first element in the defined range if nothing was found.\
 Like [`find_last_list()`][find_last_list],
 but return always the position of the first hit.
 
 #### `count_list (list, value, type, 'range_args')` [^][contents]
 [count_list]: #count_list-list-value-type-range_args-
 Count how often a value is in list
-- [`'range_args'`][range_args] - arguments to set the range in which will count, standard = full list
+- [`'range_args'`][range_args] - arguments to set the range in which will count, default = full list
 
 #### `remove_duplicate_list (list, type)` [^][contents]
 [remove_duplicate_list]: #remove_duplicate_list-list-type-
@@ -332,6 +340,66 @@ Edit list, use function literal on data [^][contents]
 Run function `f()` on each item in the list.\
 Return the list of results.
 - [`'range_args'`][range_args] - arguments to set the range of list, standard = full list
+
+#### `find_first_if_list (list, f, index, type, 'range_args')` [^][contents]
+[find_first_if_list]: #find_first_if_list-list-f-index-type-range_args-
+Run function `f()` at the entries in a list and returns the position which this function returns `true`.\
+Returns the position after the last element in the defined range if nothing was found.
+- `f`
+  - function literal with one argument
+- `index`
+  - Same values are skipped `index` times
+  - Standard = get first hit, `index` = 0
+- [`'range_args'`][range_args] - arguments to set the range in which will count, default = full list
+
+#### `find_first_once_if_list (list, f, type, 'range_args')` [^][contents]
+[find_first_once_if_list]: #find_first_once_if_list-list-f-type-range_args-
+Run function `f()` at the entries in a list and
+returns the position which this function returns `true`.\
+Returns the position after the last element in the defined range if nothing was found.\
+Like [`find_first_if_list()`][find_first_if_list],
+but return always the position of the first hit.
+
+#### `find_last_if_list (list, f, index, type, 'range_args')` [^][contents]
+[find_last_if_list]: #find_last_if_list-list-f-index-type-range_args-
+Run function `f()` at the entries backwards in a list and
+returns the position which this function returns `true`.\
+Returns the position before the first element in the defined range if nothing was found.
+- `f`
+  - function literal with one argument
+- `index`
+  - Same values are skipped `index` times
+  - Standard = get first hit, `index` = 0
+- [`'range_args'`][range_args] - arguments to set the range in which will count, default = full list
+
+#### `find_last_once_if_list (list, f, type, 'range_args')` [^][contents]
+[find_last_once_if_list]: #find_last_once_if_list-list-f-type-range_args-
+Run function `f()` at the entries backwards in a list and
+returns the position which this function returns `true`.\
+Returns the position before the first element in the defined range if nothing was found.\
+Like [`find_last_if_list()`][find_last_if_list],
+but return always the position of the first hit.
+
+#### `count_if_list (list, f, type, 'range_args')` [^][contents]
+[count_list]: #count_list-list-value-type-range_args-
+Count how often the function `f()` hits `true` on an entry in a list
+- [`'range_args'`][range_args] - arguments to set the range in which will count, default = full list
+- `f`
+  - function literal with one argument
+
+#### `remove_if_list (list, f, type)` [^][contents]
+[remove_if_list]: #remove_if_list-list-f-type-
+Run function `f()` at the entries in a list and
+remove every entry which this function returns `true`.
+- `f`
+  - function literal with one argument
+
+#### `replace_if_list (list, f, new, type)` [^][contents]
+[replace_if_list]: #replace_if_list-list-f-new-type-
+Run function `f()` at the entries in a list and
+replace every entry which this function returns `true` to a new value.
+- `f`
+  - function literal with one argument
 
 
 Pair functions [^][contents]

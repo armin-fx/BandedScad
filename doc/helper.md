@@ -328,6 +328,7 @@ An entry in the list must be a numeric value.
 Test the range of a list in the ['range_args'][range_args].\
 Encoding as in python (e.g. -1 = last element).
 Returns the real range `[begin, last]` for a list.
+Default is full range from first to last element in a list.
 
 - [`'range_args'`][range_args] - a sets of arguments
   - `begin` - first element from a list
@@ -340,6 +341,7 @@ Returns the real range `[begin, last]` for a list.
 Test the range of a list in the ['range_args'][range_args].\
 Encoding as in python (e.g. -1 = last element).
 Returns the real range `[begin, last]` for a list.
+Default is full range from first to last element in a list.
 
 Same like [`parameter_range()`][parameter_range], but constrain the position to
 the first or last element if the value exceed the real size of the list.
