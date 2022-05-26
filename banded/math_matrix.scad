@@ -38,7 +38,7 @@ function determinant (m) =
 	let (size=len(m))
 	(size>3) ?
 		let (j=0)
-		summation_list([ for (i=[0:size-1])
+		summation([ for (i=[0:size-1])
 			if (m[i][j]!=0)
 				m[i][j] * positiv_if_even(i+j)
 				* determinant( matrix_minor(m, i, j) )

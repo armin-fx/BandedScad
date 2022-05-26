@@ -98,7 +98,7 @@ module extrude_line (line, rotational=[1,0,0], convexity, extra_h=0)
 
 function get_trace_connect(trace) =
 	trace[0]==trace[len(trace)-1] ?
-		get_trace_connect(extract_list(trace, range=[0,-2]))
+		get_trace_connect(extract(trace, range=[0,-2]))
 	:	concat ( [trace[len(trace)-1]], trace, [trace[0],trace[1]] )
 ;
 range_connect=[1,-2];
@@ -145,7 +145,7 @@ module plain_trace_connect_extrude (trace, range=[0,-1], convexity, limit=1000)
 {
 	if (is_list(trace) && len(trace)>1)
 	plain_trace_extrude (
-		trace=get_trace_connect(extract_list(trace, range=range))
+		trace=get_trace_connect(extract(trace, range=range))
 		,range=range_connect, convexity=convexity, limit=limit
 	) children();
 }

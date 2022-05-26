@@ -17,7 +17,7 @@ function summation_fn_intern (fn, n, k, value=0) =
 ;
 function summation_fn_intern_big (fn, n, k, slice=100000) =
 	(n > slice) ?
-	 summation_list([ for (i=[k:slice:n]) summation_fn_intern(fn, min(i+slice,n), max(i,k)) ])
+	 summation([ for (i=[k:slice:n]) summation_fn_intern(fn, min(i+slice,n), max(i,k)) ])
 	:summation_fn_intern(fn, n, k)
 ;
 
@@ -43,7 +43,7 @@ function product_fn_intern (fn, n, k, value=1) =
 ;
 function product_fn_intern_big (fn, n, k, slice=100000) =
 	(n > slice) ?
-	 product_list([ for (i=[k:slice:n]) product_fn_intern(fn, min(i+slice,n), max(i,k)) ])
+	 product([ for (i=[k:slice:n]) product_fn_intern(fn, min(i+slice,n), max(i,k)) ])
 	:product_fn_intern(fn, n, k)
 ;
 

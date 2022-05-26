@@ -115,7 +115,7 @@ function length_trace (points, path, closed=false) =
 		pts  = is_path ? refer_list(points, path) : points
 	)
 	size<2 ? 0 :
-	summation_list(
+	summation(
 		[for (i=[0:1:size-2]) norm (pts[i+1]-pts[i]) ]
 	)
 	+ (closed==true ? norm (pts[size-1]-pts[0]) : 0)

@@ -17,8 +17,8 @@ Math on lists
 - [Calculating mean ->](mean.md)
 
 - [Algorithm on lists](#algorithm-on-lists-)
-  - [`summation_list()`][summation_list]
-  - [`product_list()`][product_list]
+  - [`summation()`][summation]
+  - [`product()`][product]
   - [`unit_summation()`][unit_summation]
   - [`unit_product()`][unit_product]
 - [Math operation on each list element](#math-operation-on-each-list-element-)
@@ -31,16 +31,16 @@ Math on lists
 Algorithm on lists [^][contents]
 ================================
 
-#### `summation_list (list, n, k)` [^][contents]
-[summation_list]: #summation_list-list-n-k-
+#### `summation (list, n, k)` [^][contents]
+[summation]: #summation-list-n-k-
 Summation of a list.\
 Add all values in a list from position `k` to `n`.
 This function accepts numeric values and vectors in the list.
 - `k` - default = `0`, from first element
 - `n` - if undefined, run until the last element
 
-#### `product_list (list, n, k)` [^][contents]
-[product_list]: #product_list-list-n-k-
+#### `product (list, n, k)` [^][contents]
+[product]: #product-list-n-k-
 Product of a list.\
 Multiply all values in a list from position `k` to `n`
 - `k` - default = `0`, from first element

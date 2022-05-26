@@ -20,8 +20,8 @@ type_pair_value= set_type_list(1);
 //   key     -gesuchter Schlüssel zum Wert
 //   index   -Bei gleichen Schlüsselwerten wird index-mal übersprungen
 //            standartmäßig wird der erste gefundene Schlüssel genommen (index=0)
-function pair_value     (list, key, index=0) =
-	list[find_first_list(list, key, index, type=type_pair_key)] [get_position_type(type_pair_value)];
+function pair_value (list, key, index=0) =
+	list[find_first (list, key, index, type=type_pair_key)] [get_position_type(type_pair_value)];
 
 // gibt den Schlüssel eines Wertes aus einer Liste heraus
 // Argumente:
@@ -29,8 +29,8 @@ function pair_value     (list, key, index=0) =
 //   key     -gesuchter Wert zum Schlüssel
 //   index   -Bei gleichen Werten wird index-mal übersprungen
 //            standartmäßig wird der erste gefundene Wert genommen (index=0)
-function pair_key       (list, value, index=0) =
-	list[find_first_list(list, value, index, type=type_pair_value)] [get_position_type(type_pair_key)];
+function pair_key  (list, value, index=0) =
+	list[find_first(list, value, index, type=type_pair_value)] [get_position_type(type_pair_key)];
 
 // erzeugt ein Schlüssel-Werte-Paar
 function pair (key, value) = [key, value];

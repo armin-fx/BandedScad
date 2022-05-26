@@ -86,7 +86,7 @@ function color_name (name, alpha) =
 	let(
 		 a = alpha!=undef ? alpha : 1
 		,n = to_lower_case(name)
-		,p = binary_search_list (color_name_list, n, [1])
+		,p = binary_search (color_name_list, n, [1])
 	)
 	p<0 ? undef :
 	let(
@@ -165,7 +165,7 @@ function color_hex_to_list (hex, alpha) =
 
 // list of names of color
 // Color names are taken from the World Wide Web consortium's SVG color list
-color_name_list = sort_list (type=[1], list=[
+color_name_list = sort (type=[1], list=[
 	[[240,248,255], "aliceblue"],
 	[[250,235,215], "antiquewhite"],
 	[[  0,255,255], "aqua"],

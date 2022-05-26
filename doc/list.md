@@ -33,35 +33,35 @@ Functions for edit lists
     - [Min or max value](#min-or-max-value-)
   - [Edit list independent from the data](#edit-list-independent-from-the-data-)
     - [`concat_list()`][concat_list]
-    - [`reverse_list()`][reverse_list]
-    - [`erase_list()`][erase_list]
-    - [`insert_list()`][insert_list]
-    - [`replace_list()`][replace_list]
-    - [`extract_list()`][extract_list]
+    - [`reverse()`][reverse]
+    - [`remove()`][remove]
+    - [`insert()`][insert]
+    - [`replace()`][replace]
+    - [`extract()`][extract]
     - [`refer_list()`][refer_list]
     - [`refer_link_list()`][refer_link_list]
   - [Edit list with use of data, depend on type](#edit-list-with-use-of-data-depend-on-type-)
-    - [`sort_list()`][sort_list]
-    - [`merge_list()`][merge_list]
-    - [`binary_search_list()`][binary_search_list]
-    - [`find_first_list()`][find_first_list]
-    - [`find_first_once_list()`][find_first_once_list]
-    - [`find_last_list()`][find_last_list]
-    - [`find_last_once_list()`][find_last_once_list]
-    - [`count_list()`][count_list]
-    - [`remove_duplicate_list()`][remove_duplicate_list]
-    - [`remove_value_list()`][remove_value_list]
-    - [`remove_values_list()`][remove_values_list]
-    - [`replace_value_list()`][replace_value_list]
-    - [`replace_values_list()`][replace_values_list]
+    - [`sort()`][sort]
+    - [`merge()`][merge]
+    - [`binary_search()`][binary_search]
+    - [`find_first()`][find_first]
+    - [`find_first_once()`][find_first_once]
+    - [`find_last()`][find_last]
+    - [`find_last_once()`][find_last_once]
+    - [`count()`][count]
+    - [`remove_duplicate()`][remove_duplicate]
+    - [`remove_value()`][remove_value]
+    - [`remove_all_values()`][remove_all_values]
+    - [`replace_value()`][replace_value]
+    - [`replace_all_values()`][replace_all_values]
   - [Edit list, use function literal on data](#edit-list-use-function-literal-on-data-)
-    - [`for_each_list()`][for_each_list]
-    - [`find_first_if_list()`][find_first_if_list]
-    - [`find_first_once_if_list()`][find_first_once_if_list]
-    - [`find_last_if_list()`][find_last_if_list]
-    - [`find_last_once_if_list()`][find_last_once_if_list]
-    - [`remove_if_list()`][remove_if_list]
-    - [`replace_if_list()`][replace_if_list]
+    - [`for_each()`][for_each]
+    - [`find_first_if()`][find_first_if]
+    - [`find_first_once_if()`][find_first_once_if]
+    - [`find_last_if()`][find_last_if]
+    - [`find_last_once_if()`][find_last_once_if]
+    - [`remove_if()`][remove_if]
+    - [`replace_if()`][replace_if]
   - [Pair functions](#pair-functions-)
     - [`pair()`][pair]
     - [`pair_value()`][pair_value]
@@ -72,6 +72,7 @@ Functions for edit lists
 
 Editing lists [^][contents]
 ===========================
+Most functions base on the STL from C++
 
 ### Repeating options [^][contents]
 
@@ -181,22 +182,22 @@ Edit list independent from the data [^][contents]
 Binds lists in a list together.\
 Such as `[ [1,2,3], [4,5] ]` goes to `[1,2,3,4,5]`
 
-#### `reverse_list (list)` [^][contents]
-[reverse_list]: #reverse_list-list-
+#### `reverse (list)` [^][contents]
+[reverse]: #reverse-list-
 Reverse the sequence of elements in a list
 
-#### `erase_list (list, begin, count)` [^][contents]
-[erase_list]: #erase_list-list-begin-count-
+#### `remove (list, begin, count)` [^][contents]
+[remove]: #remove-list-begin-count-
 Remove elements from a list
 - `begin`
   - Erases from this position
   - The same coding like in python
 - `count`
-  - Count of elements which will erase,
+  - Count of elements which will removed,
   - default = 1 element
 
-#### `insert_list (list, list_insert, position, begin_insert, count_insert)` [^][contents]
-[insert_list]: #insert_list-list-list_insert-position-begin_insert-count_insert-
+#### `insert (list, list_insert, position, begin_insert, count_insert)` [^][contents]
+[insert]: #insert-list-list_insert-position-begin_insert-count_insert-
 Insert `list_insert` into a list
 - `position`
   - Insert the list `list_insert` into this position,
@@ -213,8 +214,8 @@ Insert `list_insert` into a list
   - Count of elements which will insert from `list_insert`
   - default = all elements until last element
 
-#### `replace_list (list, list_insert, begin, count, begin_insert, count_insert)` [^][contents]
-[replace_list]: #replace_list-list-list_insert-begin-count-begin_insert-count_insert-
+#### `replace (list, list_insert, begin, count, begin_insert, count_insert)` [^][contents]
+[replace]: #replace-list-list_insert-begin-count-begin_insert-count_insert-
 Replace elements in a list with `list_insert` or part of it
 - `begin`
   - Insert the list `list_insert` into this position of `list`,
@@ -234,13 +235,13 @@ Replace elements in a list with `list_insert` or part of it
   - Count of elements which will insert from `list_insert`
   - default = all elements until last element
 
-#### `extract_list (list, 'range_args')` [^][contents]
-[extract_list]: #extract_list-list-range_args-
+#### `extract (list, 'range_args')` [^][contents]
+[extract]: #extract-list-range_args-
 Extract a sequence from a list
 - [`'range_args'`][range_args] - arguments to set the range to extract
 
-#### `fill_list (count, value)` [^][contents]
-[fill_list]: #fill_list-count-value-
+#### `fill (count, value)` [^][contents]
+[fill]: #fill-count-value-
 Makes a list with `count` elements filled with `value`
 
 #### `refer_list (base, positions)` [^][contents]
@@ -258,22 +259,22 @@ Run `base[ link[ position ] ]` with every item in `positions`.\
 
 
 Edit list with use of data, depend on type [^][contents]
---------------------------------------------
+--------------------------------------------------------
 
-#### `sort_list (list, type)` [^][contents]
-[sort_list]: #sort_list-list-type-
+#### `sort (list, type)` [^][contents]
+[sort]: #sort-list-type-
 Sort a list with a stable sort algorithm
 
-#### `merge_list (list1, list2, type)` [^][contents]
-[merge_list]: #merge_list-list1-list2-type-
+#### `merge (list1, list2, type)` [^][contents]
+[merge]: #merge-list1-list2-type-
 Merge 2 sorted lists into one list
 
-#### `binary_search_list (list, value, type)` [^][contents]
-[binary_search_list]: #binary_search_list-list-value-type-
+#### `binary_search (list, value, type)` [^][contents]
+[binary_search]: #binary_search-list-value-type-
 Search a value in a sorted list
 
-#### `find_first_list (list, value, index, type, 'range_args')` [^][contents]
-[find_first_list]: #find_first_list-list-value-index-type-range_args-
+#### `find_first (list, value, index, type, 'range_args')` [^][contents]
+[find_first]: #find_first-list-value-index-type-range_args-
 Search at a value in a list and returns the position.\
 Returns the position after the last element in the defined range if nothing was found.
 - `index`
@@ -281,15 +282,15 @@ Returns the position after the last element in the defined range if nothing was 
   - Standard = get first hit, `index` = 0
 - [`'range_args'`][range_args] - arguments to set the range in which will count, default = full list
 
-#### `find_first_once_list (list, value, type, 'range_args')` [^][contents]
-[find_first_once_list]: #find_first_once_list-list-value-type-range_args-
+#### `find_first_once (list, value, type, 'range_args')` [^][contents]
+[find_first_once]: #find_first_once-list-value-type-range_args-
 Search at a value in a list and returns the position.\
 Returns the position after the last element in the defined range if nothing was found.\
-Like [`find_first_list()`][find_first_list],
+Like [`find_first()`][find_first],
 but return always the position of the first hit.
 
-#### `find_last_list (list, value, index, type, 'range_args')` [^][contents]
-[find_last_list]: #find_last_list-list-value-index-type-range_args-
+#### `find_last (list, value, index, type, 'range_args')` [^][contents]
+[find_last]: #find_last-list-value-index-type-range_args-
 Search at a value in a list backwards from the end to first value and returns the position.\
 Returns the position before the first element in the defined range if nothing was found.
 - `index`
@@ -297,37 +298,37 @@ Returns the position before the first element in the defined range if nothing wa
   - Standard = get first hit, `index` = 0
 - [`'range_args'`][range_args] - arguments to set the range in which will count, default = full list
 
-#### `find_last_once_list (list, value, type, 'range_args')` [^][contents]
-[find_last_once_list]: #find_last_once_list-list-value-type-range_args-
+#### `find_last_once (list, value, type, 'range_args')` [^][contents]
+[find_last_once]: #find_last_once-list-value-type-range_args-
 Search at a value in a list backwards from the end to first value and returns the position.\
 Returns the position before the first element in the defined range if nothing was found.\
-Like [`find_last_list()`][find_last_list],
+Like [`find_last()`][find_last],
 but return always the position of the first hit.
 
-#### `count_list (list, value, type, 'range_args')` [^][contents]
-[count_list]: #count_list-list-value-type-range_args-
+#### `count (list, value, type, 'range_args')` [^][contents]
+[count]: #count-list-value-type-range_args-
 Count how often a value is in list
 - [`'range_args'`][range_args] - arguments to set the range in which will count, default = full list
 
-#### `remove_duplicate_list (list, type)` [^][contents]
-[remove_duplicate_list]: #remove_duplicate_list-list-type-
+#### `remove_duplicate (list, type)` [^][contents]
+[remove_duplicate]: #remove_duplicate-list-type-
 Remove every duplicate in a list, so a value exists only once
 
-#### `remove_value_list (list, value, type)` [^][contents]
-[remove_value_list]: #remove_value_list-list-value-type-
+#### `remove_value (list, value, type)` [^][contents]
+[remove_value]: #remove_value-list-value-type-
 Remove every entry with a given value in a list
 
-#### `remove_values_list (list, value_list, type)` [^][contents]
-[remove_values_list]: #remove_values_list-list-value_list-type-
+#### `remove_all_values (list, value_list, type)` [^][contents]
+[remove_all_values]: #remove_all_values-list-value_list-type-
 Remove every entry with a given list of values in a list
 - `value_list` - a list with values to remove
 
-#### `replace_value_list (list, value, new, type)` [^][contents]
-[replace_value_list]: #replace_value_list-list-value-new-type-
+#### `replace_value (list, value, new, type)` [^][contents]
+[replace_value]: #replace_value-list-value-new-type-
 Replace every entry with a given value in a list to a new value
 
-#### `replace_values_list (list, value_list, new, type)` [^][contents]
-[replace_values_list]: #replace_values_list-list-value_list-new-type-
+#### `replace_all_values (list, value_list, new, type)` [^][contents]
+[replace_all_values]: #replace_all_values-list-value_list-new-type-
 Replace every entry with a given list of values in a list to a new value
 - `value_list` - a list with values to replace with value `new`
 
@@ -335,14 +336,14 @@ Replace every entry with a given list of values in a list to a new value
 Edit list, use function literal on data [^][contents]
 -----------------------------------------------------
 
-#### `for_each_list (list, f, type, 'range_args')` [^][contents]
-[for_each_list]: #for_each_list-list-f-type-range_args-
+#### `for_each (list, f, type, 'range_args')` [^][contents]
+[for_each]: #for_each-list-f-type-range_args-
 Run function `f()` on each item in the list.\
 Return the list of results.
 - [`'range_args'`][range_args] - arguments to set the range of list, standard = full list
 
-#### `find_first_if_list (list, f, index, type, 'range_args')` [^][contents]
-[find_first_if_list]: #find_first_if_list-list-f-index-type-range_args-
+#### `find_first_if (list, f, index, type, 'range_args')` [^][contents]
+[find_first_if]: #find_first_if-list-f-index-type-range_args-
 Run function `f()` at the entries in a list and returns the position which this function returns `true`.\
 Returns the position after the last element in the defined range if nothing was found.
 - `f`
@@ -352,16 +353,16 @@ Returns the position after the last element in the defined range if nothing was 
   - Standard = get first hit, `index` = 0
 - [`'range_args'`][range_args] - arguments to set the range in which will count, default = full list
 
-#### `find_first_once_if_list (list, f, type, 'range_args')` [^][contents]
-[find_first_once_if_list]: #find_first_once_if_list-list-f-type-range_args-
+#### `find_first_once_if (list, f, type, 'range_args')` [^][contents]
+[find_first_once_if]: #find_first_once_if-list-f-type-range_args-
 Run function `f()` at the entries in a list and
 returns the position which this function returns `true`.\
 Returns the position after the last element in the defined range if nothing was found.\
-Like [`find_first_if_list()`][find_first_if_list],
+Like [`find_first_if()`][find_first_if],
 but return always the position of the first hit.
 
-#### `find_last_if_list (list, f, index, type, 'range_args')` [^][contents]
-[find_last_if_list]: #find_last_if_list-list-f-index-type-range_args-
+#### `find_last_if (list, f, index, type, 'range_args')` [^][contents]
+[find_last_if]: #find_last_if-list-f-index-type-range_args-
 Run function `f()` at the entries backwards in a list and
 returns the position which this function returns `true`.\
 Returns the position before the first element in the defined range if nothing was found.
@@ -372,30 +373,30 @@ Returns the position before the first element in the defined range if nothing wa
   - Standard = get first hit, `index` = 0
 - [`'range_args'`][range_args] - arguments to set the range in which will count, default = full list
 
-#### `find_last_once_if_list (list, f, type, 'range_args')` [^][contents]
-[find_last_once_if_list]: #find_last_once_if_list-list-f-type-range_args-
+#### `find_last_once_if (list, f, type, 'range_args')` [^][contents]
+[find_last_once_if]: #find_last_once_if-list-f-type-range_args-
 Run function `f()` at the entries backwards in a list and
 returns the position which this function returns `true`.\
 Returns the position before the first element in the defined range if nothing was found.\
-Like [`find_last_if_list()`][find_last_if_list],
+Like [`find_last_if()`][find_last_if],
 but return always the position of the first hit.
 
-#### `count_if_list (list, f, type, 'range_args')` [^][contents]
-[count_list]: #count_list-list-value-type-range_args-
+#### `count_if (list, f, type, 'range_args')` [^][contents]
+[count]: #count-list-value-type-range_args-
 Count how often the function `f()` hits `true` on an entry in a list
 - [`'range_args'`][range_args] - arguments to set the range in which will count, default = full list
 - `f`
   - function literal with one argument
 
-#### `remove_if_list (list, f, type)` [^][contents]
-[remove_if_list]: #remove_if_list-list-f-type-
+#### `remove_if (list, f, type)` [^][contents]
+[remove_if]: #remove_if-list-f-type-
 Run function `f()` at the entries in a list and
 remove every entry which this function returns `true`.
 - `f`
   - function literal with one argument
 
-#### `replace_if_list (list, f, new, type)` [^][contents]
-[replace_if_list]: #replace_if_list-list-f-new-type-
+#### `replace_if (list, f, new, type)` [^][contents]
+[replace_if]: #replace_if-list-f-new-type-
 Run function `f()` at the entries in a list and
 replace every entry which this function returns `true` to a new value.
 - `f`
@@ -403,7 +404,7 @@ replace every entry which this function returns `true` to a new value.
 
 
 Pair functions [^][contents]
---------------------------------
+----------------------------
 
 - Construction of a pair: `[key, value]`
 - `list` - list of several key-value-pair s.a. `[ [key1,value1], [key2,value2], ... ]`

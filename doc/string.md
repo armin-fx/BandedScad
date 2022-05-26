@@ -25,7 +25,7 @@ Functions for editing strings
   - [`list_to_str()`][list_to_str]
 - [Edit strings independent from data][string_edit_item]
   - [`reverse_str()`][reverse_str]
-  - [`erase_str()`][erase_str]
+  - [`remove_str()`][remove_str]
   - [`insert_str()`][insert_str]
   - [`replace_str()`][replace_str]
   - [`extract_str()`][extract_str]
@@ -36,9 +36,9 @@ Functions for editing strings
   - [`count_str()`][count_str]
   - [`remove_duplicate_str()`][remove_duplicate_str]
   - [`remove_value_str()`][remove_value_str]
-  - [`remove_values_str()`][remove_values_str]
+  - [`remove_all_values_str()`][remove_all_values_str]
   - [`replace_value_str()`][replace_value_str]
-  - [`replace_values_str()`][replace_values_str]
+  - [`replace_all_values_str()`][replace_all_values_str]
 
 
 Convert strings [^][contents]
@@ -102,14 +102,14 @@ but on strings.
 [reverse_str]: #reverse_str-txt-
 Reverse the sequence of letter in a string
 
-#### `erase_str (txt, begin, count)` [^][contents]
-[erase_str]: #erase_str-txt-begin-count-
+#### `remove_str (txt, begin, count)` [^][contents]
+[remove_str]: #remove_str-txt-begin-count-
 Remove letter from a string
 - `begin`
   - Erases from this position
   - The same coding like in python
 - `count`
-  - Count of elements which will erase,
+  - Count of letter which will removed,
   - default = 1 element
 
 #### `insert_str (txt, txt_insert, position, begin_insert, count_insert)` [^][contents]
@@ -210,8 +210,8 @@ Remove every duplicate in a string, so a letter exists only once
 [remove_value_str]: #remove_value_str-txt-letter-
 Remove every given `letter` in a string `txt`
 
-#### `remove_values_str (txt, letter_list)` [^][contents]
-[remove_values_str]: #remove_values_str-txt-letter_list-
+#### `remove_all_values_str (txt, letter_list)` [^][contents]
+[remove_all_values_str]: #remove_all_values_str-txt-letter_list-
 Remove every entry with a given list of letter in a string `txt`
 - `letter_list` - a list with letter to remove
 
@@ -219,8 +219,8 @@ Remove every entry with a given list of letter in a string `txt`
 [replace_value_str]: #replace_value_str-txt-letter-new-
 Replace every given `letter` in a string `txt` to a new string
 
-#### `replace_values_str (txt, letter_list, new)` [^][contents]
-[replace_values_str]: #replace_values_str-txt-letter_list-new-
+#### `replace_all_values_str (txt, letter_list, new)` [^][contents]
+[replace_all_values_str]: #replace_all_values_str-txt-letter_list-new-
 Replace every entry with a given list of letter in a string `txt` to a new string
 - `letter_list` - a list with letter to remove
 

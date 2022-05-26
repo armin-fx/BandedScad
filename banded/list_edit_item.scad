@@ -11,10 +11,10 @@ use <banded/helper.scad>
 function concat_list (list) = [for (a=list) for (b=a) b];
 
 // kehrt die Reihenfolge einer Liste um
-function reverse_list (list) = [for (a=[len(list)-1:-1:0]) list[a]];
+function reverse (list) = [for (a=[len(list)-1:-1:0]) list[a]];
 
 // entfernt Elemente aus einer Liste
-function erase_list (list, begin, count=1) =
+function remove (list, begin, count=1) =
 	list==undef ? list :
 	let (
 		 size=len(list)
@@ -30,7 +30,7 @@ function erase_list (list, begin, count=1) =
 ;
 
 // fügt alle Elemente einer Liste in die Liste ein
-function insert_list (list, list_insert, position=-1, begin_insert=0, count_insert=-1) =
+function insert (list, list_insert, position=-1, begin_insert=0, count_insert=-1) =
 	let (
 		 size        = len(list)
 		,size_insert = len(list_insert)
@@ -52,7 +52,7 @@ function insert_list (list, list_insert, position=-1, begin_insert=0, count_inse
 ;
 
 // ersetzt Elemente in einer Liste durch alle Elemente einer weiteren Liste
-function replace_list (list, list_insert, begin=-1, count=0, begin_insert=0, count_insert=-1) =
+function replace (list, list_insert, begin=-1, count=0, begin_insert=0, count_insert=-1) =
 	let (
 		 size        = len(list)
 		,size_insert = len(list_insert)
@@ -85,7 +85,7 @@ function replace_list (list, list_insert, begin=-1, count=0, begin_insert=0, cou
 // oder
 //     range = [begin, last]
 // Kodierung wie in python
-function extract_list (list, begin, last, count, range) =
+function extract (list, begin, last, count, range) =
 	let(
 		Range = parameter_range_safe (list, begin, last, count, range),
 		Begin = Range[0],
@@ -96,21 +96,21 @@ function extract_list (list, begin, last, count, range) =
 ;
 
 // Erzeugt eine Liste mit 'count' Elementen gefüllt mit 'value'
-function fill_list (count, value) =
+function fill (count, value) =
 	(!is_num(count) || count<1) ? [] :
 	[ for (i=[0:count-1]) value ]
 ;
 
 // gibt eine Liste zurück mit den Werten von der Liste 'base' in den Positionen 'positions'
 //   base <-- positions
-function refer_list       (base,       positions) =
+function refer_list (base, positions) =
 	[ for (position=positions) base[position] ]
 ;
 // gibt eine Liste zurück mit den Werten von der Liste 'base'
 // von der Liste mit den Positionen 'link' von 'base'
 // in den Positionen 'positions' in 'link'
 //   base <-- link <-- positions
-function refer_link_list  (base, link, positions) =
+function refer_link_list (base, link, positions) =
 	[ for (position=positions) base[link[position]] ]
 ;
 

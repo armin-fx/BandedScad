@@ -9,27 +9,27 @@ use <banded/list_edit_item.scad>
 
 // kehrt die Reihenfolge der Buchstaben eines Strings um
 function reverse_str (txt) =
-	list_to_str ( reverse_list (txt) )
+	list_to_str ( reverse (txt) )
 ;
 
 // entfernt Buchstaben aus einem String
-function erase_str (txt, begin, count=1) =
-	list_to_str ( erase_list (txt, begin, count) )
+function remove_str (txt, begin, count=1) =
+	list_to_str ( remove (txt, begin, count) )
 ;
 
 // fügt einen anderen String in den String ein
 function insert_str (txt, txt_insert, position=-1, begin_insert=0, count_insert=-1) =
-	list_to_str ( insert_list (txt, txt_insert, position, begin_insert, count_insert) )
+	list_to_str ( insert (txt, txt_insert, position, begin_insert, count_insert) )
 ;
 
 // ersetzt Buchstaben in einem String durch einen anderen String
 function replace_str (txt, txt_insert, begin=-1, count=0, begin_insert=0, count_insert=-1) =
-	list_to_str ( replace_list (txt, txt_insert, begin, count, begin_insert, count_insert) )
+	list_to_str ( replace (txt, txt_insert, begin, count, begin_insert, count_insert) )
 ;
 
 // extrahiert eine Sequenz aus dem String
 function extract_str (txt, begin, last, count, range) =
-	list_to_str ( extract_list (txt, begin, last, count, range) )
+	list_to_str ( extract (txt, begin, last, count, range) )
 ;
 
 // Erzeugt einen String mit 'count' Elementen gefüllt mit 'value'
