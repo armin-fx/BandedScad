@@ -8,7 +8,7 @@ use <banded/helper.scad>
 
 // verbindet einzelne Listen innerhalb einer Liste miteinander
 // aus z.B  [ [1,2,3], [4,5] ]  wird  [1,2,3,4,5]
-function concat_list (list) = [for (a=list) for (b=a) b];
+function concat_list (list) = [for (a=list) each a];
 
 // kehrt die Reihenfolge einer Liste um
 function reverse (list) = [for (a=[len(list)-1:-1:0]) list[a]];
