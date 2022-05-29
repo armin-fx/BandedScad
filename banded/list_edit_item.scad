@@ -11,7 +11,27 @@ use <banded/helper.scad>
 function concat_list (list) = [for (a=list) each a];
 
 // kehrt die Reihenfolge einer Liste um
-function reverse (list) = [for (a=[len(list)-1:-1:0]) list[a]];
+function reverse_full (list) = [for (a=[len(list)-1:-1:0]) list[a]];
+function reverse      (list, begin, last, count, range) =
+	(begin==undef && last==undef && count==undef && range==undef) ?
+		//reverse_full (list)
+		[for (a=[len(list)-1:-1:0]) list[a]]
+	:
+	let(
+		Range = parameter_range_safe (list, begin, last, count, range),
+		Begin = Range[0],
+		Last  = Range[1],
+		size  = len(list)
+	)
+	concat(
+		 (Begin<=0)       ? []
+		 :[for (i=[0:1:Begin-1])     list[i] ]
+		,(Last<Begin)     ? []
+		 :[for (i=[Last:-1:Begin])   list[i] ]
+		,((Last+1)>=size) ? []
+		 :[for (i=[Last+1:1:size-1]) list[i] ]
+	)
+;
 
 // entfernt Elemente aus einer Liste
 function remove (list, begin, count=1) =

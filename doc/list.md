@@ -182,9 +182,15 @@ Edit list independent from the data [^][contents]
 Binds lists in a list together.\
 Such as `[ [1,2,3], [4,5] ]` goes to `[1,2,3,4,5]`
 
-#### `reverse (list)` [^][contents]
-[reverse]: #reverse-list-
-Reverse the sequence of elements in a list
+#### `reverse (list, 'range_args')` [^][contents]
+[reverse]: #reverse-list-range_args-
+Reverse a sequence of elements in a list
+- [`'range_args'`][range_args]
+  - arguments to set the range to reverse
+  - default = full range, reverse complete list
+
+___Specialized function with full range of the list:___
+- `reverse_full (list)`
 
 #### `remove (list, begin, count)` [^][contents]
 [remove]: #remove-list-begin-count-

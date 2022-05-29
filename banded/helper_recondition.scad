@@ -66,7 +66,7 @@ function parameter_range (list, begin, last, count, range) =
 			range[0]!=undef && Count!=undef ? range[0]+Count-1 :
 			-1 )
 	)
-	[Begin, Last]
+	[Begin, Last>=Begin ? Last : Begin-1]
 ;
 function parameter_range_safe (list, begin, last, count, range) =
 	let(
@@ -84,7 +84,7 @@ function parameter_range_safe (list, begin, last, count, range) =
 			range[0]!=undef && Count!=undef ? range[0]+Count-1 :
 			-1 )
 	)
-	[Begin, Last]
+	[Begin, Last>=Begin ? Last : Begin-1]
 ;
 
 // gibt [Innenradius, Außenradius] zurück
