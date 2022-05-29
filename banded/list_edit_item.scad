@@ -33,6 +33,35 @@ function reverse      (list, begin, last, count, range) =
 	)
 ;
 
+function rotate_list (list, middle, begin=0, last=-1) =
+	let (
+		Range  = parameter_range_safe (list, begin, last),
+		Begin  = Range[0],
+		Last   = Range[1],
+		Middle = constrain (middle, Begin, Last),
+		Size   = len (list)
+	)
+	concat (
+		[ for (i=[0     :1:Begin-1 ]) list[i] ],
+		[ for (i=[Middle:1:Last    ]) list[i] ],
+		[ for (i=[Begin :1:Middle-1]) list[i] ],
+		[ for (i=[Last+1:1:Size-1  ]) list[i] ]
+	)
+;
+
+function rotate_copy (list, middle, begin=0, last=-1) =
+	let (
+		Range  = parameter_range_safe (list, begin, last),
+		Begin  = Range[0],
+		Last   = Range[1],
+		Middle = constrain (middle, Begin, Last)
+	)
+	concat (
+		[ for (i=[Middle:1:Last    ]) list[i] ],
+		[ for (i=[Begin :1:Middle-1]) list[i] ]
+	)
+;
+
 // entfernt Elemente aus einer Liste
 function remove (list, begin, count=1) =
 	list==undef ? list :

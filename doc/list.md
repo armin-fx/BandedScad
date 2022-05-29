@@ -34,6 +34,8 @@ Functions for edit lists
   - [Edit list independent from the data](#edit-list-independent-from-the-data-)
     - [`concat_list()`][concat_list]
     - [`reverse()`][reverse]
+    - [`rotate_list()`][rotate_list]
+    - [`rotate_copy()`][rotate_copy]
     - [`remove()`][remove]
     - [`insert()`][insert]
     - [`replace()`][replace]
@@ -194,6 +196,17 @@ Reverse a sequence of elements in a list
 
 ___Specialized function with full range of the list:___
 - `reverse_full (list)`
+
+#### `rotate_list (list, middle, begin, last)` [^][contents]
+[rotate_list]: #rotate_list-list-middle-begin-last-
+Rotates the order of the elements in the range `[begin,last]`,
+in such a way that the element pointed by `middle` becomes the new first element.
+
+#### `rotate_copy (list, middle, begin, last)` [^][contents]
+[rotate_copy]: #rotate_list-list-middle-begin-last-
+Copies the elements in the range `[begin,last]` to the range beginning at result,
+but rotating the order of the elements in such a way
+that the element pointed by `middle` becomes the first element in the resulting range.
 
 #### `remove (list, begin, count)` [^][contents]
 [remove]: #remove-list-begin-count-
