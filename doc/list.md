@@ -62,6 +62,9 @@ Functions for edit lists
     - [`find_last_once_if()`][find_last_once_if]
     - [`remove_if()`][remove_if]
     - [`replace_if()`][replace_if]
+    - [`all_of()`][all_of]
+    - [`none_of()`][none_of]
+    - [`any_of()`][any_of]
   - [Pair functions](#pair-functions-)
     - [`pair()`][pair]
     - [`pair_value()`][pair_value]
@@ -407,6 +410,30 @@ Run function `f()` at the entries in a list and
 replace every entry which this function returns `true` to a new value.
 - `f`
   - function literal with one argument
+
+#### `all_of (list, f, type, 'range_args')` [^][contents]
+[all_of]: #all_of-list-f-type-range_args-
+Returns `true` if `f()` returns `true` for all the elements in the range
+or if the range is empty, and `false` otherwise.
+- `f`
+  - function literal with one argument
+  - returns `true` or `false`
+
+#### `none_of (list, f, type, 'range_args')` [^][contents]
+[none_of]: #none_of-list-f-type-range_args-
+Returns `true` if `f()` returns `false` for all the elements in the range
+or if the range is empty, and `false` otherwise.
+- `f`
+  - function literal with one argument
+  - returns `true` or `false`
+
+#### `any_of (list, f, type, 'range_args')` [^][contents]
+[any_of]: #any_of-list-f-type-range_args-
+Returns `true` if `f()` returns `true` for any elements in the range
+or if the range is empty, and `false` otherwise.
+- `f`
+  - function literal with one argument
+  - returns `true` or `false`
 
 
 Pair functions [^][contents]
