@@ -9,6 +9,7 @@ Functions for edit lists
 ` `| . . . +--> `banded/list_edit_item.scad`\
 ` `| . . . +--> `banded/list_edit_data.scad`\
 ` `| . . . +--> `banded/list_edit_predicate.scad`\
+` `| . . . +--> `banded/list_edit_test.scad`\
 ` `| . . . +--> `banded/list_edit_pair.scad`\
 ` `| \
 ` `. . .
@@ -64,6 +65,7 @@ Functions for edit lists
     - [`find_last_once_if()`][find_last_once_if]
     - [`remove_if()`][remove_if]
     - [`replace_if()`][replace_if]
+  - [Test entries of lists](#test-entries-of-lists-)
     - [`all_of()`][all_of]
     - [`none_of()`][none_of]
     - [`any_of()`][any_of]
@@ -423,6 +425,10 @@ Run function `f()` at the entries in a list and
 replace every entry which this function returns `true` to a new value.
 - `f`
   - function literal with one argument
+
+
+Test entries of lists [^][contents]
+-----------------------------------
 
 #### `all_of (list, f, type, 'range_args')` [^][contents]
 [all_of]: #all_of-list-f-type-range_args-

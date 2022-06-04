@@ -17,6 +17,7 @@ Table of contents
   - [Independent from the data](list.md#edit-list-independent-from-the-data-)
   - [With use of data, type-dependent](list.md#edit-list-with-use-of-data-depend-on-type-)
   - [Use function literal on data](list.md#edit-list-use-function-literal-on-data-)
+  - [Test entries of lists](list.md#test-entries-of-lists-)
   - [Pair functions (key-value-pair)](list.md#pair-functions-)
 - [Functions for edit and convert strings](string.md)
 - [Algorithmus with function literals](function.md)
