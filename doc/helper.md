@@ -346,13 +346,14 @@ Default is full range from first to last element in a list.
 Same like [`parameter_range()`][parameter_range], but constrain the position to
 the first or last element if the value exceed the real size of the list.
 
-#### `parameter_circle_r (r, d)` [^][contents]
-[parameter_circle_r]: #parameter_circle_r-r-d-
+#### `parameter_circle_r (r, d, default)` [^][contents]
+[parameter_circle_r]: #parameter_circle_r-r-d-default-
 Returns the radius of a circle.
 
 Arguments:
 - `r` - radius
 - `d` - diameter
+- `default` - optional, default radius = 1
 
 Rules as for OpenSCAD's `circle()`:
 - Diameter comes before radius

@@ -207,9 +207,9 @@ function parameter_helix_to_rp (rotations, pitch, height) =
 // - ohne Angabe: r=1
 function parameter_cylinder_r (r, r1, r2, d, d1, d2, preset) =
 	parameter_cylinder_r_basic (
-		r =d !=undef&&is_num(d ) ? d /2 :  r !=undef&&is_num(r ) ? r  :  undef,
-		r1=d1!=undef&&is_num(d1) ? d1/2 :  r1!=undef&&is_num(r1) ? r1 :  undef,
-		r2=d2!=undef&&is_num(d2) ? d2/2 :  r2!=undef&&is_num(r2) ? r2 :  undef,
+		r =(d !=undef&&is_num(d ) ? d /2 :  r !=undef&&is_num(r ) ? r  :  undef),
+		r1=(d1!=undef&&is_num(d1) ? d1/2 :  r1!=undef&&is_num(r1) ? r1 :  undef),
+		r2=(d2!=undef&&is_num(d2) ? d2/2 :  r2!=undef&&is_num(r2) ? r2 :  undef),
 		preset=preset)
 ;
 function parameter_cylinder_r_basic (r, r1, r2, preset) =
@@ -229,10 +229,10 @@ function parameter_cylinder_r_basic (r, r1, r2, preset) =
 // Regeln wie bei circle() von OpenSCAD
 // - Durchmesser geht vor Radius
 // - ohne Angabe: r=1
-function parameter_circle_r (r, d) =
+function parameter_circle_r (r, d, default=1) =
 	d!=undef&&is_num(d) ? d/2 :
 	r!=undef&&is_num(r) ? r :
-	1
+	default
 ;
 
 // wandelt das Argument 'size' um in einen Tripel [1,2,3]
