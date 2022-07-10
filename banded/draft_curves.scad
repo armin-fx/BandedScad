@@ -150,9 +150,7 @@ function circle_curve (r, angle=360, slices, piece=0, outer, align, d) =
 				(piece==true || piece==0) ? 1 : 2
 			:slices
 		,Outer   = outer!=undef ? outer : 0
-		,r_outer =
-			(Angle==0) ? R
-			:            R * get_circle_factor(Slices*360/Angle, Outer)
+		,r_outer = R * get_circle_factor (Slices, Outer, Angle)
 		,circle_list =
 			circle_curve_intern(r_outer, Angle, Angle_begin, Slices, Align)
 	)
@@ -174,7 +172,7 @@ function circle_curve_intern (r=1, angle=360, angle_begin=0, slices=5, align=[0,
 		+ translate_align
 	]
 ;
-function get_circle_factor (slices, outer=0) = outer/cos(180/slices) + 1-outer;
+function get_circle_factor (slices, outer=0, angle=360) = outer/cos(angle/(2*slices)) + 1-outer;
 
 // ermittelt den Punkt einer Superellipse
 // t  - Position des Punkts von 0...360
