@@ -67,11 +67,13 @@ function wedge (v_min, v_max, v2_min, v2_max) =
 //   angle   - Öffnungswinkel des Torus, Standart=360°. Benötigt Version ab 2019.05
 //   center  - Torus in der Mitte (Z-Achse) zentrieren (bei center=true)
 //   fn_ring - optionale Anzahl der Segmente des Rings
-function torus (r, w, ri, ro, angle=360, center=false, fn_ring) =
+function torus (r, w, ri, ro, angle=360, center=false, fn_ring, align) =
 	let (
 		 rx = parameter_ring_2r(r, w, ri, ro)
 		,rm = (rx[1] + rx[0]) / 2
 		,rw = (rx[1] - rx[0]) / 2
+		,max_r = max(rx)
+		,Align = parameter_align (align, [0,0,1], center)
 		,circle_angle =
 			rw<=0   ? undef :
 			rm<=-rw ? undef :
@@ -83,13 +85,14 @@ function torus (r, w, ri, ro, angle=360, center=false, fn_ring) =
 	)
 	circle_angle==undef ? undef :
 	//
+	translate (v=[ Align[0]*max_r, Align[1]*max_r, Align[2]*rw - rw], object=
 	rotate_extrude_extend_points (angle=angle, $fn=get_slices_circle_current_x(rm+rw),
 		list =
 		translate_points(
-			v    = [ rm, center==true ? 0 : rw],
+			v    = [ rm, rw],
 			list = circle_curve (r=rw, angle=circle_angle, piece=false, slices=fn_Ring)
 		)
-	)
+	) )
 ;
 
 // erzeugt einen quadratischen Ring
@@ -105,16 +108,18 @@ function torus (r, w, ri, ro, angle=360, center=false, fn_ring) =
 // Angegeben müssen:
 //   h
 //   genau 2 Angaben von r oder ri oder ro oder w
-function ring_square (h, r, w, ri, ro, angle=360, center=false, d, di, do) =
+function ring_square (h=1, r, w, ri, ro, angle=360, center=false, d, di, do, align) =
 	let (
-		rx = parameter_ring_2r(r, w, ri, ro, d, di, do)
+		 rx    = parameter_ring_2r(r, w, ri, ro, d, di, do)
+		,Align = parameter_align (align, [0,0,1], center)
 	)
+	translate (v=[ Align[0]*rx[1], Align[1]*rx[1], Align[2]*h/2 - h/2], object=
 	rotate_extrude_extend_points (
 		angle= angle,
 		list =
-			translate_points( v=[rx[0], (center==true ? -h/2 : 0)], list=
+			translate_points( v=[rx[0], 0], list=
 			square_curve([ rx[1]-rx[0], h ]) )
-	)
+	) )
 ;
 
 // Erzeugt einen Trichter
@@ -124,15 +129,19 @@ function ring_square (h, r, w, ri, ro, angle=360, center=false, d, di, do) =
 //   ro1, ro2 - Außenradius unten, oben
 //   w        - Breite der Wand. Optional
 //   angle    - Öffnungswinkel des Trichters. Standard=360°. Benötigt Version 2019.05
-function funnel (h=1, ri1, ri2, ro1, ro2, w, angle=360, di1, di2, do1, do2) =
+function funnel (h=1, ri1, ri2, ro1, ro2, w, angle=360, di1, di2, do1, do2, align) =
 	let (
 		// return [ri1, ri2, ro1, ro2]
 		 r  = parameter_funnel_r (ri1, ri2, ro1, ro2, w, di1, di2, do1, do2)
-		,fn = get_slices_circle_current_x( max(r) )
+		,max_r = max(r)
+		,fn = get_slices_circle_current_x( max_r )
+		,Align = parameter_align (align, [0,0,1])
 	)
+	translate (v=[ Align[0]*max_r, Align[1]*max_r, Align[2]*h/2 - h/2], object=
 	rotate_extrude_extend_points (angle=angle, $fn=fn,
 		list=[
 			[r[0],0], [r[2],0],
 			[r[3],h], [r[1],h]
-		] )
+		]
+	) )
 ;

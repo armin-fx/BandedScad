@@ -38,11 +38,13 @@ module wedge (v_min, v_max, v2_min, v2_max)
 //   angle   - Öffnungswinkel des Torus, Standart=360°. Benötigt Version ab 2019.05
 //   center  - Torus in der Mitte (Z-Achse) zentrieren (bei center=true)
 //   fn_ring - optionale Anzahl der Segmente des Rings
-module torus (r, w, ri, ro, angle=360, center=false, fn_ring)
+module torus (r, w, ri, ro, angle=360, center=false, fn_ring, align)
 {
 	rx = parameter_ring_2r(r, w, ri, ro);
 	rm = (rx[1] + rx[0]) / 2;
 	rw = (rx[1] - rx[0]) / 2;
+	max_r = max(rx);
+	Align = parameter_align (align, [0,0,1], center);
 	circle_angle =
 		rw<=0   ? undef :
 		rm<=-rw ? undef :
@@ -52,10 +54,11 @@ module torus (r, w, ri, ro, angle=360, center=false, fn_ring)
 		is_num(fn_ring) ? fn_ring
 		: get_slices_circle_current_x (rw, angle=circle_angle[0], piece=false);
 	//
+	translate ([ Align[0]*max_r, Align[1]*max_r, Align[2]*rw - rw])
 	rotate_extrude_extend (angle=angle, $fn=get_slices_circle_current_x(rm+rw))
 	polygon (
 		translate_points(
-			v    = [ rm, center==true ? 0 : rw],
+			v    = [ rm, rw],
 			list = circle_curve (r=rw, angle=circle_angle, piece=false, slices=fn_Ring)
 		)
 	);
@@ -74,15 +77,18 @@ module torus (r, w, ri, ro, angle=360, center=false, fn_ring)
 // Angegeben müssen:
 //   h
 //   genau 2 Angaben von r oder ri oder ro oder w
-module ring_square (h, r, w, ri, ro, angle=360, center=false, d, di, do)
+module ring_square (h=1, r, w, ri, ro, angle=360, center=false, d, di, do, align)
 {
-	rx = parameter_ring_2r(r, w, ri, ro, d, di, do);
-	translate_z(center==true ? -h/2 : 0)
+	rx     = parameter_ring_2r (r, w, ri, ro, d, di, do);
+	slices = get_slices_circle_current_x (max(rx), angle, true);
+	Align  = parameter_align (align, [0,0,1], center);
+	//
+	translate ([ Align[0]*rx[1], Align[1]*rx[1], Align[2]*h/2 - h/2])
 	linear_extrude(height=h, convexity=4)
 	difference()
 	{
-		polygon(circle_curve(r = rx[1], angle=angle, piece=true, slices="x"));
-		polygon(circle_curve(r = rx[0], angle=angle, piece=true, slices="x"));
+		polygon(circle_curve(r = rx[1], angle=angle, piece=true, slices=slices));
+		polygon(circle_curve(r = rx[0], angle=angle, piece=true, slices=slices));
 	}
 }
 
@@ -93,12 +99,15 @@ module ring_square (h, r, w, ri, ro, angle=360, center=false, d, di, do)
 //   ro1, ro2 - Außenradius unten, oben
 //   w        - Breite der Wand. Optional
 //   angle    - Öffnungswinkel des Trichters. Standard=360°. Benötigt Version 2019.05
-module funnel (h=1, ri1, ri2, ro1, ro2, w, angle=360, di1, di2, do1, do2)
+module funnel (h=1, ri1, ri2, ro1, ro2, w, angle=360, di1, di2, do1, do2, align)
 {
 	// return [ri1, ri2, ro1, ro2]
 	r  = parameter_funnel_r (ri1, ri2, ro1, ro2, w, di1, di2, do1, do2);
-	fn = get_slices_circle_current_x( max(r) );
+	max_r = max(r);
+	fn = get_slices_circle_current_x( max_r );
+	Align = parameter_align (align, [0,0,1]);
 	
+	translate ([ Align[0]*max_r, Align[1]*max_r, Align[2]*h/2 - h/2])
 	rotate_extrude_extend (angle=angle, $fn=fn)
 	{
 		polygon([

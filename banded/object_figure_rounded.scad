@@ -15,6 +15,9 @@ use <banded/draft_curves.scad>
 use <banded/draft_transform.scad>
 use <banded/operator_transform.scad>
 
+
+// - 3D:
+
 // Quader mit abgerundeten Kanten, alle Kanten mit gleichen Radius/Durchmesser
 // Argumente:
 //   size         - Größe des Quaders wie bei cube()
@@ -116,11 +119,11 @@ module cube_fillet (size, r, type=0
                    , edges_bottom=[1,1,1,1],   edges_top=[1,1,1,1],   edges_side=[1,1,1,1]
                    ,corner_bottom=[1,1,1,1],  corner_top=[1,1,1,1]
                    ,  type_bottom=[-1,-1,-1,-1],type_top=[-1,-1,-1,-1],type_side=[-1,-1,-1,-1]
-                   ,center=false)
+                   ,center=false, align)
 {
 	Size = parameter_size_3d (size);
 	//
-	center_offset = (center==false) ? [0,0,0] : [-Size[0]/2, -Size[1]/2, -Size[2]/2];
+	Align = parameter_align   (align, [1,1,1], center);
 	//
 	Type_bottom = parameter_types (type_bottom, type);
 	Type_top    = parameter_types (type_top   , type);
@@ -143,7 +146,8 @@ module cube_fillet (size, r, type=0
 	
 	//render()
 	color("gold")
-	translate(center_offset) difference()
+	translate ([for (i=[0:1:len(Size)-1]) (Align[i]-1)*Size[i]/2 ])
+	difference()
 	{
 		cube (size=Size);
 		
@@ -208,12 +212,12 @@ module cube_fillet (size, r, type=0
 //   r, d  - Radius,Durchmesser der Kanten
 module cube_rounded (size, r, edges_bottom=[1,1,1,1],  edges_top=[1,1,1,1], edges_side=[1,1,1,1],
                              corner_bottom=[1,1,1,1], corner_top=[1,1,1,1],
-                     center=false, d)
+                     center=false, align, d)
 {
-	cube_fillet (size=size, r=parameter_circle_r(r, d), type=1,
+	cube_fillet (size=size, r=parameter_circle_r(r, d, 0), type=1,
 		 edges_bottom= edges_bottom,  edges_top= edges_top, edges_side=edges_side,
 		corner_bottom=corner_bottom, corner_top=corner_top,
-		center=center
+		center=center, align=align
 	);
 }
 // Quader mit abgeschrägten Kanten
@@ -221,12 +225,12 @@ module cube_rounded (size, r, edges_bottom=[1,1,1,1],  edges_top=[1,1,1,1], edge
 //   c  - Breite der Schräge
 module cube_chamfer (size, c, edges_bottom=[1,1,1,1],  edges_top=[1,1,1,1], edges_side=[1,1,1,1],
                              corner_bottom=[1,1,1,1], corner_top=[1,1,1,1],
-                     center=false)
+                     center=false, align)
 {
 	cube_fillet (size=size, r=c, type=2,
 		 edges_bottom= edges_bottom,  edges_top= edges_top, edges_side=edges_side,
 		corner_bottom=corner_bottom, corner_top=corner_top,
-		center=center
+		center=center, align=align
 	);
 }
 
@@ -256,7 +260,7 @@ module cylinder_rounded (h=3, r, center=false, d)
 
 // Zylinder mit gefasten Kanten, wahlweise abgerundet oder angeschrägt
 // fehlt noch: outer, piece
-module cylinder_edges_fillet (h, r1, r2, r_edges=0, type=0, center, r, d, d1, d2, angle=360, align)
+module cylinder_edges_fillet (h, r1, r2, r_edges=0, type=0, center, r, d, d1, d2, angle=360, outer, align)
 {
 	R        = parameter_cylinder_r (r, r1, r2, d, d1, d2);
 	R_max    = max(R);
@@ -274,35 +278,33 @@ module cylinder_edges_fillet (h, r1, r2, r_edges=0, type=0, center, r, d, d1, d2
 	Align    = parameter_align (align, [0,0,1], center);
 	fn = get_slices_circle_current_x (R_max);
 	
-	echo(R_both);
-	
 	translate ([ Align[0]*R_max, Align[1]*R_max, Align[2]*H/2 - H/2])
 	difference()
 	{
-		cylinder_extend (r1=R[0], r2=R[1], h=H, angle=angles);
+		cylinder_extend (r1=R[0], r2=R[1], h=H, angle=angles, outer=outer);
 		//
 		if (R_both[0] > 0)
 		{
 			edge_ring_fillet (r_ring=R[0], r=R_both[0], angle=[angle_edges[0],180-angle_edges[0]],
-				angle_ring=angles, type=Types[0]);
+				angle_ring=angles, type=Types[0], outer=outer);
 		}
 		if (R_both[1] > 0)
 		{
 			translate_z (H)
 			edge_ring_fillet (r_ring=R[1], r=R_both[1], angle=[angle_edges[1],180],
-				angle_ring=angles, type=Types[1]);
+				angle_ring=angles, type=Types[1], outer=outer);
 		}
 	}
 }
 // Zylinder mit abgerundeten Kanten
-module cylinder_edges_rounded (h, r1, r2, r_edges=0, center, r, d, d1, d2, angle=360, align)
+module cylinder_edges_rounded (h, r1, r2, r_edges=0, center, r, d, d1, d2, angle=360, outer, align)
 {
-	cylinder_edges_fillet (h, r1, r2, r_edges, type=1, center, r, d, d1, d2, angle, align);
+	cylinder_edges_fillet (h, r1, r2, r_edges, 1, center, r, d, d1, d2, angle, outer, align);
 }
 // Zylinder mit abgeschrägten Kanten
-module cylinder_edges_chamfer (h, r1, r2, r_edges=0, center, r, d, d1, d2, angle=360, align)
+module cylinder_edges_chamfer (h, r1, r2, r_edges=0, center, r, d, d1, d2, angle=360, outer, align)
 {
-	cylinder_edges_fillet (h, r1, r2, r_edges, type=2, center, r, d, d1, d2, angle, align);
+	cylinder_edges_fillet (h, r1, r2, r_edges, 2, center, r, d, d1, d2, angle, outer, align);
 }
 
 // Erzeugt einen Keil mit den Parametern von FreeCAD mit gefasten Kanten
@@ -401,4 +403,52 @@ module wedge_chamfer (v_min, v_max, v2_min, v2_max, c,
 		 edges_bottom= edges_bottom,  edges_top= edges_top, edges_side=edges_side,
 		corner_bottom=corner_bottom, corner_top=corner_top
 	);
+}
+
+
+// - 2D:
+
+// Rechteck mit abgerundeten Ecken
+// - type - Typ der Ecke als Zahl für alle Ecken
+//        - oder als Liste für jede einzelne Ecke
+//   r    - Radius der Kanten oder Breite der Schräge
+//        - als Zahl für alle Ecken
+//        - als Liste für jede einzelne Ecke
+//          [p0, p1, p2, p3]
+//                    y
+//             p3     |     p2
+//              +-----|-----+
+//              |     |     |
+//          ----------+--------->x
+//              |     |     |
+//              +-----|-----+
+//             p0     |     p1
+//
+module square_fillet (size, r, type, center, align)
+{
+	Size    = parameter_size_2d(size);
+	Align   = parameter_align (align, [1,1], center);
+	Types   = parameter_types (type);
+	R_edges = parameter_edges_radius (r);
+	square_list = square_curve (Size, center=true);
+	
+	translate ([for (i=[0:1:len(Size)-1]) Align[i]*Size[i]/2 ])
+	difference ()
+	{
+		square (Size, center=true);
+		//
+		for (i=[0:3])
+		translate (square_list[i])
+		edge_fillet_plane (R_edges[i], [90, i*90], Types[i]);
+	}
+}
+// abgerundete Ecken
+module square_rounded (size, r, center, align)
+{
+	square_fillet (size, r, 1, center, align);
+}
+// abgeschrägte Ecken
+module square_chamfer (size, r, center, align)
+{
+	square_fillet (size, r, 2, center, align);
 }

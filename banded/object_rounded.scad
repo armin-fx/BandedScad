@@ -38,11 +38,11 @@ module edge_fillet (h=1, r, angle=90, type, center=false, extra=extra)
 // Argumente:
 //   r_ring      Radius der Kante des Zylinders
 //   angle_ring  Winkel des Zylinders, Standart=360°
-module edge_ring_fillet (r_ring, r, angle=90, angle_ring=360, type, extra=extra)
+module edge_ring_fillet (r_ring, r, angle=90, angle_ring=360, type, outer, extra=extra)
 {
 	Type = is_num(type) ? type : 0;
-	if (Type==1) edge_ring_rounded (r_ring, r, angle, angle_ring, extra=extra);
-	if (Type==2) edge_ring_chamfer (r_ring, r, angle, angle_ring, extra=extra);
+	if (Type==1) edge_ring_rounded (r_ring, r, angle, angle_ring, outer, extra=extra);
+	if (Type==2) edge_ring_chamfer (r_ring, r, angle, angle_ring, outer, extra=extra);
 }
 // erzeugt einen Umriss einer gefaste Kante als 2D-Objekt
 module edge_fillet_plane (r, angle=90, type, extra=extra)
@@ -70,18 +70,20 @@ module edge_rounded (h=1, r, angle=90, center=false, extra=extra, d)
 // Argumente:
 //   r_ring      Radius des Zylinders an der Kante
 //   angle_ring  Winkel des Zylinders, Standart=360°
-module edge_ring_rounded (r_ring, r, angle=90, angle_ring=360, extra=extra, d, d_ring)
+module edge_ring_rounded (r_ring, r, angle=90, angle_ring=360, outer, extra=extra, d, d_ring)
 {
 	R       = parameter_circle_r(r, d);
 	R_ring  = parameter_circle_r(r_ring, d_ring);
 	angles_ring = parameter_angle(angle_ring, 360);
 	fn      = get_slices_circle_current_x(R);
 	fn_ring = get_slices_circle_current_x(R_ring);
+	Outer   = outer!=undef ? outer : 0;
+	R_ring_outer = R_ring * get_circle_factor (fn_ring, Outer, angles_ring[0]);
 	//
-	if (R>0 && R_ring>0)
+	if (R>0 && R_ring>0) // TODO no fillet
 	{
 		rotate_extrude_extend (angle=angles_ring, convexity=4, $fn=fn_ring)
-		translate_x (R_ring)
+		translate_x (R_ring_outer)
 		edge_rounded_plane (R, angle, extra=extra, $fn=fn);
 	}
 }
@@ -128,16 +130,18 @@ module edge_chamfer (h=1, c, angle=90, center=false, extra=extra)
 // Argumente:
 //   r_ring      Radius der Kante des Zylinders
 //   angle_ring  Winkel des Zylinders, Standart=360°
-module edge_ring_chamfer (r_ring, c, angle=90, angle_ring=360, extra=extra, d_ring)
+module edge_ring_chamfer (r_ring, c, angle=90, angle_ring=360, outer, extra=extra, d_ring)
 {
 	R_ring   = parameter_circle_r(r_ring, d_ring);
 	angles_ring = parameter_angle(angle_ring, 360);
 	fn_ring = get_slices_circle_current_x(R_ring);
+	Outer   = outer!=undef ? outer : 0;
+	R_ring_outer = R_ring * get_circle_factor (fn_ring, Outer, angles_ring[0]);
 	//
-	if (c>0 && R_ring>0)
+	if (c>0 && R_ring>0) // TODO no fillet
 	{
 		rotate_extrude_extend (angle=angles_ring, convexity=2, $fn=fn_ring)
-		translate_x (R_ring)
+		translate_x (R_ring_outer)
 		edge_chamfer_plane (c, angle, extra=extra);
 	}
 }
@@ -186,11 +190,11 @@ module edge_fillet_to (line, point1, point2, r, type, extra=extra, extra_h=0, di
 }
 module edge_rounded_to (line, point1, point2, r, extra=extra, extra_h=0, directed=true)
 {
-	edge_fillet_to (line, point1, point2, r, type=1, extra=extra, extra_h=extra_h, directed);
+	edge_fillet_to (line, point1, point2, r, type=1, extra=extra, extra_h=extra_h, directed=directed);
 }
 module edge_chamfer_to (line, point1, point2, c, extra=extra, extra_h=0, directed=true)
 {
-	edge_fillet_to (line, point1, point2, c, type=2, extra=extra, extra_h=extra_h, directed);
+	edge_fillet_to (line, point1, point2, c, type=2, extra=extra, extra_h=extra_h, directed=directed);
 }
 
 

@@ -33,6 +33,7 @@ Configurable objects
     - [`cylinder_rounded()`][cylinder_rounded]
     - [`cylinder_edges_fillet()`][cylinder_edges_fillet]
     - [`wedge_fillet()`][wedge_fillet]
+    - [`square_fillet()`][square_fillet]
 
 [cylinder_extend]: extend.md#cylinder_extend-
 
@@ -46,8 +47,8 @@ Modules to create configurable objects
 Module which create nothing.\
 Useful if an operator needs an object.
 
-#### `torus (r, w, ri, ro, angle, center, fn_ring)` [^][contents]
-[torus]: #torus-r-w-ri-ro-angle-center-fn_ring-
+#### `torus (r, w, ri, ro, angle, center, fn_ring, align)` [^][contents]
+[torus]: #torus-r-w-ri-ro-angle-center-fn_ring-align-
 Creates a torus.
 
 Arguments:
@@ -64,6 +65,10 @@ More arguments:
     Requires OpenSCAD version 2019.05 or above
 - `center`  - center the torus in the middle (Z-axis) (if center=`true`)
 - `fn_ring` - optional number of segments of the ring
+- `align`
+  - Side from origin away that the part should be.
+  - [Extra arguments - align](extend.md#extra-arguments-)
+  - default = `[0,0,1]` = X-Y-axis centered
 
 #### `wedge (v_min, v_max, v2_min, v2_max)` [^][contents]
 [wedge]: #wedge-v_min-v_max-v2_min-v2_max-
@@ -73,8 +78,8 @@ Creates a wedge with the parameter form FreeCAD's wedge.
 - `v2_min` = `[X2min, Z2min]`
 - `v2_max` = `[X2max, Z2max]`
 
-#### `ring_square (h, r, w, ri, ro, angle, center, d, di, do)` [^][contents]
-[ring_square]: #ring_square-h-r-w-ri-ro-angle-center-d-di-do-
+#### `ring_square (h, r, w, ri, ro, angle, center, d, di, do, align)` [^][contents]
+[ring_square]: #ring_square-h-r-w-ri-ro-angle-center-d-di-do-align-
 Creates a square ring.
 - `h`        - height
 - `r`        - mean radius, middle line of the ring
@@ -84,13 +89,17 @@ Creates a square ring.
 - `angle`    - drawed angle in degree, default=`360`
   - as number = angle from `0` to `angle` = opening angle
   - as list   = `[opening angle, start angle]`
+- `align`
+  - Side from origin away that the part should be.
+  - [Extra arguments - align](extend.md#extra-arguments-)
+  - default = `[0,0,1]` = X-Y-axis centered
 
 ___Must specify:___
 - `h`
 - exactly 2 specifications of `r` or `ri` or `ro` or `w`
 
-#### `funnel (h, ri1, ri2, ro1, ro2, w, angle, di1, di2, do1, do2)` [^][contents]
-[funnel]: #funnel-h-ri1-ri2-ro1-ro2-w-angle-di1-di2-do1-do2-
+#### `funnel (h, ri1, ri2, ro1, ro2, w, angle, di1, di2, do1, do2, align)` [^][contents]
+[funnel]: #funnel-h-ri1-ri2-ro1-ro2-w-angle-di1-di2-do1-do2-align-
 Creates a funnel.
 - `h`          - height
 - `ri1`, `ri2` - inner radius bottom, top
@@ -99,6 +108,10 @@ Creates a funnel.
 - `angle`
   - opening angle in degree of the funnel. Default=`360`.
   - requires OpenSCAD version 2019.05 or above
+- `align`
+  - Side from origin away that the part should be.
+  - [Extra arguments - align](extend.md#extra-arguments-)
+  - default = `[0,0,1]` = X-Y-axis centered
 
 Example:
 ```OpenSCAD
@@ -214,7 +227,7 @@ It does `linear_extrude()` with module [`edge_fillet_plane()`][edge_fillet_plane
 - `r`     - parameter of the chamfer
 - `angle` - angle of the edge in degree
   - as number, default=`90` (right angle)
-  - as list, from-to `[begin_angle, end_angle]`
+  - as list, `[opening_angle, begin_angle]`
 - `type`  - specify, which chamfer type should be used for the edge
   - `0` = no chamfer (default)
   - `1` = rounding
@@ -238,7 +251,7 @@ It does `rotate_extrude()` with module [`edge_fillet_plane()`][edge_fillet_plane
 - `r`     - parameter of the chamfer
 - `angle` - angle of the edge in degree
   - as number, default=`90` (right angle)
-  - as list, from-to `[begin_angle, end_angle]`
+  - as list, `[opening_angle, begin_angle]`
 - `type`  - specify, which chamfer type should be used for the edge
   - `0` = no chamfer (default)
   - `1` = rounding
@@ -286,7 +299,7 @@ Creates a profile of a chamfered edge as a 2D object.
 - `angle` - angle of the edge in degree
   - opening angle between `0...180`
   - as number, default=`90` (right angle)
-  - as list, from-to `[begin_angle, end_angle]`
+  - as list, `[opening_angle, begin_angle]`
 - `type`  - specify, which chamfer type should be used for the edge
   - `0` = no chamfer (default)
   - `1` = rounding
@@ -342,8 +355,8 @@ _needs a rework_
 - `r`, `d` - radius,diameter of the rounded edges
 - `center` - center the cube if set `true`
 
-#### `cube_fillet (size, r, type, edges_xxx, corner_xxx, type_xxx, center)` [^][contents]
-[cube_fillet]: #cube_fillet-size-r-type-edges_xxx-corner_xxx-type_xxx-center-
+#### `cube_fillet (size, r, type, edges_xxx, corner_xxx, type_xxx, center, align)` [^][contents]
+[cube_fillet]: #cube_fillet-size-r-type-edges_xxx-corner_xxx-type_xxx-center-align-
 Cube with rounded edges, every edge can be configured.\
 Based on `cube()`
 - `size` - size of cube like in `cube()`
@@ -361,6 +374,10 @@ Based on `cube()`
     on the bottom, top, side
   - default = `-1` - use the entry from `type`
 - `center` - center the cube if set `true`
+- `align`
+  - Side from origin away that the part should be.
+  - [Extra arguments - align](extend.md#extra-arguments-)
+  - default = `[1,1,1]` = oriented on the positive side of axis
 
 ___Specialized modules with no arguments `type` and `type_xxx`___
 - `cube_rounded()` - cube only with rounded edges
@@ -436,3 +453,38 @@ Based on [`wedge()`][wedge]
 ___Specialized modules with no arguments `type` and `type_xxx`___
 - `wedge_rounded()` - wedge only with rounded edges
 - `wedge_chamfer()` - wedge only with chamfered edges
+
+#### `square_fillet (size, r, type, center, align)` [^][contents]
+[square_fillet]: #square_fillet-size-r-type-center-align-
+Square with rounded edges, every edge can be configured.\
+Based on `square()` from OpenSCAD
+- `size` - size of square like in `square()`
+- `r` - radius of the edges
+  - as number: set the same radius for all 4 edges
+  - as list:   set the edge radius individually - `[p0, p1, p2, p3]`
+    ```
+              Y
+       p3     |     p2
+        +-----|-----+
+        |     |     |
+    ----------+---------> X
+        |     |     |
+        +-----|-----+
+       p0     |     p1
+    ```
+- `type`  - specify, which chamfer type should be used for the edge
+  - `0` = no chamfer (default)
+  - `1` = rounding
+  - `2` = chamfer
+  - as number: set the same type for all 4 edges
+  - as list:   set the edge type individually - `[p0, p1, p2, p3]`
+- `center` - center the square if set `true`
+- `align`
+  - Side from origin away that the part should be.
+  - [Extra arguments - align](extend.md#extra-arguments-)
+  - default = `[1,1]` = oriented on the positive side of axis
+
+___Specialized modules with no arguments `type`___
+- `square_rounded()` - square only with rounded edges
+- `square_chamfer()` - square only with chamfered edges
+
