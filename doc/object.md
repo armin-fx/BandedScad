@@ -15,8 +15,8 @@ Configurable objects
 [contents]: #contents "Up to Contents"
 - [Figures](#figures-)
   - [`empty()`][empty]
-  - [`torus()`][torus]
   - [`wedge()`][wedge]
+  - [`torus()`][torus]
   - [`ring_square()`][ring_square]
   - [`funnel()`][funnel]
 - [Rounded edges](#rounded-edges-)
@@ -47,6 +47,14 @@ Modules to create configurable objects
 Module which create nothing.\
 Useful if an operator needs an object.
 
+#### `wedge (v_min, v_max, v2_min, v2_max)` [^][contents]
+[wedge]: #wedge-v_min-v_max-v2_min-v2_max-
+Creates a wedge with the parameter form FreeCAD's wedge.
+- `v_min`  = `[Xmin, Ymin, Zmin]`
+- `v_max`  = `[Xmax, Ymax, Zmax]`
+- `v2_min` = `[X2min, Z2min]`
+- `v2_max` = `[X2max, Z2max]`
+
 #### `torus (r, w, ri, ro, angle, center, fn_ring, align)` [^][contents]
 [torus]: #torus-r-w-ri-ro-angle-center-fn_ring-align-
 Creates a torus.
@@ -69,14 +77,6 @@ More arguments:
   - Side from origin away that the part should be.
   - [Extra arguments - align](extend.md#extra-arguments-)
   - default = `[0,0,1]` = X-Y-axis centered
-
-#### `wedge (v_min, v_max, v2_min, v2_max)` [^][contents]
-[wedge]: #wedge-v_min-v_max-v2_min-v2_max-
-Creates a wedge with the parameter form FreeCAD's wedge.
-- `v_min`  = `[Xmin, Ymin, Zmin]`
-- `v_max`  = `[Xmax, Ymax, Zmax]`
-- `v2_min` = `[X2min, Z2min]`
-- `v2_max` = `[X2max, Z2max]`
 
 #### `ring_square (h, r, w, ri, ro, angle, center, d, di, do, align)` [^][contents]
 [ring_square]: #ring_square-h-r-w-ri-ro-angle-center-d-di-do-align-

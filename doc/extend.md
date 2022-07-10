@@ -102,20 +102,45 @@ with extra special variables, some modules have extra arguments
 
 ### Modules controlled with extra special variables [^][contents]
 
-#### `circle_extend()` [^][contents]
-[circle]: #circle_extend-
+#### `circle_extend (r, angle, slices, piece, outer, align, d)` [^][contents]
+[circle]: #circle_extend-r-angle-slices-piece-outer-align-d-
 Creates a circle with [options of `circle_curve()`](curves.md#circle-)
+- `r, d`
+  - radius or diameter of circle
+- `angle`
+  - drawed angle in degrees, default=`360`
+    - as number -> angle from `0` to `angle` = opening angle
+    - as list   -> range `[opening angle, begin angle]`
+- `slices`
+   - count of segments, without specification it gets the same like `circle()`
+   - with `"x"` includes the [extra special variables](extend.md#special-variables-)
+     to automatically control the count of segments
+   - if an angle is specified, count of segments is like in `rotate_extrude()`
+- `piece`
+  - `true`  - like a pie, like `rotate_extrude()` in OpenSCAD
+  - `false` - connect the ends of the circle,
+            - generate an extra edge if count of segments is too small
+  - `0`     - curve only, no extra edges if "circle is only a line", default
+- `outer`
+  - value `0`...`1`
+    - `0` - edges on real circle line, default like `circle()` in OpenSCAD
+    - `1` - tangent on real circle line
+    - any value between, such as `0.5` = middle around inner or outer circle
+- `align`
+  - Side from origin away that the part should be.
+  - [Extra arguments - align](extend.md#extra-arguments-)
+  - default = `[0,0]` = centered
 
-#### `cylinder_extend()` [^][contents]
-[cylinder]: #cylinder_extend-
+#### `cylinder_extend (h, r1, r2, center, r, d, d1, d2, angle, slices, piece, outer, align)` [^][contents]
+[cylinder]: #cylinder_extend-h-r1-r2-center-r-d-d1-d2-angle-slices-piece-outer-align-
 Creates a cylinder with ground circle [options of `circle_curve()`](curves.md#circle-)
 - `align`
   - Side from origin away that the part should be.
   - [Extra arguments - align](#extra-arguments-)
   - default = `[0,0,1]` = X-Y-axis centered
 
-#### `sphere_extend()` [^][contents]
-[sphere]: #sphere_extend-
+#### `sphere_extend (r, d, align)` [^][contents]
+[sphere]: #sphere_extend-r-d-align-
 Creates a sphere at moment only control with extra special variables.
 - `align`
   - Side from origin away that the part should be.
