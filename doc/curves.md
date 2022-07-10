@@ -24,7 +24,7 @@ Draft objects as data list - Curves
 - [Creates fractal curves](#fractal-curves-)
   - [Koch curve](#koch-curve-)
   - [Hilbert curve](#hilbert-curve-)
-  - [Dragon curve][#dragon-curve-]
+  - [Dragon curve](#dragon-curve-)
 
 
 Curves [^][contents]

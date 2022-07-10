@@ -361,7 +361,7 @@ Edit and test objects [^][contents]
 ### Compose operations [^][contents]
 
 #### `combine ()` [^][contents]
-[combine]: #combine-
+[combine]: #combine--
 Put parts together to a main object.\
 This is helpful, if more than one operator is needet to do this.
 You can create a hole to the main object and put a part on this.
@@ -390,7 +390,7 @@ combine()
 ```
 
 #### `xor ()` [^][contents]
-[xor]: #xor-
+[xor]: #xor--
 Create the exclusive or with 2 objects.\
 Experimental, works with 2 objects and make sometimes errors.
 
