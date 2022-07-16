@@ -43,46 +43,63 @@ function fill_missing_list (list, c) =
 ;
 
 // gibt einen Bereich für eine Liste aus
-// Kodierung wie in python (z.B. -1 = letztes Element)
+// Kodierung wie in python
+// (z.B. -1 = letztes Element, -1 bei count = Anzahl aller Elemente)
 //     begin = erstes Element aus der Liste
 //     last  = letztes Element
 // oder
+//     count = Anzahl der Elemente
 //     range = [begin, last]
 // Ergebnis:
 //     [begin, last]
+// Rangordnung der Argumente:
+//  - begin, last
+//  - begin, count
+//  - last, count
+//  - range[0], count
+//  - range[1], count
+//  - range
+//  - [0, -1]
+//
 function parameter_range (list, begin, last, count, range) =
 	let(
-		Count = count==undef||!is_num(count) ? undef : count<0 ? 0 : count,
-		Begin = get_position(list,
-			begin   !=undef                 ? begin :
-			range[0]!=undef                 ? range[0] :
-			last    !=undef && Count!=undef ? last-Count :
-			range[1]!=undef && Count!=undef ? range[1]-Count :
-			0 ),
-		Last  = get_position(list,
-			last    !=undef                 ? last :
-			range[1]!=undef                 ? range[1] :
-			begin   !=undef && Count!=undef ? begin+Count-1 :
-			range[0]!=undef && Count!=undef ? range[0]+Count-1 :
-			-1 )
+		Range = // [Begin, Last]
+			(begin!=undef && last!=undef) ?
+				[get_position(list,begin), get_position(list,last)]
+			:(begin!=undef && count!=undef) ?
+				[get_position(list,begin), get_position(list,begin)+get_position_insert(list,count)-1]
+			:(last!=undef && count!=undef) ?
+				[get_position(list,last)-get_position_insert(list,count), get_position(list,last)]
+			:(range[0]!=undef && count!=undef) ?
+				[get_position(list,range[0]), get_position(list,range[0])+get_position_insert(list,count)-1]
+			:(range[1]!=undef && count!=undef) ?
+				[get_position(list,range[1])-get_position_insert(list,count), get_position(list,range[1])]
+			:(range[0]!=undef && range[1]!=undef) ?
+				[get_position(list,range[0]), get_position(list,range[1])]
+			:[0, -1]
+		, Begin = Range[0]
+		, Last  = Range[1]
 	)
 	[Begin, Last>=Begin ? Last : Begin-1]
 ;
 function parameter_range_safe (list, begin, last, count, range) =
 	let(
-		Count = count==undef||!is_num(count) ? undef : count<0 ? 0 : count,
-		Begin = get_position(list,
-			begin   !=undef                 ? begin :
-			range[0]!=undef                 ? range[0] :
-			last    !=undef && Count!=undef ? last-Count :
-			range[1]!=undef && Count!=undef ? range[1]-Count :
-			0 ),
-		Last  = get_position_safe(list,
-			last    !=undef                 ? last :
-			range[1]!=undef                 ? range[1] :
-			begin   !=undef && Count!=undef ? begin+Count-1 :
-			range[0]!=undef && Count!=undef ? range[0]+Count-1 :
-			-1 )
+		Range = // [Begin, Last]
+			(begin!=undef && last!=undef) ?
+				[get_position(list,begin), get_position_safe(list,last)]
+			:(begin!=undef && count!=undef) ?
+				[get_position(list,begin), get_position(list,begin)+get_position_insert_safe(list,count)-1]
+			:(last!=undef && count!=undef) ?
+				[get_position(list,last)-get_position_insert_safe(list,count), get_position_safe(list,last)]
+			:(range[0]!=undef && count!=undef) ?
+				[get_position(list,range[0]), get_position(list,range[0])+get_position_insert_safe(list,count)-1]
+			:(range[1]!=undef && count!=undef) ?
+				[get_position(list,range[1])-get_position_insert_safe(list,count), get_position_safe(list,range[1])]
+			:(range[0]!=undef && range[1]!=undef) ?
+				[get_position(list,range[0]), get_position_safe(list,range[1])]
+			:[0, -1]
+		,Begin = Range[0]
+		,Last  = Range[1]
 	)
 	[Begin, Last>=Begin ? Last : Begin-1]
 ;

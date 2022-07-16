@@ -326,15 +326,25 @@ An entry in the list must be a numeric value.
 #### `parameter_range (list, 'range_args')` [^][contents]
 [parameter_range]: #parameter_range-list-range_args-
 Test the range of a list in the ['range_args'][range_args].\
-Encoding as in python (e.g. -1 = last element).
+Encoding is as in python (e.g. -1 = last element).
 Returns the real range `[begin, last]` for a list.
-Default is full range from first to last element in a list.
+Default is the full range from first to last element in a list.
 
 - [`'range_args'`][range_args] - a sets of arguments
   - `begin` - first element from a list
   - `last`  - last element
   - `count` - count of elements
   - `range` - a list with: `[begin, last]`
+
+Priority of the arguments:
+1. `begin`, `last`
+2. `begin`, `count`
+3. `last`, `count`
+4. `range[0]`, `count`
+5. `range[1]`, `count`
+6. `range`
+7. `[0, -1]` = default
+
 
 #### `parameter_range_safe (list, 'range_args')` [^][contents]
 [parameter_range_safe]: #parameter_range_safe-list-range_args-

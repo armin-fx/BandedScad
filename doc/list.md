@@ -69,6 +69,7 @@ Functions for edit lists
     - [`all_of()`][all_of]
     - [`none_of()`][none_of]
     - [`any_of()`][any_of]
+    - [`equal()`][equal]
   - [Pair functions](#pair-functions-)
     - [`pair()`][pair]
     - [`pair_value()`][pair_value]
@@ -102,6 +103,7 @@ Most functions base on the STL from C++
 [range_args]: #range-arguments-
 Contain a set of arguments which defines a range in a list.
 Choose which you need.
+Default is the full range from first to last element in a list.
 
 Needs only 2 arguments of:
 - `begin` - first element from a list
@@ -110,6 +112,23 @@ Needs only 2 arguments of:
 
 or:
 - `range` - a list with: `[begin, last]`
+
+Encoding is as in python:
+- positive values `0, 1 ... n`
+  - normal positions in list
+- negative values `-1, -2 ... -n`
+  - positions backwards from last element
+  - `first`, `last`: `-1` = last element
+  - `count`: `-1` = full size of list
+
+Priority of the arguments:
+- `begin`, `last`
+- `begin`, `count`
+- `last`, `count`
+- `range[0]`, `count`
+- `range[1]`, `count`
+- `range`
+- `[0, -1]` = default
 
 
 Different type of data [^][contents]
@@ -453,6 +472,22 @@ or if the range is empty, and `false` otherwise.
 - `f`
   - function literal with one argument
   - returns `true` or `false`
+
+#### `equal (list1, list2, begin1, begin2, count, type, f)` [^][contents]
+[equal]: #equal-list1-list2-begin1-begin2-count-type-f-
+Tests the data of two lists for equality and returns `true` on success.\
+Compares the data directly or with function 'f' if given.
+- `list1`, `list2` - lists to compare
+- `begin1`, `begin2`
+  - begin position from respective list
+  - default = 0 = from first element
+- `count`
+  - count of elements to test of both lists
+  - default = full list
+- `f`
+  - function literal with two arguments
+  - returns `true` or `false`
+  - if function is not specified, the data will compared directly (with given type of data)
 
 
 Pair functions [^][contents]
