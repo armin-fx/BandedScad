@@ -78,3 +78,23 @@ function equal (list1, list2, begin1=0, begin2=0, count=undef, type=0, f=undef) 
 		:type[0]==-1 ? let( fn=type[1] ) len([for(i=[0:1:Count-1]) if (f( fn(list1[Begin1+i])            , fn(list2[Begin2+i])            ) !=true) 0]) == 0
 		:                                len([for(i=[0:1:Count-1]) if (f( get_value(list1[Begin1+i],type), get_value(list1[Begin1+i],type)) !=true) 0]) == 0
 ;
+
+// Testet eine Liste ob diese sortiert ist und gibt bei Erfolg 'true' zurück
+// Vergleicht die Daten mit dem Operator '<' oder mit Funktion 'f', wenn angegeben
+function is_sorted (list, f=undef, type=0, begin, last, count, range) =
+	list==undef ? true :
+	let (Range = parameter_range_safe (list, begin, last, count, range))
+	is_sorted_intern (list, f, type, Range[0], Range[1])
+;
+function is_sorted_intern (list, f=undef, type=0, begin=0, last=-1) =
+	f==undef ?
+		 type   == 0                   ? len([for(i=[begin:1:last-1]) if (list[i+1]                 < list[i]                ) 0]) == 0
+		:type[0]>= 0                   ? len([for(i=[begin:1:last-1]) if (list[i+1][type[0]]        < list[i][type[0]]       ) 0]) == 0
+		:type[0]==-1 ? let( fn=type[1] ) len([for(i=[begin:1:last-1]) if (fn(list[i+1])             < fn(list[i])            ) 0]) == 0
+		:                                len([for(i=[begin:1:last-1]) if (get_value(list[i+1],type) < get_value(list[i],type)) 0]) == 0
+	:
+		 type   == 0                   ? len([for(i=[begin:1:last-1]) if (f( list[i+1]                , list[i]                )) 0]) == 0
+		:type[0]>= 0                   ? len([for(i=[begin:1:last-1]) if (f( list[i+1][type[0]]       , list[i][type[0]]       )) 0]) == 0
+		:type[0]==-1 ? let( fn=type[1] ) len([for(i=[begin:1:last-1]) if (f( fn(list[i+1])            , fn(list[i])            )) 0]) == 0
+		:                                len([for(i=[begin:1:last-1]) if (f( get_value(list[i+1],type), get_value(list[i],type))) 0]) == 0
+;

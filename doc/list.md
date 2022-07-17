@@ -70,6 +70,7 @@ Functions for edit lists
     - [`none_of()`][none_of]
     - [`any_of()`][any_of]
     - [`equal()`][equal]
+    - [`is_sorted()`][is_sorted]
   - [Pair functions](#pair-functions-)
     - [`pair()`][pair]
     - [`pair_value()`][pair_value]
@@ -476,7 +477,7 @@ or if the range is empty, and `false` otherwise.
 #### `equal (list1, list2, begin1, begin2, count, type, f)` [^][contents]
 [equal]: #equal-list1-list2-begin1-begin2-count-type-f-
 Tests the data of two lists for equality and returns `true` on success.\
-Compares the data directly or with function 'f' if given.
+Compares the data directly or with function `f` if given.
 - `list1`, `list2` - lists to compare
 - `begin1`, `begin2`
   - begin position from respective list
@@ -488,6 +489,15 @@ Compares the data directly or with function 'f' if given.
   - function literal with two arguments
   - returns `true` or `false`
   - if function is not specified, the data will compared directly (with given type of data)
+
+#### `is_sorted (list, f, type, 'range_args')` [^][contents]
+[is_sorted]: #is_sorted-list-f-type-range_args-
+Check whether list is sorted.\
+Returns `true` if the list is sorted into ascending order.
+The elements are compared using operator `<` or with function `f` if given.
+- `f`
+  - function literal with two arguments
+  - returns `true` or `false`
 
 
 Pair functions [^][contents]
