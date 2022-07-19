@@ -71,6 +71,7 @@ Functions for edit lists
     - [`any_of()`][any_of]
     - [`equal()`][equal]
     - [`is_sorted()`][is_sorted]
+    - [`is_sorted_until()`][is_sorted_until]
   - [Pair functions](#pair-functions-)
     - [`pair()`][pair]
     - [`pair_value()`][pair_value]
@@ -494,6 +495,14 @@ Compares the data directly or with function `f` if given.
 [is_sorted]: #is_sorted-list-f-type-range_args-
 Check whether list is sorted.\
 Returns `true` if the list is sorted into ascending order.
+The elements are compared using operator `<` or with function `f` if given.
+- `f`
+  - function literal with two arguments
+  - returns `true` or `false`
+
+#### `is_sorted_until (list, f, type, 'range_args')` [^][contents]
+[is_sorted_until]: #is_sorted_until-list-f-type-range_args-
+Returns the first position where the list is not sorted into ascending order.\
 The elements are compared using operator `<` or with function `f` if given.
 - `f`
   - function literal with two arguments

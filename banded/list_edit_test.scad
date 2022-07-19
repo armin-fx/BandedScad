@@ -98,3 +98,78 @@ function is_sorted_intern (list, f=undef, type=0, begin=0, last=-1) =
 		:type[0]==-1 ? let( fn=type[1] ) len([for(i=[begin:1:last-1]) if (f( fn(list[i+1])            , fn(list[i])            )) 0]) == 0
 		:                                len([for(i=[begin:1:last-1]) if (f( get_value(list[i+1],type), get_value(list[i],type))) 0]) == 0
 ;
+
+// Testet eine Liste ob diese sortiert ist und gibt die erste Position zurück, die nicht sortiert ist.
+// Vergleicht die Daten mit dem Operator '<' oder mit Funktion 'f', wenn angegeben
+function is_sorted_until (list, f=undef, type=0, begin, last, count, range) =
+	list==undef ? 0 :
+	let (Range = parameter_range_safe (list, begin, last, count, range))
+	f==undef ?
+		 type   == 0 ? is_sorted_until_intern_direct   (list,          Range[0], Range[1])
+		:type[0]>= 0 ? is_sorted_until_intern_list     (list, type[0], Range[0], Range[1])
+		:type[0]==-1 ? is_sorted_until_intern_function (list, type[1], Range[0], Range[1])
+		:              is_sorted_until_intern_type     (list, type   , Range[0], Range[1])
+	:
+		 type   == 0 ? is_sorted_until_intern_f_direct   (list, f,          Range[0], Range[1])
+		:type[0]>= 0 ? is_sorted_until_intern_f_list     (list, f, type[0], Range[0], Range[1])
+		:type[0]==-1 ? is_sorted_until_intern_f_function (list, f, type[1], Range[0], Range[1])
+		:              is_sorted_until_intern_f_type     (list, f, type   , Range[0], Range[1])
+;
+//
+function is_sorted_until_intern_direct (list, begin=0, last=-1) =
+	begin>=last ? begin+1:
+	(list[begin+1] < list[begin]) ? begin+1 :
+	is_sorted_until_intern_direct (list, begin+1, last)
+;
+function is_sorted_until_intern_list (list, position=0, begin=0, last=-1) =
+	begin>=last ? begin+1:
+	(list[begin+1][position] < list[begin][position]) ? begin+1 :
+	is_sorted_until_intern_list (list, position, begin+1, last)
+;
+function is_sorted_until_intern_function (list, fn, begin=0, last=-1) =
+	begin>=last ? begin+1:
+	(fn(list[begin+1]) < fn(list[begin])) ? begin+1 :
+	is_sorted_until_intern_function (list, fn, begin+1, last)
+;
+function is_sorted_until_intern_type (list, type, begin=0, last=-1) =
+	begin>=last ? begin+1:
+	(get_value(list[begin+1],type) < get_value(list[begin],type)) ? begin+1 :
+	is_sorted_until_intern_type (list, type, begin+1, last)
+;
+//
+function is_sorted_until_intern_f_direct (list, f, begin=0, last=-1) =
+	begin>=last ? begin+1:
+	f (list[begin+1], list[begin]) ? begin+1 :
+	is_sorted_until_intern_f_direct (list, begin+1, last)
+;
+function is_sorted_until_intern_f_list (list, f, position=0, begin=0, last=-1) =
+	begin>=last ? begin+1:
+	f (list[begin+1][position], list[begin][position]) ? begin+1 :
+	is_sorted_until_intern_f_list (list, position, begin+1, last)
+;
+function is_sorted_until_intern_f_function (list, f, fn, begin=0, last=-1) =
+	begin>=last ? begin+1:
+	f (fn(list[begin+1]), fn(list[begin])) ? begin+1 :
+	is_sorted_until_intern_f_function (list, fn, begin+1, last)
+;
+function is_sorted_until_intern_f_type (list, f, type, begin=0, last=-1) =
+	begin>=last ? begin+1:
+	f (get_value(list[begin+1],type), get_value(list[begin],type)) ? begin+1 :
+	is_sorted_until_intern_f_type (list, type, begin+1, last)
+;
+// andere Version
+function is_sorted_until_intern (list, f=undef, type=0, begin=0, last=-1) =
+	let ( result = (
+	f==undef ?
+		 type   == 0                   ? [for(i=[begin:1:last-1]) if (list[i+1]                 < list[i]                ) i+1] [0]
+		:type[0]>= 0                   ? [for(i=[begin:1:last-1]) if (list[i+1][type[0]]        < list[i][type[0]]       ) i+1] [0]
+		:type[0]==-1 ? let( fn=type[1] ) [for(i=[begin:1:last-1]) if (fn(list[i+1])             < fn(list[i])            ) i+1] [0]
+		:                                [for(i=[begin:1:last-1]) if (get_value(list[i+1],type) < get_value(list[i],type)) i+1] [0]
+	:
+		 type   == 0                   ? [for(i=[begin:1:last-1]) if (f( list[i+1]                , list[i]                )) i+1] [0]
+		:type[0]>= 0                   ? [for(i=[begin:1:last-1]) if (f( list[i+1][type[0]]       , list[i][type[0]]       )) i+1] [0]
+		:type[0]==-1 ? let( fn=type[1] ) [for(i=[begin:1:last-1]) if (f( fn(list[i+1])            , fn(list[i])            )) i+1] [0]
+		:                                [for(i=[begin:1:last-1]) if (f( get_value(list[i+1],type), get_value(list[i],type))) i+1] [0]
+	) )
+	result==undef ? len (list) : result
+;
