@@ -157,19 +157,27 @@ function is_sorted_until_intern_f_type (list, f, type, begin=0, last=-1) =
 	f (get_value(list[begin+1],type), get_value(list[begin],type)) ? begin+1 :
 	is_sorted_until_intern_f_type (list, type, begin+1, last)
 ;
-// andere Version
-function is_sorted_until_intern (list, f=undef, type=0, begin=0, last=-1) =
-	let ( result = (
+
+// Testet eine Liste ob diese sortiert ist und gibt alle Position als Liste zurück,
+// ab die ein vorhergehender Block nicht mehr sortiert ist.
+// Position 0 ist nicht enthalten in der Rückgabeliste.
+// Gibt eine leere Liste zurück, wenn die Liste sortiert ist
+// Vergleicht die Daten mit dem Operator '<' oder mit Funktion 'f', wenn angegeben
+function sorted_until_list (list, f=undef, type=0, begin, last, count, range) =
+	list==undef ? [] :
+	let (Range = parameter_range_safe (list, begin, last, count, range))
+	sorted_until_list_intern (list, f, type, Range[0], Range[1])
+;
+//
+function sorted_until_list_intern (list, f=undef, type=0, begin=0, last=-1) =
 	f==undef ?
-		 type   == 0                   ? [for(i=[begin:1:last-1]) if (list[i+1]                 < list[i]                ) i+1] [0]
-		:type[0]>= 0                   ? [for(i=[begin:1:last-1]) if (list[i+1][type[0]]        < list[i][type[0]]       ) i+1] [0]
-		:type[0]==-1 ? let( fn=type[1] ) [for(i=[begin:1:last-1]) if (fn(list[i+1])             < fn(list[i])            ) i+1] [0]
-		:                                [for(i=[begin:1:last-1]) if (get_value(list[i+1],type) < get_value(list[i],type)) i+1] [0]
+		 type   == 0                   ? [for(i=[begin:1:last-1]) if (list[i+1]                 < list[i]                ) i+1]
+		:type[0]>= 0                   ? [for(i=[begin:1:last-1]) if (list[i+1][type[0]]        < list[i][type[0]]       ) i+1]
+		:type[0]==-1 ? let( fn=type[1] ) [for(i=[begin:1:last-1]) if (fn(list[i+1])             < fn(list[i])            ) i+1]
+		:                                [for(i=[begin:1:last-1]) if (get_value(list[i+1],type) < get_value(list[i],type)) i+1]
 	:
-		 type   == 0                   ? [for(i=[begin:1:last-1]) if (f( list[i+1]                , list[i]                )) i+1] [0]
-		:type[0]>= 0                   ? [for(i=[begin:1:last-1]) if (f( list[i+1][type[0]]       , list[i][type[0]]       )) i+1] [0]
-		:type[0]==-1 ? let( fn=type[1] ) [for(i=[begin:1:last-1]) if (f( fn(list[i+1])            , fn(list[i])            )) i+1] [0]
-		:                                [for(i=[begin:1:last-1]) if (f( get_value(list[i+1],type), get_value(list[i],type))) i+1] [0]
-	) )
-	result==undef ? len (list) : result
+		 type   == 0                   ? [for(i=[begin:1:last-1]) if (f( list[i+1]                , list[i]                )) i+1]
+		:type[0]>= 0                   ? [for(i=[begin:1:last-1]) if (f( list[i+1][type[0]]       , list[i][type[0]]       )) i+1]
+		:type[0]==-1 ? let( fn=type[1] ) [for(i=[begin:1:last-1]) if (f( fn(list[i+1])            , fn(list[i])            )) i+1]
+		:                                [for(i=[begin:1:last-1]) if (f( get_value(list[i+1],type), get_value(list[i],type))) i+1]
 ;

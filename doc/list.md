@@ -72,6 +72,7 @@ Functions for edit lists
     - [`equal()`][equal]
     - [`is_sorted()`][is_sorted]
     - [`is_sorted_until()`][is_sorted_until]
+    - [`sorted_until_list()`][sorted_until_list]
   - [Pair functions](#pair-functions-)
     - [`pair()`][pair]
     - [`pair_value()`][pair_value]
@@ -513,6 +514,16 @@ The elements are compared using operator `<` or with function `f` if given.
 [is_sorted_until]: #is_sorted_until-list-f-type-range_args-
 Returns the first position where the list is not sorted into ascending order.\
 The elements are compared using operator `<` or with function `f` if given.
+- `f`
+  - function literal with two arguments
+  - returns `true` or `false`
+
+#### `sorted_until_list (list, f, type, 'range_args')` [^][contents]
+[sorted_until_list]: #sorted_until_list-list-f-type-range_args-
+Returns all position in a list at where the list is not sorted into ascending order.\
+The elements are compared using operator `<` or with function `f` if given.
+Returns an empty list if the list is sorted.
+The first position 0 is not included in the returned list.
 - `f`
   - function literal with two arguments
   - returns `true` or `false`
