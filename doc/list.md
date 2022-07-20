@@ -377,6 +377,15 @@ Replace every entry with a given value in a list to a new value
 Replace every entry with a given list of values in a list to a new value
 - `value_list` - a list with values to replace with value `new`
 
+#### `unique (list, type, f)` [^][contents]
+[unique]: #unique-list-type-f-
+Remove consecutive duplicates in a list.\
+Removes all but the first element from every consecutive group of equivalent elements.
+The elements are compared using operator `==` or with function `f` if given.
+- `f`
+  - function literal with two arguments
+  - returns `true` or `false`
+
 
 Edit list, use function literal on data [^][contents]
 -----------------------------------------------------

@@ -497,3 +497,63 @@ function replace_all_values (list, value_list, new, type=0) =
 	:type[0]==-1 ? let( fn=type[1] ) [ for (e=list) let(ev = fn(e))             if ( len([for(value=value_list) if (ev==value) 0]) == 0 ) e else new ]
 	:                                [ for (e=list) let(ev = get_value(e,type)) if ( len([for(value=value_list) if (ev==value) 0]) == 0 ) e else new ]
 ;
+
+// Entfernt alle aufeinanderfolgenden Duplikate
+function unique (list, type=0, f=undef) =
+	list==undef || len(list)<=1 ? list :
+	let( size = len(list) )
+	f==undef ?
+		 type   == 0 ?
+			[ each
+				[ for (i=0  ,v=list[i]                ,is_unique=true      ,last=v; i<size-1;
+				       i=i+1,v=list[i]                ,is_unique=!(v==last),last=is_unique?v:last )
+				if (is_unique) v ]
+			, each (list[size-2]                ==list[size-1]                ) ? [] : [list[size-1]]
+			]
+		:type[0]>= 0 ?
+			[ each
+				[ for (i=0  ,v=list[i][type[0]]       ,is_unique=true      ,last=v; i<size-1;
+				       i=i+1,v=list[i][type[0]]       ,is_unique=!(v==last),last=is_unique?v:last )
+				if (is_unique) list[i] ]
+			, each (list[size-2][type[0]]       ==list[size-1][type[0]]       ) ? [] : [list[size-1]]
+			]
+		:type[0]==-1 ? let( fn=type[1] )
+			[ each
+				[ for (i=0  ,v=fn(list[i])            ,is_unique=true      ,last=v; i<size-1;
+				       i=i+1,v=fn(list[i])            ,is_unique=!(v==last),last=is_unique?v:last ) if (is_unique) list[i] ]
+			, each (fn(list[size-2])            ==fn(list[size-1])            ) ? [] : [list[size-1]]
+			]
+		:
+			[ each
+				[ for (i=0  ,v=get_value(list[i],type),is_unique=true      ,last=v; i<size-1;
+				       i=i+1,v=get_value(list[i],type),is_unique=!(v==last),last=is_unique?v:last )
+				if (is_unique) list[i] ]
+			, each (get_value(list[size-2],type)==get_value(list[size-1],type)) ? [] : [list[size-1]]
+			]
+	:
+		 type   == 0 ?
+			[ each
+				[ for (i=0  ,v=list[i]                ,is_unique=true      ,last=v; i<size-1;
+				       i=i+1,v=list[i]                ,is_unique=!f(v,last),last=is_unique?v:last )
+				if (is_unique) v ]
+			, each f(list[size-2]                ,list[size-1]                ) ? [] : [list[size-1]]
+			]
+		:type[0]>= 0 ?
+			[ each
+				[ for (i=0  ,v=list[i][type[0]]       ,is_unique=true      ,last=v; i<size-1;
+				       i=i+1,v=list[i][type[0]]       ,is_unique=!f(v,last),last=is_unique?v:last ) if (is_unique) list[i] ]
+			, each f(list[size-2][type[0]]       ,list[size-1][type[0]]       ) ? [] : [list[size-1]]
+			]
+		:type[0]==-1 ? let( fn=type[1] )
+			[ each
+				[ for (i=0  ,v=fn(list[i])            ,is_unique=true      ,last=v; i<size-1;
+				       i=i+1,v=fn(list[i])            ,is_unique=!f(v,last),last=is_unique?v:last ) if (is_unique) list[i] ]
+			, each f(fn(list[size-2])            ,fn(list[size-1])            ) ? [] : [list[size-1]]
+			]
+		:
+			[ each
+				[ for (i=0  ,v=get_value(list[i],type),is_unique=true      ,last=v; i<size-1;
+				       i=i+1,v=get_value(list[i],type),is_unique=!f(v,last),last=is_unique?v:last ) if (is_unique) list[i] ]
+			, each f(get_value(list[size-2],type),get_value(list[size-1],type)) ? [] : [list[size-1]]
+			]
+;
