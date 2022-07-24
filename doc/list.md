@@ -53,6 +53,7 @@ Functions for edit lists
     - [`find_last_once()`][find_last_once]
     - [`mismatch()`][mismatch]
     - [`mismatch_list()`][mismatch_list]
+    - [`adjacent_find()`][adjacent_find]
     - [`count()`][count]
     - [`remove_duplicate()`][remove_duplicate]
     - [`remove_value()`][remove_value]
@@ -370,6 +371,17 @@ and returns all element of both sequences as list that does not match.\
 The elements are compared using operator ==  or with function `f` if given.
 Returns a list of the positions that the sequences does not match of both lists
 as a list like `[position list1, position list2]`.
+- `f`
+  - function literal with two arguments
+  - returns `true` or `false`
+
+#### `adjacent_find (list, type, 'range_args', f)` [^][contents]
+[adjacent_find]: #adjacent_find-list-type-range_args-f-
+Find equal adjacent elements in a list.\
+Searches the list for the first occurrence of two consecutive elements that match,
+and returns the position of the first of these two elements,
+or one element after the last element if no such pair is found.
+The elements are compared using operator ==  or with function `f` if given.
 - `f`
   - function literal with two arguments
   - returns `true` or `false`

@@ -460,6 +460,66 @@ function mismatch_list (list1, list2, begin1=0, begin2=0, count=undef, type=0, f
 	]
 ;
 
+// Findet 2 benachbarte gleiche Werte in der Liste
+// und gibt die Position des ersten Wertes aus.
+// Vergleicht die Daten direkt mit dem Operator == oder mit Funktion 'f', wenn angegeben
+function adjacent_find (list, type=0, begin, last, count, range, f=undef) =
+	list==undef ? 0 :
+	let (Range = parameter_range_safe (list, begin, last, count, range))
+	f==undef ?
+		 type   == 0 ? adjacent_find_intern_direct   (list,          Range[0], Range[1])
+		:type[0]>= 0 ? adjacent_find_intern_list     (list, type[0], Range[0], Range[1])
+		:type[0]==-1 ? adjacent_find_intern_function (list, type[1], Range[0], Range[1])
+		:              adjacent_find_intern_type     (list, type   , Range[0], Range[1])
+	:
+		 type   == 0 ? adjacent_find_intern_f_direct   (list, f,          Range[0], Range[1])
+		:type[0]>= 0 ? adjacent_find_intern_f_list     (list, f, type[0], Range[0], Range[1])
+		:type[0]==-1 ? adjacent_find_intern_f_function (list, f, type[1], Range[0], Range[1])
+		:              adjacent_find_intern_f_type     (list, f, type   , Range[0], Range[1])
+;
+//
+function adjacent_find_intern_direct (list, begin=0, last=-1) =
+	begin>=last ? last+1 :
+	(list[begin] == list[begin+1]) ? begin :
+	adjacent_find_intern_direct (list, begin+1, last)
+;
+function adjacent_find_intern_list (list, position=0, begin=0, last=-1) =
+	begin>=last ? last+1 :
+	(list[begin][position] == list[begin+1][position]) ? begin :
+	adjacent_find_intern_list (list, position, begin+1, last)
+;
+function adjacent_find_intern_function (list, fn, begin=0, last=-1) =
+	begin>=last ? last+1 :
+	(fn(list[begin]) == fn(list[begin+1])) ? begin :
+	adjacent_find_intern_function (list, fn, begin+1, last)
+;
+function adjacent_find_intern_type (list, type, begin=0, last=-1) =
+	begin>=last ? last+1 :
+	(get_value(list[begin],type) == get_value(list[begin+1],type)) ? begin :
+	adjacent_find_intern_type (list, type, begin+1, last)
+;
+//
+function adjacent_find_intern_f_direct (list, f, begin=0, last=-1) =
+	begin>=last ? last+1 :
+	f (list[begin], list[begin+1]) ? begin :
+	adjacent_find_intern_f_direct (list, f, begin+1, last)
+;
+function adjacent_find_intern_f_list (list, f, position=0, begin=0, last=-1) =
+	begin>=last ? last+1 :
+	f (list[begin][position], list[begin+1][position]) ? begin :
+	adjacent_find_intern_f_list (list, f, position, begin+1, last)
+;
+function adjacent_find_intern_f_function (list, f, fn, begin=0, last=-1) =
+	begin>=last ? last+1 :
+	f (fn(list[begin]), fn(list[begin+1])) ? begin :
+	adjacent_find_intern_f_function (list, f, fn, begin+1, last)
+;
+function adjacent_find_intern_f_type (list, f, type, begin=0, last=-1) =
+	begin>=last ? last+1 :
+	f (get_value(list[begin],type), get_value(list[begin+1],type)) ? begin :
+	adjacent_find_intern_f_type (list, f, type, begin+1, last)
+;
+
 // Zählt das Vorkommen eines Wertes in der Liste
 // Argumente:
 //   list    -Liste
