@@ -51,14 +51,14 @@ Functions for edit lists
     - [`find_first_once()`][find_first_once]
     - [`find_last()`][find_last]
     - [`find_last_once()`][find_last_once]
+    - [`mismatch()`][mismatch]
+    - [`mismatch_list()`][mismatch_list]
     - [`count()`][count]
     - [`remove_duplicate()`][remove_duplicate]
     - [`remove_value()`][remove_value]
     - [`remove_all_values()`][remove_all_values]
     - [`replace_value()`][replace_value]
     - [`replace_all_values()`][replace_all_values]
-    - [`mismatch()`][mismatch]
-    - [`mismatch_list()`][mismatch_list]
   - [Edit list, use function literal on data](#edit-list-use-function-literal-on-data-)
     - [`for_each()`][for_each]
     - [`find_first_if()`][find_first_if]
@@ -353,6 +353,27 @@ Returns the position before the first element in the defined range if nothing wa
 Like [`find_last()`][find_last],
 but return always the position of the first hit.
 
+#### `mismatch (list1, list2, begin1, begin2, count, type, f)` [^][contents]
+[mismatch]: #mismatch-list1-list2-begin1-begin2-count-type-f-
+Compares the elements in `list1` and `list2`,
+and returns the first element of both sequences that does not match.\
+The elements are compared using operator ==  or with function `f` if given.
+Returns the position that does not match of both lists as a list like `[position list1, position list2]`
+- `f`
+  - function literal with two arguments
+  - returns `true` or `false`
+
+#### `mismatch_list (list1, list2, begin1, begin2, count, type, f)` [^][contents]
+[mismatch_list]: #mismatch_list-list1-list2-begin1-begin2-count-type-f-
+Compares the elements in `list1` and `list2`,
+and returns all element of both sequences as list that does not match.\
+The elements are compared using operator ==  or with function `f` if given.
+Returns a list of the positions that the sequences does not match of both lists
+as a list like `[position list1, position list2]`.
+- `f`
+  - function literal with two arguments
+  - returns `true` or `false`
+
 #### `count (list, value, type, 'range_args')` [^][contents]
 [count]: #count-list-value-type-range_args-
 Count how often a value is in list
@@ -385,27 +406,6 @@ Replace every entry with a given list of values in a list to a new value
 Remove consecutive duplicates in a list.\
 Removes all but the first element from every consecutive group of equivalent elements.
 The elements are compared using operator `==` or with function `f` if given.
-- `f`
-  - function literal with two arguments
-  - returns `true` or `false`
-
-#### `mismatch (list1, list2, begin1, begin2, count, type, f)` [^][contents]
-[mismatch]: #mismatch-list1-list2-begin1-begin2-count-type-f-
-Compares the elements in `list1` and `list2`,
-and returns the first element of both sequences that does not match.\
-The elements are compared using operator ==  or with function `f` if given.
-Returns the position that does not match of both lists as a list like `[position list1, position list2]`
-- `f`
-  - function literal with two arguments
-  - returns `true` or `false`
-
-#### `mismatch_list (list1, list2, begin1, begin2, count, type, f)` [^][contents]
-[mismatch_list]: #mismatch_list-list1-list2-begin1-begin2-count-type-f-
-Compares the elements in `list1` and `list2`,
-and returns all element of both sequences as list that does not match.\
-The elements are compared using operator ==  or with function `f` if given.
-Returns a list of the positions that the sequences does not match of both lists
-as a list like `[position list1, position list2]`.
 - `f`
   - function literal with two arguments
   - returns `true` or `false`

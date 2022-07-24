@@ -361,6 +361,105 @@ function find_last_once_intern_type     (list, value, type, n=-2, first=0) =
 	find_last_once_intern_type          (list, value, type, n-1, first)
 ;
 
+// Testet 2 Listen nach Gleichheit und gibt den ersten Treffer bei 'list1', der nicht gleich ist.
+// Die Rückgabe enthält die Position des Treffers beider Listen als Liste [pos list1, pos list2].
+// Vergleicht die Daten direkt mit dem Operator == oder mit Funktion 'f', wenn angegeben
+function mismatch (list1, list2, begin1=0, begin2=0, count=undef, type=0, f=undef) =
+	list1==undef || list2==undef ? 0 :
+	let (
+		Range1 = parameter_range_safe (list1, begin1, undef, count, undef),
+		Range2 = parameter_range_safe (list2, begin2, undef, count, undef),
+		Begin1 = Range1[0],
+		Begin2 = Range2[0],
+		Count1 = Range1[1] - Range1[0] + 1,
+		Count2 = Range2[1] - Range2[0] + 1,
+		Count  = min (Count1, Count2),
+		result =
+			f==undef ?
+				 type   == 0 ? mismatch_count_intern_direct   (list1, list2,          Begin1, Begin2, Count)
+				:type[0]>= 0 ? mismatch_count_intern_list     (list1, list2, type[0], Begin1, Begin2, Count)
+				:type[0]==-1 ? mismatch_count_intern_function (list1, list2, type[1], Begin1, Begin2, Count)
+				:              mismatch_count_intern_type     (list1, list2, type   , Begin1, Begin2, Count)
+			:
+				 type   == 0 ? mismatch_count_intern_f_direct   (list1, list2, f,          Begin1, Begin2, Count)
+				:type[0]>= 0 ? mismatch_count_intern_f_list     (list1, list2, f, type[0], Begin1, Begin2, Count)
+				:type[0]==-1 ? mismatch_count_intern_f_function (list1, list2, f, type[1], Begin1, Begin2, Count)
+				:              mismatch_count_intern_f_type     (list1, list2, f, type   , Begin1, Begin2, Count)
+	)
+	[Begin1+result, Begin2+result]
+;
+//
+function mismatch_count_intern_direct (list1, list2, begin1=0, begin2=0, count=0, i=0) =
+	i>=count ? i :
+	(list1[begin1+i] != list2[begin2+i]) ? i :
+	mismatch_count_intern_direct (list1, list2, begin1, begin2, count, i+1)
+;
+function mismatch_count_intern_list (list1, list2, position=0, begin1=0, begin2=0, count=0, i=0) =
+	i>=count ? i :
+	(list1[begin1+i][position] != list2[begin2+i][position]) ? i :
+	mismatch_count_intern_list (list1, list2, position, begin1, begin2, count, i+1)
+;
+function mismatch_count_intern_function (list1, list2, fn, begin1=0, begin2=0, count=0, i=0) =
+	i>=count ? i :
+	(fn(list1[begin1+i]) != fn(list2[begin2+i])) ? i :
+	mismatch_count_intern_function (list1, list2, fn, begin1, begin2, count, i+1)
+;
+function mismatch_count_intern_type (list1, list2, type, begin1=0, begin2=0, count=0, i=0) =
+	i>=count ? i :
+	(get_value(list1[begin1+i],type) != get_value(list2[begin2+i],type)) ? i :
+	mismatch_count_intern_type (list1, list2, type, begin1, begin2, count, i+1)
+;
+//
+function mismatch_count_intern_f_direct (list1, list2, f, begin1=0, begin2=0, count=0, i=0) =
+	i>=count ? i :
+	!f (list1[begin1+i], list2[begin2+i]) ? i :
+	mismatch_count_intern_f_direct (list1, list2, f, begin1, begin2, count, i+1)
+;
+function mismatch_count_intern_f_list (list1, list2, f, position=0, begin1=0, begin2=0, count=0, i=0) =
+	i>=count ? i :
+	!f (list1[begin1+i][position], list2[begin2+i][position]) ? i :
+	mismatch_count_intern_f_list (list1, list2, f, position, begin1, begin2, count, i+1)
+;
+function mismatch_count_intern_f_function (list1, list2, f, fn, begin1=0, begin2=0, count=0, i=0) =
+	i>=count ? i :
+	!f (fn(list1[begin1+i]), fn(list2[begin2+i])) ? i :
+	mismatch_count_intern_f_function (list1, list2, f, fn, begin1, begin2, count, i+1)
+;
+function mismatch_count_intern_f_type (list1, list2, f, type, begin1=0, begin2=0, count=0, i=0) =
+	i>=count ? i :
+	!f (get_value(list1[begin1+i],type), get_value(list2[begin2+i],type)) ? i :
+	mismatch_count_intern_f_type (list1, list2, f, type, begin1, begin2, count, i+1)
+;
+
+// Testet 2 Listen nach Gleichheit und gibt alle Treffer, die nicht gleich sind als Liste aus.
+// Die Werte in der Rückgabeliste enthält die Positionen der Treffer beider Listen als Liste [pos list1, pos list2].
+// Vergleicht die Daten direkt mit dem Operator == oder mit Funktion 'f', wenn angegeben
+function mismatch_list (list1, list2, begin1=0, begin2=0, count=undef, type=0, f=undef) =
+	let (
+		Range1 = parameter_range_safe (list1, begin1, undef, count, undef),
+		Range2 = parameter_range_safe (list2, begin2, undef, count, undef),
+		Begin1 = Range1[0],
+		Begin2 = Range2[0],
+		Count1 = Range1[1] - Range1[0] + 1,
+		Count2 = Range2[1] - Range2[0] + 1,
+		Count     = min (Count1, Count2),
+		Count_max = max (Count1, Count2)
+	)
+	[ each
+	f==undef ?
+		 type   == 0                   ? [for(i=[0:1:Count-1]) if (list1[Begin1+i]                 != list2[Begin2+i]                ) [Begin1+i, Begin2+i] ]
+		:type[0]>= 0                   ? [for(i=[0:1:Count-1]) if (list1[Begin1+i][type[0]]        != list2[Begin2+i][type[0]]       ) [Begin1+i, Begin2+i] ]
+		:type[0]==-1 ? let( fn=type[1] ) [for(i=[0:1:Count-1]) if (fn(list1[Begin1+i])             != fn(list2[Begin2+i])            ) [Begin1+i, Begin2+i] ]
+		:                                [for(i=[0:1:Count-1]) if (get_value(list1[Begin1+i],type) != get_value(list1[Begin1+i],type)) [Begin1+i, Begin2+i] ]
+	:
+		 type   == 0                   ? [for(i=[0:1:Count-1]) if (f( list1[Begin1+i]                , list2[Begin2+i]                ) !=true) [Begin1+i, Begin2+i] ]
+		:type[0]>= 0                   ? [for(i=[0:1:Count-1]) if (f( list1[Begin1+i][type[0]]       , list2[Begin2+i][type[0]]       ) !=true) [Begin1+i, Begin2+i] ]
+		:type[0]==-1 ? let( fn=type[1] ) [for(i=[0:1:Count-1]) if (f( fn(list1[Begin1+i])            , fn(list2[Begin2+i])            ) !=true) [Begin1+i, Begin2+i] ]
+		:                                [for(i=[0:1:Count-1]) if (f( get_value(list1[Begin1+i],type), get_value(list1[Begin1+i],type)) !=true) [Begin1+i, Begin2+i] ]
+	, each Count==Count_max ? [] : [for(i=[Count:1:Count_max-1]) [Begin1+i, Begin2+i] ]
+	]
+;
+
 // Zählt das Vorkommen eines Wertes in der Liste
 // Argumente:
 //   list    -Liste
@@ -558,101 +657,3 @@ function unique (list, type=0, f=undef) =
 			]
 ;
 
-// Testet 2 Listen nach Gleichheit und gibt den ersten Treffer bei 'list1', der nicht gleich ist.
-// Die Rückgabe enthält die Position des Treffers beider Listen als Liste [pos list1, pos list2].
-// Vergleicht die Daten direkt mit dem Operator == oder mit Funktion 'f', wenn angegeben
-function mismatch (list1, list2, begin1=0, begin2=0, count=undef, type=0, f=undef) =
-	list1==undef || list2==undef ? 0 :
-	let (
-		Range1 = parameter_range_safe (list1, begin1, undef, count, undef),
-		Range2 = parameter_range_safe (list2, begin2, undef, count, undef),
-		Begin1 = Range1[0],
-		Begin2 = Range2[0],
-		Count1 = Range1[1] - Range1[0] + 1,
-		Count2 = Range2[1] - Range2[0] + 1,
-		Count  = min (Count1, Count2),
-		result =
-			f==undef ?
-				 type   == 0 ? mismatch_count_intern_direct   (list1, list2,          Begin1, Begin2, Count)
-				:type[0]>= 0 ? mismatch_count_intern_list     (list1, list2, type[0], Begin1, Begin2, Count)
-				:type[0]==-1 ? mismatch_count_intern_function (list1, list2, type[1], Begin1, Begin2, Count)
-				:              mismatch_count_intern_type     (list1, list2, type   , Begin1, Begin2, Count)
-			:
-				 type   == 0 ? mismatch_count_intern_f_direct   (list1, list2, f,          Begin1, Begin2, Count)
-				:type[0]>= 0 ? mismatch_count_intern_f_list     (list1, list2, f, type[0], Begin1, Begin2, Count)
-				:type[0]==-1 ? mismatch_count_intern_f_function (list1, list2, f, type[1], Begin1, Begin2, Count)
-				:              mismatch_count_intern_f_type     (list1, list2, f, type   , Begin1, Begin2, Count)
-	)
-	[Begin1+result, Begin2+result]
-;
-//
-function mismatch_count_intern_direct (list1, list2, begin1=0, begin2=0, count=0, i=0) =
-	i>=count ? i :
-	(list1[begin1+i] != list2[begin2+i]) ? i :
-	mismatch_count_intern_direct (list1, list2, begin1, begin2, count, i+1)
-;
-function mismatch_count_intern_list (list1, list2, position=0, begin1=0, begin2=0, count=0, i=0) =
-	i>=count ? i :
-	(list1[begin1+i][position] != list2[begin2+i][position]) ? i :
-	mismatch_count_intern_list (list1, list2, position, begin1, begin2, count, i+1)
-;
-function mismatch_count_intern_function (list1, list2, fn, begin1=0, begin2=0, count=0, i=0) =
-	i>=count ? i :
-	(fn(list1[begin1+i]) != fn(list2[begin2+i])) ? i :
-	mismatch_count_intern_function (list1, list2, fn, begin1, begin2, count, i+1)
-;
-function mismatch_count_intern_type (list1, list2, type, begin1=0, begin2=0, count=0, i=0) =
-	i>=count ? i :
-	(get_value(list1[begin1+i],type) != get_value(list2[begin2+i],type)) ? i :
-	mismatch_count_intern_type (list1, list2, type, begin1, begin2, count, i+1)
-;
-//
-function mismatch_count_intern_f_direct (list1, list2, f, begin1=0, begin2=0, count=0, i=0) =
-	i>=count ? i :
-	!f (list1[begin1+i], list2[begin2+i]) ? i :
-	mismatch_count_intern_f_direct (list1, list2, f, begin1, begin2, count, i+1)
-;
-function mismatch_count_intern_f_list (list1, list2, f, position=0, begin1=0, begin2=0, count=0, i=0) =
-	i>=count ? i :
-	!f (list1[begin1+i][position], list2[begin2+i][position]) ? i :
-	mismatch_count_intern_f_list (list1, list2, f, position, begin1, begin2, count, i+1)
-;
-function mismatch_count_intern_f_function (list1, list2, f, fn, begin1=0, begin2=0, count=0, i=0) =
-	i>=count ? i :
-	!f (fn(list1[begin1+i]), fn(list2[begin2+i])) ? i :
-	mismatch_count_intern_f_function (list1, list2, f, fn, begin1, begin2, count, i+1)
-;
-function mismatch_count_intern_f_type (list1, list2, f, type, begin1=0, begin2=0, count=0, i=0) =
-	i>=count ? i :
-	!f (get_value(list1[begin1+i],type), get_value(list2[begin2+i],type)) ? i :
-	mismatch_count_intern_f_type (list1, list2, f, type, begin1, begin2, count, i+1)
-;
-
-// Testet 2 Listen nach Gleichheit und gibt alle Treffer, die nicht gleich sind als Liste aus.
-// Die Werte in der Rückgabeliste enthält die Positionen der Treffer beider Listen als Liste [pos list1, pos list2].
-// Vergleicht die Daten direkt mit dem Operator == oder mit Funktion 'f', wenn angegeben
-function mismatch_list (list1, list2, begin1=0, begin2=0, count=undef, type=0, f=undef) =
-	let (
-		Range1 = parameter_range_safe (list1, begin1, undef, count, undef),
-		Range2 = parameter_range_safe (list2, begin2, undef, count, undef),
-		Begin1 = Range1[0],
-		Begin2 = Range2[0],
-		Count1 = Range1[1] - Range1[0] + 1,
-		Count2 = Range2[1] - Range2[0] + 1,
-		Count     = min (Count1, Count2),
-		Count_max = max (Count1, Count2)
-	)
-	[ each
-	f==undef ?
-		 type   == 0                   ? [for(i=[0:1:Count-1]) if (list1[Begin1+i]                 != list2[Begin2+i]                ) [Begin1+i, Begin2+i] ]
-		:type[0]>= 0                   ? [for(i=[0:1:Count-1]) if (list1[Begin1+i][type[0]]        != list2[Begin2+i][type[0]]       ) [Begin1+i, Begin2+i] ]
-		:type[0]==-1 ? let( fn=type[1] ) [for(i=[0:1:Count-1]) if (fn(list1[Begin1+i])             != fn(list2[Begin2+i])            ) [Begin1+i, Begin2+i] ]
-		:                                [for(i=[0:1:Count-1]) if (get_value(list1[Begin1+i],type) != get_value(list1[Begin1+i],type)) [Begin1+i, Begin2+i] ]
-	:
-		 type   == 0                   ? [for(i=[0:1:Count-1]) if (f( list1[Begin1+i]                , list2[Begin2+i]                ) !=true) [Begin1+i, Begin2+i] ]
-		:type[0]>= 0                   ? [for(i=[0:1:Count-1]) if (f( list1[Begin1+i][type[0]]       , list2[Begin2+i][type[0]]       ) !=true) [Begin1+i, Begin2+i] ]
-		:type[0]==-1 ? let( fn=type[1] ) [for(i=[0:1:Count-1]) if (f( fn(list1[Begin1+i])            , fn(list2[Begin2+i])            ) !=true) [Begin1+i, Begin2+i] ]
-		:                                [for(i=[0:1:Count-1]) if (f( get_value(list1[Begin1+i],type), get_value(list1[Begin1+i],type)) !=true) [Begin1+i, Begin2+i] ]
-	, each Count==Count_max ? [] : [for(i=[Count:1:Count_max-1]) [Begin1+i, Begin2+i] ]
-	]
-;
