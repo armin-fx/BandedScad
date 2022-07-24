@@ -343,7 +343,8 @@ Priority of the arguments:
 4. `range[0]`, `count`
 5. `range[1]`, `count`
 6. `range`
-7. `[0, -1]` = default
+7. single argument (`begin`, `last`, `count`), remainder to default
+8. `[0, -1]` = default, full range
 
 
 #### `parameter_range_safe (list, 'range_args')` [^][contents]
