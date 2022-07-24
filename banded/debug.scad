@@ -18,9 +18,9 @@ module echo_line (length=50, char="-")
 	echo (str_line (length, char));
 }
 
-module echo_short_line (length=50) { echo_line (length/2, " -"); }
-module echo_bar        (length=50) { echo_line (length  , "=" ); }
-module echo_wall       (length=50) { echo_line (length  , "#" ); }
+module echo_thin_line (length=50) { echo_line (length/2, " -"); }
+module echo_bar       (length=50) { echo_line (length  , "=" ); }
+module echo_wall      (length=50) { echo_line (length  , "#" ); }
 
 // - Linien und Punkte sichtbar machen:
 

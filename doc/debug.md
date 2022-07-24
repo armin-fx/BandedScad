@@ -32,15 +32,15 @@ Objects to make parts of objects and points in variables seeable.
 ### Echo in console [^][contents]
 
 #### `echo_line (length, char)` [^][contents]
-[echo_line]: #echo_line-
+[echo_line]: #echo_line-length-char-
 Echo a horizontal line into the console.
 - `length` - length of line in letter, default = `50`
 - `char`   - character of line, default = `-`
 
 ___Specialized modules with fixed character:___
-- `echo_short_line (length)` - Echo a thinner line
-- `echo_bar  (length)`       - Echo a bigger line, character = `=`
-- `echo_wall (length)`       - Echo a fat line, character = `#`
+- `echo_thin_line (length)` - Echo a thinner line
+- `echo_bar  (length)`      - Echo a bigger line, character = `=`
+- `echo_wall (length)`      - Echo a fat line, character = `#`
 
 
 ### Make points and lines visible [^][contents]
