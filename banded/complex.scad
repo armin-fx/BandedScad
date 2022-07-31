@@ -87,26 +87,42 @@ function c_abs (c) =
 function c_abs_cartesian (c) = norm(c);
 function c_abs_polar     (c) = c[0];
 
+// Squared absolute value
+function c_abs_sqr (c) =
+	is_num(c) ? c*c
+	:
+	c[2]==undef ? // c_abs_cartesian (c)
+		let( r=norm(c) ) r*r
+	:             // c_abs_polar     (c)
+		c[0]*c[0]
+;
+function c_abs_sqr_cartesian (c) = let( r=norm(c) ) r*r;
+function c_abs_sqr_polar     (c) = c[0]*c[0];
+
 // Addition, Subtraction
 function c_add (c, d) =
 	// get_cartesian(c) + get_cartesian(d);
+	(
 	 is_num(c)   ? [c, 0]
 	:c[2]==undef ? c
 	:              c[0] * [cos(c[1]), sin(c[1])]
-	+
-	 is_num(c)   ? [d, 0]
+	) + (
+	 is_num(d)   ? [d, 0]
 	:d[2]==undef ? d
 	:              d[0] * [cos(d[1]), sin(d[1])]
+	)
 ;
 function c_sub (c, d) =
 	// get_cartesian(c) - get_cartesian(d);
+	(
 	 is_num(c)   ? [c, 0]
 	:c[2]==undef ? c
 	:              c[0] * [cos(c[1]), sin(c[1])]
-	-
-	 is_num(c)   ? [d, 0]
+	) - (
+	 is_num(d)   ? [d, 0]
 	:d[2]==undef ? d
 	:              d[0] * [cos(d[1]), sin(d[1])]
+	)
 ;
 function c_add_cartesian (c, d) =
 	c + d
@@ -265,8 +281,30 @@ function c_div_polar_to_cartesian (c, d) =
 ;
 
 // square root
-// return a list with 2 complex number
+// return the main value of the 2 results
 function c_sqrt (c) =
+	is_num(c) ?
+		c>=0 ? [sqrt(c), 0]
+		     : [0, sqrt(-c)]
+	:
+	c[2]==undef ?
+		// c_sqrt_cartesian (c)
+		[              sqrt( ( c[0] + norm(c)) / 2 )
+		, sign(c[1]) * sqrt( (-c[0] + norm(c)) / 2 ) ]
+	:   // c_sqrt_polar (c)
+		[ sqrt(c[0]), c[1]/2, 0 ]
+;
+function c_sqrt_cartesian (c) =
+	[              sqrt( ( c[0] + norm(c)) / 2 )
+	, sign(c[1]) * sqrt( (-c[0] + norm(c)) / 2 ) ]
+;
+function c_sqrt_polar (c) =
+	[ sqrt(c[0]), c[1]/2, 0 ]
+;
+
+// square root
+// return a list with 2 complex number
+function c_sqrt_list (c) =
 	is_num(c) ?
 		let(
 		s = c>=0 ? [sqrt(c), 0]
@@ -285,7 +323,7 @@ function c_sqrt (c) =
 		let( s = [ sqrt(c[0]), c[1]/2, 0 ] )
 		[s, -s]
 ;
-function c_sqrt_cartesian (c) =
+function c_sqrt_list_cartesian (c) =
 	let(
 	s =
 		[              sqrt( ( c[0] + norm(c)) / 2 )
@@ -293,7 +331,7 @@ function c_sqrt_cartesian (c) =
 	)
 	[s, -s]
 ;
-function c_sqrt_polar (c) =
+function c_sqrt_list_polar (c) =
 	let( s = [ sqrt(c[0]), c[1]/2, 0 ] )
 	[s, -s]
 ;

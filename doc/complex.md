@@ -14,6 +14,7 @@ Calculating with complex numbers
   - [`get_cartesian()`, `get_polar()`][c-form]
   - [`get_real()`, `get_imaginary()`][c-part]
   - [`c_abs()`][abs]
+  - [`c_abs_sqr()`][abs_sqr]
   - [`c_conjugate()`][conjugate]
 - [Calculation functions](#calculation-functions-)
   - [`c_add()`, `c_sub()`][add]
@@ -33,7 +34,7 @@ The complex numbers are set up as a list.
 - As list in polar complex plane expressed in form
   `z = r * e^(i*phi)  = r * ( cos(phi) + i*sin(phi) )`.\
   `r` = distance from origin and\
-  `phi` = angle around origin from the positive real axis.\
+  `phi` = angle around origin in degrees `0...360` from the positive real axis.\
   In order to be able to distinguish the polar form from the cartesian form,
   an indefinite value without meaning is appended to the list.
   
@@ -64,7 +65,7 @@ Convert functions [^][contents]
 `get_polar (c)`
 
 #### Specialized function:
-| input          | return cartesian form         | return polar form
+| input type     | returns cartesian form        | returns polar form
 |----------------|-------------------------------|-------------------
 | numeric value  | `get_cartesian_from_number()` | `get_polar_from_number()`
 | cartesian form | -                             | `get_polar_from_cartesian()`
@@ -80,8 +81,8 @@ Return real part or imaginary part from complex number
 `get_imaginary (c)`
 
 #### Specialized function:
-| input          | return real part            | return imaginary part
-|----------------|-----------------------------|-----------------------
+| input type     | returns real part           | returns imaginary part
+|----------------|-----------------------------|------------------------
 | numeric value  | `get_real_from_number()`    | `get_imaginary_from_number()`
 | cartesian form | `get_real_from_cartesian()` | `get_imaginary_from_cartesian()`
 | polar form     | `get_real_from_polar()`     | `get_imaginary_from_polar()`
@@ -95,11 +96,26 @@ Return the absolute value as numeric value.
 `c_abs (c)`
 
 #### Specialized function:
-| input          | return
-|----------------|--------
-| numeric value  | `abs()` - from OpenSCAD
-| cartesian form | `c_abs_cartesian()`
-| polar form     | `c_abs_polar()`
+| function            | input          | returns       | comment
+|---------------------|----------------|---------------|---------
+| `abs()`             | numeric value  | numeric value | from OpenSCAD
+| `c_abs_cartesian()` | cartesian form | numeric value |
+| `c_abs_polar()`     | polar form     | numeric value |
+
+
+### Squared absolute value [^][contents]
+[abs_sqr]: #squared-absolute-value- "Squared absolute value"
+Return the squared absolute value as numeric value.
+
+#### Common function:
+`c_abs_sqr (c)`
+
+#### Specialized function:
+| function                | input          | returns       | comment
+|-------------------------|----------------|---------------|---------
+| `norm_sqr()`            | numeric value  | numeric value | from `banded/math_vector.scad`
+| `c_abs_sqr_cartesian()` | cartesian form | numeric value |
+| `c_abs_sqr_polar()`     | polar form     | numeric value |
 
 
 ### Conjugate complex number [^][contents]
@@ -110,10 +126,10 @@ Swap the sign of the imaginary part of a complex number.
 `c_conjugate (c)`
 
 #### Specialized function:
-| input          | return
-|----------------|--------
-| cartesian form | `c_conjugate_cartesian()`
-| polar form     | `c_conjugate_polar()`
+| function                  | input and output type
+|---------------------------|-----------------------
+| `c_conjugate_cartesian()` | cartesian form
+| `c_conjugate_polar()`     | polar form
 
 
 Calculation functions [^][contents]
@@ -126,7 +142,7 @@ Add or subtract complex number `d` from `c`.
 #### Common function:
 `c_add (c, d)`\
 `c_sub (c, d)`
-- return a complex number list in cartesian form.
+- return a complex number in cartesian form.
 
 #### Specialized function:
 `xxx` = `add` or `sub`
@@ -162,17 +178,24 @@ Multiplicate or Divide complex number `d` from `c`.
 
 ### Complex square root [^][contents]
 [sqrt]: #complex-square-root- "Complex square root"
-Return a list with 2 complex number
+Return the square root of a complex number
 
 #### Common function:
-`c_sqrt (c)`
+`c_sqrt (c)`      - Returns the square root using the principal branch, whose cuts are along the negative real axis.
+`c_sqrt_list (c)` - Returns a list with 2 complex number, both results
+
+| input          | result
+|----------------|--------
+| numeric value  | complex number in cartesian form
+| cartesian form | cartesian form
+| polar form     | polar form
 
 #### Specialized function:
-| input          | return
-|----------------|--------
-| numeric value  | `sqrt()` - from OpenSCAD
-| cartesian form | `c_sqrt_cartesian()`
-| polar form     | `c_sqrt_polar()`
+| function             | input and output type | comment
+|----------------------|-----------------------|---------
+| `sqrt()`             | numeric value         | from OpenSCAD, only positive value
+| `c_sqrt_cartesian()` | cartesian form        |
+| `c_sqrt_polar()`     | polar form            |
 
 
 ### Complex square function [^][contents]
@@ -182,10 +205,10 @@ Return a list with 2 complex number
 `c_sqr (c)`
 
 #### Specialized function:
-| input          | return
-|----------------|--------
-| numeric value  | `sqr()` - from `banded/math_common.scad`
-| cartesian form | `c_sqr_cartesian()`
-| polar form     | `c_sqr_polar()`
+| function            | input and output type | comment
+|---------------------|-----------------------|---------
+| `sqr()`             | numeric value         | from `banded/math_common.scad`
+| `c_sqr_cartesian()` | cartesian form        |
+| `c_sqr_polar()`     | polar form            |
 
 
