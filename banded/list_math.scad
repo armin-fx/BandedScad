@@ -1,5 +1,11 @@
 // Copyright (c) 2020 Armin Frenzel
 // License: LGPL-2.1-or-later
+//
+// Enthält mathematische Funktionen,
+// die auf die einzelnen Werte in der gesamten Liste angewendet werden.
+
+use <banded/math_common.scad>
+
 
 // Function literal 'fn' with each element in list
 // since OpenSCAD Version 2021.01
@@ -38,6 +44,15 @@ function atan2_each (list_y,list_x) =
 function atan2_each_with_x (list_y,x) = [ for (a=list_y) atan2 (a,x) ];
 function atan2_each_with_y (y,list_x) = [ for (a=list_x) atan2 (y,a) ];
 //
+function sinh_each   (list) = [for (e=list) sinh(e)];
+function cosh_each   (list) = [for (e=list) cosh(e)];
+function tanh_each   (list) = [for (e=list) tanh(e)];
+function coth_each   (list) = [for (e=list) coth(e)];
+function asinh_each  (list) = [for (e=list) asinh(e)];
+function acosh_each  (list) = [for (e=list) acosh(e)];
+function atanh_each  (list) = [for (e=list) atanh(e)];
+function acoth_each  (list) = [for (e=list) acoth(e)];
+//
 function floor_each (list) = [for (a=list) floor(a)];
 function ceil_each  (list) = [for (a=list) ceil(a)];
 function round_each (list) = [for (a=list) round(a)];
@@ -68,3 +83,10 @@ function sum_each_next_intern (list, begin=0, offset=0) =
 	begin==len(list) ? offset :
 	concat(offset, sum_each_next_intern(list, begin+1, offset+list[begin]))
 ;
+
+function quantize_each (list, raster=1, offset=0.5) = [for (e=list) quantize (e, raster, offset)];
+
+function mod_each (list, n) = [for (e=list) (e%n+n)%n];
+
+function constrain_each               (list, min, max) = [for (e=list) constrain               (e, min, max)];
+function constrain_bidirectional_each (list, a  , b  ) = [for (e=list) constrain_bidirectional (e, a  , b  )];

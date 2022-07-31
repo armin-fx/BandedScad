@@ -111,6 +111,18 @@ Returns a list with the result.
 | `reciprocal_each (list,numerator=1)` | reciprocate each value `1 / list[n]`. Optional argument `numerator` can set with a value: `numerator / list[n]`
 | `sqr_each (list)`                    | square each value `list[n] ^ 2`
 | `sum_each_next (list)`               | every next value contains the summation of all previous values in list
+| `sinh_each (list)`                   | calculate the hyperbolic sine on each value in a list.
+| `cosh_each (list)`                   | calculate the hyperbolic cosine on each value.
+| `tanh_each (list)`                   | calculate the hyperbolic tangent on each value.
+| `coth_each (list)`                   | calculate the hyperbolic cotangent on each value.
+| `asinh_each (list)`                  | calculate the area hyperbolic sine on each value.
+| `acosh_each (list)`                  | calculate the area hyperbolic cosine on each value.
+| `atanh_each (list)`                  | calculate the area hyperbolic tangent on each value.
+| `acoth_each (list)`                  | calculate the area hyperbolic cotangent on each value.
+| `quantize_each (list,raster,offset)` | quantizes every value within a grid.
+| `mod_each (list,n)`                  | calculates the modulo on each value.
+| `constrain_each (list,min,max)`      | constrain each value in the list within `min` and `max`. `min` must be smaller then `max`.
+| `constrain_bidirectional_each (list,a,b)` | constrain each value in the list within value `a` and `b`
 
 
 #### Call function on each list element [^][contents]
