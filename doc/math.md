@@ -53,6 +53,15 @@ Math functions
       - `acosh()`
       - `atanh()`
       - `acoth()`
+    - [Trigonometric in radians](#trigonometric-in-radians-)
+      - `cos_r()`
+      - `tan_r()`
+      - `cot_r()`
+      - `asin_r()`
+      - `acos_r()`
+      - `atan_r()`
+      - `acot_r()`
+      - `atan2_r()`
     - [`sinc()`][sinc]
     - [`Si()`][si]
 - [Number functions](#number-functions-)
@@ -157,6 +166,11 @@ Calculates the modulo.\
 Get the remainder of `x / n` with floored division.
 The remainder would have the same sign as the divisor `n`.
 
+#### `sign_plus (x)` [^][contents]
+[sign_plus]: #sign_plus-x-
+Mathematical positive signum function.\
+Returns `-1` if `x<0` and `1` if `x>=0`
+
 #### `xor (bool, bool2)` [^][contents]
 [xor]: #xor-bool-bool2-
 return a boolean value of operation xor
@@ -201,6 +215,27 @@ Calculate the Gauss normal distribution
 | `acosh (x)` | Inverse hyperbolic cosine of `x`
 | `atanh (x)` | Inverse hyperbolic tangent of `x`
 | `acoth (x)` | Inverse hyperbolic cotangent of `x`
+
+#### Trigonometric in radians [^][contents]
+
+These functions needs an angle in radians `0...2*PI`:
+
+| function    | description
+|-------------|-------------
+| `sin_r (x)` | sine of `x`
+| `cos_r (x)` | cosine of `x`
+| `tan_r (x)` | tangent of `x`
+| `cot_r (x)` | cotangent of `x`
+
+These functions return an angle in radians `0...2*PI`:
+
+| function        | description
+|-----------------|-------------
+| `asin_r (x)`    | Inverse sine of `x`
+| `acos_r (x)`    | Inverse cosine of `x`
+| `atan_r (x)`    | Inverse tangent of `x`
+| `acot_r (x)`    | Inverse cotangent of `x`
+| `atan2_r (y,x)` | Inverse tangent. Two-argument version of `atan_r` with Y and X axis.
 
 #### `sinc (x)` [^][contents]
 [sinc]: #sinc-x-

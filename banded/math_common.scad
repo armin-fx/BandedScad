@@ -100,6 +100,9 @@ function mod (x, n) =
 	(x%n+n)%n
 ;
 
+//
+function sign_plus (x) = x<0 ? -1 : 1;
+
 // bildet das 'exklusive oder'
 function xor (bool, bool2) = bool==bool2 ? false : true;
 
@@ -141,7 +144,19 @@ function acosh (x) =
 function atanh (x) = ln((1 + x) / (1 - x)) / 2;
 // Umkehrfunktion Hyperbelkotangens
 function acoth (x) = ln((x + 1) / (x - 1)) / 2;
+
+// Trigonometrische Funktion im Bogenmaß
+function sin_r (x) = sin (x*degree_per_radian);
+function cos_r (x) = cos (x*degree_per_radian);
+function tan_r (x) = tan (x*degree_per_radian);
+function cot_r (x) = cot (x*degree_per_radian);
 //
+function asin_r (x) = asin(x) * radian_per_degree;
+function acos_r (x) = acos(x) * radian_per_degree;
+function atan_r (x) = atan(x) * radian_per_degree;
+function acot_r (x) = acot(x) * radian_per_degree;
+function atan2_r (y,x) = atan2(y,x) * radian_per_degree;
+
 // Kardinalsinus
 function si   (x) = (x==0) ? 1 : sin(x*degree_per_radian) / x;
 // normierter Kardinalsinus
