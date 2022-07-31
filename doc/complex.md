@@ -21,6 +21,16 @@ Calculating with complex numbers
   - [`c_mul()`, `c_div()`][mul]
   - [`c_sqrt()`][sqrt]
   - [`c_sqr()`][sqr]
+  - [Complex exponent and logarithmus](#complex-exponent-and-logarithmus-)
+    - `c_exp()`, `c_ln()`, `c_log()`
+  - [Complex trigonometric functions](#complex-trigonometric-functions-)
+    - `c_sin()`, `c_cos()`, `c_tan()`, `c_cot()`
+  - [Complex inverse trigonometric functions](#complex-inverse-trigonometric-functions-)
+    - `c_asin()`, `c_acos()`, `c_atan()`, `c_acot()`
+  - [Complex hyperbolic trigonometric functions](#complex-hyperbolic-trigonometric-functions-)
+    - `c_sinh()`, `c_cosh()`, `c_tanh()`, `c_coth()`
+  - [Complex inverse hyperbolic trigonometric functions](#complex-inverse-hyperbolic-trigonometric-functions-)
+    - `c_asinh()`, `c_acosh()`, `c_atanh()`, `c_acoth()`
 
 
 Convention [^][contents]
@@ -211,4 +221,52 @@ Return the square root of a complex number
 | `c_sqr_cartesian()` | cartesian form        |
 | `c_sqr_polar()`     | polar form            |
 
+
+### Complex exponent and logarithmus [^][contents]
+
+| function    | description
+|-------------|-------------
+| `c_exp (c)` | Complex exponent
+| `c_ln (c)`  | Complex natural logarithmus
+| `c_log (c)` | Complex logarithmus base 10
+
+
+### Complex trigonometric functions [^][contents]
+
+| function    | description
+|-------------|-------------
+| `c_sin (c)` | Complex sinus
+| `c_cos (c)` | Complex cosinus
+| `c_tan (c)` | Complex tangent
+| `c_cot (c)` | Complex cotangent
+
+
+### Complex inverse trigonometric functions [^][contents]
+
+| function     | description
+|--------------|-------------
+| `c_asin (c)` | Complex area sinus
+| `c_acos (c)` | Complex area cosinus
+| `c_atan (c)` | Complex area tangent
+| `c_acot (c)` | Complex area cotangent
+
+
+### Complex hyperbolic trigonometric functions [^][contents]
+
+| function     | description
+|--------------|-------------
+| `c_sinh (c)` | Complex hyperbolic sinus
+| `c_cosh (c)` | Complex hyperbolic cosinus
+| `c_tanh (c)` | Complex hyperbolic tangent
+| `c_coth (c)` | Complex hyperbolic cotangent
+
+
+### Complex inverse hyperbolic trigonometric functions [^][contents]
+
+| function      | description
+|------ --------|-------------
+| `c_asinh (c)` | Complex area hyperbolic sinus
+| `c_acosh (c)` | Complex area hyperbolic cosinus
+| `c_atanh (c)` | Complex area hyperbolic tangent
+| `c_acoth (c)` | Complex area hyperbolic cotangent
 

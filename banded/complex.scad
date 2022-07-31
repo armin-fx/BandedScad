@@ -354,3 +354,164 @@ function c_sqr_polar (c) =
 	[ c[0]*c[0], c[1]*2, 0 ]
 ;
 
+function c_exp (c) =
+	is_num(c) ? [exp(c), 0]
+	:c[2]==undef ? // cartesian
+		exp(c[0]) * [cos_r(c[1]), sin_r(c[1])]
+	: // polar
+		c_exp (get_cartesian_from_polar(c))
+;
+function c_ln (c) =
+	is_num(c) ? [ln(c), 0]
+	:c[2]==undef ? // cartesian
+		[ln(norm(c)), atan2_r(c[1],c[0])]
+	: // polar
+		[ln(c[0]), c[1]*radian_per_degree]
+;
+function c_log (c) =
+	is_num(c) ? [log(c), 0]
+	:c[2]==undef ? // cartesian
+		[log(norm(c)), atan2_r(c[1],c[0])/ln(10)]
+	: // polar
+		[log(c[0]), c[1]*radian_per_degree/ln(10)]
+;
+
+function c_sin (c) =
+	is_num(c) ? [sin_r(c), 0]
+	:c[2]==undef ? // cartesian
+		[sin_r(c[0]) * cosh(c[1]), cos_r(c[0]) * sinh(c[1])]
+	: // polar
+		c_sin (get_cartesian_from_polar(c))
+;
+function c_cos (c) =
+	is_num(c) ? [cos_r(c), 0]
+	:c[2]==undef ? // cartesian
+		[cos_r(c[0]) * cosh(c[1]), sin_r(c[0]) * sinh(c[1])]
+	: // polar
+		c_cos (get_cartesian_from_polar(c))
+;
+function c_tan (c) =
+	is_num(c) ? [tan_r(c), 0]
+	:c[2]==undef ? // cartesian
+		  [sin_r(2*c[0]),  sinh(2*c[1])]
+		/ (cos_r(2*c[0]) + cosh(2*c[1]))
+	: // polar
+		c_tan (get_cartesian_from_polar(c))
+;
+function c_cot (c) =
+	is_num(c) ? [cot_r(c), 0]
+	:c[2]==undef ? // cartesian
+		  [-sin_r(2*c[0]),  sinh(2*c[1])]
+		/ ( cos_r(2*c[0]) - cosh(2*c[1]))
+	: // polar
+		c_cot (get_cartesian_from_polar(c))
+;
+
+function c_sinh (c) =
+	is_num(c) ? [sinh(c), 0]
+	:c[2]==undef ? // cartesian
+		[sinh(c[0]) * cos_r(c[1]), cosh(c[0]) * sin_r(c[1])]
+	: // polar
+		c_sinh (get_cartesian_from_polar(c))
+;
+function c_cosh (c) =
+	is_num(c) ? [cosh(c), 0]
+	:c[2]==undef ? // cartesian
+		[cosh(c[0]) * cos_r(c[1]), sinh(c[0]) * sin_r(c[1])]
+	: // polar
+		c_cosh (get_cartesian_from_polar(c))
+;
+function c_tanh (c) =
+	is_num(c) ? [tanh(c), 0]
+	:c[2]==undef ? // cartesian
+		  [sinh(2*c[0]),  sin_r(2*c[1])]
+		/ (cosh(2*c[0]) + cos_r(2*c[1]))
+	: // polar
+		c_tanh (get_cartesian_from_polar(c))
+;
+function c_coth (c) =
+	is_num(c) ? [coth(c), 0]
+	:c[2]==undef ? // cartesian
+		  [sinh(2*c[0]), -sin_r(2*c[1])]
+		/ (cosh(2*c[0]) - cos_r(2*c[1]))
+	: // polar
+		c_coth (get_cartesian_from_polar(c))
+;
+
+function c_asin (c) =
+	is_num(c) ? [asin_r(c), 0]
+	:c[2]==undef ? // cartesian
+		///*
+		let( i=[0,1] )
+		c_mul(-i, c_ln(c_add( c_sqrt(c_sub(1,c_sqr(c))), c_mul(i,c) )) )
+		//*/
+		/*
+		let(
+			a=c[0], b=c[1],
+			term1 = sqrt (sqr(a*a + b*b - 1) + 4*b*b ),
+			term2 = a*a + b*b
+		)
+		[sign_plus(a)/2 * acos_r(term1-term2), sign_plus(b)/2 * acosh(term1+term2)]
+		//*/
+	: // polar
+		c_asin (get_cartesian_from_polar(c))
+;
+function c_acos (c) =
+	is_num(c) ? [acos_r(c), 0]
+	:c[2]==undef ? // cartesian
+		let(
+			a=c[0], b=c[1],
+			term1 = sqrt (sqr(a*a + b*b - 1) + 4*b*b ),
+			term2 = a*a + b*b
+		)
+		[PI/2 - sign_plus(a)/2 * acos_r(term1-term2), -sign_plus(b)/2 * acosh(term1+term2)]
+	: // polar
+		c_acos (get_cartesian_from_polar(c))
+;
+function c_atan (c) =
+	is_num(c) ? [atan_r(c), 0]
+	:c[2]==undef ? // cartesian
+		let( a=c[0], b=c[1] )
+		[a==0 ? abs(b)<=1 ? 0 : sign(b)*PI/2 :  1/2 * (atan_r((a*a + b*b - 1) / (2*a)) + sign(a)*PI/2)
+		, 1/2 * atanh(2*b / (a*a + b*b + 1)) ]
+	: // polar
+		c_atan (get_cartesian_from_polar(c))
+;
+function c_acot (c) =
+	is_num(c) ? [acot_r(c), 0]
+	:c[2]==undef ? // cartesian
+		let( a=c[0], b=c[1] )
+		[PI/2 - (a==0 ? abs(b)<=1 ? 0 : sign(b)*PI/2 :  1/2 * (atan_r((a*a + b*b - 1) / (2*a)) + sign(a)*PI/2) )
+		, -1/2 * atanh(2*b / (a*a + b*b + 1)) ]
+	: // polar
+		c_acot (get_cartesian_from_polar(c))
+;
+
+function c_asinh (c) =
+	is_num(c) ? [asinh(c), 0]
+	:c[2]==undef ? // cartesian
+		c_ln( c_add (c, c_sqrt (c_add (c_sqr(c), 1) ) ) )
+	: // polar
+		c_asinh (get_cartesian_from_polar(c))
+;
+function c_acosh (c) =
+	is_num(c) ? [acosh(c), 0]
+	:c[2]==undef ? // cartesian
+		c_ln( c_add (c, c_sqrt (c_sub (c_sqr(c), 1) ) ) )
+	: // polar
+		c_acosh (get_cartesian_from_polar(c))
+;
+function c_atanh (c) =
+	is_num(c) ? [atanh(c), 0]
+	:c[2]==undef ? // cartesian
+		c_mul( 1/2, c_ln( c_div( c_add(1,c), c_sub(1,c) ) ) )
+	: // polar
+		c_atanh (get_cartesian_from_polar(c))
+;
+function c_acoth (c) =
+	is_num(c) ? [acoth(c), 0]
+	:c[2]==undef ? // cartesian
+		c_mul( 1/2, c_ln( c_div( c_add(c,1), c_sub(c,1) ) ) )
+	: // polar
+		c_acoth (get_cartesian_from_polar(c))
+;
