@@ -168,5 +168,5 @@ function helix_arc_length (r_sqr, height, twist) =
 // Using the formula for its arc length, then pythagorean theorem with height
 // should tell us the total distance a vertex covers.
 function archimedes_length (a, theta) =
-	0.5 * a * (theta * sqrt(1 + theta * theta) + arsinh(theta))
+	0.5 * a * (theta * sqrt(1 + theta * theta) + asinh(theta))
 ;

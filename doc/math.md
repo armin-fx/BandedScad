@@ -49,10 +49,10 @@ Math functions
       - `tanh()`
       - `coth()`
     - [Inverse hyperbolic](#inverse-hyperbolic-)
-      - `arsinh()`
-      - `arcosh()`
-      - `artanh()`
-      - `arcoth()`
+      - `asinh()`
+      - `acosh()`
+      - `atanh()`
+      - `acoth()`
     - [`sinc()`][sinc]
     - [`Si()`][si]
 - [Number functions](#number-functions-)
@@ -195,12 +195,12 @@ Calculate the Gauss normal distribution
 #### Inverse hyperbolic [^][contents]
 [=> Wikipedia - Inverse hyperbolic functions](https://en.wikipedia.org/wiki/Inverse_hyperbolic_functions)
 
-| function     | description
-|--------------|-------------
-| `arsinh (x)` | Inverse hyperbolic sine of `x`
-| `arcosh (x)` | Inverse hyperbolic cosine of `x`
-| `artanh (x)` | Inverse hyperbolic tangent of `x`
-| `arcoth (x)` | Inverse hyperbolic cotangent of `x`
+| function    | description
+|-------------|-------------
+| `asinh (x)` | Inverse hyperbolic sine of `x`
+| `acosh (x)` | Inverse hyperbolic cosine of `x`
+| `atanh (x)` | Inverse hyperbolic tangent of `x`
+| `acoth (x)` | Inverse hyperbolic cotangent of `x`
 
 #### `sinc (x)` [^][contents]
 [sinc]: #sinc-x-

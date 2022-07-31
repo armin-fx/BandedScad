@@ -130,17 +130,17 @@ function tanh (x) = 1 - (2 / (exp(2*x) + 1));
 function coth (x) = 1 + (2 / (exp(2*x) - 1));
 //
 // Umkehrfunktion Hyperbelsinus
-function arsinh (x) = ln(x + sqrt(x*x + 1));
+function asinh (x) = ln(x + sqrt(x*x + 1));
 // Umkehrfunktion Hyperbelkosinus
-function arcosh (x) =
+function acosh (x) =
 	(x >= 1) ?
 	  ln(x + sqrt(x*x - 1))
 	: undef
 ;
 // Umkehrfunktion Hyperbeltangens
-function artanh (x) = ln((1 + x) / (1 - x)) / 2;
+function atanh (x) = ln((1 + x) / (1 - x)) / 2;
 // Umkehrfunktion Hyperbelkotangens
-function arcoth (x) = ln((x + 1) / (x - 1)) / 2;
+function acoth (x) = ln((x + 1) / (x - 1)) / 2;
 //
 // Kardinalsinus
 function si   (x) = (x==0) ? 1 : sin(x*degree_per_radian) / x;
