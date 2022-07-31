@@ -18,6 +18,9 @@ Overview of scad files
 ` `| . . . +--> [`banded/math_polygon.scad`](matrix.md#polygones-and-lines- "Polygones and lines operations")\
 ` `| . . . +--> [`banded/complex.scad`](complex.md "Working with complex numbers")\
 ` `|\
+` `+--> `banded/function.scad`\
+` `| . . . +--> [`banded/function_algorithmus.scad`](function.md "Algorithmus with function literals")\
+` `|\
 ` `+--> `banded/list.scad`\
 ` `| . . . +--> [`banded/list_edit.scad`](list.md "Editing lists")\
 ` `| . . . | . . . . +--> [`banded/list_edit_type.scad`](list.md#different-type-of-data- "Type-dependent access to the content of lists")\
@@ -35,9 +38,6 @@ Overview of scad files
 ` `| . . . +--> `banded/string_edit.scad`\
 ` `| . . . . . . . +--> [`banded/string_edit_item.scad`](string.md#edit-strings-independent-from-data- "Edit strings independent from data")\
 ` `| . . . . . . . +--> [`banded/string_edit_data.scad`](string.md#edit-strings-with-use-of-data- "Edit strings with use of data")\
-` `|\
-` `+--> `banded/function.scad`\
-` `| . . . +--> [`banded/function_algorithmus.scad`](function.md "Algorithmus with function literals")\
 ` `|\
 ` `+--> [`banded/helper.scad`](helper.md "Helper functions")\
 ` `| . . . +--> [`banded/helper_native.scad`](helper.md#native-helper-functions- "Contains various helper functions")\

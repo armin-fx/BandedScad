@@ -191,6 +191,9 @@ function sorted_until_list_intern (list, f=undef, type=0, begin=0, last=-1) =
 		:type[0]>= 0                   ? [for(i=[begin:1:last-1]) if (list[i+1][type[0]]        < list[i][type[0]]       ) i+1]
 		:type[0]==-1 ? let( fn=type[1] ) [for(i=[begin:1:last-1]) if (fn(list[i+1])             < fn(list[i])            ) i+1]
 		:                                [for(i=[begin:1:last-1]) if (get_value(list[i+1],type) < get_value(list[i],type)) i+1]
+		//	[ each [for(i=begin,this=get_value(list[i],type),next=get_value(list[i+1],type); i<=last-2; i=i+1,this=next,next=get_value(list[i+1],type))
+		//		 if (next < this) i+1]
+		//	, each (fn(list[last]) < fn(list[last-1])) ? [last] : [] ]
 	:
 		 type   == 0                   ? [for(i=[begin:1:last-1]) if (f( list[i+1]                , list[i]                )) i+1]
 		:type[0]>= 0                   ? [for(i=[begin:1:last-1]) if (f( list[i+1][type[0]]       , list[i][type[0]]       )) i+1]
