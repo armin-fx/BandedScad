@@ -33,3 +33,4 @@ function benchmark_intern_2 (count=0, fn_test, trash) =
 	fn_test() )
 ;
 
+function benchmark_empty (count=0) = benchmark (count, function() undef);

@@ -70,7 +70,8 @@ Helper functions
   - [`parameter_types()`][parameter_types]
   - [`parameter_type()`][parameter_type]
 - [Benchmark function](#benchmark-function-)
-  - `benchmark()`
+  - [`benchmark()`][benchmark]
+  - [`benchmark_empty()`][benchmark_empty]
 
 [range_args]: list.md#range-arguments-
 
@@ -623,6 +624,7 @@ Benchmark function [^][contents]
 --------------------------------
 
 #### `benchmark (count, fn_test)` [^][contents]
+[benchmark]: #benchmark-count-fn_test-
 Call a function `count` often to measure speed in time.\
 The test function `fn_test()` must defined therefor.
 1. `fn_test()` as function
@@ -648,3 +650,9 @@ the test function `fn_test()` will only called 1 times
 independently what is set in `count`.\
 This is useful to test the function before mesure the speed.
 
+#### `benchmark_empty (count)` [^][contents]
+[benchmark_empty]: #benchmark_empty-count-
+Call function [`benchmark()`][benchmark] with an empty function.\
+Returns always `undef`.
+This is useful do measure the time of the internal benchmark routine.
+This time should subtracted from the measured time of the test function.
