@@ -35,6 +35,7 @@ Math functions
   - [Various math functions](#various-math-functions-)
     - [`sqr()`][sqr]
     - [`mod()`][mod]
+    - [`sign_plus()`][sign_plus]
     - [`xor()`][xor]
     - [`normal_distribution()`][normal_distribution]
   - [More trigonometric functions](#more-trigonometric-functions-)
