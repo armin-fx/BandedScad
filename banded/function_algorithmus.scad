@@ -3,6 +3,9 @@
 
 include <banded/constants.scad>
 use <banded/list_algorithmus.scad>
+use <banded/math_common.scad>
+use <banded/math_formula.scad>
+
 
 function summation_fn (fn, n, k=0) =
 	(n==undef) ?
@@ -47,6 +50,7 @@ function product_fn_intern_big (fn, n, k, slice=100000) =
 	:product_fn_intern(fn, n, k)
 ;
 
+
 function taylor        (fn, x, n=0, k=0, step=1) =
 	taylor_intern      (fn, x, n, k, step)
 ;
@@ -69,6 +73,7 @@ function taylor_auto_intern (fn, x, n, k, step, value, value_old) =
 		value
 	)
 ;
+
 
 function integrate (fn, begin, end, constant=0, delta=delta_std) =
 	integrate_simpson (fn, begin, end, constant, delta)
@@ -143,6 +148,144 @@ function derivation_symmetric_2 (fn, value, delta=delta_std) =
 	( (fn(value+  delta) - fn(value-  delta)) * 2
 	- (fn(value+2*delta) - fn(value-2*delta)) / 4
 	) / (3*delta)
+;
+
+
+// fn - function with one argument
+function zero_regula_falsi (fn, a, b, deviation=deviation, iteration=200) =
+	zero_regula_falsi_intern (fn, a, b, deviation, iteration, fn(a), fn(b))
+;
+function zero_regula_falsi_intern (fn, a, b, deviation, iteration, ya, yb) =
+	let (
+		c  = (a*yb - b*ya) / (yb - ya),
+		yc = fn (c)
+	) // echo("zero_regula_falsi",iteration, c, yc, a, b)
+	iteration<=0 || yc!=yc ? c :
+	(yc+deviation>=0) && (yc-deviation<=0) ? c :
+	sign(yc)==sign(ya) ? zero_regula_falsi_intern (fn, c, b, deviation, iteration-1, yc, yb) :
+	                     zero_regula_falsi_intern (fn, a, c, deviation, iteration-1, ya, yc)
+;
+
+function zero_regula_falsi_parabola (fn, a, b, deviation=deviation, iteration=200) =
+	zero_regula_falsi_parabola_intern (fn, a, b, deviation, iteration, fn(a), fn(b))
+;
+function zero_regula_falsi_parabola_intern (fn, a, b, deviation, iteration, ya, yb) =
+	let (
+		ym = fn ((a+b)/2),
+		P  = get_parabola_from_midpoint ([a,ya], [b,yb], ym),
+		c  = get_parabola_zero (P, chosen=(ya*P[0]<0 ? 1 : -1) ),
+		yc = fn (c)
+	) // echo("zero_regula_falsi_parabola",iteration, c, yc, a, b)
+	iteration<=0 || yc!=yc ? c :
+	(yc+deviation>=0) && (yc-deviation<=0) ? c :
+	sign(yc)==sign(ya) ? zero_regula_falsi_parabola_intern (fn, c, b, deviation, iteration-1, yc, yb) :
+	                     zero_regula_falsi_parabola_intern (fn, a, c, deviation, iteration-1, ya, yc)
+;
+
+function zero_bisection (fn, a, b, deviation=deviation, iteration=200) =
+	zero_bisection_intern (fn, a, b, deviation, iteration, fn(a), fn(b))
+;
+function zero_bisection_intern (fn, a, b, deviation, iteration, ya, yb) =
+	let (
+		c  = (a+b)/2,
+		yc = fn (c)
+	) // echo("zero_bisection",iteration, c, yc, a, b)
+	iteration<=0 || yc!=yc ? c :
+	(yc+deviation>=0) && (yc-deviation<=0) ? c :
+	sign(yc)==sign(ya) ? zero_bisection_intern (fn, c, b, deviation, iteration-1, yc, yb) :
+	                     zero_bisection_intern (fn, a, c, deviation, iteration-1, ya, yc)
+;
+
+function zero_secant (fn, a, b, deviation=deviation, iteration=200) =
+	zero_secant_intern (fn, a, b, deviation, iteration, fn(a), fn(b))
+;
+function zero_secant_intern (fn, a, b, deviation, iteration, ya, yb) =
+	let (
+		c  = (a*yb - b*ya) / (yb - ya),
+		yc = fn (c)
+	) // echo("zero_secant",iteration, c, yc, a, b)
+	iteration<=0 || yc!=yc ? c :
+	(yc+deviation>=0) && (yc-deviation<=0) ? c :
+	zero_secant_intern (fn, b, c, deviation, iteration-1, yb, yc)
+;
+
+function zero_newton (fn, fn_d, x, deviation=deviation, iteration=200) =
+	let (
+		fn_d_ = fn_d!=undef ? fn_d : function(x) derivation (fn, x)
+	)
+	zero_newton_intern (fn, fn_d_, x, deviation, iteration)
+;
+function zero_newton_auto (fn, x, deviation=deviation, iteration=200) =
+	let (
+		fn_d = function(x) derivation (fn, x)
+	)
+	zero_newton_intern (fn, fn_d, x, deviation, iteration)
+;
+function zero_newton_intern (fn, fn_d, x, deviation, iteration) =
+	let (
+		y   = fn   (x),
+		y_d = fn_d (x),
+		b   = x - (y / y_d)
+	) // echo("zero_newton",iteration, b, y, y_d)
+	iteration<=0 || b!=b ? b :
+	(y+deviation>=0) && (y-deviation<=0) ? b :
+	zero_newton_intern (fn, fn_d, b, deviation, iteration-1)
+;
+
+function zero_halley (fn, fn_d, fn_dd, x, deviation=deviation, iteration=200) =
+	let (
+		fn_d_  = fn_d !=undef ? fn_d  : function(x) derivation (fn   , x),
+		fn_dd_ = fn_dd!=undef ? fn_dd : function(x) derivation (fn_d_, x)
+	)
+	zero_halley_intern (fn, fn_d_, fn_dd_, x, deviation, iteration)
+;
+function zero_halley_auto (fn, x, deviation=deviation, iteration=200) =
+	let (
+		fn_d  = function(x) derivation (fn  , x),
+		fn_dd = function(x) derivation (fn_d, x)
+	)
+	zero_halley_intern (fn, fn_d, fn_dd, x, deviation, iteration)
+;
+function zero_halley_intern (fn, fn_d, fn_dd, x, deviation, iteration) =
+	let (
+		y    = fn    (x),
+		y_d  = fn_d  (x),
+		y_dd = fn_dd (x),
+		b    =
+			x - ( ( 2*y*y_d            )
+			    / ( 2*y_d*y_d - y*y_dd ) )
+	) // echo("zero_halley",iteration, b, y, y_d, y_dd)
+	iteration<=0 || b!=b ? b :
+	(y+deviation>=0) && (y-deviation<=0) ? b :
+	zero_halley_intern (fn, fn_d, fn_dd, b, deviation, iteration-1)
+;
+
+function zero_euler_tschebyschow (fn, fn_d, fn_dd, x, deviation=deviation, iteration=200) =
+	let (
+		fn_d_  = fn_d !=undef ? fn_d  : function(x) derivation (fn   , x),
+		fn_dd_ = fn_dd!=undef ? fn_dd : function(x) derivation (fn_d_, x)
+	)
+	zero_euler_tschebyschow_intern (fn, fn_d_, fn_dd_, x, deviation, iteration)
+;
+function zero_euler_tschebyschow_auto (fn, x, deviation=deviation, iteration=200) =
+	let (
+		fn_d  = function(x) derivation (fn  , x),
+		fn_dd = function(x) derivation (fn_d, x)
+	)
+	zero_euler_tschebyschow_intern (fn, fn_d, fn_dd, x, deviation, iteration)
+;
+function zero_euler_tschebyschow_intern (fn, fn_d, fn_dd, x, deviation, iteration) =
+	let (
+		y    = fn    (x),
+		y_d  = fn_d  (x),
+		y_dd = fn_dd (x),
+		s = -y / y_d,
+		t = (-1/2) * (y_dd*s*s) / (y_d),
+		b = x + s + t
+	) // echo("zero_euler_tschebyschow",iteration, b, y, y_d, y_dd)
+	iteration<=0 || b!=b ? b :
+	(y+deviation>=0) && (y-deviation<=0) ? b :
+	zero_euler_tschebyschow_intern (fn, fn_d, fn_dd, b, deviation, iteration-1)
 ;
 
 
