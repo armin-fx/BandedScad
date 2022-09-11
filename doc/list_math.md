@@ -122,7 +122,7 @@ Returns a list with the result.
 | `quantize_each (list,raster,offset)` | quantizes every value within a grid.
 | `mod_each (list,n)`                  | calculates the modulo on each value.
 | `constrain_each (list,min,max)`      | constrain each value in the list within `min` and `max`. `min` must be smaller then `max`.
-| `constrain_bidirectional_each (list,a,b)` | constrain each value in the list within value `a` and `b`
+| `constrain_range_each (list,a,b)`    | constrain each value in the list within value `a` and `b`
 
 
 #### Call function on each list element [^][contents]

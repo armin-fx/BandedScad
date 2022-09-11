@@ -19,7 +19,7 @@ function constrain (value, min, max) =
 	: value
 ;
 // ... zwischen beiden Werten <a> und <b>
-function constrain_bidirectional (value, a, b) = 
+function constrain_range (value, a, b) = 
 	 (a<=b) ?
 		 (value<a) ? a
 		:(value>b) ? b

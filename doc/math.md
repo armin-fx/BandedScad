@@ -25,7 +25,7 @@ Math functions
 - [More math functions](#more-math-functions-)
   - [Test and restrict](#test-and-restrict-)
     - [`constrain()`][constrain]
-    - [`constrain_bidirectional()`][constrain_bi]
+    - [`constrain_range()`][constrain_range]
     - [`is_constrain()`][is_constrain]
     - [`is_nearly()`][is_nearly]
     - [`quantize()`][quantize]
@@ -93,7 +93,8 @@ More math functions [^][contents]
 
 #### `constrain (value, a, b)` [^][contents]
 [constrain]: #constrain-value-a-b-
-Limits a number to a range.
+Limits a number to a range.\
+`a` must be lower (or equal) then `b`
 - `value` - The number to restrict.
 - `a`     - The lower end of the range.
 - `b`     - The upper end of the range.
@@ -103,9 +104,9 @@ Returns:
 - `a`     - If number is lower than `a`
 - `b`     - If number is higher than `b`
 
-#### `constrain_bidirectional (value, a, b)` [^][contents]
-[constrain_bi]: #constrain_bidirectional-value-a-b-
-Limits a number to a range.
+#### `constrain_range (value, a, b)` [^][contents]
+[constrain_range]: #constrain_range-value-a-b-
+Limits a number to a range between `a` and `b`.
 - `value`  - The number to restrict.
 - `a`, `b` - The range limits, unsorted
 

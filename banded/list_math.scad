@@ -88,5 +88,5 @@ function quantize_each (list, raster=1, offset=0.5) = [for (e=list) quantize (e,
 
 function mod_each (list, n) = [for (e=list) (e%n+n)%n];
 
-function constrain_each               (list, min, max) = [for (e=list) constrain               (e, min, max)];
-function constrain_bidirectional_each (list, a  , b  ) = [for (e=list) constrain_bidirectional (e, a  , b  )];
+function constrain_each       (list, min, max) = [for (e=list) constrain       (e, min, max)];
+function constrain_range_each (list, a  , b  ) = [for (e=list) constrain_range (e, a  , b  )];
