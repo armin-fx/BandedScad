@@ -82,12 +82,14 @@ in console if constants has changed.
 
 
 ### Customizable constants [^][contents]
+These constants can be adjusted to the needs.
 
 | constant            | default number
 |---------------------|----------------
 | `extra`             | 0.02
 | `epsilon`           | 0.000075
 | `deviation`         | 1e-14
+| `deviation_sqr`     | 7.45058e-9
 | `delta_std`         | 0.001
 
 ___`extra`:___
@@ -100,6 +102,9 @@ ___`epsilon`:___
 
 ___`deviation`:___
 - Smallest number that occurs when calculations are inaccurate.
+
+___`deviation_sqr`:___
+- Smallest number that occurs when calculations with squared numbers are inaccurate.
 
 ___`delta_std`:___
 - Step amount for calculation of approximate values.
