@@ -348,7 +348,8 @@ The points must be in n dimensions.
 [get_parabola_from_points]: #get_parabola_from_points-p1-p2-p3-
 Calculates the parameter of a parabola from 3 points.\
 Parabola from type: `y = Ax² + Bx + C`\
-Return the result as a list `[A,B,C]`.
+Return the result as a list `[C,B,A]`.\
+The result can directly used in function [`polynomial()`](curves.md#polynomial-function-).
 - `p1, p2, p3` - arbitrary points on the parabola in 2D plane
 
 #### `get_parabola_from_midpoint (p1, p2, ym)` [^][contents]
@@ -358,7 +359,8 @@ Specialized version of [`get_parabola_from_points()`][get_parabola_from_points].
 Needs 2 outer points and the height of the midpoint.
 The distance in X-axis between the 3 points is the same.\
 Parabola from type: `y = Ax² + Bx + C`\
-Return the result as a list `[A,B,C]`.
+Return the result as a list `[C,B,A]`.\
+The result can directly used in function [`polynomial()`](curves.md#polynomial-function-).
 - `p1, p2` - the both outer points on the parabola in 2D plane
 - `ym`     - the height on Y-axis on the half way on X-axis between the outer points `p1` and `p2`
 
@@ -366,7 +368,7 @@ Return the result as a list `[A,B,C]`.
 [get_parabola_zero]: #get_parabola_zero-p-chosen-
 Returns the roots of a parabola.\
 Parabola from type: `y = Ax² + Bx + C`
-- `P`      - parameter of a parabola as list `[A,B,C]`
+- `P`    - parameter of a parabola as list `[C,B,A]`
 - `chosen`
   - controls the return value of this function
   - `0`  - all existing zero points as list, default

@@ -125,7 +125,7 @@ function get_hypersphere_from_points (p) =
 // Parameter einer Parabel berechnen
 // von 3 Punkten auf der Parabel (2D)
 //     y = Ax² + Bx + C
-// Rückgabe: [A,B,C]
+// Rückgabe: [C,B,A]
 // 'p1, p2, p3' - beliebige Punkte auf der Parabel
 function get_parabola_from_points (p1, p2, p3) =
 	let (
@@ -138,14 +138,14 @@ function get_parabola_from_points (p1, p2, p3) =
 			/ (p1.x - p3.x),
 		C = p1.y - A*p1.x*p1.x - B*p1.x
 	)
-	[A,B,C]
+	[C,B,A]
 ;
 
 // Parameter einer Parabel berechnen
 // von 3 Punkten auf der Parabel (2D)
 // Parabel vom Typ:
 //     y = Ax² + Bx + C
-// Rückgabe: [A,B,C]
+// Rückgabe: [C,B,A]
 // 'p1, p2' - die äußeren Punkte auf der Parabel
 // 'ym'     - die Höhe des mittleren Punktes zwischen p1 und p2
 function get_parabola_from_midpoint (p1, p2, ym) =
@@ -155,22 +155,22 @@ function get_parabola_from_midpoint (p1, p2, ym) =
 		B = ( 2*(p1.y-ym) - A*(3*p1.x*p1.x - p2.x*p2.x - 2*p1.x*p2.x)/2 ) / (p1.x-p2.x),
 		C = p1.y - A*p1.x*p1.x - B*p1.x
 	)
-	[A,B,C]
+	[C,B,A]
 ;
 
 // gibt die Nullstellen einer Parabel zurück
 // Parabel vom Typ:
 //     y = Ax² + Bx + C
-// - 'P' - Parabelparameter [A,B,C]
+// - 'P' - Parabelparameter [C,B,A]
 // - 'chosen'
 //   -  0 - all existing zero points as list, default
 //   - -1 - left zero point as number
 //   -  1 - right zero point as number
 function get_parabola_zero (P, chosen=0) =
 	let (
-		A = P[0],
+		A = P[2],
 		B = P[1],
-		C = P[2],
+		C = P[0],
 		//
 		D = B*B - 4*A*C
 	)
