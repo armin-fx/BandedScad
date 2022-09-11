@@ -44,7 +44,7 @@ Transform and edit objects
   - [Compose operations](#compose-operations-)
     - [`combine()`][combine]
     - [`xor()`][xor]
-  - [2D to 3D extrusion](#2d-to-2d-extrusion-)
+  - [2D to 3D extrusion](#2d-to-3d-extrusion-)
     - [`extrude_line()`][extrude_line]
     - [`plain_trace_extrude()`][plain_trace_extrude]
     - [`plain_trace_connect_extrude()`][plain_trace_connect_extrude]

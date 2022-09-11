@@ -134,7 +134,9 @@ from point `p1` to `p2`.
 
 #### `normal_vector (v)` [^][contents]
 [normal_vector]: #normal_vector-v-
-Return the normal vector of vector `v`
+Return the normal vector of vector `v`.\
+A normal is an object such as a line, ray, or vector
+that is perpendicular to a given object.
 - 2D vector -> 2D normal vector
 - 3D vector -> 3D normal vector = cross product
 
@@ -160,24 +162,26 @@ Characteristic in this version:
 Return `true` if the 2 vectors are collinear.
 This means they are parallel or anti parallel.
 
-#### `is_nearly_collinear (v1, v2)` [^][contents]
-[is_nearly_collinear]: #is_nearly_collinear-v1-v2-
+#### `is_nearly_collinear (v1, v2, deviation)` [^][contents]
+[is_nearly_collinear]: #is_nearly_collinear-v1-v2-deviation-
 Return `true` if the 2 vectors are nearly collinear.
 - `deviation`
   - deviation of the target from the normalized vectors,
     as ratio - deviation per longest vector
-  - default = `1e-14`, calculation deviation
+  - to prevent calculation deviation
+  - default = `1e-14`, defined in customizable constant `deviation`
 
 #### `is_coplanar (v1, v2, v3)` [^][contents]
 [is_coplanar]: #is_coplanar-v1-v2-v3-
 Returns `true` if the 3 spanned vectors in 3D space are coplanar.
 This means they are in the same plane.
 
-#### `is_nearly_coplanar (v1, v2, v3)` [^][contents]
-[is_nearly_coplanar]: #is_nearly_coplanar-v1-v2-v3-
+#### `is_nearly_coplanar (v1, v2, v3, deviation)` [^][contents]
+[is_nearly_coplanar]: #is_nearly_coplanar-v1-v2-v3-deviation-
 Returns `true` if the 3 spanned vectors in 3D space are nearly coplanar.
 - `deviation`
-  - default = `1e-14`, calculation deviation
+  - to prevent calculation deviation
+  - default = `1e-14`, defined in customizable constant `deviation`
 
 
 ### Euclidean norm [^][contents]

@@ -174,21 +174,26 @@ Generate a matrix to rotate at position `p`.
   - `false` - default, normal forward rotate
   - `true`  - rotate backwards, undo forward rotate
 
-#### `matrix_rotate_to_vector (v, a, backwards, short)` [^][contents]
-[matrix_rotate_to_vector]: #matrix_rotate_to_vector-v-a-backwards-short-
+#### `matrix_rotate_to_vector (v, a, backwards, d, short)` [^][contents]
+[matrix_rotate_to_vector]: #matrix_rotate_to_vector-v-a-backwards-d-short-
 Generate a matrix to rotate from direction Z axis to direction at vector `v`.
 - `v` - direction as vector
 - `a`
   - angle in degree
   - or rotational orientation vector
+  - only needed for 3D
 - `backwards`
   - `false` - default, normal forward rotate
   - `true`  - rotate backwards, undo forward rotate
+- `d`
+  - dimensions of vector which will transformed with matrix
+    - `3` - spatial (3D) - default
+    - `2` - flat (2D)
 - [`short`][short]
   - `false` = default, size of matrix = `d` + 1
   - `true`  = short d×d matrix
 
-procedure 1, `a` as angle:
+procedure 1 (3D), `a` as angle:
 - vector `v` will split in
   - inclination angle, rotate around Y axis
   - and azimuthal angle, rotate around Z axis
@@ -196,12 +201,12 @@ procedure 1, `a` as angle:
 - make rotation around Z axis with azimuthal angle
 - make rotation around vector `v` with angle `a`
 
-procedure 2, `a` as orientation vector:
+procedure 2 (3D), `a` as orientation vector:
 - make rotation from Z axis to vector `v`
 - make rotation around vector `v`, so that the originally X axis point to
   orientation vector `a`
 
-#### `matrix_rotate_to_vector_at (v, p, a, backwards)` [^][contents]
+#### `matrix_rotate_to_vector_at (v, p, a, backwards, d)` [^][contents]
 [matrix_rotate_to_vector_at]: #matrix_rotate_to_vector_at-v-p-a-backwards-
 Generate a matrix to rotate from direction Z axis to direction at vector `v`.
 Rotate origin at vector `p`.
@@ -211,6 +216,10 @@ Rotate origin at vector `p`.
 - `backwards`
   - `false` - default, normal forward rotate
   - `true`  - rotate backwards, undo forward rotate
+- `d`
+  - dimensions of vector which will transformed with matrix
+    - `3` - spatial (3D) - default
+    - `2` - flat (2D)
 
 #### `matrix_mirror_at (v, p, d)` [^][contents]
 [matrix_mirror_at]: #matrix_mirror_at-v-p-d-
