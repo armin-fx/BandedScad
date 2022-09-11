@@ -235,17 +235,39 @@ The following root-finding algorithm find zeros of functions.
   - default = 200 cycles
 
 
-#### `zero_regula_falsi (fn, a, b, deviation, iteration)` [^][contents]
-[zero_regula_falsi]: #zero_regula_falsi-fn-a-b-deviation-iteration-
+#### `zero_regula_falsi (fn, a, b, m, deviation, iteration)` [^][contents]
+[zero_regula_falsi]: #zero_regula_falsi-fn-a-b-m-deviation-iteration-
 Find zero of a function with method regula falsi.\
-This will get the next value by connect the 2 points `a` and `b` with a line.
+This will get the next value by connect the 2 points `[a, fn(a)]` and `[b, fn(b)]` with a line.
 The point of the line which cross zero will used as next end-point
 together with the one of the last end-points which has the other sign.
 The next point is always between `a` and `b`.
 And then it will repeat the procedure.
-- `a`, `b` - the initial end-points.
+- `a`, `b` - the initial end-points as X-value.
   - One of the result of `fn(a)` or `fn(b)` must be negative
     and the other one must be positive.
+- `m`
+  - optional function literal to modify the regula falsi algorithm
+  - Function literal with 3 arguments `function (a,b,c)`.
+    Where `a` and `b` are the 2 initial end-points
+    and `c` is the new calculated point.
+    All 3 arguments are points e.g. `[a, fn(a)]`.
+
+There exist predefined function literals to set parameter `m`:
+- Illinois algorithm:
+  - `regula_falsi_m_illinois`
+- Pegasus algorithm:
+  - `regula_falsi_m_pegasus`
+- Anderson-Björck algorithm:
+  - `regula_falsi_m_anderson_bjorck`
+- Anderson-Björck algorithm modified with Pegasus algorithm:
+  - `regula_falsi_m_anderson_bjorck_pegasus`
+
+Spezialized functions with fixed modified algorithm:
+- `zero_regula_falsi_illinois                (fn, a, b, deviation, iteration)`
+- `zero_regula_falsi_pegasus                 (fn, a, b, deviation, iteration)`
+- `zero_regula_falsi_anderson_bjorck         (fn, a, b, deviation, iteration)`
+- `zero_regula_falsi_anderson_bjorck_pegasus (fn, a, b, deviation, iteration)`
 
 [=> Wikipedia - Regula falsi](https://en.wikipedia.org/wiki/Regula_falsi)
 

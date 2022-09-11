@@ -152,8 +152,13 @@ function derivation_symmetric_2 (fn, value, delta=delta_std) =
 
 
 // fn - function with one argument
-function zero_regula_falsi (fn, a, b, deviation=deviation, iteration=200) =
-	zero_regula_falsi_intern (fn, a, b, deviation, iteration, fn(a), fn(b))
+// m  - function returns a correctur factor
+//    - arguments: (a, b, c)
+//    - a, b, c:   a list [x, y]
+function zero_regula_falsi (fn, a, b, m=undef, deviation=deviation, iteration=200) =
+	m==undef
+	? zero_regula_falsi_intern   (fn, a, b,    deviation, iteration, fn(a), fn(b))
+	: zero_regula_falsi_m_intern (fn, a, b, m, deviation, iteration, fn(a), fn(b))
 ;
 function zero_regula_falsi_intern (fn, a, b, deviation, iteration, ya, yb) =
 	let (
@@ -162,18 +167,69 @@ function zero_regula_falsi_intern (fn, a, b, deviation, iteration, ya, yb) =
 	) // echo("zero_regula_falsi",iteration, c, yc, a, b)
 	iteration<=0 || yc!=yc ? c :
 	(yc+deviation>=0) && (yc-deviation<=0) ? c :
-	sign(yc)==sign(ya) ? zero_regula_falsi_intern (fn, c, b, deviation, iteration-1, yc, yb) :
-	                     zero_regula_falsi_intern (fn, a, c, deviation, iteration-1, ya, yc)
+	(yc*ya)>0 ? zero_regula_falsi_intern (fn, c, b, deviation, iteration-1, yc, yb) :
+	            zero_regula_falsi_intern (fn, a, c, deviation, iteration-1, ya, yc)
 ;
+function zero_regula_falsi_m_intern (fn, a, b, m, deviation, iteration, ya, yb) =
+	let (
+		c  = (a*yb - b*ya) / (yb - ya),
+		yc = fn (c)
+	) // echo("zero_regula_falsi_m",iteration, c, yc, a, b)
+	iteration<=0 || yc!=yc ? c :
+	(yc+deviation>=0) && (yc-deviation<=0) ? c :
+	(yc*yb)<0 ? zero_regula_falsi_m_intern (fn, b, c, m, deviation, iteration-1, yb, yc)
+	          : let( M = m ([a,ya], [b,yb], [c,yc]) )
+	            zero_regula_falsi_m_intern (fn, a, c, m, deviation, iteration-1, M*ya, yc)
+;
+
+// Function literals to modify zero_regula_falsi()
+// to set parameter 'm'
+//
+// do nothing
+regula_falsi_m = function (a,b,c)
+	1
+;
+// Illinois algorithm:
+regula_falsi_m_illinois = function (a,b,c)
+	0.5
+;
+// Pegasus algorithm:
+regula_falsi_m_pegasus = function (a,b,c)
+	b.y/(b.y+c.y)
+;
+// Anderson-Björck algorithm:
+regula_falsi_m_anderson_bjorck = function (a,b,c)
+	let ( M=1-(c.y/b.y) )
+	M>0 ? M : 0.5
+;
+// Anderson-Björck algorithm modified with Pegasus algorithm:
+regula_falsi_m_anderson_bjorck_pegasus = function (a,b,c)
+	let ( M=1-(c.y/b.y) )
+	M>0 ? M : b.y/(b.y+c.y)
+;
+//
+function zero_regula_falsi_illinois (fn, a, b, deviation=deviation, iteration=200) =
+	zero_regula_falsi (fn, a, b, regula_falsi_m_illinois, deviation, iteration)
+;
+function zero_regula_falsi_pegasus (fn, a, b, deviation=deviation, iteration=200) =
+	zero_regula_falsi (fn, a, b, regula_falsi_m_pegasus, deviation, iteration)
+;
+function zero_regula_falsi_anderson_bjorck (fn, a, b, deviation=deviation, iteration=200) =
+	zero_regula_falsi (fn, a, b, regula_falsi_m_anderson_bjorck, deviation, iteration)
+;
+function zero_regula_falsi_anderson_bjorck_pegasus (fn, a, b, deviation=deviation, iteration=200) =
+	zero_regula_falsi (fn, a, b, regula_falsi_m_anderson_bjorck_pegasus, deviation, iteration);
+
 
 function zero_regula_falsi_parabola (fn, a, b, deviation=deviation, iteration=200) =
 	zero_regula_falsi_parabola_intern (fn, a, b, deviation, iteration, fn(a), fn(b))
 ;
 function zero_regula_falsi_parabola_intern (fn, a, b, deviation, iteration, ya, yb) =
 	let (
+		xm = (a+b)/2,
 		ym = fn ((a+b)/2),
-		P  = get_parabola_from_midpoint ([a,ya], [b,yb], ym),
-		c  = get_parabola_zero (P, chosen=(ya*P[0]<0 ? 1 : -1) ),
+		P  = get_parabola_from_points ([a,ya], [b,yb], [xm,ym]),
+		c  = get_parabola_zero (P, chosen=(ya*P[2]<0 ? 1 : -1) ),
 		yc = fn (c)
 	) // echo("zero_regula_falsi_parabola",iteration, c, yc, a, b)
 	iteration<=0 || yc!=yc ? c :
