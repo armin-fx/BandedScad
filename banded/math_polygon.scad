@@ -150,3 +150,144 @@ function trace_lines (lines) =
 	)
 ;
 
+// - Daten von Linien und Strecken ermitteln:
+
+function distance_line (line, p) =
+	 len(line[0])==3 ? distance_line_3d (line, p)
+	:len(line[0])==2 ? distance_line_2d (line, p)
+	:undef
+;
+function distance_line_2d (line, p) =
+	p!=undef ? distance_line_2d (translate_points (line, -p), undef) :
+	let (
+		line_ = ! (line[0].x==line[1].x || line[0].y==line[1].y)
+			?	line
+			:	let(
+					e = sqrt(2)/2,
+					m = // matrix_rotate_z (45, short=true, d=2)
+					[[e,-e],
+					 [e, e]]
+				)
+				[ m * line[0], m * line[1] ],
+		g    = get_gradient (line_), // [m, c]
+		p0   = [-g[1]/g[0], g[1]],
+		hypo = norm (p0),
+		h    = hypo==0
+			? 0
+			: abs( p0.x * p0.y / hypo )
+	)
+	h
+;
+function distance_line_3d (line, p) =
+	p!=undef ? distance_line_3d (translate_points (line, -p), undef) :
+	let (
+		m = matrix_rotate_to_vector (line[1]-line[0], backwards=true, short=true),
+		p = m * line[0],
+		d = norm ([p.x, p.y])
+	)
+	d
+;
+
+function nearest_point_line (line, p) =
+	 len(line[0])==3 ? nearest_point_line_3d (line, p)
+	:len(line[0])==2 ? nearest_point_line_2d (line, p)
+	:undef
+;
+function nearest_point_line_2d (line, p) =
+	p!=undef ?
+		nearest_point_line_2d (translate_points (line, -p), undef)
+		+ p :
+	(line[0].x==line[1].x || line[0].y==line[1].y) ?
+		// echo("rot 45°")
+		let(
+			e = sqrt(2)/2,
+			m = // matrix_rotate_z (45, short=true, d=2)
+			[[e,-e],
+			 [e, e]]
+		)
+		nearest_point_line_2d ([ m * line[0], m * line[1] ]) * m
+	:
+	let (
+		g    = get_gradient (line), // [m, c]
+		p0   = [-g[1]/g[0], g[1]],
+		hypo = norm (p0),
+		h    = hypo==0
+			? 0
+			: abs( p0.x * p0.y / hypo ),
+		p = hypo==0
+			? [0,0]
+			: unit_vector([-g[0], 1]) * abs(h) * sign(g[1])
+	)
+	p
+;
+function nearest_point_line_3d (line, p) =
+	p!=undef ?
+		nearest_point_line_3d (translate_points (line, -p), undef)
+		+ p :
+	let (
+		m = matrix_rotate_to_vector (line[1]-line[0], backwards=true, short=true),
+		q = m * line[0],
+		r = [q.x, q.y, 0],
+		s = r * m
+	)
+	s
+;
+
+function distance_segment (line, p) =
+	p!=undef ? distance_segment (translate_points (line, -p), undef) :
+	let (
+		q = nearest_point_line (line)
+	)
+	is_point_on_segment (line, q)
+		? norm(q)
+		: min (norm(line[0]), norm(line[1]))
+;
+
+function nearest_point_segment (line, p) =
+	p!=undef ?
+		nearest_point_segment (translate_points (line, -p), undef)
+		+ p :
+	let (
+		q = nearest_point_line (line)
+	)
+	is_point_on_segment (line, q) ? q :
+	(norm(line[0])<norm(line[1])) ? line[0] : line[1]
+;
+
+function distance_trace (trace, p, closed=false) =
+	p!=undef ? distance_trace (translate_points (trace, -p), undef, closed) :
+	len(trace)==1 ? norm(trace[0]) :
+	let (
+		d = min (
+			[ for (i=[0:1:len(trace)-2])
+				distance_segment ([trace[i], trace[i+1]])
+			]
+			),
+		D = closed==false ? d : min (d, distance_segment ([trace[0], trace[len(trace)-1]]) )
+	)
+	D
+;
+
+function nearest_point_trace (trace, p, closed=false) =
+	p!=undef ?
+		nearest_point_trace (translate_points (trace, -p), undef, closed)
+		+ p :
+	let (
+		size = len(trace)
+	)
+	size==1 ? trace[0] :
+	let (
+		l =
+			closed!=true ?
+			[ for (i=[0:1:size-2])
+				distance_segment ([trace[i], trace[i+1]])
+			]
+			:
+			[ for (i=[0:1:size-1])
+				distance_segment ([trace[i], trace[(i+1)%size]])
+			],
+		i = min_position (l),
+		q = nearest_point_segment ([trace[i], trace[(i+1)%size]])
+	)
+	q
+;

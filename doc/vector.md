@@ -39,7 +39,7 @@ Matrix and vector operations
     - [`norm_sqr()`][norm_sqr]
     - [`max_norm()`][max_norm]
     - [`max_norm_sqr()`][max_norm_sqr]
-- [Polygones and Lines](#polygones-and-lines-)
+- [Polygones and lines](#polygones-and-lines-)
   - [Test functions for lines](#test-functions-for-lines-)
     - [`is_point_on_line()`][is_point_on_line]
     - [`is_point_on_segment()`][is_point_on_segment]
@@ -53,6 +53,13 @@ Matrix and vector operations
   - [Convert polygon data](#convert-polygon-data-)
     - [`points_to_lines()`][points_to_lines]
     - [`trace_lines()`][trace_lines]
+  - [Data from lines](#data-from-lines-)
+    - [`distance_line()`][distance_line]
+    - [`distance_segment()`][distance_segment]
+    - [`distance_trace()`][distance_trace]
+    - [`nearest_point_line()`][nearest_point_line]
+    - [`nearest_point_segment()`][nearest_point_segment]
+    - [`nearest_point_trace()`][nearest_point_trace]
 
 
 Vector operations [^][contents]
@@ -300,4 +307,75 @@ Convert a trace to a list with line segment.
 #### `trace_lines (lines)` [^][contents]
 [trace_lines]: #trace_lines-lines-
 Connect all lines in a list and return the trace as a point list.
+
+
+### Data from lines [^][contents]
+
+#### `distance_line (line, p)` [^][contents]
+[distance_line]: #distance_line-line-p-
+Get the nearest distance of a straight line to a point.\
+Works in 2D and 3D.
+- `line`
+  - a list with 2 points defines the straight line
+- `p`
+  - the point with distance from the line
+  - default = origin of coordinates
+
+#### `distance_segment (line, p)` [^][contents]
+[distance_segment]: #distance_segment-line-p-
+Get the nearest distance of a segment line to a point.\
+Works in 2D and 3D.
+- `line`
+  - a list with 2 points defines the ends of the segment line.
+    Inclusive the points.
+- `p`
+  - the point with distance from the line
+  - default = origin of coordinates
+
+#### `distance_trace (trace, p, closed)` [^][contents]
+[distance_trace]: #distance_trace-trace-p-closed-
+Get the nearest distance of a trace to a point.\
+Works in 2D and 3D.
+- `trace`
+  - a list with points defines the trace.
+- `p`
+  - the point with distance from the trace
+  - default = origin of coordinates
+- `closed`
+  - `false` - the trace from first to last point, default
+  - `true`  - the trace is a closed loop, the last point connect the first point
+
+#### `nearest_point_line (line, p)` [^][contents]
+[nearest_point_line]: #nearest_point_line-line-p-
+Get the point on a straight line with the nearest distance to a point.\
+Works in 2D and 3D.
+- `line`
+  - a list with 2 points defines the straight line
+- `p`
+  - the point with distance from the line
+  - default = origin of coordinates
+
+#### `nearest_point_segment (line, p)` [^][contents]
+[nearest_point_segment]: #nearest_point_segment-line-p-
+Get the point on a segment line with the nearest distance to a point.\
+Works in 2D and 3D.
+- `line`
+  - a list with 2 points defines the ends of the segment line.
+    Inclusive the points.
+- `p`
+  - the point with distance from the line
+  - default = origin of coordinates
+
+#### `nearest_point_trace (trace, p, closed)` [^][contents]
+[nearest_point_trace]: #nearest_point_trace-trace-p-closed-
+Get the point on a trace with the nearest distance to a point.\
+Works in 2D and 3D.
+- `trace`
+  - a list with points defines the trace.
+- `p`
+  - the point with distance from the trace
+  - default = origin of coordinates
+- `closed`
+  - `false` - the trace from first to last point, default
+  - `true`  - the trace is a closed loop, the last point connect the first point
 
