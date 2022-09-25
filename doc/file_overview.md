@@ -65,6 +65,7 @@ Overview of scad files
 ` `| . . . . . . . . +--> `banded/draft_primitives_basic.scad`\
 ` `| . . . . . . . . +--> `banded/draft_primitives_figure.scad`\
 ` `| . . . . . . . . +--> `banded/draft_primitives_transform.scad`\
+` `| . . . . . . . . +--> `banded/draft_primitives_operator.scad`\
 ` `|\
 ` `+--> [`banded/object.scad`](object.md "Configurable objects")\
 ` `| . . . +--> [`banded/object_figure.scad`](object.md#figures- "Modules to create configurable objects")\

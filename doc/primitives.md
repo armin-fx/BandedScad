@@ -18,8 +18,15 @@ Draft objects as data list - Primitives
 - [Primitives in data lists](#primitives-)
   - [List convention](#list-convention-)
   - [Generate objects](#functions-to-generate-objects-)
+    - buildin OpenSCAD primitives
+    - more primitives
   - [Functions to transform objects](#functions-to-transform-objects-)
+    - [From OpenSCAD buildin modules](#functions-from-openscad-buildin-modules-)
+    - [More functions to transform objects](#more-functions-to-transform-objects-)
   - [Functions to edit objects](#functions-to-edit-objects-)
+    - [`linear_extrude_points()`][linear_extrude_points]
+    - [`rotate_extrude_points()`][rotate_extrude_points]
+    - [`helix_extrude_points()`][helix_extrude_points]
 
 
 Primitives [^][contents]
@@ -75,7 +82,7 @@ build_object(c);
 Argument convention:
 - `transform_function (object, transform_arguments)`
 
-Functions:
+#### Functions from OpenSCAD buildin modules [^][contents]
 - `translate (object, v)`
 - `rotate    (object, a, v, backwards)`
 - `mirror    (object, v)`
@@ -86,11 +93,24 @@ Functions:
 - `color     (object, c, alpha)`
 
 
-### More functions to transform objects [^][contents]
+#### More functions to transform objects [^][contents]
 - All modules from file
   [`operator_transform.scad`](operator.md#transform-operator- "Transform operator for affine transformations")
   as function.
-- In file `draft_primitives_transform.scad`.
+  - In file `draft_primitives_transform.scad`.
+  - Implemented:
+    - `rotate_backwards    (object, a, v)`
+    - `rotate_at           (object, a, p, v, backwards)`
+    - `rotate_to_vector    (object, v, a, backwards, d)`
+    - `rotate_to_vector_at (object, v, p, a, backwards)`
+    - `mirror_at (object, v, p)`
+    - `skew    (object, v, t, m, a, d)`
+    - `skew_at (object, v, t, m, a, p, d)`
+  - Not yet implemented:
+    - `mirror_copy        (object, v)`
+    - `mirror_copy_at     (object, v, p)`
+    - `mirror_repeat      (object, v, v2, v3)`
+    - `mirror_repeat_copy (object, v, v2, v3)`
 
 
 ### Functions to edit objects [^][contents]
@@ -107,6 +127,19 @@ Rotational extrudes a 2D hull as trace in a point list
 around the Z axis to a 3D solid object.\
 Uses the same arguments like `rotate_extrude()` in OpenSCAD.
 - `list` - 2D trace in a point list
+
+#### `helix_extrude_points (angle, rotations, pitch, height, r, opposite, slices)` [^][contents]
+[helix_extrude_points]: #helix_extrude-angle-rotations-pitch-height-r-opposite-slices-
+Creates a helix with a 2D hull as trace similar rotate_extrude.
+- `angle`     - angle of helix in degrees - default: `360`
+- `rotations` - rotations of helix, can be used instead `angle`
+- `height`    - height of helix - default: 0 like `rotate_extrude()`
+- `pitch`     - rise per rotation
+- `r`
+  - radius as number or `[r1, r2]`
+  - `r1` = bottom radius, `r2` = top radius
+- `opposite`  - if `true` reverse rotation of helix, default = `false`
+- `slices`    - count of segments from helix per full rotation
 
 
 . . .

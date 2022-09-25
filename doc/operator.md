@@ -455,14 +455,14 @@ Creates a helix with a 2D-polygon similar rotate_extrude.
 modified from Gael Lafond, <https://www.thingiverse.com/thing:2200395>\
 License: CC0 1.0 Universal
 
-- `angle`     - angle of helix in degrees - default: `360`°
+- `angle`     - angle of helix in degrees - default: `360`
 - `rotations` - rotations of helix, can be used instead `angle`
 - `height`    - height of helix - default: 0 like `rotate_extrude()`
 - `pitch`     - rise per rotation
 - `r`
   - radius as number or `[r1, r2]`
   - `r1` = bottom radius, `r2` = top radius
-- `opposite`  - if `true` reverse rotation of helix, `false` = standard
+- `opposite`  - if `true` reverse rotation of helix, default = `false`
 - `slices`    - count of segments from helix per full rotation
 - `convexity`
   - `0` - only concave polygon (default)

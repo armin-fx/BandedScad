@@ -185,7 +185,7 @@ module helix_extrude (angle, rotations, pitch, height, r, opposite, slices=32, c
 		height
 	);
 	Rotations = abs(rp[0]);
-	Angle     = abs(rp[0] * 360);
+	Angle     = Rotations * 360;
 	Pitch     = rp[1];
 	Height    = Rotations * Pitch;
 	Opposite  = xor( (is_bool(opposite) ? opposite : false), rp[0]<0 );
