@@ -25,7 +25,7 @@
   - [Modules with extra arguments only ](#modules-with-extra-arguments-only-)
     - [`square_extend()`][square]
     - [`cube_extend()`][cube]
-    - [`rotate_extrude_extend`][rotate_extrude_extend]
+    - [`rotate_extrude_extend()`][rotate_extrude_extend]
 - [Functions](#functions-)
   - [Get fragments of a circle](#get-fragments-of-a-circle-)
     - [Recurring arguments](#recurring-arguments-)

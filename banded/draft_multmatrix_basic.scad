@@ -44,13 +44,13 @@ function matrix_rotate (a, v, backwards=false, d=3, short=false) =
 	! (backwards==true) ?
 		// forward
 		is_list(a) ?
-			matrix_rotate_z(a.z, d=d, short=short) *
-			matrix_rotate_y(a.y, d=d, short=short) *
-			matrix_rotate_x(a.x, d=d, short=short)
-		:is_num(a)  ?
-			is_list(v) ?
-				matrix_rotate_v(a, v, d=d, short=short)
-			:	matrix_rotate_z(a,    d=d, short=short)
+			matrix_rotate_z (a.z, d=d, short=short) *
+			matrix_rotate_y (a.y, d=d, short=short) *
+			matrix_rotate_x (a.x, d=d, short=short)
+		:is_num(a) ?
+			v!=undef && is_list(v) ?
+				matrix_rotate_v (a, v, d=d, short=short)
+			:	matrix_rotate_z (a,    d=d, short=short)
 		:short==true ?
 				identity_matrix(d)
 			:	identity_matrix(d+1)
@@ -60,8 +60,8 @@ function matrix_rotate (a, v, backwards=false, d=3, short=false) =
 			matrix_rotate_x (-a.x, d=d, short=short) *
 			matrix_rotate_y (-a.y, d=d, short=short) *
 			matrix_rotate_z (-a.z, d=d, short=short)
-		:is_num(a)  ?
-			is_list(v) ?
+		:is_num(a) ?
+			v!=undef && is_list(v) ?
 				matrix_rotate_v (-a, v, d=d, short=short)
 			:	matrix_rotate_z (-a,    d=d, short=short)
 		:short==true ?

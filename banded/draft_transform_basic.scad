@@ -14,9 +14,9 @@ use <banded/draft_multmatrix_basic.scad>
 //  list = Punkt-Liste
 //  v    = Vektor
 function translate_points (list, v) =
-	let ( vector = is_list(v) ? v : [0,0,0] )
-	(v==[0,0] || v==[0,0,0]) ? list :
-	[for (p=list) p+vector]
+	(v==undef || !is_list(v)) ? list :
+	(v==[0,0] || v==[0,0,0])  ? list :
+	[for (p=list) p+v]
 ;
 
 // jeden Punkt in der Liste <list> rotieren

@@ -82,18 +82,22 @@ m = repair_matrix (m_short, n + 1);
 
 #### `matrix_translate (v, d)` [^][contents]
 [matrix_translate]: #matrix_translate-v-d-
-Generate a matrix to translate to `v`.
+Generate a matrix to translate along a vector `v`.
 - `v` - vector
 - `d`
   - dimensions of vector which will transformed with matrix
-    - `3` - spatial (3D) - default
-    - `2` - flat (2D)
+    - `3` - spatial (3D) - default, result is a 4×4 matrix
+    - `2` - flat (2D), result is a 3×3 matrix
 
 #### `matrix_rotate (a, v, backwards, d, short)` [^][contents]
 [matrix_rotate]: #matrix_rotate-a-v-backwards-d-short-
 Generate a matrix to rotate.
-- `a` - angle
-- `v` - vector where rotating around
+- `a` - angle parameter
+  - as number: angle to rotate in degrees around an axis, defined in vector `v`
+  - as list of 3 angles around a fixed axis `[X,Y,Z]`:
+    The rotation is applied in the following order: X then Y then Z.
+    Then the argument `v` is ignored.
+- `v` - vector where rotating around, default = Z axis
 - `backwards`
   - `false` - default, normal forward rotate
   - `true`  - rotate backwards, undo forward rotate

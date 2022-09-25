@@ -66,10 +66,14 @@ You can replace buildin `rotate()` with:
 ```OpenSCAD
 module rotate(a,v,backwards=false) { rotate_new(a,v,backwards) children(); }
 ```
-- `a` - angle to rotate in degree
+- `a` - angle parameter
+  - as number: angle to rotate in degrees around an axis, defined in vector `v`
+  - as list of 3 angles around a fixed axis `[X,Y,Z]`:
+    The rotation is applied in the following order: X then Y then Z.
+    Then the argument `v` is ignored.
 - `v` - vector where rotating around
 - `backwards`
-  - `false` - standard, normal forward rotate
+  - `false` - default, normal forward rotate
   - `true`  - rotate backwards, undo forward rotate
 
 #### `rotate_backwards (a, v)` [^][contents]
@@ -100,8 +104,10 @@ Rotate object from direction Z axis to direction at vector `v`.
   - `false` - standard, normal forward rotate
   - `true`  - rotate backwards, undo forward rotate
 - `d` - dimension of the object
-  - `3`     - 3D object = standard
-  - `2`     - 2D object (must set in this case)
+  - The operator can not get any data of the children object.
+    It must therefore be defined what number of dimensions this has.
+  - `3` - 3D object = default
+  - `2` - 2D object (must set in this case)
 
 ___way of working in 3D:___
 - procedure 1, `a` as angle:

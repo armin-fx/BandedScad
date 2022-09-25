@@ -48,7 +48,7 @@ result is the same.
 
 #### `translate_points (list, v)` [^][contents]
 [translate_points]: #translate_points-list-v- "translate_points (list, v)"
-Translate every point in `list` at `v`.
+Translate every point in `list` along a vector `v`.
 Works like `translate()`.
 - `v` - vector
 
@@ -56,8 +56,12 @@ Works like `translate()`.
 [rotate_points]: #rotate_points-list-a-v-backwards- "rotate_points (list, a, v, backwards)"
 Rotate every point in `list`.
 Works like `rotate()`.
-- `a` - angle to rotate in degree
-- `v` - vector where rotating around
+- `a` - angle parameter
+  - as number: angle to rotate in degrees around an axis, defined in vector `v`
+  - as list of 3 angles around a fixed axis `[X,Y,Z]`:
+    The rotation is applied in the following order: X then Y then Z.
+    Then the argument `v` is ignored.
+- `v` - vector where rotating around, default = Z axis
 - `backwards`
   - `false` - default, normal forward rotate
   - `true`  - rotate backwards, undo forward rotate
