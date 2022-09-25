@@ -9,6 +9,7 @@ use <banded/helper_native.scad>
 use <banded/helper_recondition.scad>
 use <banded/draft_curves.scad>
 
+
 // - 2D:
 
 // Erzeugt ein Rechteck
@@ -98,6 +99,6 @@ module rotate_extrude_extend (angle=360, convexity)
 {
 	angles = parameter_angle (angle, 360);
 	//
-	rotate ([0,0, angles[1] + (angles[0]==360 ? 180 : 0) ])
+	rotate ([0,0, angles[1] + (abs(angles[0])>=360 ? 180 : 0) ])
 	rotate_extrude (angle=angles[0], convexity=convexity) children();
 }

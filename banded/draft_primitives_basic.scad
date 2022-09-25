@@ -23,6 +23,7 @@ use <banded/draft_color.scad>
 use <banded/helper.scad>
 use <banded/extend.scad>
 use <banded/list_edit_data.scad>
+use <banded/math_common.scad>
 
 
 // - 2D:
@@ -202,7 +203,7 @@ function projection (object, cut, plane) =
 ;
 
 function rotate_extrude_points (list, angle=360, slices) =
-	angle==360 ?
+	angle==undef || (is_num(angle) && abs(angle)>=360) ?
 		rotate_extrude_extend_points (list, [360,180], slices)
 	:	rotate_extrude_extend_points (list, angle    , slices)
 ;
@@ -211,7 +212,7 @@ function rotate_extrude_extend_points (list, angle=360, slices="x") =
 		 r_max       = max_list (list, type=[0])
 		,angles      = parameter_angle (angle, [360,0])
 		,Angle_begin = angles[1]
-		,Angle       = angles[0]
+		,Angle       = constrain (angles[0], -360, 360)
 		,Slices =
 			slices==undef ? get_slices_circle_current  (r_max,Angle) :
 			slices=="x"   ? get_slices_circle_current_x(r_max,Angle) :

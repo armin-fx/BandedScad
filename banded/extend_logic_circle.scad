@@ -23,7 +23,7 @@ function get_slices_circle (r, angle=360, piece=true, fn, fa, fs) =
 // bei Angabe der Segmente eines vollen Kreises.
 // Angelehnt an das Verhalten von rotate_extrude()
 function get_slices_circle_pie (r, angle=360, piece=true, fn) =
-	max( floor(fn * angle/360),
+	max( floor(fn * abs(angle)/360),
 	     (piece==true || piece==0) ? 1 : 2
 	)
 ;
