@@ -463,11 +463,11 @@ function is_object_3d (object) =
 
 
 // Objekt in Liste direkt in ein Objekt umwandeln
-module build_object (object)
+module build_object (object, convexity)
 {
 	o = unify_object (object);
 	
 	color (o[2])
-	if      (is_object_2d(o)) { polygon    (o[0], o[1]); }
-	else if (is_object_3d(o)) { polyhedron (o[0], o[1]); }
+	if      (is_object_2d(o)) { polygon    (o[0], o[1], convexity=convexity); }
+	else if (is_object_3d(o)) { polyhedron (o[0], o[1], convexity=convexity); }
 }
