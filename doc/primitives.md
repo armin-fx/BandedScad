@@ -128,8 +128,8 @@ around the Z axis to a 3D solid object.\
 Uses the same arguments like `rotate_extrude()` in OpenSCAD.
 - `list` - 2D trace in a point list
 
-#### `helix_extrude_points (angle, rotations, pitch, height, r, opposite, slices)` [^][contents]
-[helix_extrude_points]: #helix_extrude-angle-rotations-pitch-height-r-opposite-slices-
+#### `helix_extrude_points (angle, rotations, pitch, height, r, opposite, orientation, slices)` [^][contents]
+[helix_extrude_points]: #helix_extrude_points-angle-rotations-pitch-height-r-opposite-orientation-slices-
 Creates a helix with a 2D hull as trace similar rotate_extrude.
 - `angle`     - angle of helix in degrees - default: `360`
 - `rotations` - rotations of helix, can be used instead `angle`
@@ -139,6 +139,9 @@ Creates a helix with a 2D hull as trace similar rotate_extrude.
   - radius as number or `[r1, r2]`
   - `r1` = bottom radius, `r2` = top radius
 - `opposite`  - if `true` reverse rotation of helix, default = `false`
+- `orientation`
+  - if `true`, orientation of Y-axis from the 2D-polygon is set along the surface of the cone.
+  - `false` = default, orientation of Y-axis from the 2D-polygon is set to Z-axis
 - `slices`    - count of segments from helix per full rotation
 
 

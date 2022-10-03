@@ -448,9 +448,13 @@ This will extrude an 2D-object in the X-Y plane along a 2D-trace
 like [plain_trace_extrude()][plain_trace_extrude] and connect both ends
 to a closed trace.
 
-#### `helix_extrude (angle, rotations, pitch, height, r, opposite, slices, convexity, scope, step)` [^][contents]
-[helix_extrude]: #helix_extrude-angle-rotations-pitch-height-r-opposite-slices-convexity-scope-step-
-Creates a helix with a 2D-polygon similar rotate_extrude.
+#### `helix_extrude (angle, rotations, pitch, height, r, opposite, orientation, slices, convexity, scope, step)` [^][contents]
+[helix_extrude]: #helix_extrude-angle-rotations-pitch-height-r-opposite-orientation-slices-convexity-scope-step-
+Creates a helix with a 2D-polygon similar rotate_extrude.\
+This will generate every segment with operation `hull()` on the 2D-polygon ends.
+It makes sometimes trouble when you want to render the object.
+Then it is maybe better to use the function
+[`helix_extrude_points()`](primitives.md#helix_extrude_points-angle-rotations-pitch-height-r-opposite-slices-).
 
 modified from Gael Lafond, <https://www.thingiverse.com/thing:2200395>\
 License: CC0 1.0 Universal
@@ -463,6 +467,9 @@ License: CC0 1.0 Universal
   - radius as number or `[r1, r2]`
   - `r1` = bottom radius, `r2` = top radius
 - `opposite`  - if `true` reverse rotation of helix, default = `false`
+- `orientation`
+  - if `true`, orientation of Y-axis from the 2D-polygon is set along the surface of the cone.
+  - `false` = default, orientation of Y-axis from the 2D-polygon is set to Z-axis
 - `slices`    - count of segments from helix per full rotation
 - `convexity`
   - `0` - only concave polygon (default)

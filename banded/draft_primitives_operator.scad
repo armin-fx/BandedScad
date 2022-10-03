@@ -22,10 +22,12 @@ use <banded/list_edit_data.scad>
 //   r         = radius as number or [r1, r2]
 //               r1 = bottom radius, r2 = top radius
 //
-//   opposite  = if true reverse rotation of helix, false = standard
+//   opposite  = if true reverse rotation of helix, false = default
+//   orientation = if true, orientation of Y-axis from the 2D-polygon is set along the surface of the cone.
+//                 false = default, orientation of Y-axis from the 2D-polygon is set to Z-axis
 //   slices    = count of segments from helix per full rotation
 //
-function helix_extrude_points (list, angle, rotations, pitch, height, r, opposite, slices) =
+function helix_extrude_points (list, angle, rotations, pitch, height, r, opposite, orientation, slices) =
 	let (
 		 R  = parameter_cylinder_r_basic (r, r[0], r[1], preset=[0,0])
 		,rp = parameter_helix_to_rp (
@@ -46,10 +48,18 @@ function helix_extrude_points (list, angle, rotations, pitch, height, r, opposit
 			slices=="x"   ? get_slices_circle_current_x(R_max, Angle) :
 			max(2, ceil(slices * Rotations))
 		,is_full = Angle==360 && Pitch==0
+		,List =
+			orientation==true ?
+				let(
+					m = matrix_rotate (-90, d=2, short=true)
+					  * matrix_rotate_to_vector ([-(R[0]-R[1]),Height], d=2, short=true)
+				)
+				[ for (e=list) m*e ]
+			:	list
 		
 		// Y-Axis --to--> Z-Axis
 		// TODO: use only right side
-		,base     = [ for (e=list) [e[0],0,e[1]] ]
+		,base     = [ for (e=List) [e[0],0,e[1]] ]
 		,len_base = len(base)
 		,points =
 			[ for (n=[0:1: Slices - (is_full ? 1 : 0) ])

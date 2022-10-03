@@ -168,6 +168,8 @@ module trace_extrude (trace, rotation, convexity, limit=1000)
 //               r1 = bottom radius, r2 = top radius
 //
 //   opposite  = if true reverse rotation of helix, false = standard
+//   orientation = if true, orientation of Y-axis from the 2D-polygon is set along the surface of the cone.
+//                 false = default, orientation of Y-axis from the 2D-polygon is set to Z-axis
 //   slices    = count of segments from helix per full rotation
 //   convexity = 0 - only concave polygon (default)
 //               1 - can handle one convex polygon only
@@ -176,7 +178,7 @@ module trace_extrude (trace, rotation, convexity, limit=1000)
 //                   experimental with some problems
 //               it's better to split it in concave helixes with the same parameter
 //               and make the difference with it
-module helix_extrude (angle, rotations, pitch, height, r, opposite, slices=32, convexity=0, scope, step)
+module helix_extrude (angle, rotations, pitch, height, r, opposite, orientation, slices=32, convexity=0, scope, step)
 {
 	R  = parameter_cylinder_r_basic (r, r[0], r[1], preset=[0,0]);
 	rp = parameter_helix_to_rp (
@@ -190,6 +192,11 @@ module helix_extrude (angle, rotations, pitch, height, r, opposite, slices=32, c
 	Height    = Rotations * Pitch;
 	Opposite  = xor( (is_bool(opposite) ? opposite : false), rp[0]<0 );
 	R_max  = max(R)==0 ? 9 : max(R);
+	m = orientation==true ?
+		  matrix_rotate (-90, d=2, short=true)
+		* matrix_rotate_to_vector ([-(R[0]-R[1]),Height], d=2, short=true)
+		: identity_matrix (2);
+	//
 	segment_count =
 		slices==undef ? get_slices_circle_current  (R_max, Angle) :
 		slices=="x"   ? get_slices_circle_current_x(R_max, Angle) :
@@ -216,11 +223,17 @@ module helix_extrude (angle, rotations, pitch, height, r, opposite, slices=32, c
 			if (convexity>=2)
 				helix_segment_slice(i==segment_last ? segment_angle : segment_angle_extra,
 					segment_height, segment_radius, Opposite, scope,step)
-				children();
+				{
+					if (orientation==true) multmatrix(m) children();
+					else                   children();
+				}
 			else
 				helix_segment      (i==segment_last ? segment_angle : segment_angle_extra,
 					segment_height, segment_radius, Opposite, convexity=convexity)
-				children();
+				{
+					if (orientation==true) multmatrix(m) children();
+					else                   children();
+				}
 		}
 	}
 }
