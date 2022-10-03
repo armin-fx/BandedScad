@@ -29,6 +29,8 @@ Math functions
     - [`is_constrain()`][is_constrain]
     - [`is_nearly()`][is_nearly]
     - [`quantize()`][quantize]
+    - [`lerp()`][lerp]
+    - [`inv_lerp()`][inv_lerp]
   - [Even or odd](#even-or-odd-)
     - [`is_odd()`, `is_even()`][is_odd]
     - [`positiv_if_xxx()`][positiv_if]
@@ -139,6 +141,50 @@ Default = round to an integer
 - `value`  - Numeric value
 - `raster` - Distance between the grid
 - `offset` - Shift from the origin
+
+#### `lerp (a, b, t, range)` [^][contents]
+[lerp]: #lerp-a-b-t-range-
+Computes the linear interpolation between `a` and `b`,\
+if the parameter `t` is inside `[0, 1]` (the linear extrapolation otherwise)
+- `a`, `b` - value or list with values
+- `t`      - interpolate value
+  - `0...1` calculate by default a value between `a...b`
+- `range`
+  - range of value `t`, default = `[0, 1]`
+  - can set to another range,
+    so value `t` interpolate in this range between `a` and `b`
+
+Example:
+```OpenSCAD
+include <banded.scad>
+
+echo( lerp (0, 100, 0.5) ); // 50
+echo( lerp (1,   5, 0.8) ); // 4.2
+//
+echo( lerp (10, 30, 2, [1,3]) ); // 20
+```
+
+#### `inv_lerp (a, b, t, range)` [^][contents]
+[inv_lerp]: #inv_lerp-a-b-t-range-
+Computes the reverse linear interpolation between `a` and `b`,\
+get the fraction between `a` and `b` on which `v` resides.
+- `a`, `b` - value or list with values
+- `v`      - value
+  - a value between `a...b` calculate by default a value between `0...1`
+- `range`
+  - range of return value, default = `[0, 1]`
+  - can set to another range,
+    so the return value is in this range if `v` is between `a` and `b`
+
+Example:
+```OpenSCAD
+include <banded.scad>
+
+echo( inv_lerp (0, 100, 50 ) ); // 0.5
+echo( inv_lerp (1,   5, 4.2) ); // 0.8
+//
+echo( inv_lerp (10, 30, 20, [1,3]) ); // 2
+```
 
 
 ### Even or odd [^][contents]

@@ -71,6 +71,32 @@ function quantize (value, raster=1, offset=0.5) =
 	value+offset - ((value+offset)%raster+raster)%raster
 ;
 
+// Linear interpolation
+function lerp (a, b, t, range) =
+	let(
+		R =
+			range==undef  ? [0,1] :
+			is_num(range) ? [0, range] :
+			range,
+		T = (t-R[0]) / (R[1]-R[0])
+	)
+	  a * (1-T)
+	+ b * T
+;
+
+// Inverse linear interpolation
+function inv_lerp (a, b, v, range) =
+	let(
+		R =
+			range==undef  ? [0,1] :
+			is_num(range) ? [0, range] :
+			range,
+		T = (v - a) / (b - a)
+	)
+	R[0] + (R[1]-R[0])*T
+;
+
+
 // Test: die Zahl ist eine ungerade Zahl? 
 function is_odd  (n) = (n+1)%2==0;
 // Test: die Zahl ist eine gerade Zahl? 
