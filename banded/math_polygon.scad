@@ -63,6 +63,7 @@ function is_intersecting (line1, line2, point, only) =
 	is_constrain_left (p, line2[0], line2[1])
 ;
 
+
 // - Linien und Strecken:
 
 // Gibt die Steigung [m, c] einer Linie in 2D zurück, (y = m*x + c )
@@ -105,6 +106,7 @@ function get_intersecting_point (line1, line2) =
 	[x, y]
 ;
 
+
 // - Streckenzüge:
 
 // gibt die Länge einer Kurve zurück
@@ -120,6 +122,12 @@ function length_trace (points, path, closed=false) =
 	)
 	+ (closed==true ? norm (pts[size-1]-pts[0]) : 0)
 ;
+
+// gibt die Länge einer Strecke zurück
+function length_line (line) =
+	norm (line[1]-line[0])
+;
+
 
 // - Daten von Strecken umwandeln:
 
@@ -149,6 +157,7 @@ function trace_lines (lines) =
 		]
 	)
 ;
+
 
 // - Daten von Linien und Strecken ermitteln:
 
