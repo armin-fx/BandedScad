@@ -51,6 +51,7 @@ Matrix and vector operations
   - [Polygon functions](#polygon-functions-)
     - [`length_trace()`][length_trace]
     - [`length_line()`][length_line]
+    - [`get_normal_face()`][get_normal_face]
   - [Convert polygon data](#convert-polygon-data-)
     - [`points_to_lines()`][points_to_lines]
     - [`trace_lines()`][trace_lines]
@@ -140,13 +141,35 @@ from point `p1` to `p2`.
 `p1`   - first vector, rotate begin
 `p2`   - second vector, rotate end
 
-#### `normal_vector (v)` [^][contents]
-[normal_vector]: #normal_vector-v-
-Return the normal vector of vector `v`.\
+#### `normal_vector (v, w)` [^][contents]
+[normal_vector]: #normal_vector-v-w-
+Return the normal vector of vector `v` and `w`.\
 A normal is an object such as a line, ray, or vector
 that is perpendicular to a given object.
 - 2D vector -> 2D normal vector
+  - only `v` is needed,
+  - returns the vector in right angle to `v` around origin
+  - the length of the returned vector is the same length like `v`
 - 3D vector -> 3D normal vector = cross product
+  - needs `v` and `w`
+  - returns a vector that is perpendicular to a spanned plane
+    defined by 3 points origin, `v` and `w` as point
+  - the length of the returned vector
+    is the directed area of the spanned vectors as parallelogram
+
+#### `normal_unit_vector (v, w)` [^][contents]
+[normal_unit_vector]: #normal_unit_vector-v-w-
+Return the normal unit vector of vector `v` and `w`.\
+A normal is an object such as a line, ray, or vector
+that is perpendicular to a given object.
+A normal unit vector has the length 1.
+- 2D vector -> 2D normal vector
+  - only `v` is needed,
+  - returns the vector in right angle to `v` around origin
+- 3D vector -> 3D normal vector = cross product
+  - needs `v` and `w`
+  - returns a vector that is perpendicular to a spanned plane
+    defined by 3 points origin, `v` and `w` as point
 
 #### `triple_product (a, b, c)` [^][contents]
 [triple_product]: #triple_product-a-b-c-
@@ -298,6 +321,11 @@ Return the length of a trace.
 Return the length of a line segment.
 - `line`
   - a list with 2 points defines the ends of the segment line.
+
+#### `get_normal_face (p1, p2, p3)` [^][contents]
+[get_normal_face]: #get_normal_face-p1-p2-p3-
+Return the normal vector of a triangle
+defined by 3 points in 3D space.
 
 
 ### Convert polygon data [^][contents]

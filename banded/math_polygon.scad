@@ -128,6 +128,12 @@ function length_line (line) =
 	norm (line[1]-line[0])
 ;
 
+// Ermittelt die Normale eines Dreiecks
+// definiert über 3 Punkte im 3D Raum
+function get_normal_face (p1, p2, p3) =
+	cross (p2-p1, p3-p1)
+;
+
 
 // - Daten von Strecken umwandeln:
 

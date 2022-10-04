@@ -86,11 +86,20 @@ function rotation_around_line (line, p1, p2) =
 ;
 
 // Ermittelt die Normale eines Vektors
-// 2D-Vektor -> 2D Normale
-// 3D-Vektor -> 3D Normale (Kreuzprodukt)
-function normal_vector (v) =
+// 2D-Vektor -> 2D Normale von 'v'
+// 3D-Vektor -> 3D Normale (Kreuzprodukt) von 'v' und 'w'
+function normal_vector (v, w) =
 	 len(v)==2 ? [ -v.y, v.x ]
-	:len(v)==3 ? cross (v)
+	:len(v)==3 ? cross (v, w)
+	:undef
+;
+
+// Ermittelt die Einheitsnormale eines Vektors
+// 2D-Vektor -> 2D Normale von 'v'
+// 3D-Vektor -> 3D Normale (Kreuzprodukt) von 'v' und 'w'
+function normal_unit_vector (v, w) =
+	 len(v)==2 ? let( n = [ -v.y, v.x ] ) n/norm(n)
+	:len(v)==3 ? let( n = cross (v, w)  ) n/norm(n)
 	:undef
 ;
 
