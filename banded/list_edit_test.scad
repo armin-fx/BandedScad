@@ -79,6 +79,128 @@ function equal (list1, list2, begin1=0, begin2=0, count=undef, type=0, f=undef) 
 		:                                len([for(i=[0:1:Count-1]) if (f( get_value(list1[Begin1+i],type), get_value(list2[Begin1+i],type)) !=true) 0]) == 0
 ;
 
+// Testet, ob eine sortierte Liste 1 alle Elemente aus der sortierten Liste 2 enthält
+function includes (list1, list2, f=undef, type=0, begin1, last1, count1, range1, begin2, last2, count2, range2) =
+	let (
+		Range1 = parameter_range_safe (list1, begin1, last1, count1, range1),
+		Range2 = parameter_range_safe (list2, begin2, last2, count2, range2)
+	)
+	f==undef ?
+		 type   == 0 ? includes_intern_direct    (list1, list2,           , Range1[0], Range1[1], Range2[0], Range2[1])
+		:type[0]>= 0 ? includes_intern_list      (list1, list2,    type[0], Range1[0], Range1[1], Range2[0], Range2[1])
+		:type[0]==-1 ? includes_intern_function  (list1, list2,    type[1], Range1[0], Range1[1], Range2[0], Range2[1])
+		:              includes_intern_type      (list1, list2,    type   , Range1[0], Range1[1], Range2[0], Range2[1])
+	:
+		 type   == 0 ? includes_intern_f_direct  (list1, list2, f,        , Range1[0], Range1[1], Range2[0], Range2[1])
+		:type[0]>= 0 ? includes_intern_f_list    (list1, list2, f, type[0], Range1[0], Range1[1], Range2[0], Range2[1])
+		:type[0]==-1 ? includes_intern_f_function(list1, list2, f, type[1], Range1[0], Range1[1], Range2[0], Range2[1])
+		:              includes_intern_f_type    (list1, list2, f, type   , Range1[0], Range1[1], Range2[0], Range2[1])
+;
+function includes_intern_direct (list1, list2, first1=0, last1=-1, first2=0, last2=-1) =
+	first2>last2 ? true :
+	first1>last1 ? false :
+	let(
+		value1 = list1[first1],
+		value2 = list2[first2]
+	)
+	(value2<value1) ? false :
+	includes_intern_direct (list1, list2,
+		first1+1, last1,
+		!(value1<value2) ? first2+1 : first2, last2
+	)
+;
+function includes_intern_f_direct (list1, list2, f, first1=0, last1=-1, first2=0, last2=-1) =
+	first2>last2 ? true :
+	first1>last1 ? false :
+	let(
+		value1 = list1[first1],
+		value2 = list2[first2]
+	)
+	f(value2,value1) ? false :
+	includes_intern_f_direct (list1, list2, f,
+		first1+1, last1,
+		!f(value1,value2) ? first2+1 : first2, last2
+	)
+;
+function includes_intern_list (list1, list2, position=0, first1=0, last1=-1, first2=0, last2=-1) =
+	first2>last2 ? true :
+	first1>last1 ? false :
+	let(
+		value1 = list1[first1][position],
+		value2 = list2[first2][position]
+	)
+	(value2<value1) ? false :
+	includes_intern_list (list1, list2, position,
+		first1+1, last1,
+		!(value1<value2) ? first2+1 : first2, last2
+	)
+;
+function includes_intern_f_list (list1, list2, f, position=0, first1=0, last1=-1, first2=0, last2=-1) =
+	first2>last2 ? true :
+	first1>last1 ? false :
+	let(
+		value1 = list1[first1][position],
+		value2 = list2[first2][position]
+	)
+	f(value2,value1) ? false :
+	includes_intern_f_list (list1, list2, f, position,
+		first1+1, last1,
+		!f(value1,value2) ? first2+1 : first2, last2
+	)
+;
+function includes_intern_function (list1, list2, fn, first1=0, last1=-1, first2=0, last2=-1) =
+	first2>last2 ? true :
+	first1>last1 ? false :
+	let(
+		value1 = fn(list1[first1]),
+		value2 = fn(list2[first2])
+	)
+	(value2<value1) ? false :
+	includes_intern_function (list1, list2, type,
+		first1+1, last1,
+		!(value1<value2) ? first2+1 : first2, last2
+	)
+;
+function includes_intern_f_function (list1, list2, f, fn, first1=0, last1=-1, first2=0, last2=-1) =
+	first2>last2 ? true :
+	first1>last1 ? false :
+	let(
+		value1 = fn(list1[first1]),
+		value2 = fn(list2[first2])
+	)
+	f(value2,value1) ? false :
+	includes_intern_f_function (list1, list2, f, type,
+		first1+1, last1,
+		!f(value1,value2) ? first2+1 : first2, last2
+	)
+;
+function includes_intern_type (list1, list2, type=0, first1=0, last1=-1, first2=0, last2=-1) =
+	first2>last2 ? true :
+	first1>last1 ? false :
+	let(
+		value1 = get_value(list1[first1],type),
+		value2 = get_value(list2[first2],type)
+	)
+	(value2<value1) ? false :
+	includes_intern_type (list1, list2, type,
+		first1+1, last1,
+		!(value1<value2) ? first2+1 : first2, last2
+	)
+;
+function includes_intern_f_type (list1, list2, f, type=0, first1=0, last1=-1, first2=0, last2=-1) =
+	first2>last2 ? true :
+	first1>last1 ? false :
+	let(
+		value1 = get_value(list1[first1],type),
+		value2 = get_value(list2[first2],type)
+	)
+	f(value2,value1) ? false :
+	includes_intern_f_type (list1, list2, f, type,
+		first1+1, last1,
+		!f(value1,value2) ? first2+1 : first2, last2
+	)
+;
+
 // Testet eine Liste ob diese sortiert ist und gibt bei Erfolg 'true' zurück
 // Vergleicht die Daten mit dem Operator '<' oder mit Funktion 'f', wenn angegeben
 function is_sorted (list, f=undef, type=0, begin, last, count, range) =

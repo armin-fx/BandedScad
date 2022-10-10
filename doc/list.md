@@ -73,6 +73,7 @@ Functions for edit lists
     - [`none_of()`][none_of]
     - [`any_of()`][any_of]
     - [`equal()`][equal]
+    - [`includes()`][includes]
     - [`is_sorted()`][is_sorted]
     - [`is_sorted_until()`][is_sorted_until]
     - [`sorted_until_list()`][sorted_until_list]
@@ -535,6 +536,30 @@ Compares the data directly or with function `f` if given.
   - function literal with two arguments
   - returns `true` or `false`
   - if function is not specified, the data will compared directly (with given type of data)
+
+#### `includes (list1, list2, f, type, 'range_args1', 'range_args2')` [^][contents]
+[includes]: #includes-list1-list2-f-type
+Returns `true` if the sorted list `list1` contains all the elements in the sorted list `list2`.\
+The elements are compared using operator `<` or with function `f` if given.
+- `list1`, `list2` - sorted lists to compare
+- `f`
+  - function literal with two arguments
+  - returns `true` or `false`
+- [`'range_args'`][range_args] - arguments to set the range of the list, default = full list
+  - 'range_args1' = `begin1`, `last1`, `count1`, `range1` for `list1`
+  - 'range_args2' = `begin2`, `last2`, `count2`, `range2` for `list2`
+
+Example:
+```OpenSCAD
+include <banded.scad>
+
+a = sort( [1,2,3,4,5,6] );
+b = sort( [2,5] );
+c = sort( [2,9] );
+
+echo( includes (a, b) ); // ECHO: true
+echo( includes (a, c) ); // ECHO: false
+```
 
 #### `is_sorted (list, f, type, 'range_args')` [^][contents]
 [is_sorted]: #is_sorted-list-f-type-range_args-
