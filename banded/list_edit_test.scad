@@ -56,7 +56,7 @@ function any_of_intern (list, f, type=0, begin=0, last=-1) =
 
 // Testet 2 Listen nach Gleichheit und gibt 'true' bei Erfolg zurück
 // Vergleicht die Daten direkt oder mit Funktion 'f', wenn angegeben
-function equal (list1, list2, begin1=0, begin2=0, count=undef, type=0, f=undef) =
+function equal (list1, list2, f, type=0, begin1=0, begin2=0, count=undef) =
 	let (
 		Range1 = parameter_range_safe (list1, begin1, undef, count, undef),
 		Range2 = parameter_range_safe (list2, begin2, undef, count, undef),

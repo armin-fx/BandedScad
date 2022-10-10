@@ -462,7 +462,7 @@ Returns the position before the first element in the defined range if nothing wa
 - `index`
   - Same values are skipped `index` times
   - Standard = get first hit, `index` = 0
-- [`'range_args'`][range_args] - arguments to set the range in which will count, default = full list
+- [`'range_args'`][range_args] - arguments to set the range of the list, default = full list
 
 #### `find_last_once_if (list, f, type, 'range_args')` [^][contents]
 [find_last_once_if]: #find_last_once_if-list-f-type-range_args-
@@ -521,21 +521,21 @@ or if the range is empty, and `false` otherwise.
   - function literal with one argument
   - returns `true` or `false`
 
-#### `equal (list1, list2, begin1, begin2, count, type, f)` [^][contents]
-[equal]: #equal-list1-list2-begin1-begin2-count-type-f-
+#### `equal (list1, list2, f, type, begin1, begin2, count)` [^][contents]
+[equal]: #equal-list1-list2-f-type-begin1-begin2-count-
 Tests the data of two lists for equality and returns `true` on success.\
 Compares the data directly or with function `f` if given.
 - `list1`, `list2` - lists to compare
+- `f`
+  - function literal with two arguments
+  - returns `true` or `false`
+  - if function is not specified, the data will compared directly (with given type of data)
 - `begin1`, `begin2`
   - begin position from respective list
   - default = 0 = from first element
 - `count`
   - count of elements to test of both lists
   - default = full list
-- `f`
-  - function literal with two arguments
-  - returns `true` or `false`
-  - if function is not specified, the data will compared directly (with given type of data)
 
 #### `includes (list1, list2, f, type, 'range_args1', 'range_args2')` [^][contents]
 [includes]: #includes-list1-list2-f-type
