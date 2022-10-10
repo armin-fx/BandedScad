@@ -173,6 +173,7 @@ Coding like in python:
 Returns the real position within a list.\
 Same like [`get_position()`][get_position], but constrain the position to
 the first or last element if the value exceed the real size of the list.
+Returns `-1` on an empty list.
 
 #### `get_position_insert (list, position)` [^][contents]
 [get_position_insert]: #get_position_insert-list-position-

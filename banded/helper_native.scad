@@ -35,6 +35,7 @@ function get_position (list, position) =
 ;
 // Positionen außerhalb der Liste werden an den Anfang oder das Ende gesetzt
 function get_position_safe (list, position) =
+	list==undef || list==[] ? -1 :
 	let( real = (position>=0) ? position : len(list)+position )
 	constrain (real, 0, len(list)-1)
 ;
