@@ -224,77 +224,77 @@ function is_sorted_intern (list, f=undef, type=0, begin=0, last=-1) =
 
 // Testet eine Liste ob diese sortiert ist und gibt die erste Position zurück, die nicht sortiert ist.
 // Vergleicht die Daten mit dem Operator '<' oder mit Funktion 'f', wenn angegeben
-function is_sorted_until (list, f=undef, type=0, begin, last, count, range) =
+function sorted_until (list, f=undef, type=0, begin, last, count, range) =
 	list==undef ? 0 :
 	let (Range = parameter_range_safe (list, begin, last, count, range))
 	f==undef ?
-		 type   == 0 ? is_sorted_until_intern_direct   (list,          Range[0], Range[1])
-		:type[0]>= 0 ? is_sorted_until_intern_list     (list, type[0], Range[0], Range[1])
-		:type[0]==-1 ? is_sorted_until_intern_function (list, type[1], Range[0], Range[1])
-		:              is_sorted_until_intern_type     (list, type   , Range[0], Range[1])
+		 type   == 0 ? sorted_until_intern_direct   (list,          Range[0], Range[1])
+		:type[0]>= 0 ? sorted_until_intern_list     (list, type[0], Range[0], Range[1])
+		:type[0]==-1 ? sorted_until_intern_function (list, type[1], Range[0], Range[1])
+		:              sorted_until_intern_type     (list, type   , Range[0], Range[1])
 	:
-		 type   == 0 ? is_sorted_until_intern_f_direct   (list, f,          Range[0], Range[1])
-		:type[0]>= 0 ? is_sorted_until_intern_f_list     (list, f, type[0], Range[0], Range[1])
-		:type[0]==-1 ? is_sorted_until_intern_f_function (list, f, type[1], Range[0], Range[1])
-		:              is_sorted_until_intern_f_type     (list, f, type   , Range[0], Range[1])
+		 type   == 0 ? sorted_until_intern_f_direct   (list, f,          Range[0], Range[1])
+		:type[0]>= 0 ? sorted_until_intern_f_list     (list, f, type[0], Range[0], Range[1])
+		:type[0]==-1 ? sorted_until_intern_f_function (list, f, type[1], Range[0], Range[1])
+		:              sorted_until_intern_f_type     (list, f, type   , Range[0], Range[1])
 ;
 //
-function is_sorted_until_intern_direct (list, begin=0, last=-1) =
+function sorted_until_intern_direct (list, begin=0, last=-1) =
 	begin>=last ? begin+1:
 	(list[begin+1] < list[begin]) ? begin+1 :
-	is_sorted_until_intern_direct (list, begin+1, last)
+	sorted_until_intern_direct (list, begin+1, last)
 ;
-function is_sorted_until_intern_list (list, position=0, begin=0, last=-1) =
+function sorted_until_intern_list (list, position=0, begin=0, last=-1) =
 	begin>=last ? begin+1:
 	(list[begin+1][position] < list[begin][position]) ? begin+1 :
-	is_sorted_until_intern_list (list, position, begin+1, last)
+	sorted_until_intern_list (list, position, begin+1, last)
 ;
-function is_sorted_until_intern_function (list, fn, begin=0, last=-1) =
+function sorted_until_intern_function (list, fn, begin=0, last=-1) =
 	begin>=last ? begin+1:
-	is_sorted_until_intern_function_loop (list, fn, begin, last, fn(list[begin]), fn(list[begin+1]))
+	sorted_until_intern_function_loop (list, fn, begin, last, fn(list[begin]), fn(list[begin+1]))
 ;
-function is_sorted_until_intern_function_loop (list, fn, begin=0, last=-1, this, next) =
+function sorted_until_intern_function_loop (list, fn, begin=0, last=-1, this, next) =
 	(next < this) ? begin+1 :
 	(begin+1)>=last ? begin+2 :
-	is_sorted_until_intern_function_loop (list, fn, begin+1, last, next, fn(list[begin+2]))
+	sorted_until_intern_function_loop (list, fn, begin+1, last, next, fn(list[begin+2]))
 ;
-function is_sorted_until_intern_type (list, type, begin=0, last=-1) =
+function sorted_until_intern_type (list, type, begin=0, last=-1) =
 	begin>=last ? begin+1:
-	is_sorted_until_intern_type_loop (list, type, begin, last, get_value(list[begin],type), get_value(list[begin+1],type))
+	sorted_until_intern_type_loop (list, type, begin, last, get_value(list[begin],type), get_value(list[begin+1],type))
 ;
-function is_sorted_until_intern_type_loop (list, type, begin=0, last=-1, this, next) =
+function sorted_until_intern_type_loop (list, type, begin=0, last=-1, this, next) =
 	(next < this) ? begin+1 :
 	(begin+1)>=last ? begin+2 :
-	is_sorted_until_intern_type_loop (list, type, begin+1, last, next, get_value(list[begin+2],type))
+	sorted_until_intern_type_loop (list, type, begin+1, last, next, get_value(list[begin+2],type))
 ;
 //
-function is_sorted_until_intern_f_direct (list, f, begin=0, last=-1) =
+function sorted_until_intern_f_direct (list, f, begin=0, last=-1) =
 	begin>=last ? begin+1:
 	f (list[begin+1], list[begin]) ? begin+1 :
-	is_sorted_until_intern_f_direct (list, begin+1, last)
+	sorted_until_intern_f_direct (list, begin+1, last)
 ;
-function is_sorted_until_intern_f_list (list, f, position=0, begin=0, last=-1) =
+function sorted_until_intern_f_list (list, f, position=0, begin=0, last=-1) =
 	begin>=last ? begin+1:
 	f (list[begin+1][position], list[begin][position]) ? begin+1 :
-	is_sorted_until_intern_f_list (list, position, begin+1, last)
+	sorted_until_intern_f_list (list, position, begin+1, last)
 ;
-function is_sorted_until_intern_f_function (list, f, fn, begin=0, last=-1) =
+function sorted_until_intern_f_function (list, f, fn, begin=0, last=-1) =
 	begin>=last ? begin+1:
-	is_sorted_until_intern_f_function_loop (list, f, fn, begin, last, fn(list[begin]), fn(list[begin+1]))
+	sorted_until_intern_f_function_loop (list, f, fn, begin, last, fn(list[begin]), fn(list[begin+1]))
 ;
-function is_sorted_until_intern_f_function_loop (list, f, fn, begin=0, last=-1, this, next) =
+function sorted_until_intern_f_function_loop (list, f, fn, begin=0, last=-1, this, next) =
 	f (next, this) ? begin+1 :
 	(begin+1)>=last ? begin+2 :
-	is_sorted_until_intern_f_function_loop (list, f, fn, begin+1, last, next, fn(list[begin+2]))
+	sorted_until_intern_f_function_loop (list, f, fn, begin+1, last, next, fn(list[begin+2]))
 ;
-function is_sorted_until_intern_f_type (list, f, type, begin=0, last=-1) =
+function sorted_until_intern_f_type (list, f, type, begin=0, last=-1) =
 	begin>=last ? begin+1:
-	is_sorted_until_intern_f_type_loop (list, f, type, begin, last, get_value(list[begin],type), get_value(list[begin+1],type))
+	sorted_until_intern_f_type_loop (list, f, type, begin, last, get_value(list[begin],type), get_value(list[begin+1],type))
 ;
-function is_sorted_until_intern_f_type_loop (list, f, type, begin=0, last=-1, this, next) =
+function sorted_until_intern_f_type_loop (list, f, type, begin=0, last=-1, this, next) =
 	f (next, this) ? begin+1 :
 	(begin+1)>=last ? begin+2 :
-	is_sorted_until_intern_f_type_loop (list, f, type, begin+1, last, next, get_value(list[begin+2],type))
+	sorted_until_intern_f_type_loop (list, f, type, begin+1, last, next, get_value(list[begin+2],type))
 ;
 
 // Testet eine Liste ob diese sortiert ist und gibt alle Position als Liste zurück,

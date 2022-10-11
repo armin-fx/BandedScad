@@ -76,7 +76,7 @@ Functions for edit lists
     - [`equal()`][equal]
     - [`includes()`][includes]
     - [`is_sorted()`][is_sorted]
-    - [`is_sorted_until()`][is_sorted_until]
+    - [`sorted_until()`][sorted_until]
     - [`sorted_until_list()`][sorted_until_list]
     - [`is_partitioned()`][is_partitioned]
   - [Pair functions](#pair-functions-)
@@ -599,8 +599,8 @@ The elements are compared using operator `<` or with function `f` if given.
   - function literal with two arguments
   - returns `true` or `false`
 
-#### `is_sorted_until (list, f, type, 'range_args')` [^][contents]
-[is_sorted_until]: #is_sorted_until-list-f-type-range_args-
+#### `sorted_until (list, f, type, 'range_args')` [^][contents]
+[sorted_until]: #sorted_until-list-f-type-range_args-
 Returns the first position where the list is not sorted into ascending order.\
 The elements are compared using operator `<` or with function `f` if given.
 - `f`
