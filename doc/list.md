@@ -75,6 +75,7 @@ Functions for edit lists
     - [`binary_search()`][binary_search]
     - [`sorted_until()`][sorted_until]
     - [`sorted_until_list()`][sorted_until_list]
+    - [`lexicographical_compare()`][lexicographical_compare]
   - [Edit list, use function literal on data](#edit-list-use-function-literal-on-data-)
     - [`remove_if()`][remove_if]
     - [`replace_if()`][replace_if]
@@ -457,6 +458,38 @@ The first position 0 is not included in the returned list.
 - `f`
   - function literal with two arguments
   - returns `true` or `false`
+
+#### `lexicographical_compare (list1, list2, f, type)` [^][contents]
+[lexicographical_compare]: #lexicographical_compare-list1-list2-f-type-
+Lexicographical less-than comparison of two lists.\
+A lexicographical comparison is the kind of comparison generally
+used to sort words alphabetically in dictionaries.
+It involves comparing sequentially the elements that have the same position in
+both ranges against each other until one element is not equivalent to the other.
+The result of comparing these first non-matching elements
+is the result of the lexicographical comparison.
+If both sequences compare equal until one of them ends,
+the shorter sequence is lexicographically less than the longer one.
+
+The elements are compared using operator `<` or with function `f` if given.
+- `f`
+  - function literal with two arguments
+  - returns `true` or `false`
+
+Example:
+```OpenSCAD
+include <banded.scad>
+
+comp = function(a,b) a < b;
+
+a = [1,2,3,4];
+b = [1,2,3,5];
+c = [1,2,3];
+echo( lexicographical_compare (a, b, f=comp) ); // ECHO: true
+echo( lexicographical_compare (a, b) );         // ECHO: true
+echo( lexicographical_compare (a, c, f=comp) ); // ECHO: false
+echo( lexicographical_compare (a, c) );         // ECHO: false
+```
 
 
 Edit list, use function literal on data [^][contents]

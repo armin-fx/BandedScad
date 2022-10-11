@@ -597,3 +597,23 @@ function sorted_until_list_intern (list, f=undef, type=0, begin=0, last=-1) =
 		:                                [for(i=[begin:1:last-1]) if (f( get_value(list[i+1],type), get_value(list[i],type))) i+1]
 ;
 
+// Lexikographischer kleiner-als Vergleich zweier Listen
+function lexicographical_compare (list1, list2, f, type=0) =
+	f==undef ?
+		type==0 ? list1<list2
+		:         value_list(list1,type)<value_list(list2,type)
+	:
+		type==0 ? lexicographical_compare_intern (list1                 , list2                 , f, 0, len(list1)-1, 0, len(list2)-1)
+		:         lexicographical_compare_intern (value_list(list1,type), value_list(list2,type), f, 0, len(list1)-1, 0, len(list2)-1)
+;
+function lexicographical_compare_intern (list1, list2, f, begin1=0, last1=-1, begin2=0, last2=-1) =
+	begin1>last1 ? begin2<=last2 :
+	begin2>last2 ? false :
+	let (
+		value1 = list1[begin1],
+		value2 = list2[begin2]
+	)
+	f (value2,value1) ? false :
+	f (value1,value2) ? true :
+	lexicographical_compare_intern (list1, list2, f, begin1+1, last1, begin2+1, last2)
+;
