@@ -36,8 +36,13 @@ function get_position (list, position) =
 // Positionen außerhalb der Liste werden an den Anfang oder das Ende gesetzt
 function get_position_safe (list, position) =
 	list==undef || list==[] ? -1 :
-	let( real = (position>=0) ? position : len(list)+position )
-	constrain (real, 0, len(list)-1)
+	// constrain (get_position (list, position), 0, len(list)-1)
+	//
+	let( size = len(list) )
+	position>=0 ?
+		(position>size-1) ? size-1 : position
+	: // position<0
+		(size+position<0) ? 0      : size+position
 ;
 // gibt die echte Position innerhalb einer Liste zurück
 // Kodierung sinnvoll für Einfügepositionen:
@@ -53,8 +58,13 @@ function get_position_insert (list, position) =
 	position>=0 ? position : len(list)+position+1
 ;
 function get_position_insert_safe (list, position) =
-	let( real = (position>=0) ? position : len(list)+position+1 )
-	constrain (real, 0, len(list))
+	// constrain (get_position_insert (list, position), 0, len(list))
+	//
+	let( size = len(list) )
+	position>=0 ?
+		(position>size)     ? size : position
+	: // position<0
+		(size+position+1<0) ? 0    : size+position+1
 ;
 
 // testet eine numerische Variable auf eine gültige Zahl (Not A Number)

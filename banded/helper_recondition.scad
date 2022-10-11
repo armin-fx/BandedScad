@@ -71,20 +71,19 @@ function parameter_range (list, begin, last, count, range) =
 				[get_position(list,begin), get_position(list,begin)+get_position_insert(list,count)-1]
 			:(last!=undef && count!=undef) ?
 				[get_position(list,last)-get_position_insert(list,count), get_position(list,last)]
-			:(range[0]!=undef && count!=undef) ?
+			:(range!=undef && range[0]!=undef && count!=undef) ?
 				[get_position(list,range[0]), get_position(list,range[0])+get_position_insert(list,count)-1]
-			:(range[1]!=undef && count!=undef) ?
+			:(range!=undef && range[1]!=undef && count!=undef) ?
 				[get_position(list,range[1])-get_position_insert(list,count), get_position(list,range[1])]
-			:(range[0]!=undef && range[1]!=undef) ?
+			:(range!=undef && range[0]!=undef && range[1]!=undef) ?
 				[get_position(list,range[0]), get_position(list,range[1])]
 			:(begin !=undef) ? [get_position(list,begin), len(list)-1]
 			:(last  !=undef) ? [0, get_position(list,begin)]
 			:(count !=undef) ? [0, get_position_insert(list,count)-1]
 			:[0, len(list)-1]
-		, Begin = Range[0]
-		, Last  = Range[1]
 	)
-	[Begin, Last>=Begin ? Last : Begin-1]
+	// [Begin, Last    >=Begin    ? Last     : Begin   -1]
+	[Range[0], Range[1]>=Range[0] ? Range[1] : Range[0]-1]
 ;
 function parameter_range_safe (list, begin, last, count, range) =
 	let(
@@ -95,20 +94,19 @@ function parameter_range_safe (list, begin, last, count, range) =
 				[get_position(list,begin), get_position(list,begin)+get_position_insert_safe(list,count)-1]
 			:(last!=undef && count!=undef) ?
 				[get_position(list,last)-get_position_insert_safe(list,count), get_position_safe(list,last)]
-			:(range[0]!=undef && count!=undef) ?
+			:(range!=undef && range[0]!=undef && count!=undef) ?
 				[get_position(list,range[0]), get_position(list,range[0])+get_position_insert_safe(list,count)-1]
-			:(range[1]!=undef && count!=undef) ?
+			:(range!=undef && range[1]!=undef && count!=undef) ?
 				[get_position(list,range[1])-get_position_insert_safe(list,count), get_position_safe(list,range[1])]
-			:(range[0]!=undef && range[1]!=undef) ?
+			:(range!=undef && range[0]!=undef && range[1]!=undef) ?
 				[get_position(list,range[0]), get_position_safe(list,range[1])]
 			:(begin !=undef) ? [get_position(list,begin), len(list)-1]
 			:(last  !=undef) ? [0, get_position_safe(list,begin)]
 			:(count !=undef) ? [0, get_position_insert_safe(list,count)-1]
 			:[0, len(list)-1]
-		,Begin = Range[0]
-		,Last  = Range[1]
 	)
-	[Begin, Last>=Begin ? Last : Begin-1]
+	// [Begin, Last    >=Begin    ? Last     : Begin   -1]
+	[Range[0], Range[1]>=Range[0] ? Range[1] : Range[0]-1]
 ;
 
 // gibt [Innenradius, Außenradius] zurück
