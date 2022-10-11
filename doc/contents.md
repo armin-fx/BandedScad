@@ -17,6 +17,7 @@ Table of contents
   - [Type-dependent access to the content](list.md#different-type-of-data-)
   - [Independent from the data](list.md#edit-list-independent-from-the-data-)
   - [With use of data, type-dependent](list.md#edit-list-with-use-of-data-depend-on-type-)
+  - [Get data from list](list.md#get-data-from-list-)
   - [Use function literal on data](list.md#edit-list-use-function-literal-on-data-)
   - [Test entries of lists](list.md#test-entries-of-lists-)
   - [Pair functions (key-value-pair)](list.md#pair-functions-)

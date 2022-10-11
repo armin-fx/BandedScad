@@ -28,10 +28,20 @@ Functions for edit lists
   - [Different type of data][type]
     - [Internal type identifier convention](#internal-type-identifier-convention-)
     - [Set type identifier of data](#set-type-identifier-of-data-)
+	  - `set_type_direct()`
+	  - `set_type_list()`
+	  - `set_type_function()`
+	  - `set_type()`
     - [Info from type identifier](#info-from-type-identifier-)
-  - [List functions with specified `type`](#list-functions-with-specified-type-)
+	  - `get_position_type()`
+	  - `get_function_type()`
     - [Get data with type identifier](get-data-with-type-identifier-)
-    - [Min or max value](#min-or-max-value-)
+      - `get_value()`
+      - `value_list()`
+      - `is_type_direct()`
+      - `is_type_list()`
+      - `is_type_function()`
+      - `is_type_unknown()`
   - [Edit list independent from the data](#edit-list-independent-from-the-data-)
     - [`concat_list()`][concat_list]
     - [`reverse()`][reverse]
@@ -46,7 +56,15 @@ Functions for edit lists
   - [Edit list with use of data, depend on type](#edit-list-with-use-of-data-depend-on-type-)
     - [`sort()`][sort]
     - [`merge()`][merge]
-    - [`binary_search()`][binary_search]
+    - [`remove_duplicate()`][remove_duplicate]
+    - [`remove_value()`][remove_value]
+    - [`remove_all_values()`][remove_all_values]
+    - [`replace_value()`][replace_value]
+    - [`replace_all_values()`][replace_all_values]
+    - [`unique()`][unique]
+  - [Get data from list](#get-data-from-list-)
+    - [min or max value](#min-or-max-value-)
+    - [`count()`][count]
     - [`find_first()`][find_first]
     - [`find_first_once()`][find_first_once]
     - [`find_last()`][find_last]
@@ -54,21 +72,19 @@ Functions for edit lists
     - [`mismatch()`][mismatch]
     - [`mismatch_list()`][mismatch_list]
     - [`adjacent_find()`][adjacent_find]
-    - [`count()`][count]
-    - [`remove_duplicate()`][remove_duplicate]
-    - [`remove_value()`][remove_value]
-    - [`remove_all_values()`][remove_all_values]
-    - [`replace_value()`][replace_value]
-    - [`replace_all_values()`][replace_all_values]
+    - [`binary_search()`][binary_search]
+    - [`sorted_until()`][sorted_until]
+    - [`sorted_until_list()`][sorted_until_list]
   - [Edit list, use function literal on data](#edit-list-use-function-literal-on-data-)
+    - [`remove_if()`][remove_if]
+    - [`replace_if()`][replace_if]
+    - [`partition()`][partition]
     - [`for_each()`][for_each]
+    - [`count_if`][count_if]
     - [`find_first_if()`][find_first_if]
     - [`find_first_once_if()`][find_first_once_if]
     - [`find_last_if()`][find_last_if]
     - [`find_last_once_if()`][find_last_once_if]
-    - [`remove_if()`][remove_if]
-    - [`replace_if()`][replace_if]
-    - [`partition()`][partition]
   - [Test entries of lists](#test-entries-of-lists-)
     - [`all_of()`][all_of]
     - [`none_of()`][none_of]
@@ -76,8 +92,6 @@ Functions for edit lists
     - [`equal()`][equal]
     - [`includes()`][includes]
     - [`is_sorted()`][is_sorted]
-    - [`sorted_until()`][sorted_until]
-    - [`sorted_until_list()`][sorted_until_list]
     - [`is_partitioned()`][is_partitioned]
   - [Pair functions](#pair-functions-)
     - [`pair()`][pair]
@@ -189,24 +203,12 @@ Return `true` if it fits.
 | `is_type_unknown  (type)` | nothing known?
 
 
-List functions with specified `type` [^][contents]
---------------------------------------------------
-
 ### Get data with type identifier [^][contents]
 
 | function                  | description
 |---------------------------|-------------
 | `get_value  (data, type)` | return the value from the `data` element with specified `type`
 | `value_list (list, type)` | return a list with only values from specified `type`
-
-### Min or max value [^][contents]
-
-| function                    | description
-|-----------------------------|-------------
-| `min_list     (list, type)` | get the minimum value from a list with specified `type`
-| `max_list     (list, type)` | get the maximum value from a list with specified `type`
-| `min_position (list, type)` | get the position of minimum value in a list
-| `max_position (list, type)` | get the position of maximum value in a list
 
 
 Edit list independent from the data [^][contents]
@@ -321,9 +323,54 @@ Sort a list with a stable sort algorithm
 [merge]: #merge-list1-list2-type-
 Merge 2 sorted lists into one list
 
-#### `binary_search (list, value, type)` [^][contents]
-[binary_search]: #binary_search-list-value-type-
-Search a value in a sorted list
+#### `remove_duplicate (list, type)` [^][contents]
+[remove_duplicate]: #remove_duplicate-list-type-
+Remove every duplicate in a list, so a value exists only once
+
+#### `remove_value (list, value, type)` [^][contents]
+[remove_value]: #remove_value-list-value-type-
+Remove every entry with a given value in a list
+
+#### `remove_all_values (list, value_list, type)` [^][contents]
+[remove_all_values]: #remove_all_values-list-value_list-type-
+Remove every entry with a given list of values in a list
+- `value_list` - a list with values to remove
+
+#### `replace_value (list, value, new, type)` [^][contents]
+[replace_value]: #replace_value-list-value-new-type-
+Replace every entry with a given value in a list to a new value
+
+#### `replace_all_values (list, value_list, new, type)` [^][contents]
+[replace_all_values]: #replace_all_values-list-value_list-new-type-
+Replace every entry with a given list of values in a list to a new value
+- `value_list` - a list with values to replace with value `new`
+
+#### `unique (list, type, f)` [^][contents]
+[unique]: #unique-list-type-f-
+Remove consecutive duplicates in a list.\
+Removes all but the first element from every consecutive group of equivalent elements.
+The elements are compared using operator `==` or with function `f` if given.
+- `f`
+  - function literal with two arguments
+  - returns `true` or `false`
+
+
+Get data from list [^][contents]
+--------------------------------
+
+#### Min or max value [^][contents]
+
+| function                    | description
+|-----------------------------|-------------
+| `min_list     (list, type)` | get the minimum value from a list with specified `type`
+| `max_list     (list, type)` | get the maximum value from a list with specified `type`
+| `min_position (list, type)` | get the position of minimum value in a list
+| `max_position (list, type)` | get the position of maximum value in a list
+
+#### `count (list, value, type, 'range_args')` [^][contents]
+[count]: #count-list-value-type-range_args-
+Count how often a value is in list
+- [`'range_args'`][range_args] - arguments to set the range in which will count, default = full list
 
 #### `find_first (list, value, index, type, 'range_args')` [^][contents]
 [find_first]: #find_first-list-value-index-type-range_args-
@@ -389,38 +436,24 @@ The elements are compared using operator ==  or with function `f` if given.
   - function literal with two arguments
   - returns `true` or `false`
 
-#### `count (list, value, type, 'range_args')` [^][contents]
-[count]: #count-list-value-type-range_args-
-Count how often a value is in list
-- [`'range_args'`][range_args] - arguments to set the range in which will count, default = full list
+#### `binary_search (list, value, type)` [^][contents]
+[binary_search]: #binary_search-list-value-type-
+Search a value in a sorted list
 
-#### `remove_duplicate (list, type)` [^][contents]
-[remove_duplicate]: #remove_duplicate-list-type-
-Remove every duplicate in a list, so a value exists only once
+#### `sorted_until (list, f, type, 'range_args')` [^][contents]
+[sorted_until]: #sorted_until-list-f-type-range_args-
+Returns the first position where the list is not sorted into ascending order.\
+The elements are compared using operator `<` or with function `f` if given.
+- `f`
+  - function literal with two arguments
+  - returns `true` or `false`
 
-#### `remove_value (list, value, type)` [^][contents]
-[remove_value]: #remove_value-list-value-type-
-Remove every entry with a given value in a list
-
-#### `remove_all_values (list, value_list, type)` [^][contents]
-[remove_all_values]: #remove_all_values-list-value_list-type-
-Remove every entry with a given list of values in a list
-- `value_list` - a list with values to remove
-
-#### `replace_value (list, value, new, type)` [^][contents]
-[replace_value]: #replace_value-list-value-new-type-
-Replace every entry with a given value in a list to a new value
-
-#### `replace_all_values (list, value_list, new, type)` [^][contents]
-[replace_all_values]: #replace_all_values-list-value_list-new-type-
-Replace every entry with a given list of values in a list to a new value
-- `value_list` - a list with values to replace with value `new`
-
-#### `unique (list, type, f)` [^][contents]
-[unique]: #unique-list-type-f-
-Remove consecutive duplicates in a list.\
-Removes all but the first element from every consecutive group of equivalent elements.
-The elements are compared using operator `==` or with function `f` if given.
+#### `sorted_until_list (list, f, type, 'range_args')` [^][contents]
+[sorted_until_list]: #sorted_until_list-list-f-type-range_args-
+Returns all position in a list at where the list is not sorted into ascending order.\
+The elements are compared using operator `<` or with function `f` if given.
+Returns an empty list if the list is sorted.
+The first position 0 is not included in the returned list.
 - `f`
   - function literal with two arguments
   - returns `true` or `false`
@@ -429,11 +462,57 @@ The elements are compared using operator `==` or with function `f` if given.
 Edit list, use function literal on data [^][contents]
 -----------------------------------------------------
 
+#### `remove_if (list, f, type)` [^][contents]
+[remove_if]: #remove_if-list-f-type-
+Run function `f()` at the entries in a list and
+remove every entry which this function returns `true`.
+- `f`
+  - function literal with one argument
+  - returns `true` or `false`
+
+#### `replace_if (list, f, new, type)` [^][contents]
+[replace_if]: #replace_if-list-f-new-type-
+Run function `f()` at the entries in a list and
+replace every entry which this function returns `true` to a new value.
+- `f`
+  - function literal with one argument
+  - returns `true` or `false`
+
+#### `partition (list, f, type, 'range_args')` [^][contents]
+[partition]: partition-list-f-type-range_args-
+Split a list in two parts.\
+Returns 2 lists: `[ [first part], [second part] ]`.
+The first part contains all elements which function `f()` returns `true`.
+The second part contains all elements which function `f()` returns `false`.
+- `f`
+  - function literal with one argument
+  - returns `true` or `false`
+- [`'range_args'`][range_args] - arguments to set the range of the list, default = full list
+
+Example:
+```OpenSCAD
+include <banded.scad>
+
+pred = function(n) is_odd(n);
+
+a = [1,2,3,4,5,6,7];
+echo( partition (a, f=pred) ); // ECHO: [[1, 3, 5, 7], [2, 4, 6]]
+
+```
+
 #### `for_each (list, f, type, 'range_args')` [^][contents]
 [for_each]: #for_each-list-f-type-range_args-
 Run function `f()` on each item in the list.\
 Return the list of results.
 - [`'range_args'`][range_args] - arguments to set the range of the list, standard = full list
+
+#### `count_if (list, f, type, 'range_args')` [^][contents]
+[count]: #count-list-value-type-range_args-
+Count how often the function `f()` hits `true` on an entry in a list
+- [`'range_args'`][range_args] - arguments to set the range in which will count, default = full list
+- `f`
+  - function literal with one argument
+  - returns `true` or `false`
 
 #### `find_first_if (list, f, index, type, 'range_args')` [^][contents]
 [find_first_if]: #find_first_if-list-f-index-type-range_args-
@@ -475,52 +554,6 @@ returns the position which this function returns `true`.\
 Returns the position before the first element in the defined range if nothing was found.\
 Like [`find_last_if()`][find_last_if],
 but return always the position of the first hit.
-
-#### `count_if (list, f, type, 'range_args')` [^][contents]
-[count]: #count-list-value-type-range_args-
-Count how often the function `f()` hits `true` on an entry in a list
-- [`'range_args'`][range_args] - arguments to set the range in which will count, default = full list
-- `f`
-  - function literal with one argument
-  - returns `true` or `false`
-
-#### `remove_if (list, f, type)` [^][contents]
-[remove_if]: #remove_if-list-f-type-
-Run function `f()` at the entries in a list and
-remove every entry which this function returns `true`.
-- `f`
-  - function literal with one argument
-  - returns `true` or `false`
-
-#### `replace_if (list, f, new, type)` [^][contents]
-[replace_if]: #replace_if-list-f-new-type-
-Run function `f()` at the entries in a list and
-replace every entry which this function returns `true` to a new value.
-- `f`
-  - function literal with one argument
-  - returns `true` or `false`
-
-#### `partition (list, f, type, 'range_args')` [^][contents]
-[partition]: partition-list-f-type-range_args-
-Split a list in two parts.\
-Returns 2 lists: `[ [first part], [second part] ]`.
-The first part contains all elements which function `f()` returns `true`.
-The second part contains all elements which function `f()` returns `false`.
-- `f`
-  - function literal with one argument
-  - returns `true` or `false`
-- [`'range_args'`][range_args] - arguments to set the range of the list, default = full list
-
-Example:
-```OpenSCAD
-include <banded.scad>
-
-pred = function(n) is_odd(n);
-
-a = [1,2,3,4,5,6,7];
-echo( partition (a, f=pred) ); // ECHO: [[1, 3, 5, 7], [2, 4, 6]]
-
-```
 
 
 Test entries of lists [^][contents]
@@ -595,24 +628,6 @@ echo( includes (a, c) ); // ECHO: false
 Check whether list is sorted.\
 Returns `true` if the list is sorted into ascending order.
 The elements are compared using operator `<` or with function `f` if given.
-- `f`
-  - function literal with two arguments
-  - returns `true` or `false`
-
-#### `sorted_until (list, f, type, 'range_args')` [^][contents]
-[sorted_until]: #sorted_until-list-f-type-range_args-
-Returns the first position where the list is not sorted into ascending order.\
-The elements are compared using operator `<` or with function `f` if given.
-- `f`
-  - function literal with two arguments
-  - returns `true` or `false`
-
-#### `sorted_until_list (list, f, type, 'range_args')` [^][contents]
-[sorted_until_list]: #sorted_until_list-list-f-type-range_args-
-Returns all position in a list at where the list is not sorted into ascending order.\
-The elements are compared using operator `<` or with function `f` if given.
-Returns an empty list if the list is sorted.
-The first position 0 is not included in the returned list.
 - `f`
   - function literal with two arguments
   - returns `true` or `false`

@@ -26,6 +26,7 @@ Overview of scad files
 ` `| . . . | . . . . +--> [`banded/list_edit_type.scad`](list.md#different-type-of-data- "Type-dependent access to the content of lists")\
 ` `| . . . | . . . . +--> [`banded/list_edit_item.scad`](list.md#edit-list-independent-from-the-data- "Edit list independent from the data")\
 ` `| . . . | . . . . +--> [`banded/list_edit_data.scad`](list.md#edit-list-with-use-of-data-depend-on-type- "Edit list with use of data, type-dependent")\
+` `| . . . | . . . . +--> [`banded/list_edit_info.scad`](list.md#get-data-from-list- "Get data from list with use of data, type-dependent")\
 ` `| . . . | . . . . +--> [`banded/list_edit_predicate.scad`](list.md#edit-list-use-function-literal-on-data- "Edit list, use function literal on data")\
 ` `| . . . | . . . . +--> [`banded/list_edit_test.scad`](list.md##test-entries-of-lists- "Test entries of lists")\
 ` `| . . . | . . . . +--> [`banded/list_edit_pair.scad`](list.md#pair-functions- "Pair functions - key-value-pair")\
