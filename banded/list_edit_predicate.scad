@@ -151,7 +151,7 @@ function find_last_if_intern_type (list, f, index=0, type, n=-2, first=0) =
 function find_last_once_if (list, f, type=0, begin, last, count, range) =
 	list==undef ? -1 :
 	let (Range = parameter_range_safe (list, begin, last, count, range))
-	find_last_once_if_intern (list, f, type=0, Range[1], Range[0])
+	find_last_once_if_intern (list, f, type, Range[1], Range[0])
 ;
 function find_last_once_if_intern (list, f, type=0, n=-1, first=0) =
 	 type   == 0 ? find_last_once_if_intern_direct   (list, f         , n, first)
@@ -218,4 +218,20 @@ function replace_if (list, f, new, type=0) =
 	:type[0]>= 0 ?                   [ for (e=list) if (f( e[type[0]]        )!=true) e else new ]
 	:type[0]==-1 ? let( fn=type[1] ) [ for (e=list) if (f( fn(e)             )!=true) e else new ]
 	:                                [ for (e=list) if (f( get_value(e,type) )!=true) e else new ]
+;
+
+// Teilt eine Liste in 2 Teile auf
+// gibt 2 Listen zurück
+// [ [Elemente mif f()==true], [Elemente mif f()==false] ]
+function partition (list, f, type=0, begin, last, count, range) =
+	let(
+		Range = parameter_range_safe (list, begin, last, count, range),
+		choice_list =
+			 type   == 0                   ? [for (i=[Range[0]:1:Range[1]]) f( list[i]                ) ]
+			:type[0]>= 0                   ? [for (i=[Range[0]:1:Range[1]]) f( list[i][type[0]]       ) ]
+			:type[0]==-1 ? let( fn=type[1] ) [for (i=[Range[0]:1:Range[1]]) f( fn(list[i])            ) ]
+			:                                [for (i=[Range[0]:1:Range[1]]) f( get_value(list[i],type)) ]
+	)
+	[ [for (i=[Range[0]:1:Range[1]]) if (  choice_list[i-Range[0]]) list[i] ]
+	, [for (i=[Range[0]:1:Range[1]]) if (! choice_list[i-Range[0]]) list[i] ] ]
 ;

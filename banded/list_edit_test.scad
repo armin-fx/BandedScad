@@ -7,6 +7,7 @@
 use <banded/helper.scad>
 
 use <banded/list_edit_type.scad>
+use <banded/list_edit_predicate.scad>
 
 
 // Führt Funktion 'f' auf die Elemente in der Liste aus und
@@ -321,4 +322,17 @@ function sorted_until_list_intern (list, f=undef, type=0, begin=0, last=-1) =
 		:type[0]>= 0                   ? [for(i=[begin:1:last-1]) if (f( list[i+1][type[0]]       , list[i][type[0]]       )) i+1]
 		:type[0]==-1 ? let( fn=type[1] ) [for(i=[begin:1:last-1]) if (f( fn(list[i+1])            , fn(list[i])            )) i+1]
 		:                                [for(i=[begin:1:last-1]) if (f( get_value(list[i+1],type), get_value(list[i],type))) i+1]
+;
+
+// Testet, ob eine Liste in 2 Bereiche aufgeteilt ist.
+// 1. Teil: f() == true
+// 2. Teil: f() == false
+function is_partitioned (list, f, type=0, begin, last, count, range) =
+	let (
+		Range = parameter_range_safe (list, begin, last, count, range),
+		g = function(v) !f(v),
+		true_pos  = find_first_once_if_intern (list, g, type, Range[0], Range[1]),
+		false_pos = find_first_once_if_intern (list, f, type, true_pos, Range[1])
+	)
+	false_pos==Range[1]+1
 ;

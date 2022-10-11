@@ -68,6 +68,7 @@ Functions for edit lists
     - [`find_last_once_if()`][find_last_once_if]
     - [`remove_if()`][remove_if]
     - [`replace_if()`][replace_if]
+    - [`partition()`][partition]
   - [Test entries of lists](#test-entries-of-lists-)
     - [`all_of()`][all_of]
     - [`none_of()`][none_of]
@@ -77,6 +78,7 @@ Functions for edit lists
     - [`is_sorted()`][is_sorted]
     - [`is_sorted_until()`][is_sorted_until]
     - [`sorted_until_list()`][sorted_until_list]
+    - [`is_partitioned()`][is_partitioned]
   - [Pair functions](#pair-functions-)
     - [`pair()`][pair]
     - [`pair_value()`][pair_value]
@@ -330,7 +332,7 @@ Returns the position after the last element in the defined range if nothing was 
 - `index`
   - Same values are skipped `index` times
   - Standard = get first hit, `index` = 0
-- [`'range_args'`][range_args] - arguments to set the range in which will count, default = full list
+- [`'range_args'`][range_args] - arguments to set the range of the list, default = full list
 
 #### `find_first_once (list, value, type, 'range_args')` [^][contents]
 [find_first_once]: #find_first_once-list-value-type-range_args-
@@ -346,7 +348,7 @@ Returns the position before the first element in the defined range if nothing wa
 - `index`
   - Same values are skipped `index` times
   - Standard = get first hit, `index` = 0
-- [`'range_args'`][range_args] - arguments to set the range in which will count, default = full list
+- [`'range_args'`][range_args] - arguments to set the range of the list, default = full list
 
 #### `find_last_once (list, value, type, 'range_args')` [^][contents]
 [find_last_once]: #find_last_once-list-value-type-range_args-
@@ -431,7 +433,7 @@ Edit list, use function literal on data [^][contents]
 [for_each]: #for_each-list-f-type-range_args-
 Run function `f()` on each item in the list.\
 Return the list of results.
-- [`'range_args'`][range_args] - arguments to set the range of list, standard = full list
+- [`'range_args'`][range_args] - arguments to set the range of the list, standard = full list
 
 #### `find_first_if (list, f, index, type, 'range_args')` [^][contents]
 [find_first_if]: #find_first_if-list-f-index-type-range_args-
@@ -439,10 +441,11 @@ Run function `f()` at the entries in a list and returns the position which this 
 Returns the position after the last element in the defined range if nothing was found.
 - `f`
   - function literal with one argument
+  - returns `true` or `false`
 - `index`
   - Same values are skipped `index` times
   - Standard = get first hit, `index` = 0
-- [`'range_args'`][range_args] - arguments to set the range in which will count, default = full list
+- [`'range_args'`][range_args] - arguments to set the range of the list, default = full list
 
 #### `find_first_once_if (list, f, type, 'range_args')` [^][contents]
 [find_first_once_if]: #find_first_once_if-list-f-type-range_args-
@@ -459,6 +462,7 @@ returns the position which this function returns `true`.\
 Returns the position before the first element in the defined range if nothing was found.
 - `f`
   - function literal with one argument
+  - returns `true` or `false`
 - `index`
   - Same values are skipped `index` times
   - Standard = get first hit, `index` = 0
@@ -478,6 +482,7 @@ Count how often the function `f()` hits `true` on an entry in a list
 - [`'range_args'`][range_args] - arguments to set the range in which will count, default = full list
 - `f`
   - function literal with one argument
+  - returns `true` or `false`
 
 #### `remove_if (list, f, type)` [^][contents]
 [remove_if]: #remove_if-list-f-type-
@@ -485,6 +490,7 @@ Run function `f()` at the entries in a list and
 remove every entry which this function returns `true`.
 - `f`
   - function literal with one argument
+  - returns `true` or `false`
 
 #### `replace_if (list, f, new, type)` [^][contents]
 [replace_if]: #replace_if-list-f-new-type-
@@ -492,6 +498,29 @@ Run function `f()` at the entries in a list and
 replace every entry which this function returns `true` to a new value.
 - `f`
   - function literal with one argument
+  - returns `true` or `false`
+
+#### `partition (list, f, type, 'range_args')` [^][contents]
+[partition]: partition-list-f-type-range_args-
+Split a list in two parts.\
+Returns 2 lists: `[ [first part], [second part] ]`.
+The first part contains all elements which function `f()` returns `true`.
+The second part contains all elements which function `f()` returns `false`.
+- `f`
+  - function literal with one argument
+  - returns `true` or `false`
+- [`'range_args'`][range_args] - arguments to set the range of the list, default = full list
+
+Example:
+```OpenSCAD
+include <banded.scad>
+
+pred = function(n) is_odd(n);
+
+a = [1,2,3,4,5,6,7];
+echo( partition (a, f=pred) ); // ECHO: [[1, 3, 5, 7], [2, 4, 6]]
+
+```
 
 
 Test entries of lists [^][contents]
@@ -587,6 +616,31 @@ The first position 0 is not included in the returned list.
 - `f`
   - function literal with two arguments
   - returns `true` or `false`
+
+#### `is_partitioned (list, f, type, 'range_args')` [^][contents]
+[is_partitioned]: is_partitioned-list-f-type-range_args-
+Returns `true` if all the elements in the list are split in two parts.\
+Where the function `f()` must return `true` on each element of the first part
+and `f()` returns `false` on each element of the second part.
+If the range is empty, the function returns `true`.
+- `f`
+  - function literal with two arguments
+  - returns `true` or `false`
+- [`'range_args'`][range_args] - arguments to set the range of the list, default = full list
+
+Example:
+```OpenSCAD
+include <banded.scad>
+
+pred = function(n) is_odd(n);
+
+a = [1,2,3,4,5,6,7];
+b = concat_list( partition (a, f=pred) );
+
+echo( b );                          // ECHO: [1, 3, 5, 7, 2, 4, 6]
+echo( is_partitioned (b, f=pred) ); // ECHO: true
+echo( is_partitioned (a, f=pred) ); // ECHO: false
+```
 
 
 Pair functions [^][contents]
