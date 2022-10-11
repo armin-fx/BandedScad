@@ -66,17 +66,67 @@ function is_intersecting (line1, line2, point, only) =
 
 // - Linien und Strecken:
 
+
+// Gibt die Steigung [m, c] einer Linie zurück
+function get_gradient (line) =
+	len(line)==2 ? get_gradient_2 (line) :
+	len(line)==3 ? get_gradient_3 (line) :
+	undef
+;
+
 // Gibt die Steigung [m, c] einer Linie in 2D zurück, (y = m*x + c )
 //   m = Steigungsrate
 //   c = Höhe der Linie beim Durchgang durch die Y Achse
 // Senkrechte Linien gehen nicht.
-function get_gradient (line) =
+function get_gradient_2 (line) =
+	line[0].x==line[1].x ? // vertical line
+		undef
+	:
 	let(
-		m =	  (line[1].y - line[0].y)
+		m =   (line[1].y - line[0].y)
 			/ (line[1].x - line[0].x),
 		c = line[0].y - m * line[0].x
 	)
 	[m, c]
+;
+// Gibt die Steigung [m, c] einer Linie in 3D zurück, ([x,y] = m*z + c )
+//   m = Steigungsrate der X-Achse und Y-Achse als Liste [m_x, m_y]
+//   c = X-Y-Punkt auf der Linie bei Z=0
+// Waagerechte Linien gehen nicht.
+function get_gradient_3 (line) =
+	line[0].z==line[1].z ? // line on XY-plane
+		undef
+	:
+	line[0].x==line[1].x && line[0].y==line[1].y ? // line = Z-axis
+		[[0,0], [line[0].x,line[0].y]]
+	:
+	line[0].x==line[1].x ? // line on YZ-plane
+		let(
+			n =	  (line[1].y - line[0].y)
+				/ (line[1].z - line[0].z),
+			c = line[0].x,
+			d = line[0].y - n*line[0].z
+		)
+		[[0,n], [c,d]]
+	:
+	line[0].y==line[1].y ? // line on XZ-plane
+		let(
+			m =   (line[1].x - line[0].x)
+				/ (line[1].z - line[0].z),
+			c = line[0].x - m*line[0].z,
+			d = line[0].y
+		)
+		[[m,0], [c,d]]
+	:
+		let(
+			m =   (line[1].x - line[0].x)
+				/ (line[1].z - line[0].z),
+			n =   (line[1].y - line[0].y)
+				/ (line[1].z - line[0].z),
+			c = line[0].x - m*line[0].z,
+			d = line[0].y - n*line[0].z
+		)
+		[[m,n], [c,d]]
 ;
 
 // gibt den Kreuzungspunkt zurück, den zwei Geraden schneiden,

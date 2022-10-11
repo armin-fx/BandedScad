@@ -290,10 +290,23 @@ Returns `true` if two line segment intersect.
 
 #### `get_gradient (line)` [^][contents]
 [get_gradient]: #get_gradient-line-
-Returns the gradient `[m, c]` of a line in the 2D plane, `(y = m*x + c )`.\
+Returns the gradient `[m, c]` of a line.\
+
+In 2D plane:\
+`y = m*x + c`\
 Where `m` means the slope of the line
 and `c` means the intercept of the line throw the Y axis.
-Vertical lines don't work ;).
+Vertical lines don't work, then it returns `undef`.
+
+In 3D space:\
+`[x,y] = m*z + c`\
+Where `m` means the slope of the line on X-axis and Y-axis as list `[m_x, m_y]`
+and `c` means the intercept of the line throw the XY-plane at `Z=0` as point `[x,y]`.
+Horizontal lines don't work, then it returns `undef`.
+
+_Specialized functions:_
+- `get_gradient_2 (line)` - only in 2D plane
+- `get_gradient_3 (line)` - only in 3D space
 
 #### `get_intersecting_point (line1, line2)` [^][contents]
 [get_intersecting_point]: #get_intersecting_point-line1-line2-
