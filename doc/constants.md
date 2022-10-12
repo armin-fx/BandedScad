@@ -21,6 +21,7 @@ Constants
   - [Auxiliary constants](#auxiliary-constants-)
   - [Functions](#functions-)
     - [`axis()`][axis]
+    - [`origin()`][origin]
 
 
 Defined constants [^][contents]
@@ -120,6 +121,7 @@ ___`delta_std`:___
 | `X`      | `[1,0,0]` | X-axis as 3D vector
 | `Y`      | `[0,1,0]` | Y-axis as 3D vector
 | `Z`      | `[0,0,1]` | Z-axis as 3D vector
+| `O`      | `[0,0,0]` | origin as 3D vector
 
 
 ### Functions [^][contents]
@@ -138,4 +140,11 @@ ___Spezialized functions with fixed axis `n`:___
 - `x (d)` - X-axis
 - `y (d)` - Y-axis
 - `z (d)` - Z-axis
+
+#### `origin (d)` [^][contents]
+[origin]: #origin-d-
+Returns a zero vector. Point = origin.
+- `d` - count of dimensions
+  - `2` = 2D plane, returns `[0,0]`
+  - `3` = 3D room, returns `[0,0,0]`, default
 
