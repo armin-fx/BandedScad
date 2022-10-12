@@ -18,6 +18,9 @@ function translate_points (list, v) =
 	(v==[0,0] || v==[0,0,0])  ? list :
 	[for (p=list) p+v]
 ;
+function translate_point (p, v) =
+	p+v
+;
 
 // jeden Punkt in der Liste <list> rotieren
 // funktioniert wie rotate()
@@ -36,7 +39,7 @@ function rotate_points (list, a, v, backwards=false) =
 				matrix_rotate_x(a.x, d=3, short=true)
 			)
 		:is_num(a)  ?
-			is_list(v) ?
+			(v!=undef && is_list(v)) ?
 				rotate_v_points(list, a, v)
 			:	rotate_z_points(list, a)
 		:list
@@ -49,15 +52,43 @@ function rotate_points (list, a, v, backwards=false) =
 				matrix_rotate_z(-a.z, d=3, short=true)
 			)
 		:is_num(a)  ?
-			is_list(v) ?
+			(v!=undef && is_list(v)) ?
 				rotate_v_points(list, -a, v)
 			:	rotate_z_points(list, -a)
+		:list
+;
+function rotate_point (p, a, v, backwards=false) =
+	! (backwards==true) ?
+		// forward
+		is_list(a) ?
+			multmatrix_point (p,
+				matrix_rotate_z(a.z, d=3, short=true) *
+				matrix_rotate_y(a.y, d=3, short=true) *
+				matrix_rotate_x(a.x, d=3, short=true)
+			)
+		:is_num(a)  ?
+			(v!=undef && is_list(v)) ?
+				rotate_v_point(p, a, v)
+			:	rotate_z_point(p, a)
+		:list
+	:
+		// backwards
+		is_list(a) ?
+			multmatrix_point (p,
+				matrix_rotate_x(-a.x, d=3, short=true) *
+				matrix_rotate_y(-a.y, d=3, short=true) *
+				matrix_rotate_z(-a.z, d=3, short=true)
+			)
+		:is_num(a)  ?
+			(v!=undef && is_list(v)) ?
+				rotate_v_point(p, -a, v)
+			:	rotate_z_point(p, -a)
 		:list
 ;
 
 // jeden Punkt in der Liste <list> um die X-Achse um <a> Grad drehen
 function rotate_x_points (list, a, backwards=false) =
-	!is_num(a) ? list :
+	(a==undef || !is_num(a)) ? list :
 	let (
 		A = !(backwards==true) ? a : -a,
 		sina  = sin(A),
@@ -71,9 +102,22 @@ function rotate_x_points (list, a, backwards=false) =
 		]
 	]
 ;
+function rotate_x_point (p, a, backwards=false) =
+	(a==undef || !is_num(a)) ? p :
+	let (
+		A = !(backwards==true) ? a : -a,
+		sina  = sin(A),
+		cosa  = cos(A)
+	)
+	[
+	 p.x
+	,p.y*cosa - p.z*sina
+	,p.y*sina + p.z*cosa
+	]
+;
 // jeden Punkt in der Liste <list> um die Y-Achse um <a> Grad drehen
 function rotate_y_points (list, a, backwards=false) =
-	!is_num(a) ? list :
+	(a==undef || !is_num(a)) ? list :
 	let (
 		A = !(backwards==true) ? a : -a,
 		sina  = sin(A),
@@ -87,10 +131,23 @@ function rotate_y_points (list, a, backwards=false) =
 		]
 	]
 ;
+function rotate_y_point (p, a, backwards=false) =
+	(a==undef || !is_num(a)) ? p :
+	let (
+		A = !(backwards==true) ? a : -a,
+		sina  = sin(A),
+		cosa  = cos(A)
+	)
+	[
+	  p.x*cosa + p.z*sina
+	, p.y
+	,-p.x*sina + p.z*cosa
+	]
+;
 // jeden Punkt in der Liste <list> um die Z-Achse um <a> Grad drehen
 // auch für 2D-Listen
 function rotate_z_points (list, a, backwards=false) =
-	!is_num(a) ? list :
+	(a   ==undef || !is_num(a))   ? list :
 	(list==undef || len(list)==0) ? list :
 	let (
 		A = !(backwards==true) ? a : -a,
@@ -113,17 +170,46 @@ function rotate_z_points (list, a, backwards=false) =
 			]
 		]
 ;
+function rotate_z_point (p, a, backwards=false) =
+	(a==undef || !is_num(a)) ? p :
+	(p==undef)               ? p :
+	let (
+		A = !(backwards==true) ? a : -a,
+		sina  = sin(A),
+		cosa  = cos(A)
+	)
+	len(p)==2 ?
+		[
+		 p.x*cosa - p.y*sina
+		,p.x*sina + p.y*cosa
+		]
+	:
+		[
+		 p.x*cosa - p.y*sina
+		,p.x*sina + p.y*cosa
+		,p.z
+		]
+;
 // jeden Punkt in der Liste <list> um einen Vektor <v> herum um <a> Grad drehen
 function rotate_v_points (list, a, v, backwards=false) =
-	 !is_num (a) ? list
-	:!is_list(v) ? list
+	 (v==undef || !is_list(v)) ? rotate_z_points (list, a, backwards)
+	:(a==undef || !is_num (a)) ? list
 	:
 	let (
-		matrix = matrix_rotate_v (A, v, backwards, d=3, short=true)
+		matrix = matrix_rotate_v (a, v, backwards, d=3, short=true)
 	)
 	[ for (p=list)
 		matrix * p
 	]
+;
+function rotate_v_point (p, a, v, backwards=false) =
+	 (v==undef || !is_list(v)) ? rotate_z_point (p, a, backwards)
+	:(a==undef || !is_num (a)) ? p
+	:
+	let (
+		matrix = matrix_rotate_v (a, v, backwards, d=3, short=true)
+	)
+	matrix * p
 ;
 
 // jeden Punkt in der Liste <list> entlang dem Vektor <v> spiegeln am Koordinatenursprung
@@ -135,6 +221,14 @@ function mirror_points (list, v) =
 	:len(list[0])==3 ? multmatrix_points (list, matrix_mirror_3d (v, short=true))
 	:len(list[0])==2 ? multmatrix_points (list, matrix_mirror_2d (v, short=true))
 	:len(list[0])==1 ? -list
+	:undef
+	
+;
+function mirror_point (p, v) =
+	(p==undef || p[0]==undef) ? undef
+	:len(p)==3 ? multmatrix_point (p, matrix_mirror_3d (v, short=true))
+	:len(p)==2 ? multmatrix_point (p, matrix_mirror_2d (v, short=true))
+	:len(p)==1 ? -p
 	:undef
 	
 ;
@@ -176,6 +270,17 @@ function scale_points (list, v) =
 		[ for (i=[0:1:d-1])
 			p[i] * scale_factor[i]
 		]
+	]
+;
+function scale_point (p, v) =
+	(p==undef || p[0]==undef) ? undef :
+	let (
+		d = len(p),
+		scale_factor = parameter_scale (v, d, false)
+	)
+	(scale_factor==false) ? p :
+	[ for (i=[0:1:d-1])
+		p[i] * scale_factor[i]
 	]
 ;
 
@@ -314,5 +419,9 @@ function multmatrix_3d_point (p, m) =
 function projection_points (list, plane) =
 	plane==false ? [ for (p=list) [p.x,p.y,0] ]
 	:              [ for (p=list) [p.x,p.y]   ]
+;
+function projection_point (p, plane) =
+	plane==false ? [p.x,p.y,0]
+	:              [p.x,p.y]
 ;
 

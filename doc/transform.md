@@ -52,6 +52,10 @@ Translate every point in `list` along a vector `v`.
 Works like `translate()`.
 - `v` - vector
 
+_Operation for one point:_ \
+`translate_point (p, v)`
+- `p` - point
+
 #### `rotate_points (list, a, v, backwards)` [^][contents]
 [rotate_points]: #rotate_points-list-a-v-backwards- "rotate_points (list, a, v, backwards)"
 Rotate every point in `list`.
@@ -66,17 +70,29 @@ Works like `rotate()`.
   - `false` - default, normal forward rotate
   - `true`  - rotate backwards, undo forward rotate
 
+_Operation for one point:_ \
+`rotate_point (p, a, v, backwards)`
+- `p` - point
+
 #### `mirror_points (list, v)` [^][contents]
 [mirror_points]: #mirror_points-list-v- "mirror_points (list, v)"
 Mirror every point at origin along a vector `v` in a `list`.
 Works like `mirror()`.
 - `v` - mirror along this direction, default = X axis
 
+_Operation for one point:_ \
+`mirror_point (p, v)`
+- `p` - point
+
 #### `scale_points (list, v)` [^][contents]
 [scale_points]: #scale_points-list-v- "scale_points (list, v)"
 Scale every point in `list` at given axis in vector `v`.
 Works like `scale()`.
 - `v` - vector with scale factor for each axis
+
+_Operation for one point:_ \
+`scale_point (p, v)`
+- `p` - point
 
 #### `resize_points (list, newsize)` [^][contents]
 [resize_points]: #resize_points-list-newsize- "resize_points (list, newsize)"
@@ -91,6 +107,10 @@ Get projection of every point in `list` to xy-plane.
   - `true`  - make a 2D-list, default
   - `false` - make a 3D-list, keep points on xy-plane
 
+_Operation for one point:_ \
+`projection_point (p, plane)`
+- `p` - point
+
 #### `multmatrix_points (list, m)` [^][contents]
 [multmatrix_points]: #multmatrix_points-list-m- "multmatrix_points (list, m)"
 Multiply every point in `list` with matrix `m`.
@@ -99,17 +119,16 @@ Works like `multmatrix()`.
   - 3D: 4x3 or 4x4 matrix (or 3x3)
   - 2D: 3x2 or 3x3 matrix (or 2x2)
 
-#### `multmatrix_point (p, m)` [^][contents]
-[multmatrix_point]: multmatrix_point-p-m- "multmatrix_point (p, m)"
-Multiply one point `p` with matrix `m`.
+_Operation for one point:_
 ```OpenSCAD
-multmatrix_point()     // common version
-multmatrix_2D_point()  // 2D version
-multmatrix_3D_point()  // 3D version
+multmatrix_point   (p, m)  // common version
+multmatrix_2D_point(p, m)  // 2D version
+multmatrix_3D_point(p, m)  // 3D version
 ```
+- `p` - point
 - `m`
-  - 3D: 4x4 or 3x3 matrix
-  - 2D: 3x3 or 2x2 matrix
+  - 3D: must be 4x4 or 3x3 matrix
+  - 2D: must be 3x3 or 2x2 matrix
 
 
 ### More transformation [^][contents]
