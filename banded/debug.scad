@@ -22,6 +22,7 @@ module echo_thin_line (length=50) { echo_line (length/2, " -"); }
 module echo_bar       (length=50) { echo_line (length  , "=" ); }
 module echo_wall      (length=50) { echo_line (length  , "#" ); }
 
+
 // - Linien und Punkte sichtbar machen:
 
 module show_point (p, c, d=0.2)
@@ -37,7 +38,7 @@ module show_points (p_list, c, d=0.2)
 	if (p_list!=undef)
 		for (p=p_list) { show_point (p, c, d); }
 }
-module show_trace (p_list, c, closed=false, d=0.1, dp=0.15)
+module show_trace (p_list, c, closed=false, direction=false, d=0.1, dp=0.15)
 {
 	if (p_list!=undef)
 	{
@@ -48,25 +49,60 @@ module show_trace (p_list, c, closed=false, d=0.1, dp=0.15)
 			p2=p_list[(i+1)%size];
 			
 			if (p1!=p2)
-				{ show_line ([p1, p2], c, d); }
+				{ show_line ([p1, p2], c, direction, d); }
 			else
 				{ show_point (p1, c, dp); }
 		}
 	}
 }
 
-module show_line (l, c, d=0.1)
+module show_line (l, c, direction=false, d=0.1)
 {
 	if (l!=undef)
-		color(c)
-		extrude_line (l) circle(d=d, $fn=6);
+	{
+		if (direction!=true)
+		{
+			color(c)
+			extrude_line (l, Z) circle(d=d, $fn=6);
+		}
+		else
+		{
+			length = norm(l[1]-l[0]);
+			arrow_length = length<5*d ? length : 5*d;
+			arrow_ratio  = 3 / 5;
+			
+			if (length>arrow_length)
+			{
+				color(c)
+				translate (l[0])
+				rotate_to_vector (l[1]-l[0])
+				cylinder (h=length-arrow_length, d=d, $fn=6);
+			}
+			
+			color(c)
+			translate (l[1])
+			rotate_to_vector (l[0]-l[1])
+			cylinder(h=arrow_length, d1=0, d2=arrow_length*arrow_ratio, $fn=6);
+		}
+	}
 }
 
-module show_lines (l_list, c, d=0.1)
+module show_lines (l_list, c, direction=false, d=0.1)
 {
 	if (l_list!=undef)
-		for (l=l_list) { show_line (l, c, d); }
+		for (l=l_list) { show_line (l, c, direction, d); }
 }
+
+module show_vector (v, p, c, direction=true, d=0.1)
+{
+	if (v!=undef)
+	{
+		P = p!=undef ? p : [for (i=[0:1:len(v)-1]) 0];
+	
+		show_line ([P, P+v], c, direction, d);
+	}
+}
+
 
 // - Teile von Objekte testen:
 

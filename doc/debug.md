@@ -19,6 +19,7 @@ Debug
     - [`show_trace()`][show_trace]
     - [`show_line()`][show_line]
     - [`show_lines()`][show_lines]
+    - [`show_vector()`][show_vector]
   - [Test parts of objects](#test-parts-of-objects-)
     - [`object_slice()`][object_slice]
     - [`object_pane()`][object_pane]
@@ -59,8 +60,8 @@ Module to create visible points.
 - `c` - optional, the color of the points
 - `d` - optional, the diameter of the points, default = `0.2mm`
 
-#### `show_trace (p_list, c, closed, d, dp)` [^][contents]
-[show_trace]: #show_trace-p_list-c-closed-d-dp-
+#### `show_trace (p_list, c, closed, direction, d, dp)` [^][contents]
+[show_trace]: #show_trace-p_list-c-closed-direction-d-dp-
 Module to create visible points.\
 Create a line between the points.
 If the same point is twice in order, then it will create a visible point at this position.
@@ -71,20 +72,32 @@ If the same point is twice in order, then it will create a visible point at this
   - `false` - the trace from first to last point, default
 - `d`  - optional, the diameter of the line between the points, default = `0.1mm`
 - `dp` - optional, the diameter of the same points, default = `0.15mm`
+- `direction` - show the direction of the line if set `true`, default = `false`
 
-#### `show_line (l, c, d)` [^][contents]
+#### `show_line (l, c, direction, d)` [^][contents]
 [show_line]: #show_line-l-c-d-
 Module to create a visible line.
 - `l` - a line, a list with 2 points
-- `c`  - optional, the color of the line
-- `d`  - optional, the diameter of the line, default = `0.1mm`
+- `c` - optional, the color of the line
+- `d` - optional, the diameter of the line, default = `0.1mm`
+- `direction` - show the direction of the line if set `true`, default = `false`
 
-#### `show_lines (l_list, c, d)` [^][contents]
+#### `show_lines (l_list, c, direction, d)` [^][contents]
 [show_lines]: #show_lines-l_list-c-d-
 Module to create visible lines in a list.
 - `l_list` - a list with lines, a line is a list with 2 points
 - `c`  - optional, the color of a line
 - `d`  - optional, the diameter of a line, default = `0.1mm`
+- `direction` - show the direction of the line if set `true`, default = `false`
+
+#### `show_vector (v, p, c, direction, d)` [^][contents]
+[show_vector]: #show_vector-v-p-c-d-
+Module to create a visible line to show a vector.
+- `v` - a vector
+- `p` - starting point of the vector, default = from origin
+- `c` - optional, the color of the line
+- `d` - optional, the diameter of the line, default = `0.1mm`
+- `direction` - show the direction of the line if set `true`, default = `true`
 
 
 ### Test parts of objects [^][contents]
