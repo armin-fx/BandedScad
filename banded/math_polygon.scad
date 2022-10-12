@@ -74,23 +74,25 @@ function is_inner_polygon (points, p, face) =
 ;
 function is_inner_polygon_2d (points, p, face) =
 	let (
-		Face = (face!=undef) ? face : range([0:1:len(points)-1]),
-		size = len(Face),
+		trace = face==undef ? points : refer_list (points,face),
+		size = len(trace),
 		t_l = [ for (i=[0:1:size-1])
-			if ( is_point_on_line ([points[Face[i]],points[Face[(i+1)%size]]], p ) ) 0
+			if ( is_point_on_line ([trace[i],trace[(i+1)%size]], p ) ) 0
 			]
 	)
 	len(t_l)>0 ? true
 	:
 	let (
 		// einen beliebigen Punkt außerhalb auswählen
-		p_outer = min( refer_list(points,Face) ) - [1,1],
+		p_outer = min( trace ) - [1,1],
 		//
 		line = [p, p_outer],
 		// die Linie von diesen Punkt aus bis zum Testpunkt auf Kreuzungen testen
-		// Alle Kreuzungen zählen
+		// Alle Kreuzungen durchzählen.
+		// TODO Kann noch optimiert werden, indem nur eine horizontale oder
+		//      vertikale Linie durchlaufen wird.
 		t_i = [ for (i=[0:1:size-1])
-			if ( is_intersection_lines (line, [points[Face[i]],points[Face[(i+1)%size]]] ) ) 0
+			if ( is_intersection_lines (line, [trace[i],trace[(i+1)%size]] ) ) 0
 			]
 	)
 	(len(t_i))%2!=0
@@ -101,6 +103,7 @@ function is_inner_polygon_3d (points, p, face) =
 	let (
 		trace    = (face==undef) ? points : refer_list (points, face),
 		size     = len(trace),
+		// TODO test 3 points they span 3 lines whether they are not collinear
 		n        = get_normal_face (points_3=trace), // function use only first 3 points
 		m_flat   = matrix_rotate_to_vector (n, backwards=true, short=true),
 		points_flat = projection_points ( multmatrix_points (trace, m_flat), plane=true ),
@@ -111,7 +114,6 @@ function is_inner_polygon_3d (points, p, face) =
 
 
 // - Linien und Strecken und Flächen:
-
 
 // Gibt die Steigung [m, c] einer Linie zurück
 function get_gradient (line) =
