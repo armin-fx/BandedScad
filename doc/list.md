@@ -53,6 +53,7 @@ Functions for edit lists
     - [`extract()`][extract]
     - [`select()`][select]
     - [`select_link()`][select_link]
+    - [`unselect()`][unselect]
   - [Edit list with use of data, depend on type](#edit-list-with-use-of-data-depend-on-type-)
     - [`sort()`][sort]
     - [`merge()`][merge]
@@ -311,6 +312,22 @@ Create a list with values of list `base` at positions
 in list `link` in order of list `positions` to list `link`.\
 Run `base[ link[ position ] ]` with every item in `positions`.\
 `base <-- link <-- positions`
+
+#### `unselect (base, positions)` [^][contents]
+[unselect]: #unselect-base-positions-
+Remove all `positions` from list `base`.\
+Keep all positions in the list which are not listed in `positions`.
+
+Example:
+```OpenSCAD
+include <banded.scad>
+
+list = ["a","b","c","d","e"];
+sel  = [0,1,1,2];
+
+echo( select   (list, sel) ); // ECHO: ["a", "b", "b", "c"]
+echo( unselect (list, sel) ); // ECHO: ["d", "e"]
+```
 
 
 Edit list with use of data, depend on type [^][contents]
