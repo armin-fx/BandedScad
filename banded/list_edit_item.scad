@@ -152,14 +152,14 @@ function fill (count, value) =
 
 // gibt eine Liste zurück mit den Werten von der Liste 'base' in den Positionen 'positions'
 //   base <-- positions
-function refer_list (base, positions) =
+function select (base, positions) =
 	[ for (position=positions) base[position] ]
 ;
 // gibt eine Liste zurück mit den Werten von der Liste 'base'
 // von der Liste mit den Positionen 'link' von 'base'
 // in den Positionen 'positions' in 'link'
 //   base <-- link <-- positions
-function refer_link_list (base, link, positions) =
+function select_link (base, link, positions) =
 	[ for (position=positions) base[link[position]] ]
 ;
 

@@ -51,8 +51,8 @@ Functions for edit lists
     - [`insert()`][insert]
     - [`replace()`][replace]
     - [`extract()`][extract]
-    - [`refer_list()`][refer_list]
-    - [`refer_link_list()`][refer_link_list]
+    - [`select()`][select]
+    - [`select_link()`][select_link]
   - [Edit list with use of data, depend on type](#edit-list-with-use-of-data-depend-on-type-)
     - [`sort()`][sort]
     - [`merge()`][merge]
@@ -299,14 +299,14 @@ Extract a sequence from a list
 [fill]: #fill-count-value-
 Makes a list with `count` elements filled with `value`
 
-#### `refer_list (base, positions)` [^][contents]
-[refer_list]: #refer_list-base-positions-
+#### `select (base, positions)` [^][contents]
+[select]: #select-base-positions-
 Create a list with values of list `base` at positions in order of list `positions`.\
 Run `base[ position ]` with every item in `positions`.\
 `base <-- positions`
 
-#### `refer_link_list (base, link, positions)` [^][contents]
-[refer_link_list]: #refer_link_list-base-link-positions-
+#### `select_link (base, link, positions)` [^][contents]
+[select_link]: #select_link-base-link-positions-
 Create a list with values of list `base` at positions
 in list `link` in order of list `positions` to list `link`.\
 Run `base[ link[ position ] ]` with every item in `positions`.\

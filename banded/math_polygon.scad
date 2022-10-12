@@ -74,7 +74,7 @@ function is_inner_polygon (points, p, face) =
 ;
 function is_inner_polygon_2d (points, p, face) =
 	let (
-		trace = face==undef ? points : refer_list (points,face),
+		trace = face==undef ? points : select (points,face),
 		size = len(trace),
 		t_l = [ for (i=[0:1:size-1])
 			if ( is_point_on_line ([trace[i],trace[(i+1)%size]], p ) ) 0
@@ -101,7 +101,7 @@ function is_inner_polygon_2d (points, p, face) =
 // Eventuell vorher nachprüfen
 function is_inner_polygon_3d (points, p, face) =
 	let (
-		trace    = (face==undef) ? points : refer_list (points, face),
+		trace    = (face==undef) ? points : select (points, face),
 		size     = len(trace),
 		// TODO test 3 points they span 3 lines whether they are not collinear
 		n        = get_normal_face (points_3=trace), // function use only first 3 points
@@ -227,7 +227,7 @@ function length_trace (points, path, closed=false) =
 	let (
 		is_path = path!=undef,
 		size = is_path ? len(path) : len(points),
-		pts  = is_path ? refer_list(points, path) : points
+		pts  = is_path ? select(points, path) : points
 	)
 	size<2 ? 0 :
 	summation(
