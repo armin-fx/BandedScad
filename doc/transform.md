@@ -116,7 +116,7 @@ multmatrix_3D_point()  // 3D version
 
 #### `rotate_backwards_points (list, a, v)` [^][contents]
 [rotate_backwards_points]: #rotate_backwards_points-list-a-v-
-Rotate backwards every point in `list`.
+Rotate backwards every point in `list`.\
 Options like `rotate()`.
 - `a` - angle
 - `v` - vector where rotating around
@@ -126,7 +126,7 @@ Options like `rotate()`.
 Rotate every point in `list` at position `p`.
 - `a` - angle
 - `v` - vector where it rotates around
-- `p` - origin position at where it rotates
+- `p` - origin position at where it rotates, default = `[0,0,0]`
 - `backwards`
   - `false` - default, normal forward rotate
   - `true`  - rotate backwards, undo forward rotate
@@ -162,10 +162,10 @@ ___way of working in 2D:___
 
 #### `rotate_to_vector_at_points (list, v, p, a, backwards)` [^][contents]
 [rotate_to_vector_at_points]: #rotate_to_vector_at_points-list-v-p-a-backwards-
-Rotate every point in `list` from direction Z axis to direction at vector `v`.
-Rotate origin at vector `v`.
+Rotate every point in `list` from direction Z axis to direction at vector `v`.\
+Rotate origin at position `p`.
 - `v` - vector where it rotates around
-- `p` - direction as vector
+- `p` - origin point, default = `[0,0,0]`
 - `a` - angle in degree or rotational orientation vector
 - `backwards`
   - `false` - default, normal forward rotate
@@ -174,7 +174,7 @@ Rotate origin at vector `v`.
 #### `mirror_at_points (list, v, p)` [^][contents]
 [mirror_at_points]: #mirror_at_points-list-v-p-
 Mirror every point in `list` along a vector `v` at origin position `p`.
-- `p` - origin position at where it mirrors
+- `p` - origin position at where it mirrors, default = `[0,0,0]`
 - `v` - mirror along this direction, default = X axis
 
 #### `skew_points (list, v, t, m, a)` [^][contents]
@@ -205,7 +205,7 @@ default for 2D = shear X along Y
 [skew_at_points]: #skew_at_points-list-v-t-m-a-p-
 skew an object in a list at position `p`.\
 see [`skew_points()`][skew_points]
-- `p` - origin position at where it skews
+- `p` - origin position at where it skews, default = `[0,0,0]`
 
 
 ### Transformation with preset defaults [^][contents]

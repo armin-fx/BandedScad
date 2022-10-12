@@ -42,7 +42,7 @@ function is_point_on_plane (points_3, point) =
 // gibt zurück, ob sich zwei Strecken kreuzen
 // mit 'point' kann ein schon berechneter Schnittpunkt beider Geraden eingesetzt werden
 // mit only=true kann angegeben werden, ob die Linie nicht parallel seinen dürfen
-function is_intersecting (line1, line2, point, only) =
+function is_intersection_lines (line1, line2, point, only) =
 	is_collinear (line1[1]-line1[0], line2[1]-line2[0]) ?
 		only==true ? false :
 		let(
@@ -56,7 +56,7 @@ function is_intersecting (line1, line2, point, only) =
 	:
 	let(
 		p = point!=undef ? point :
-			get_intersecting_point (line1, line2)
+			get_intersection_lines (line1, line2)
 	)
 	p!=undef &&
 	is_constrain_left (p, line1[0], line1[1]) &&
@@ -64,7 +64,7 @@ function is_intersecting (line1, line2, point, only) =
 ;
 
 
-// - Linien und Strecken:
+// - Linien und Strecken und Flächen:
 
 
 // Gibt die Steigung [m, c] einer Linie zurück
@@ -132,10 +132,10 @@ function get_gradient_3 (line) =
 // gibt den Kreuzungspunkt zurück, den zwei Geraden schneiden,
 // definiert mit je 2 Punkten pro Gerade
 // in 2D
-function get_intersecting_point (line1, line2) =
+function get_intersection_lines (line1, line2) =
 	(line1[0].x==line1[1].x) ?
 	(line2[0].x==line2[1].x) ? undef :
-	get_intersecting_point (line2, line1)
+	get_intersection_lines (line2, line1)
 	:
 	(line2[0].x==line2[1].x) ?
 		// line2 steht senkrecht auf der x-Achse, der x-Wert liegt damit fest
@@ -154,6 +154,21 @@ function get_intersecting_point (line1, line2) =
 		y = a[0] * x + a[1]
 	)
 	[x, y]
+;
+
+// gibt den Schnittpunkt einer Geraden durch einer Fläche zurück
+// Die Fläche wird definiert mit 3 Punkten
+// Die Linie wird definiert mit 2 Punkten
+function get_intersection_line_plane (points_3, line) =
+	let (
+		n   = get_normal_face (points_3=points_3),
+		l_a = translate_points        (line, -points_3[0]),
+		l_b = rotate_to_vector_points (l_a, n, backwards=true),
+		p_b = [ concat ( get_gradient_3(l_b)[1], 0) ],
+		p_a = rotate_to_vector_points (p_b, n, backwards=false),
+		p   = translate_points        (p_a, points_3[0])
+	)
+	p[0]
 ;
 
 
@@ -180,8 +195,9 @@ function length_line (line) =
 
 // Ermittelt die Normale eines Dreiecks
 // definiert über 3 Punkte im 3D Raum
-function get_normal_face (p1, p2, p3) =
-	cross (p2-p1, p3-p1)
+function get_normal_face (p1, p2, p3, points_3) =
+	points_3==undef ? cross (p2-p1, p3-p1)
+	:                 cross (points_3[1]-points_3[0], points_3[2]-points_3[0])
 ;
 
 
@@ -212,6 +228,16 @@ function trace_lines (lines) =
 				each lines[i]
 		]
 	)
+;
+
+// Linie in Zweipunkteform unwandeln in Punkt-Richtungs-Form [Punkt, Vektor]
+function line_to_vector (line) =
+	[line[0], line[1]-line[0]]
+;
+
+// Punkt-Richtungs-Form umwandeln in Zweipunkteform
+function vector_to_line (vector) =
+	[vector[0], vector[0]+vector[1]]
 ;
 
 

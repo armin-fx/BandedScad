@@ -44,10 +44,11 @@ Matrix and vector operations
     - [`is_point_on_line()`][is_point_on_line]
     - [`is_point_on_segment()`][is_point_on_segment]
     - [`is_point_on_plane()`][is_point_on_plane]
-    - [`is_intersecting()`][is_intersecting]
-  - [Straight line and line segment](#straight-line-and-line-segment-)
+    - [`is_intersection_lines()`][is_intersection_lines]
+  - [Straight line, line segment and surfaces](#straight-line-line-segment-and-surfaces-)
     - [`get_gradient()`][get_gradient]
-    - [`get_intersecting_point()`][get_intersecting_point]
+    - [`get_intersection_point()`][get_intersection_point]
+    - [`get_intersection_line_plane()`][get_intersection_line_plane]
   - [Polygon functions](#polygon-functions-)
     - [`length_trace()`][length_trace]
     - [`length_line()`][length_line]
@@ -55,6 +56,8 @@ Matrix and vector operations
   - [Convert polygon data](#convert-polygon-data-)
     - [`points_to_lines()`][points_to_lines]
     - [`trace_lines()`][trace_lines]
+    - [`line_to_vector()`][line_to_vector]
+    - [`vector_to_line()`][vector_to_line]
   - [Data from lines](#data-from-lines-)
     - [`distance_line()`][distance_line]
     - [`distance_segment()`][distance_segment]
@@ -272,8 +275,8 @@ Returns `true` if a point lies exactly in a plane.\
 In 3D.
 - `points_3` - 3 points in a list defines the plane
 
-#### `is_intersecting (line1, line2, point, only)` [^][contents]
-[is_intersecting]: #is_intersecting-line1-line2-point-only-
+#### `is_intersection_lines (line1, line2, point, only)` [^][contents]
+[is_intersection_lines]: #is_intersection_lines-line1-line2-point-only-
 Returns `true` if two line segment intersect.
 - `line1` and `line2`
   - a list with 2 points defines the line segment
@@ -286,11 +289,12 @@ Returns `true` if two line segment intersect.
   - `true`  - return always `false` if the lines are collinear
 
 
-### Straight line and line segment [^][contents]
+### Straight line, segment line and surfaces [^][contents]
 
 #### `get_gradient (line)` [^][contents]
 [get_gradient]: #get_gradient-line-
 Returns the gradient `[m, c]` of a line.\
+`line` - a list with 2 points defines the straight line
 
 In 2D plane:\
 `y = m*x + c`\
@@ -308,12 +312,18 @@ _Specialized functions:_
 - `get_gradient_2 (line)` - only in 2D plane
 - `get_gradient_3 (line)` - only in 3D space
 
-#### `get_intersecting_point (line1, line2)` [^][contents]
-[get_intersecting_point]: #get_intersecting_point-line1-line2-
+#### `get_intersection_point (line1, line2)` [^][contents]
+[get_intersection_point]: #get_intersection_point-line1-line2-
 Returns the crossing point where two straight lines intersect.\
 Only in 2D plane.
 - `line1` and `line2`
   - a list with 2 points defines the straight line
+
+#### `get_intersection_line_plane (points_3, line)` [^][contents]
+[get_intersection_line_plane]: #get_intersection_line_plane-points_3-line-
+Returns the intersecting point of a straight line through a plane in 3D space.
+- `points_3` - 3 points in a list defines the plane
+- `line`     - 2 points in a list defines the straight line
 
 
 ### Polygon functions [^][contents]
@@ -335,10 +345,12 @@ Return the length of a line segment.
 - `line`
   - a list with 2 points defines the ends of the segment line.
 
-#### `get_normal_face (p1, p2, p3)` [^][contents]
+#### `get_normal_face (p1, p2, p3, points_3)` [^][contents]
 [get_normal_face]: #get_normal_face-p1-p2-p3-
 Return the normal vector of a triangle
 defined by 3 points in 3D space.
+- 3 points defined in `p1`, `p2` and `p2`
+- or 3 points in a list `points_3`
 
 
 ### Convert polygon data [^][contents]
@@ -355,6 +367,19 @@ Convert a trace to a list with line segment.
 #### `trace_lines (lines)` [^][contents]
 [trace_lines]: #trace_lines-lines-
 Connect all lines in a list and return the trace as a point list.
+
+#### `line_to_vector (line)` [^][contents]
+[line_to_vector]: #line_to_vector-line-
+Convert a line defined by 2 points to point and vector.\
+Returns a list `[ starting point, vector ]`
+- `line` - 2 points in a list defines the straight line
+
+#### `vector_to_line (vector)` [^][contents]
+[vector_to_line]: #vector_to_line-vector-
+Convert a line defined by a starting point and a vector
+a list with 2 points defines the straight line.\
+Returns a list `[ point 1, point 2 ]`
+- `vector` - a list `[ starting point, vector ]`
 
 
 ### Data from lines [^][contents]
