@@ -45,6 +45,7 @@ Matrix and vector operations
     - [`is_point_on_segment()`][is_point_on_segment]
     - [`is_point_on_plane()`][is_point_on_plane]
     - [`is_intersection_lines()`][is_intersection_lines]
+    - [`is_inner_polygon()`][is_inner_polygon]
   - [Straight line, line segment and surfaces](#straight-line-line-segment-and-surfaces-)
     - [`get_gradient()`][get_gradient]
     - [`get_intersection_point()`][get_intersection_point]
@@ -287,6 +288,25 @@ Returns `true` if two line segment intersect.
   - optional, default = `false`
   - `false` - if the lines are collinear then it tests whether the straight lines overlap
   - `true`  - return always `false` if the lines are collinear
+
+#### `is_inner_polygon (points, p, face)` [^][contents]
+[is_inner_polygon]: #is_inner_polygon-points-p-face-
+Returns `true` if a point lies exactly in a closed trace.\
+Inclusive the on the line.
+The border of the trace must not intersect itself.
+In 2D and 3D.
+- `points` - points in a list
+- `p`      - point to test
+- `face`
+  - This list contains the positions in list `points` in order to define the closed trace.
+  - If not defined, the order of `points` is used to define the trace.
+
+_Specialized functions:_
+- `is_inner_polygon_2d ()`
+  - Test 2D trace
+- `is_inner_polygon_3d ()`
+  - Test 3D trace
+  - The points must lie in the same plane, possibly check beforehand
 
 
 ### Straight line, segment line and surfaces [^][contents]

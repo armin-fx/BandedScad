@@ -63,6 +63,52 @@ function is_intersection_lines (line1, line2, point, only) =
 	is_constrain_left (p, line2[0], line2[1])
 ;
 
+// testet, ob ein Punkt innerhalb einer Umrandung ist
+// die Umrandung darf sich nicht selbst überschneiden
+function is_inner_polygon (points, p, face) =
+	len(points[0])==2 ?
+		// 2D:
+		is_inner_polygon_2d (points, p, face)
+	:	// 3D:
+		is_inner_polygon_3d (points, p, face)
+;
+function is_inner_polygon_2d (points, p, face) =
+	let (
+		Face = (face!=undef) ? face : range([0:1:len(points)-1]),
+		size = len(Face),
+		t_l = [ for (i=[0:1:size-1])
+			if ( is_point_on_line ([points[Face[i]],points[Face[(i+1)%size]]], p ) ) 0
+			]
+	)
+	len(t_l)>0 ? true
+	:
+	let (
+		// einen beliebigen Punkt außerhalb auswählen
+		p_outer = min( refer_list(points,Face) ) - [1,1],
+		//
+		line = [p, p_outer],
+		// die Linie von diesen Punkt aus bis zum Testpunkt auf Kreuzungen testen
+		// Alle Kreuzungen zählen
+		t_i = [ for (i=[0:1:size-1])
+			if ( is_intersection_lines (line, [points[Face[i]],points[Face[(i+1)%size]]] ) ) 0
+			]
+	)
+	(len(t_i))%2!=0
+;
+// Alle Punkte müssen sich in der gleichen Ebene befinden.
+// Eventuell vorher nachprüfen
+function is_inner_polygon_3d (points, p, face) =
+	let (
+		trace    = (face==undef) ? points : refer_list (points, face),
+		size     = len(trace),
+		n        = get_normal_face (points_3=trace), // function use only first 3 points
+		m_flat   = matrix_rotate_to_vector (n, backwards=true, short=true),
+		points_flat = projection_points ( multmatrix_points (trace, m_flat), plane=true ),
+		p_flat      = projection_point  ( multmatrix_point  (p    , m_flat), plane=true )
+	)
+	is_inner_polygon_2d (points_flat, p_flat)
+;
+
 
 // - Linien und Strecken und Flächen:
 
