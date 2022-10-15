@@ -44,7 +44,7 @@ Matrix and vector operations
     - [`is_point_on_line()`][is_point_on_line]
     - [`is_point_on_segment()`][is_point_on_segment]
     - [`is_point_on_plane()`][is_point_on_plane]
-    - [`is_intersection_lines()`][is_intersection_lines]
+    - [`is_intersection_segments()`][is_intersection_segments]
     - [`is_inner_polygon()`][is_inner_polygon]
   - [Straight line, line segment and surfaces](#straight-line-line-segment-and-surfaces-)
     - [`get_gradient()`][get_gradient]
@@ -276,9 +276,10 @@ Returns `true` if a point lies exactly in a plane.\
 In 3D.
 - `points_3` - 3 points in a list defines the plane
 
-#### `is_intersection_lines (line1, line2, point, only)` [^][contents]
-[is_intersection_lines]: #is_intersection_lines-line1-line2-point-only-
-Returns `true` if two line segment intersect.
+#### `is_intersection_segments (line1, line2, point, only)` [^][contents]
+[is_intersection_segments]: #is_intersection_segments-line1-line2-point-only-
+Returns `true` if two line segment intersect.\
+Only in 2D plane.
 - `line1` and `line2`
   - a list with 2 points defines the line segment
 - `point`
@@ -313,24 +314,46 @@ _Specialized functions:_
 
 #### `get_gradient (line)` [^][contents]
 [get_gradient]: #get_gradient-line-
-Returns the gradient `[m, c]` of a line.\
-`line` - a list with 2 points defines the straight line
+Returns the gradient `[c, m]` of a line.\
+The result can used as coefficient in function `polynomial()`
+- `line` - a list with 2 points defines the straight line
 
 In 2D plane:\
 `y = m*x + c`\
 Where `m` means the slope of the line
 and `c` means the intercept of the line throw the Y axis.
-Vertical lines don't work, then it returns `undef`.
+Vertical lines don't work, then it returns `undef`.\
+Calculation for `y` with known `x` can done with:
+```OpenSCAD
+line = [ [0,0], [1,2] ];
+g = get_gradient_2d (line); // [c, m] = [0, 2]
+x = 4;
+
+y  = g[1]*x + g[0];         // 8
+y_ = polynomial (x, g);     // 8
+```
 
 In 3D space:\
 `[x,y] = m*z + c`\
 Where `m` means the slope of the line on X-axis and Y-axis as list `[m_x, m_y]`
 and `c` means the intercept of the line throw the XY-plane at `Z=0` as point `[x,y]`.
-Horizontal lines don't work, then it returns `undef`.
+Horizontal lines don't work, then it returns `undef`.\
+Calculation for a 2D point with known `z` can done with:
+```OpenSCAD
+line = [ [0,0,-1], [1,2,3] ];
+g = get_gradient_3d (line); // [[0.25, 0.5], [0.25, 0.5]]
+z = 1;
+
+p  = g[1]*z + g[0];         // [0.5, 1]
+p_ = polynomial (z, g);     // [0.5, 1]
+
+show_line  (line);
+show_point ([p.x,p.y, z], "green");
+```
 
 _Specialized functions:_
-- `get_gradient_2 (line)` - only in 2D plane
-- `get_gradient_3 (line)` - only in 3D space
+- `get_gradient_2d (line)` - only in 2D plane
+- `get_gradient_3d (line)` - only in 3D space
 
 #### `get_intersection_point (line1, line2)` [^][contents]
 [get_intersection_point]: #get_intersection_point-line1-line2-
@@ -339,9 +362,24 @@ Only in 2D plane.
 - `line1` and `line2`
   - a list with 2 points defines the straight line
 
+_Example:_
+```OpenSCAD
+include <banded.scad>
+
+l1=[ [-1,-1],[2, 2] ];
+l2=[ [-1, 1],[1,-1] ];
+
+show_line( l1 );
+show_line( l2 );
+
+show_point( get_intersection_lines(l1,l2) ,"green");
+echo( is_intersection_segments(l1,l2) ); // ECHO: true
+```
+
 #### `get_intersection_line_plane (points_3, line)` [^][contents]
 [get_intersection_line_plane]: #get_intersection_line_plane-points_3-line-
-Returns the intersecting point of a straight line through a plane in 3D space.
+Returns the intersecting point of a straight line through a plane.\
+In 3D space.
 - `points_3` - 3 points in a list defines the plane
 - `line`     - 2 points in a list defines the straight line
 

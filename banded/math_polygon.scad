@@ -42,12 +42,13 @@ function is_point_on_plane (points_3, point) =
 // gibt zurück, ob sich zwei Strecken kreuzen
 // mit 'point' kann ein schon berechneter Schnittpunkt beider Geraden eingesetzt werden
 // mit only=true kann angegeben werden, ob die Linie nicht parallel seinen dürfen
-function is_intersection_lines (line1, line2, point, only) =
+// in 2D
+function is_intersection_segments (line1, line2, point, only) =
 	is_collinear (line1[1]-line1[0], line2[1]-line2[0]) ?
 		only==true ? false :
 		let(
-			a = get_gradient (line1),
-			b = get_gradient (line2)
+			a = get_gradient_2d (line1),
+			b = get_gradient_2d (line2)
 		)
 		a!=b ? false
 		:
@@ -92,7 +93,7 @@ function is_inner_polygon_2d (points, p, face) =
 		// TODO Kann noch optimiert werden, indem nur eine horizontale oder
 		//      vertikale Linie durchlaufen wird.
 		t_i = [ for (i=[0:1:size-1])
-			if ( is_intersection_lines (line, [trace[i],trace[(i+1)%size]] ) ) 0
+			if ( is_intersection_segments (line, [trace[i],trace[(i+1)%size]] ) ) 0
 			]
 	)
 	(len(t_i))%2!=0
@@ -115,18 +116,18 @@ function is_inner_polygon_3d (points, p, face) =
 
 // - Linien und Strecken und Flächen:
 
-// Gibt die Steigung [m, c] einer Linie zurück
+// Gibt die Steigung [c, m] einer Linie zurück
 function get_gradient (line) =
-	len(line)==2 ? get_gradient_2 (line) :
-	len(line)==3 ? get_gradient_3 (line) :
+	len(line)==2 ? get_gradient_2d (line) :
+	len(line)==3 ? get_gradient_3d (line) :
 	undef
 ;
 
-// Gibt die Steigung [m, c] einer Linie in 2D zurück, (y = m*x + c )
+// Gibt die Steigung [c, m] einer Linie in 2D zurück, (y = m*x + c )
 //   m = Steigungsrate
 //   c = Höhe der Linie beim Durchgang durch die Y Achse
 // Senkrechte Linien gehen nicht.
-function get_gradient_2 (line) =
+function get_gradient_2d (line) =
 	line[0].x==line[1].x ? // vertical line
 		undef
 	:
@@ -135,18 +136,18 @@ function get_gradient_2 (line) =
 			/ (line[1].x - line[0].x),
 		c = line[0].y - m * line[0].x
 	)
-	[m, c]
+	[c, m]
 ;
-// Gibt die Steigung [m, c] einer Linie in 3D zurück, ([x,y] = m*z + c )
+// Gibt die Steigung [c, m] einer Linie in 3D zurück, ([x,y] = m*z + c )
 //   m = Steigungsrate der X-Achse und Y-Achse als Liste [m_x, m_y]
 //   c = X-Y-Punkt auf der Linie bei Z=0
 // Waagerechte Linien gehen nicht.
-function get_gradient_3 (line) =
+function get_gradient_3d (line) =
 	line[0].z==line[1].z ? // line on XY-plane
 		undef
 	:
 	line[0].x==line[1].x && line[0].y==line[1].y ? // line = Z-axis
-		[[0,0], [line[0].x,line[0].y]]
+		[[line[0].x,line[0].y], [0,0]]
 	:
 	line[0].x==line[1].x ? // line on YZ-plane
 		let(
@@ -155,7 +156,7 @@ function get_gradient_3 (line) =
 			c = line[0].x,
 			d = line[0].y - n*line[0].z
 		)
-		[[0,n], [c,d]]
+		[[c,d], [0,n]]
 	:
 	line[0].y==line[1].y ? // line on XZ-plane
 		let(
@@ -164,7 +165,7 @@ function get_gradient_3 (line) =
 			c = line[0].x - m*line[0].z,
 			d = line[0].y
 		)
-		[[m,0], [c,d]]
+		[[c,d], [m,0]]
 	:
 		let(
 			m =   (line[1].x - line[0].x)
@@ -174,7 +175,7 @@ function get_gradient_3 (line) =
 			c = line[0].x - m*line[0].z,
 			d = line[0].y - n*line[0].z
 		)
-		[[m,n], [c,d]]
+		[[c,d], [m,n]]
 ;
 
 // gibt den Kreuzungspunkt zurück, den zwei Geraden schneiden,
@@ -188,18 +189,18 @@ function get_intersection_lines (line1, line2) =
 	(line2[0].x==line2[1].x) ?
 		// line2 steht senkrecht auf der x-Achse, der x-Wert liegt damit fest
 		let(
-			a = get_gradient (line1),
+			a = get_gradient_2d (line1),
 			x = line2[0].x,
-			y = a[0] * x + a[1]
+			y = a[1] * x + a[0]
 		)
 		[x, y]
 	:
 	let(
-		a = get_gradient (line1),
-		b = get_gradient (line2),
-		x =	  (b[1] - a[1])
-			/ (a[0] - b[0]),
-		y = a[0] * x + a[1]
+		a = get_gradient_2d (line1),
+		b = get_gradient_2d (line2),
+		x =	  (b[0] - a[0])
+			/ (a[1] - b[1]),
+		y = a[1] * x + a[0]
 	)
 	[x, y]
 ;
@@ -212,7 +213,7 @@ function get_intersection_line_plane (points_3, line) =
 		n   = get_normal_face (points_3=points_3),
 		l_a = translate_points        (line, -points_3[0]),
 		l_b = rotate_to_vector_points (l_a, n, backwards=true),
-		p_b = [ concat ( get_gradient_3(l_b)[1], 0) ],
+		p_b = [ concat ( get_gradient_3d(l_b)[0], 0) ],
 		p_a = rotate_to_vector_points (p_b, n, backwards=false),
 		p   = translate_points        (p_a, points_3[0])
 	)
@@ -308,8 +309,8 @@ function distance_line_2d (line, p) =
 					 [e, e]]
 				)
 				[ m * line[0], m * line[1] ],
-		g    = get_gradient (line_), // [m, c]
-		p0   = [-g[1]/g[0], g[1]],
+		g    = get_gradient_2d (line_), // [m, c]
+		p0   = [-g[0]/g[1], g[0]],
 		hypo = norm (p0),
 		h    = hypo==0
 			? 0
@@ -347,15 +348,15 @@ function nearest_point_line_2d (line, p) =
 		nearest_point_line_2d ([ m * line[0], m * line[1] ]) * m
 	:
 	let (
-		g    = get_gradient (line), // [m, c]
-		p0   = [-g[1]/g[0], g[1]],
+		g    = get_gradient_2d (line), // [c, m]
+		p0   = [-g[0]/g[1], g[0]],
 		hypo = norm (p0),
 		h    = hypo==0
 			? 0
 			: abs( p0.x * p0.y / hypo ),
 		p = hypo==0
 			? [0,0]
-			: unit_vector([-g[0], 1]) * abs(h) * sign(g[1])
+			: unit_vector([-g[1], 1]) * abs(h) * sign(g[0])
 	)
 	p
 ;

@@ -327,11 +327,14 @@ function polynomial (x, a, n) =
 	let (
 		N = n==undef ? len(a) : min(len(a),n)
 	)
+	N<=0 ? 0 :
 	polynomial_intern(x, a, N)
 ;
-function polynomial_intern (x, a, n, i=0, x_i=1, value=0) =
-	(i >= n) ? value
-	:polynomial_intern(x, a, n, i+1, x_i*x, value + a[i]*x_i)
+function polynomial_intern (x, a, n, i=0, x_i=1, value) =
+	(i >= n) ? value :
+	value==undef ?
+		polynomial_intern(x, a, n, i+1, x_i*x,         a[i]*x_i)
+	:	polynomial_intern(x, a, n, i+1, x_i*x, value + a[i]*x_i)
 ;
 
 // gibt ein Array mit den Punkten eines Polynomintervalls zurück
