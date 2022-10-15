@@ -67,7 +67,10 @@ function sort_mergesort (list, type=0) =
 	(len(list)==2) ?
 		get_value(list[0],type)<get_value(list[1],type) ?
 			[list[0],list[1]] : [list[1],list[0]] :
-	let(end=len(list)-1, middle=floor((len(list)-1)/2))
+	let(
+		end    = len(list)-1,
+		middle = floor((len(list)-1)/2)
+	)
 	merge(
 		 sort_mergesort([for (i=[0:middle])     list[i]], type)
 		,sort_mergesort([for (i=[middle+1:end]) list[i]], type)
@@ -84,35 +87,33 @@ function merge        (list1, list2, type=0) =
 ;
 function merge_intern (list1, list2, type=0, i1=0, i2=0) =
 	(i1>=len(list1) || i2>=len(list2)) ?
-		(i1>=len(list1)) ? [ for (e=[i2:len(list2)-1]) list2[e] ]
-	:	(i2>=len(list2)) ? [ for (e=[i1:len(list1)-1]) list1[e] ]
-	:   []
+		 (i1>=len(list1)) ? [ for (e=[i2:len(list2)-1]) list2[e] ]
+		:(i2>=len(list2)) ? [ for (e=[i1:len(list1)-1]) list1[e] ]
+		:[]
 	:(get_value(list1[i1],type) <= get_value(list2[i2],type)) ?
-		 concat([list1[i1]], merge_intern (list1, list2, type, i1+1, i2))
-		:concat([list2[i2]], merge_intern (list1, list2, type, i1,   i2+1))
+		 [ each [list1[i1]], each merge_intern (list1, list2, type, i1+1, i2)   ]
+		:[ each [list2[i2]], each merge_intern (list1, list2, type, i1,   i2+1) ]
 ;
 function merge_intern_2 (list1, list2, type=0) =
 	let(
 		enda=len(list1),
-		endb=len(list2)
+		endb=len(list2),
+		end=enda+endb - 1,
+		a=list1,
+		b=list2
 	)
 	!(enda>0) ? list2 :
 	!(endb>0) ? list1 :
-	let (
-		a=list1,
-		b=list2,
-		end=enda+endb - 1
-	)
 	[for (
 		i=0,j=0,
 			A=get_value(a[i],type),
 			B=get_value(b[j],type),
-			q=j>=endb?true:A<B, v=q?a[i]:b[j]
+			q=j>=endb?true:i>=enda?false:A<B, v=q?a[i]:b[j]
 		;i+j<=end;
 		i=q?i+1:i, j=q?j:j+1,
 			A=get_value(a[i],type),
 			B=get_value(b[j],type),
-			q=j>=endb?true:A<B, v=q?a[i]:b[j]
+			q=j>=endb?true:i>=enda?false:A<B, v=q?a[i]:b[j]
 	) v ]
 ;
 

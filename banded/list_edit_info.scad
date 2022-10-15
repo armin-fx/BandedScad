@@ -480,19 +480,40 @@ function adjacent_find_intern_f_type_loop (list, f, type, begin=0, last=-1, this
 // sucht einen Wert in einer aufsteigend sortierten Liste und gibt die Position zurück.
 // Gibt einen negativen Wert zurück, wenn nichts gefunden wurde. Der Betrag des Wertes
 // ist die letzte Position, wo gesucht wurde.
-function binary_search        (list, value, type=0) =
+function binary_search (list, value, type=0, f=undef) =
 	list==undef || len(list)<=1 ? 0 :
-	binary_search_intern (list, value, type, 0, len(list)-1)
+	f==undef ?
+		binary_search_intern   (list, value, type, 0, len(list)-1)
+	:
+		binary_search_intern_f (list, value, type, f, 0, len(list)-1)
 ;
 function binary_search_intern (list, value, type, begin, end) =
 	(end<begin)        ? -begin
 	:let(
 		middle=floor((begin+end)/2),
-		v=get_value(list[middle],type)
+		v=
+			 type   == 0 ?                   list[middle]
+			:type[0]>= 0 ?                   list[middle][type[0]]
+			:type[0]==-1 ? let( fn=type[1] ) fn(list[middle])
+			:                                get_value(list[middle],type)
 	)
 	 (v==value) ? middle
 	:(v< value) ? binary_search_intern (list, value, type, middle+1, end)
 	:             binary_search_intern (list, value, type, begin   , middle-1)
+;
+function binary_search_intern_f (list, value, type, f, begin, end) =
+	(end<begin)        ? -begin
+	:let(
+		middle=floor((begin+end)/2),
+		v=
+			 type   == 0 ?                   list[middle]
+			:type[0]>= 0 ?                   list[middle][type[0]]
+			:type[0]==-1 ? let( fn=type[1] ) fn(list[middle])
+			:                                get_value(list[middle],type)
+	)
+	 (f(v,value)==0) ? middle
+	:(f(v,value)< 0) ? binary_search_intern_f (list, value, type, f, middle+1, end)
+	:                  binary_search_intern_f (list, value, type, f, begin   , middle-1)
 ;
 
 // Testet eine Liste ob diese sortiert ist und gibt die erste Position zurück, die nicht sortiert ist.

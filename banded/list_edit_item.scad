@@ -165,9 +165,10 @@ function select_link (base, link, positions) =
 
 // löscht alle Positionen 'positions' von einer Liste 'base'
 use <banded/list_edit_data.scad>
+use <banded/list_edit_test.scad>
 function unselect (base, positions) =
 	let (
-		p = sort (positions),
+		p = (is_sorted (positions)) ? positions : sort (positions),
 		u = [for (
 			i=0  , is_in=p[0]!=0, l=  (is_in?0:1); i<=len(base)-1;
 			i=i+ ( (!is_in)&&(p[l]==i) ? 0:1 )

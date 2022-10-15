@@ -454,9 +454,14 @@ The elements are compared using operator ==  or with function `f` if given.
   - function literal with two arguments
   - returns `true` or `false`
 
-#### `binary_search (list, value, type)` [^][contents]
-[binary_search]: #binary_search-list-value-type-
+#### `binary_search (list, value, type, f)` [^][contents]
+[binary_search]: #binary_search-list-value-type-f-
 Search a value in a sorted list
+- `f`
+  - optional
+  - function literal with two arguments
+  - Compare 2 values and return a numeric value that is compared with `0`.
+    The return value must be smaller or greater then `0`, or equal `0` if the value is hit.
 
 #### `sorted_until (list, f, type, 'range_args')` [^][contents]
 [sorted_until]: #sorted_until-list-f-type-range_args-
