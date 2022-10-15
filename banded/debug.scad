@@ -22,6 +22,15 @@ module echo_thin_line (length=50) { echo_line (length/2, " -"); }
 module echo_bar       (length=50) { echo_line (length  , "=" ); }
 module echo_wall      (length=50) { echo_line (length  , "#" ); }
 
+module echo_list (list, pre="\t")
+{
+	echo( echo_list_helper_intern (list, pre) );
+}
+function echo_list_helper_intern (list, pre="\t", i=0, txt="") =
+	i>=len(list) ? txt :
+	echo_list_helper_intern (list, pre, i+1, str (txt ,"\n",pre, list[i]) )
+;
+
 
 // - Linien und Punkte sichtbar machen:
 

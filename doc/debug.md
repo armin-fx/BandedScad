@@ -13,6 +13,7 @@ Debug
 - [Debug modules](#debug-modules-)
   - [Echo in console](#echo-in-console-)
     - [`echo_line()`][echo_line]
+    - [`echo_list`][echo_list]
   - [Make points and lines visible](#make-points-visible-)
     - [`show_point()`][show_point]
     - [`show_points()`][show_points]
@@ -42,6 +43,14 @@ ___Specialized modules with fixed character:___
 - `echo_thin_line (length)` - Echo a thinner line
 - `echo_bar  (length)`      - Echo a bigger line, character = `=`
 - `echo_wall (length)`      - Echo a fat line, character = `#`
+
+#### `echo_list (list, pre)` [^][contents]
+[echo_list]: #echo_list-list-pre-
+Echo every entry from a list into the console.\
+Every entry will start in a new line.
+- `pre`
+  - text that is preposed at every list entry
+  - default = 1 tab `"\t"`
 
 
 ### Make points and lines visible [^][contents]
