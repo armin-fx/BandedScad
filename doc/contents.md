@@ -25,6 +25,7 @@ Table of contents
 - [Helper functions](helper.md)
   - [Various helper](helper.md#native-helper-functions-)
   - [Argument recondition](helper.md#recondition-arguments-of-functions-)
+  - Manage data of primitives in lists
   - [Benchmark for functions](helper.md#benchmark-function-)
 - [Control the level of detail of a mesh](extend.md)
   - [Extra special variables](extend.md#special-variables-)
