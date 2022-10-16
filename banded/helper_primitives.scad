@@ -141,3 +141,20 @@ function is_object_3d (object) =
 	false
 ;
 
+function remove_unused_points (points, faces) =
+	let (
+		pos = remove_duplicate( sort( concat_list (faces) ) ),
+		pos_table = [
+			for (i=[-1:len(pos)-2])
+			for (e=(
+				(i==-1) ?
+					[ for (j=[0     :1:pos[0]    ]) 0   ]
+				:	[ for (j=[pos[i]:1:pos[i+1]-1]) i+1 ]
+			) ) e
+			],
+		new_faces  = [ for (f=faces) [ for (e=f) pos_table[e] ] ],
+		new_points = [ for (i=pos) points[i] ]
+	)
+	[new_points, new_faces]
+;
+

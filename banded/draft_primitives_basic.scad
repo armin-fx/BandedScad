@@ -425,40 +425,45 @@ function hull_3d_grub_out_points (points) =
 		up_pos   = max_position (points, [2]),
 		down_pos = min_position (points, [2])
 	)
-	up_pos==down_pos ? "Flat object - TODO" :
+	up_pos==down_pos ? undef : // Flat object
 	let(
-		other_pos = [ for (i=[0:2]) if (i!=up_pos && i!=down_pos) i ] [0],
-		//
+		other_pos = find_first_if ( range([0:len(points)-1]), f=function(i)
+				(i!=up_pos && i!=down_pos) &&
+				(! is_nearly_collinear (points[up_pos]-points[down_pos], points[up_pos]-points[i]) )
+			)
+	)
+	other_pos>=len(points) ? undef : // One line object
+	let(
 		remainder = [ for (i=[0:len(points)-1]) if (i!=up_pos && i!=down_pos && i!=other_pos) i ],
 		triangles = [
 			[up_pos,down_pos,other_pos],
 			[down_pos,up_pos,other_pos]
 			],
-		result = hull_3d_grub_out_points_next (points, triangles, remainder)
+		result = hull_3d_grub_out_points_next (points, triangles, remainder, len(remainder)-1)
 	)
-	result
+	remove_unused_points (result[0], result[1])
 ;
-function hull_3d_grub_out_points_next (points, triangles, remainder) =
-	len(remainder)==0 ? [points, triangles] :
+function hull_3d_grub_out_points_next (points, triangles, remainder, last=0) =
+	last<0 ? [points, triangles] :
 	let (
-		next_pos    = remainder[0],
-		next_point  = points[next_pos],
-		remainder_1 = remove (remainder, 0, count=1)
+		next_pos    = remainder[last],
+		next_point  = points[next_pos]
 	)
 	is_point_inside_polyhedron_hulled (points, triangles, next_point) ?
-		hull_3d_grub_out_points_next (points, triangles, remainder_1)
+		hull_3d_grub_out_points_next (points, triangles, remainder, last-1)
 	:
 	let (
 		keep_triangles =
 			[ for (triangle=triangles)
 			let (
-				normal    = get_normal_face (points_3=select (points,triangle) ),
-				direction = next_point-points[triangle[0]],
+			//	normal    = get_normal_face (points_3=select (points,triangle) ),
+				normal    = cross (points[triangle[1]]-points[triangle[0]], points[triangle[2]]-points[triangle[0]]),
+				direction = next_point - points[triangle[0]],
 				angle     = angle_vector (normal, direction)
 			)
 			if (angle<90) triangle
 			],
-		side_list = // list and sort all sides from the keeped triangles
+		edge_list = // list and sort all edges from the keeped triangles
 			sort (type=[0] ,list=
 			sort (type=[1] ,list=
 			[for (triangle=keep_triangles)
@@ -470,23 +475,20 @@ function hull_3d_grub_out_points_next (points, triangles, remainder) =
 				a<b ? [a, b, false]
 				:     [b, a, true ]
 			] ) ),
-		open_sides = // remove double entries
+		new_triangles = // remove double entries from edge_list and build new triangles
 			[for
-				(i=0  ,keep=([side_list[i][0],side_list[i][1]] != [side_list[i+1][0],side_list[i+1][1]]);
-				i<len(side_list);
-				i=i+(keep?1:2) ,keep=([side_list[i][0],side_list[i][1]] != [side_list[i+1][0],side_list[i+1][1]]))
-					if (keep) side_list[i]
-			],
-		new_triangles =
-			[
-				each keep_triangles,
-				each [for (side=open_sides)
-					side[2] ? [side[0],side[1], next_pos]
-					:         [side[1],side[0], next_pos]
-				]
+				(i=0           ,keep=([edge_list[i][0],edge_list[i][1]] != [edge_list[i+1][0],edge_list[i+1][1]]);
+				i<len(edge_list);
+				i=i+(keep?1:2) ,keep=([edge_list[i][0],edge_list[i][1]] != [edge_list[i+1][0],edge_list[i+1][1]]))
+					if (keep)
+						let (
+							edge=edge_list[i]
+						)
+						edge[2] ? [edge[0],edge[1], next_pos]
+						:         [edge[1],edge[0], next_pos]
 			]
 	)
-	hull_3d_grub_out_points_next (points, new_triangles, remainder_1)
+	hull_3d_grub_out_points_next (points, [each keep_triangles, each new_triangles], remainder, last-1)
 ;
 
 
