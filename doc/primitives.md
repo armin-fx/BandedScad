@@ -21,12 +21,13 @@ Draft objects as data list - Primitives
     - buildin OpenSCAD primitives
     - more primitives
   - [Functions to transform objects](#functions-to-transform-objects-)
-    - [From OpenSCAD buildin modules](#functions-from-openscad-buildin-modules-)
+    - [Based on OpenSCAD buildin modules](#functions-based-on-openscad-buildin-modules-)
     - [More functions to transform objects](#more-functions-to-transform-objects-)
   - [Functions to edit objects](#functions-to-edit-objects-)
     - [`linear_extrude_points()`][linear_extrude_points]
     - [`rotate_extrude_points()`][rotate_extrude_points]
     - [`helix_extrude_points()`][helix_extrude_points]
+  - [Not implemented](#not-yet-implemented-)
 
 
 Primitives [^][contents]
@@ -82,7 +83,7 @@ build_object(c);
 Argument convention:
 - `transform_function (object, transform_arguments)`
 
-#### Functions from OpenSCAD buildin modules [^][contents]
+#### Functions based on OpenSCAD buildin modules [^][contents]
 - `translate (object, v)`
 - `rotate    (object, a, v, backwards)`
 - `mirror    (object, v)`
@@ -91,6 +92,7 @@ Argument convention:
 - `projection()` - not working yet, only on point lists
 - `multmatrix(object, m)`
 - `color     (object, c, alpha)`
+- `hull      (object)`
 
 
 #### More functions to transform objects [^][contents]
@@ -145,13 +147,9 @@ Creates a helix with a 2D hull as trace similar rotate_extrude.
 - `slices`    - count of segments from helix per full rotation
 
 
-. . .
+### Not yet implemented [^][contents]
 
-
-### Not yet implemented, but planned [^][contents]
-- `hull()`
-- `minkowski()`
-
+#### Planned [^][contents]
 - `linear_extrude()`
   - but as function [`linear_extrude_points()`][linear_extrude_points]
     to create an object from a 2D trace in a point list.
@@ -164,6 +162,8 @@ Creates a helix with a 2D hull as trace similar rotate_extrude.
 - `difference()`
 - `intersection()`
 
-### Not implemented [^][contents]
+- `minkowski()`
+
+#### Not implemented [^][contents]
 - `text()`
 - `offset()`

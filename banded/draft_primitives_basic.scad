@@ -22,8 +22,8 @@ use <banded/draft_color.scad>
 //
 use <banded/helper.scad>
 use <banded/extend.scad>
-use <banded/list_edit_data.scad>
-use <banded/math_common.scad>
+use <banded/list_edit.scad>
+use <banded/math.scad>
 
 
 // - 2D:
@@ -328,6 +328,165 @@ function color (object, c, alpha) =
 			alpha==undef ? c : [c[0],c[1],c[2],alpha]
 		:undef
 	]
+;
+
+function hull (object) =
+	(object==undef || !is_list(object)) ? undef :
+	is_num(object[0][0]) ? // simple point list
+		let(list=object)
+		hull_points (list)
+	:
+	let (
+		h = 
+			 is_num(object[0][0][0]) ? // object with one point list
+				let(list=object[0])
+				hull_points (list)
+			:is_num(object[0][0][0][0]) ? // object with multiple point lists
+				let(list=object[0])
+				hull_points (concat_list(list))
+			:undef // unknown object
+	)
+	h==undef ? undef
+	:is_num(h[0][0]) ? // 2D trace
+		[
+			 h                        // all points as trace
+			,range (i=[0:1:len(h)-1]) // count up all points
+			,each [ for (k=[2:1:len(object)-1]) object[k] ] // keep all other data
+		]
+
+	:is_num(h[0][0][0]) ? // 3D object
+		[
+			 h[0]
+			,h[1]
+			,each [ for (k=[2:1:len(object)-1]) object[k] ] // keep all other data
+		]
+	:undef // unknown
+;
+// get a point list and returns an objekt as list
+// - 2D: 'trace'
+// - 3D: '[ points, path ]'
+function hull_points (points) =
+	points==undef ? points :
+	len(points[0])==2 ? hull_2d_points (points) :
+	len(points[0])==3 ? hull_3d_points (points) :
+	undef
+;
+
+function hull_2d_points (points) = hull_2d_quickhull_points (points);
+//
+function hull_2d_quickhull_points (points) =
+	!(len(points)>2) ? points :
+	let(
+		left_pos  = min_position (points, [0]),
+		right_pos = max_position (points, [0]),
+		left  = points[left_pos],
+		right = points[right_pos],
+		remainder = [ for (i=[0:len(points)-1]) if (i!=left_pos && i!=right_pos) points[i] ],
+		g = get_gradient_2d ([ left,right ]),
+		m = g[1], y0 = g[0],
+		points_up   = [ for (e=remainder) if (y0+m*e.x < e.y) e ],
+		points_down = [ for (e=remainder) if (y0+m*e.x > e.y) e ]
+		
+	)
+	concat(
+		[left],  hull_2d_quickhull_points_next (points_up,   left, right),
+		[right], hull_2d_quickhull_points_next (points_down, right, left)
+	)
+;
+function hull_2d_quickhull_points_next (points, left, right) =
+	!(len(points)>1) ? points :
+	let(
+		do_flat = matrix_rotate_backwards( rotation_vector([1,0],right-left), d=2, short=true),
+		flat_points= multmatrix_2d_points( points, do_flat ),
+		flat_left  = multmatrix_2d_point ( left,   do_flat ),
+		flat_right = multmatrix_2d_point ( right,  do_flat ),
+		next_pos   = max_position(flat_points, [1]),
+		next       = points     [next_pos],
+		flat_next  = flat_points[next_pos],
+		gl = get_gradient_2d ([ flat_left ,flat_next ]),
+		gr = get_gradient_2d ([ flat_right,flat_next ]),
+		points_left  = [ for (i=[0:len(points)-1])
+			if (i!=next_pos) if (gl[0]+gl[1]*flat_points[i].x < flat_points[i].y) points[i] ],
+		points_right = [ for (i=[0:len(points)-1])
+			if (i!=next_pos) if (gr[0]+gr[1]*flat_points[i].x < flat_points[i].y) points[i] ]
+	)
+	concat(
+		hull_2d_quickhull_points_next (points_left , left, next),
+		[next],
+		hull_2d_quickhull_points_next (points_right, next, right)
+	)
+;
+
+function hull_3d_points (points) = hull_3d_grub_out_points (points);
+//
+function hull_3d_grub_out_points (points) =
+	!(len(points)>3) ? undef :
+	let( // get any first 3 points and generate a full object with these
+		up_pos   = max_position (points, [2]),
+		down_pos = min_position (points, [2])
+	)
+	up_pos==down_pos ? "Flat object - TODO" :
+	let(
+		other_pos = [ for (i=[0:2]) if (i!=up_pos && i!=down_pos) i ] [0],
+		//
+		remainder = [ for (i=[0:len(points)-1]) if (i!=up_pos && i!=down_pos && i!=other_pos) i ],
+		triangles = [
+			[up_pos,down_pos,other_pos],
+			[down_pos,up_pos,other_pos]
+			],
+		result = hull_3d_grub_out_points_next (points, triangles, remainder)
+	)
+	result
+;
+function hull_3d_grub_out_points_next (points, triangles, remainder) =
+	len(remainder)==0 ? [points, triangles] :
+	let (
+		next_pos    = remainder[0],
+		next_point  = points[next_pos],
+		remainder_1 = remove (remainder, 0, count=1)
+	)
+	is_point_inside_polyhedron_hulled (points, triangles, next_point) ?
+		hull_3d_grub_out_points_next (points, triangles, remainder_1)
+	:
+	let (
+		keep_triangles =
+			[ for (triangle=triangles)
+			let (
+				normal    = get_normal_face (points_3=select (points,triangle) ),
+				direction = next_point-points[triangle[0]],
+				angle     = angle_vector (normal, direction)
+			)
+			if (angle<90) triangle
+			],
+		side_list = // list and sort all sides from the keeped triangles
+			sort (type=[0] ,list=
+			sort (type=[1] ,list=
+			[for (triangle=keep_triangles)
+			for  (i=[0:1:2])
+				let (
+					a=triangle[i],
+					b=triangle[(i+1)%3]
+				)
+				a<b ? [a, b, false]
+				:     [b, a, true ]
+			] ) ),
+		open_sides = // remove double entries
+			[for
+				(i=0  ,keep=([side_list[i][0],side_list[i][1]] != [side_list[i+1][0],side_list[i+1][1]]);
+				i<len(side_list);
+				i=i+(keep?1:2) ,keep=([side_list[i][0],side_list[i][1]] != [side_list[i+1][0],side_list[i+1][1]]))
+					if (keep) side_list[i]
+			],
+		new_triangles =
+			[
+				each keep_triangles,
+				each [for (side=open_sides)
+					side[2] ? [side[0],side[1], next_pos]
+					:         [side[1],side[0], next_pos]
+				]
+			]
+	)
+	hull_3d_grub_out_points_next (points, new_triangles, remainder_1)
 ;
 
 
