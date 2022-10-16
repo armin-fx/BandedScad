@@ -12,7 +12,7 @@ use <banded/math_vector.scad>
 use <banded/math_matrix.scad>
 
 
-// - Test für Linien und Strecken:
+// - Test für Linien, Strecken und Flächen:
 
 // gibt zurück, ob ein Punkt genau auf einer Linie ist,
 // definiert durch 2 Punkte
@@ -37,6 +37,46 @@ function is_point_on_segment (line, point) =
 // aufgespannt mit 3 Punkten in einer Liste
 function is_point_on_plane (points_3, point) =
 	is_coplanar(points_3[0]-points_3[2],points_3[1]-points_3[2],point-points_3[2])
+;
+
+// gibt zurück, ob ein Punkt oberhalb einer Ebene liegt
+// aufgespannt mit 3 Punkten in einer Liste
+function is_point_upper_plane (points_3, test_point) =
+	let(
+		o=points_3[0],
+		l=points_3[1]-o,
+		r=points_3[2]-o,
+		p=test_point -o,
+		n=cross(l,r),
+		
+		/* version 1
+		u=rotate_backwards_to_vector_points([p], n)[0],
+		bool=u.z > deviation // prevent rounding error
+		//*/
+		
+		//* version 2
+		nz_=n.z/norm(n),
+		nz =is_num(nz_) ? nz_ : 1,
+		//b=-acos(nz),       // inclination angle
+		c=-atan2(n.y,n.x), // azimuthal angle
+		
+		/* version 2-1
+		q=rotate_z_points([p],c)[0],
+		u=rotate_y_points([q],b)[0],
+		bool=u.z > deviation // prevent rounding error
+		//*/
+		
+		//* version 2-2
+		sinb  = -sqrt(1-nz*nz),
+		cosb  = nz,
+		sinc  = sin(c),
+		cosc  = cos(c),
+		//
+		z=(-p.x*cosc + p.y*sinc )*sinb + p.z*cosb,
+		bool=z > deviation // prevent rounding error
+		//*/
+	)
+	bool
 ;
 
 // gibt zurück, ob sich zwei Strecken kreuzen
@@ -64,16 +104,16 @@ function is_intersection_segments (line1, line2, point, only) =
 	is_constrain_left (p, line2[0], line2[1])
 ;
 
-// testet, ob ein Punkt innerhalb einer Umrandung ist
+// testet, ob ein Punkt innerhalb der Umrandung eines Polygonzuges in der Ebene ist
 // die Umrandung darf sich nicht selbst überschneiden
-function is_inner_polygon (points, p, face) =
+function is_point_inside_polygon (points, p, face) =
 	len(points[0])==2 ?
 		// 2D:
-		is_inner_polygon_2d (points, p, face)
+		is_point_inside_polygon_2d (points, p, face)
 	:	// 3D:
-		is_inner_polygon_3d (points, p, face)
+		is_point_inside_polygon_3d (points, p, face)
 ;
-function is_inner_polygon_2d (points, p, face) =
+function is_point_inside_polygon_2d (points, p, face) =
 	let (
 		trace = face==undef ? points : select (points,face),
 		size = len(trace),
@@ -100,7 +140,7 @@ function is_inner_polygon_2d (points, p, face) =
 ;
 // Alle Punkte müssen sich in der gleichen Ebene befinden.
 // Eventuell vorher nachprüfen
-function is_inner_polygon_3d (points, p, face) =
+function is_point_inside_polygon_3d (points, p, face) =
 	let (
 		trace    = (face==undef) ? points : select (points, face),
 		size     = len(trace),
@@ -110,7 +150,19 @@ function is_inner_polygon_3d (points, p, face) =
 		points_flat = projection_points ( multmatrix_points (trace, m_flat), plane=true ),
 		p_flat      = projection_point  ( multmatrix_point  (p    , m_flat), plane=true )
 	)
-	is_inner_polygon_2d (points_flat, p_flat)
+	is_point_inside_polygon_2d (points_flat, p_flat)
+;
+
+// testet, ob ein Punkt innerhalb der Oberfläche eines Polyeders ist
+// Bedingung dieser Funktion: der Polyeder muss eine konvexe Hülle sein
+function is_point_inside_polyhedron_hulled (points, triangles, point, i=0) =
+	len(triangles)==0 ? false :
+	is_point_inside_polyhedron_hulled_intern (points, triangles, point, len(triangles)-1)
+;
+function is_point_inside_polyhedron_hulled_intern (points, triangles, point, i=-1) =
+	i<0 ? true  :
+	is_point_upper_plane ( select(points,triangles[i]), point) ? false :
+	is_point_inside_polyhedron_hulled_intern (points, triangles, point, i-1)
 ;
 
 

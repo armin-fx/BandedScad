@@ -44,8 +44,9 @@ Matrix and vector operations
     - [`is_point_on_line()`][is_point_on_line]
     - [`is_point_on_segment()`][is_point_on_segment]
     - [`is_point_on_plane()`][is_point_on_plane]
+    - [`is_point_upper_plane()`][is_point_upper_plane]
     - [`is_intersection_segments()`][is_intersection_segments]
-    - [`is_inner_polygon()`][is_inner_polygon]
+    - [`is_point_inside_polygon()`][is_point_inside_polygon]
   - [Straight line, line segment and surfaces](#straight-line-line-segment-and-surfaces-)
     - [`get_gradient()`][get_gradient]
     - [`get_intersection_point()`][get_intersection_point]
@@ -276,6 +277,14 @@ Returns `true` if a point lies exactly in a plane.\
 In 3D.
 - `points_3` - 3 points in a list defines the plane
 
+#### `is_point_upper_plane (points_3, point)` [^][contents]
+[is_point_upper_plane]: #is_point_upper_plane-points_3-point-
+Returns `true` if a point is upper a plane.\
+In 3D.
+Upper side means the same side of the direction of the normal vector
+from the triangle defined by the 3 points.
+- `points_3` - 3 points in a list defines the plane
+
 #### `is_intersection_segments (line1, line2, point, only)` [^][contents]
 [is_intersection_segments]: #is_intersection_segments-line1-line2-point-only-
 Returns `true` if two line segment intersect.\
@@ -290,8 +299,8 @@ Only in 2D plane.
   - `false` - if the lines are collinear then it tests whether the straight lines overlap
   - `true`  - return always `false` if the lines are collinear
 
-#### `is_inner_polygon (points, p, face)` [^][contents]
-[is_inner_polygon]: #is_inner_polygon-points-p-face-
+#### `is_point_inside_polygon (points, p, face)` [^][contents]
+[is_point_inside_polygon]: #is_point_inside_polygon-points-p-face-
 Returns `true` if a point lies exactly in a closed trace.\
 Inclusive the on the line.
 The border of the trace must not intersect itself.
@@ -303,9 +312,9 @@ In 2D and 3D.
   - If not defined, the order of `points` is used to define the trace.
 
 _Specialized functions:_
-- `is_inner_polygon_2d ()`
+- `is_point_inside_polygon_2d ()`
   - Test 2D trace
-- `is_inner_polygon_3d ()`
+- `is_point_inside_polygon_3d ()`
   - Test 3D trace
   - The points must lie in the same plane, possibly check beforehand
 
