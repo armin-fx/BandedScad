@@ -124,28 +124,28 @@ function count_intern_old (list, value, type=0, n=0, k=-1, count=0) =
 function count_intern_direct (list, value, n=0, k=-1, count=0) =
 	n>k ? count :
 	count_intern_direct (list, value
-		, n+1, k,
+		, n+1, k
 		, count + ( list[n]==value ? 1 : 0 )
 	)
 ;
 function count_intern_list (list, value, position=0, n=0, k=-1, count=0) =
 	n>k ? count :
 	count_intern_list (list, value, position
-		, n+1, k,
+		, n+1, k
 		, count + ( list[n][position]==value ? 1 : 0 )
 	)
 ;
 function count_intern_function (list, value, fn, n=0, k=-1, count=0) =
 	n>k ? count :
 	count_intern_function (list, value, fn
-		, n+1, k,
+		, n+1, k
 		, count + ( fn(list[n])==value ? 1 : 0 )
 	)
 ;
 function count_intern_type (list, value, type, n=0, k=-1, count=0) =
 	n>k ? count :
 	count_intern_type (list, value, type
-		, n+1, k,
+		, n+1, k
 		, count + ( get_value(list[n],type)==value ? 1 : 0 )
 	)
 ;

@@ -191,7 +191,7 @@ function get_circle_factor (slices, outer=0, angle=360) = outer/cos(angle/(2*sli
 function superellipse_point (t, r, a, n, s) =
 	let (
 		 T = is_num(t) ? t : 0
-		,R = is_num(r) ? r : 1,
+		,R = is_num(r) ? r : 1
 		,A = parameter_numlist(2, a, [1,1])
 		,N = parameter_numlist(2, n, [2,2])
 		,S = parameter_numlist(2, s, undef)

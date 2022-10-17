@@ -87,12 +87,12 @@ function includes (list1, list2, f=undef, type=0, begin1, last1, count1, range1,
 		Range2 = parameter_range_safe (list2, begin2, last2, count2, range2)
 	)
 	f==undef ?
-		 type   == 0 ? includes_intern_direct    (list1, list2,           , Range1[0], Range1[1], Range2[0], Range2[1])
+		 type   == 0 ? includes_intern_direct    (list1, list2,             Range1[0], Range1[1], Range2[0], Range2[1])
 		:type[0]>= 0 ? includes_intern_list      (list1, list2,    type[0], Range1[0], Range1[1], Range2[0], Range2[1])
 		:type[0]==-1 ? includes_intern_function  (list1, list2,    type[1], Range1[0], Range1[1], Range2[0], Range2[1])
 		:              includes_intern_type      (list1, list2,    type   , Range1[0], Range1[1], Range2[0], Range2[1])
 	:
-		 type   == 0 ? includes_intern_f_direct  (list1, list2, f,        , Range1[0], Range1[1], Range2[0], Range2[1])
+		 type   == 0 ? includes_intern_f_direct  (list1, list2, f,          Range1[0], Range1[1], Range2[0], Range2[1])
 		:type[0]>= 0 ? includes_intern_f_list    (list1, list2, f, type[0], Range1[0], Range1[1], Range2[0], Range2[1])
 		:type[0]==-1 ? includes_intern_f_function(list1, list2, f, type[1], Range1[0], Range1[1], Range2[0], Range2[1])
 		:              includes_intern_f_type    (list1, list2, f, type   , Range1[0], Range1[1], Range2[0], Range2[1])

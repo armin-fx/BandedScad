@@ -252,7 +252,7 @@ function matrix_projection_2d (v, short=false) =
 	:
 		[[0, sina*sina + sina*cosa, 0]
 		,[0, cosa*sina + cosa*cosa, 0]
-		,[0, 0,                   , 1]
+		,[0, 0                    , 1]
 		]
 ;
 function matrix_projection_3d (v, short=false) =

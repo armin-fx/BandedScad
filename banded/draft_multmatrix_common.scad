@@ -298,11 +298,11 @@ function matrix_skew (v, t, m, a, d=3, short=false) =
 	d==3 ?
 		matrix_rotate_to_vector (V, T, short=short) *
 		( is_short ?
-			[[1,0,M],
+			[[1,0,M]
 			,[0,1,0]
 			,[0,0,1]]
 		:
-			[[1,0,M,0],
+			[[1,0,M,0]
 			,[0,1,0,0]
 			,[0,0,1,0]
 			,[0,0,0,1]]

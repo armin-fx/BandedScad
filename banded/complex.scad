@@ -151,7 +151,7 @@ function c_add_polar (c, d) =
 ;
 function c_add_polar_2 (c, d) =
 	let(
-		,angle    = ( ( d[1]-c[1] )%360+360 + 180 )%360 - 180
+		 angle    = ( ( d[1]-c[1] )%360+360 + 180 )%360 - 180
 		,d0_cos_ab = d[0] * cos(angle)
 		,t        = sqrt( c[0]*c[0] + d[0]*d[0] + 2*c[0]*d0_cos_ab )
 		,gamma    = sign(angle) * acos( (c[0]+d0_cos_ab) / t) + c[1]
@@ -167,7 +167,7 @@ function c_sub_polar (c, d) =
 ;
 function c_sub_polar_2 (c, d) =
 	let(
-		,angle     = ( ( d[1]-c[1] + 180 )%360+360 + 180 )%360 - 180
+		 angle     = ( ( d[1]-c[1] + 180 )%360+360 + 180 )%360 - 180
 		,d0_cos_ab = d[0] * cos(angle)
 		,t         = sqrt( c[0]*c[0] + d[0]*d[0] + 2*c[0]*d0_cos_ab )
 		,gamma     = sign(angle) * acos( (c[0]+d0_cos_ab) / t) + c[1]

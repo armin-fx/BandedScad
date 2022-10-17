@@ -156,7 +156,7 @@ function parameter_funnel_r (ri1, ri2, ro1, ro2, w, di1, di2, do1, do2) =
 		//,_ro1 = get_first_num (ro1, ri1+w, do1/2, di1/2+w, 2)
 		//,_ro2 = get_first_num (ro2, ri2+w, do2/2, di2/2+w, 2)
 		
-		,is_ri1 = ri1!=undef && is_num(ri1)
+		 is_ri1 = ri1!=undef && is_num(ri1)
 		,is_ri2 = ri2!=undef && is_num(ri2)
 		,is_ro1 = ro1!=undef && is_num(ro1)
 		,is_ro2 = ro2!=undef && is_num(ro2)
