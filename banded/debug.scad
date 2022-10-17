@@ -76,21 +76,22 @@ module show_line (l, c, direction=false, d=0.1)
 		}
 		else
 		{
-			length = norm(l[1]-l[0]);
+			L = [for (i=[0,1]) fill_missing_list (l[i], [0,0,0]) ];
+			length = norm(L[1]-L[0]);
 			arrow_length = length<5*d ? length : 5*d;
 			arrow_ratio  = 3 / 5;
 			
 			if (length>arrow_length)
 			{
 				color(c)
-				translate (l[0])
-				rotate_to_vector (l[1]-l[0])
+				translate (L[0])
+				rotate_to_vector (L[1]-L[0])
 				cylinder (h=length-arrow_length, d=d, $fn=6);
 			}
 			
 			color(c)
-			translate (l[1])
-			rotate_to_vector (l[0]-l[1])
+			translate (L[1])
+			rotate_to_vector (L[0]-L[1])
 			cylinder(h=arrow_length, d1=0, d2=arrow_length*arrow_ratio, $fn=6);
 		}
 	}
