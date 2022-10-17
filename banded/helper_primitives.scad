@@ -141,7 +141,7 @@ function is_object_3d (object) =
 	false
 ;
 
-function remove_unused_points (points, faces) =
+function remove_unselected_points (points, faces) =
 	let (
 		pos = remove_duplicate( sort( concat_list (faces) ) ),
 		pos_table = [

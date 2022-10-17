@@ -441,7 +441,7 @@ function hull_3d_grub_out_points (points) =
 			],
 		result = hull_3d_grub_out_points_next (points, triangles, remainder, len(remainder)-1)
 	)
-	remove_unused_points (result[0], result[1])
+	remove_unselected_points (result[0], result[1])
 ;
 function hull_3d_grub_out_points_next (points, triangles, remainder, last=0) =
 	last<0 ? [points, triangles] :
