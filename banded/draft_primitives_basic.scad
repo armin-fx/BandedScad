@@ -151,27 +151,6 @@ function sphere (r, d, align) =
 
 // - Objekte transformieren:
 
-function transform_function (object, fn) =
-	(object==undef || !is_list(object)) ? undef :
-	is_num(object[0][0]) ? // simple point list
-		let(list=object)
-		fn (list)
-	:
-	[ for (k=[0:1:len(object)-1])
-		k==0 ?
-			 is_num(object[0][0][0]) ? // object with one point list
-				let(list=object[0])
-				fn (list)
-			:is_num(object[0][0][0][0]) ? // object with multiple point lists
-				[for (list=object[0])
-				fn (list)
-				]
-			:undef // unknown object
-		:
-			object[k] // keep all other data
-	]
-;
-
 function translate (object, v) = transform_function (object, function (list)
     translate_points (list, v) )
 ;

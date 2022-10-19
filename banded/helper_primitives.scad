@@ -5,6 +5,30 @@
 //
 
 
+// Schablone um Objekte zu transformieren,
+// wenn nur die Punkte alleine bearbeitet werden
+function transform_function (object, fn) =
+	(object==undef || !is_list(object)) ? undef :
+	is_num(object[0][0]) ? // simple point list
+		let(list=object)
+		fn (list)
+	:
+	[ for (k=[0:1:len(object)-1])
+		k==0 ?
+			 is_num(object[0][0][0]) ? // object with one point list
+				let(list=object[0])
+				fn (list)
+			:is_num(object[0][0][0][0]) ? // object with multiple point lists
+				[for (list=object[0])
+				fn (list)
+				]
+			:undef // unknown object
+		:
+			object[k] // keep all other data
+	]
+;
+
+
 // - Daten der Objekte:
 
 // Objekt in Liste in ein einheitliches Format ausgeben.
