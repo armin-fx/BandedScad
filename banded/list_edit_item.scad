@@ -151,9 +151,17 @@ function fill (count, value) =
 ;
 
 // gibt eine Liste zurück mit den Werten von der Liste 'base' in den Positionen 'positions'
+// b.z.w. bestückt die Positionen in der Liste 'positions' mit den entsprechenden Werten von 'base'
 //   base <-- positions
 function select (base, positions) =
 	[ for (position=positions) base[position] ]
+;
+// bestückt alle Listen in 'positions_list' mit den entsprechenden Werten von 'base'
+//   [ base <-- positions[0], base <-- positions[1], base <-- positions[2] ... ]
+function select_list (base, positions_list) =
+	[ for (positions=positions_list)
+		[ for (position=positions) base[position] ]
+	]
 ;
 // gibt eine Liste zurück mit den Werten von der Liste 'base'
 // von der Liste mit den Positionen 'link' von 'base'

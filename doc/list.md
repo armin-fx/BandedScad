@@ -52,6 +52,7 @@ Functions for edit lists
     - [`replace()`][replace]
     - [`extract()`][extract]
     - [`select()`][select]
+    - [`select_list()`][select_list]
     - [`select_link()`][select_link]
     - [`unselect()`][unselect]
   - [Edit list with use of data, depend on type](#edit-list-with-use-of-data-depend-on-type-)
@@ -235,11 +236,12 @@ ___Specialized function with full range of the list:___
 [rotate_list]: #rotate_list-list-middle-begin-last-
 Rotates the order of the elements in the range `[begin,last]`,
 in such a way that the element pointed by `middle` becomes the new first element.
+Keep the elements outer the range `[begin,last]` as it is.
 
 #### `rotate_copy (list, middle, begin, last)` [^][contents]
 [rotate_copy]: #rotate_list-list-middle-begin-last-
-Copies the elements in the range `[begin,last]` to the range beginning at result,
-but rotating the order of the elements in such a way
+Copies the elements in the range `[begin,last]` and
+rotates the order of the elements in such a way
 that the element pointed by `middle` becomes the first element in the resulting range.
 
 #### `remove (list, begin, count)` [^][contents]
@@ -303,8 +305,14 @@ Makes a list with `count` elements filled with `value`
 #### `select (base, positions)` [^][contents]
 [select]: #select-base-positions-
 Create a list with values of list `base` at positions in order of list `positions`.\
-Run `base[ position ]` with every item in `positions`.\
+Run `base[ position ]` with every item in `positions` and create a new list.\
 `base <-- positions`
+
+#### `select_list (base, positions_list)` [^][contents]
+[select_list]: #select_list-base-positions_list-
+Replace all entries in all lists in `positions_list` with data entries from list `base`.\
+Every entry select a value at this position in list `base`.
+`base <-- [ positions_list[0], positions_list[1], ... ]`
 
 #### `select_link (base, link, positions)` [^][contents]
 [select_link]: #select_link-base-link-positions-
@@ -322,6 +330,7 @@ Example:
 ```OpenSCAD
 include <banded.scad>
 
+// pos:  0   1   2   3   4
 list = ["a","b","c","d","e"];
 sel  = [0,1,1,2];
 
