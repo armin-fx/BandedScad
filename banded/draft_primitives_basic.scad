@@ -299,13 +299,7 @@ function color (object, c, alpha) =
 	[ for (i=[0:1:max(3,len(object)-1)])
 		i!=2 ? object[i] :
 		// write color as rgb or rgba list
-		is_string(c) ?
-			c[0]=="#" ?
-				color_hex_to_list (c, alpha)
-			:	color_name        (c, alpha)
-		:is_num(c[2]) ?
-			alpha==undef ? c : [c[0],c[1],c[2],alpha]
-		:undef
+		get_color (c, alpha)
 	]
 ;
 

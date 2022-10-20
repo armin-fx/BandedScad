@@ -6,6 +6,17 @@ use <banded/string.scad>
 use <banded/list_edit_data.scad>
 
 
+// get color as rgb or rgba list
+function get_color (c, alpha, default=undef) =
+	is_string(c) ?
+		c[0]=="#" ?
+			color_hex_to_list (c, alpha)
+		:	color_name        (c, alpha)
+	:is_num(c[2]) ?
+		alpha==undef ? c : [c[0],c[1],c[2],alpha]
+	:default
+;
+
 // transform color from hsv model to rgb model
 // hsv - as list [h, s, v] or [h, s, v, alpha]
 //   h = hue:               0...360°
