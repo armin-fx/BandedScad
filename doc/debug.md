@@ -17,10 +17,12 @@ Debug
   - [Make points and lines visible](#make-points-visible-)
     - [`show_point()`][show_point]
     - [`show_points()`][show_points]
-    - [`show_trace()`][show_trace]
     - [`show_line()`][show_line]
     - [`show_lines()`][show_lines]
+    - [`show_trace()`][show_trace]
+    - [`show_traces()`][show_traces]
     - [`show_vector()`][show_vector]
+    - [`show_label()`][show_label]
   - [Test parts of objects](#test-parts-of-objects-)
     - [`object_slice()`][object_slice]
     - [`object_pane()`][object_pane]
@@ -44,16 +46,22 @@ ___Specialized modules with fixed character:___
 - `echo_bar  (length)`      - Echo a bigger line, character = `=`
 - `echo_wall (length)`      - Echo a fat line, character = `#`
 
-#### `echo_list (list, pre)` [^][contents]
-[echo_list]: #echo_list-list-pre-
+#### `echo_list (list, txt, pre)` [^][contents]
+[echo_list]: #echo_list-list-txt-pre-
 Echo every entry from a list into the console.\
 Every entry will start in a new line.
+- `txt`
+  - optional text that echoes at first
 - `pre`
   - text that is preposed at every list entry
   - default = 1 tab `"\t"`
 
 
 ### Make points and lines visible [^][contents]
+
+All following objects are only shown
+in preview mode (F5) and are hidden in render mode (F6).
+The default color of these objects is "orange".
 
 #### `show_point (p, c, d)` [^][contents]
 [show_point]: #show_point-p-c-d-
@@ -67,21 +75,12 @@ Module to create a visible point.
 Module to create visible points.
 - `p_list` - a list with points
 - `c` - optional, the color of the points
+  - if set `true`, every point get an other color
 - `d` - optional, the diameter of the points, default = `0.2mm`
 
-#### `show_trace (p_list, c, closed, direction, d, dp)` [^][contents]
-[show_trace]: #show_trace-p_list-c-closed-direction-d-dp-
-Module to create visible points.\
-Create a line between the points.
-If the same point is twice in order, then it will create a visible point at this position.
-- `p_list` - a list with points
-- `c`  - optional, the color of the points
-- `closed`
-  - `true`  - the trace is a closed loop, the last point connect the first point
-  - `false` - the trace from first to last point, default
-- `d`  - optional, the diameter of the line between the points, default = `0.1mm`
-- `dp` - optional, the diameter of the same points, default = `0.15mm`
-- `direction` - show the direction of the line if set `true`, default = `false`
+_Specialized module:_
+- `show_points_colored (p_list, d)`
+  - every point get an other color by default
 
 #### `show_line (l, c, direction, d)` [^][contents]
 [show_line]: #show_line-l-c-d-
@@ -89,15 +88,22 @@ Module to create a visible line.
 - `l` - a line, a list with 2 points
 - `c` - optional, the color of the line
 - `d` - optional, the diameter of the line, default = `0.1mm`
-- `direction` - show the direction of the line if set `true`, default = `false`
+- `direction` - show the direction of the line with an arrow if set `true`
+  - default = `false`
 
 #### `show_lines (l_list, c, direction, d)` [^][contents]
 [show_lines]: #show_lines-l_list-c-d-
 Module to create visible lines in a list.
 - `l_list` - a list with lines, a line is a list with 2 points
 - `c`  - optional, the color of a line
+  - if set `true`, every line get an other color
 - `d`  - optional, the diameter of a line, default = `0.1mm`
-- `direction` - show the direction of the line if set `true`, default = `false`
+- `direction` - show the direction of the line with an arrow if set `true`
+  - default = `false`
+
+_Specialized module:_
+- `show_lines_colored (l_list, direction, d)`
+  - every line get an other color by default
 
 #### `show_vector (v, p, c, direction, d)` [^][contents]
 [show_vector]: #show_vector-v-p-c-d-
@@ -106,7 +112,65 @@ Module to create a visible line to show a vector.
 - `p` - starting point of the vector, default = from origin
 - `c` - optional, the color of the line
 - `d` - optional, the diameter of the line, default = `0.1mm`
-- `direction` - show the direction of the line if set `true`, default = `true`
+- `direction` - show the direction of the line with an arrow if set `true`
+  - default = `true`
+
+#### `show_trace (p_list, c, closed, direction, d, p_factor)` [^][contents]
+[show_trace]: #show_trace-p_list-c-closed-direction-d-p_factor-
+Module to create a visible trace.\
+Create a line between the points.
+If the same point is twice in order, then it will create a visible point at this position.
+- `p_list`  - a list with points in order
+- `c`       - optional, the color of the points
+  - if set `true`, every line of the trace get an other color
+- `closed`
+  - `true`  - the trace is a closed loop, the last point connect the first point
+  - `false` - the trace from first to last point, default
+- `d`       - optional, the diameter of the line between the points, default = `0.1mm`
+- `p_factor`
+  - optional, the factor to multiplicate with diameter `d`,
+    to calculate the diameter of the visible same points
+  - default = `1.5 * d`
+- `direction` - show the direction of every line with an arrow if set `true`
+  - default = `false`
+
+_Specialized module:_
+- `show_trace_colored (p_list, closed, direction, d, p_factor)`
+ - every line of the trace get an other color by default
+
+#### `show_traces (p_lists, c, closed, direction, d, p_factor)` [^][contents]
+[show_traces]: #show_traces-p_lists-c-closed-direction-d-p_factor-
+Module to create visible traces.\
+Create a line between the points of ervery trace.
+If the same point is twice in order, then it will create a visible point at this position.
+- `p_lists` - a list with traces, every trace is a list with points in order
+- `c`       - optional, the color of the traces
+  - if set `true`, every trace get an other color
+- `closed`
+  - `true`  - every trace is a closed loop, the last point connect the first point
+  - `false` - every trace from first to last point, default
+- `d`       - optional, the diameter of the line between the points, default = `0.1mm`
+- `p_factor`
+  - optional, the factor to multiplicate with diameter `d`,
+    to calculate the diameter of the visible same points
+  - default = `1.5 * d`
+- `direction` - show the direction of every line with an arrow if set `true`
+  - default = `false`
+
+_Specialized module:_
+- `show_traces_colored (p_lists, closed, direction, d, p_factor)`
+  - every trace get an other color by default
+
+#### `show_label (txt, h, p, a, valign, halign)` [^][contents]
+[show_label]: #show_label-txt-h-p-a-valign-halign-
+Show a label with text.
+- `txt` - the text as string
+- `h` - the height of the letter, default = `2.5mm`
+- `p` - the position as point, where the label is positioned
+- `a` - the angle of the label
+  - default = `$vpr`, rotates on every preview update to show directly into the camera
+- `valign` - The vertical alignment for the text, default = "baseline"
+- `halign` - The horizontal alignment for the text, default = "left"
 
 
 ### Test parts of objects [^][contents]

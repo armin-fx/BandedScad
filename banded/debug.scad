@@ -5,6 +5,7 @@
 //
 
 use <banded/operator_edit.scad>
+use <banded/draft_color.scad>
 
 
 // - In der Konsole anzeigen
@@ -22,13 +23,13 @@ module echo_thin_line (length=50) { echo_line (length/2, " -"); }
 module echo_bar       (length=50) { echo_line (length  , "=" ); }
 module echo_wall      (length=50) { echo_line (length  , "#" ); }
 
-module echo_list (list, pre="\t")
+module echo_list (list, txt="", pre="\t")
 {
-	echo( echo_list_helper_intern (list, pre) );
+	echo( echo_list_helper_intern (list, txt, pre) );
 }
-function echo_list_helper_intern (list, pre="\t", i=0, txt="") =
+function echo_list_helper_intern (list, txt="", pre="\t", i=0) =
 	i>=len(list) ? txt :
-	echo_list_helper_intern (list, pre, i+1, str (txt ,"\n",pre, list[i]) )
+	echo_list_helper_intern (list, str (txt ,"\n",pre, list[i]), pre, i+1 )
 ;
 
 
@@ -37,7 +38,8 @@ function echo_list_helper_intern (list, pre="\t", i=0, txt="") =
 module show_point (p, c, d=0.2)
 {
 	if (p!=undef)
-		color(c)
+		color (get_debug_color(c))
+		%
 		translate(p)
 		sphere(d=d, $fn=6);
 }
@@ -45,24 +47,17 @@ module show_point (p, c, d=0.2)
 module show_points (p_list, c, d=0.2)
 {
 	if (p_list!=undef)
-		for (p=p_list) { show_point (p, c, d); }
-}
-module show_trace (p_list, c, closed=false, direction=false, d=0.1, dp=0.15)
-{
-	if (p_list!=undef)
 	{
-		size=len(p_list);
-		for (i=[0:1:size-1+(closed==true ? 0 : -1) ])
+		size = len(p_list);
+		for (i=[0:1:size-1])
 		{
-			p1=p_list[ i        ];
-			p2=p_list[(i+1)%size];
-			
-			if (p1!=p2)
-				{ show_line ([p1, p2], c, direction, d); }
-			else
-				{ show_point (p1, c, dp); }
+			show_point (p_list[i], get_debug_color(c,i,size), d);
 		}
 	}
+}
+module show_points_colored (p_list, d=0.2)
+{
+	show_points (p_list, true, d=0.2);
 }
 
 module show_line (l, c, direction=false, d=0.1)
@@ -71,7 +66,8 @@ module show_line (l, c, direction=false, d=0.1)
 	{
 		if (direction!=true)
 		{
-			color(c)
+			color (get_debug_color(c))
+			%
 			extrude_line (l, Z) circle(d=d, $fn=6);
 		}
 		else
@@ -83,13 +79,15 @@ module show_line (l, c, direction=false, d=0.1)
 			
 			if (length>arrow_length)
 			{
-				color(c)
+				color (get_debug_color(c))
+				%
 				translate (L[0])
 				rotate_to_vector (L[1]-L[0])
 				cylinder (h=length-arrow_length, d=d, $fn=6);
 			}
 			
-			color(c)
+			color (get_debug_color(c))
+			%
 			translate (L[1])
 			rotate_to_vector (L[0]-L[1])
 			cylinder(h=arrow_length, d1=0, d2=arrow_length*arrow_ratio, $fn=6);
@@ -100,7 +98,17 @@ module show_line (l, c, direction=false, d=0.1)
 module show_lines (l_list, c, direction=false, d=0.1)
 {
 	if (l_list!=undef)
-		for (l=l_list) { show_line (l, c, direction, d); }
+	{
+		size = len(l_list);
+		for (i=[0:1:size-1])
+		{
+			show_line (l_list[i], get_debug_color(c,i,size), direction, d);
+		}
+	}
+}
+module show_lines_colored (l_list, direction=false, d=0.1)
+{
+	show_lines (l_list, true, direction, d);
 }
 
 module show_vector (v, p, c, direction=true, d=0.1)
@@ -109,9 +117,66 @@ module show_vector (v, p, c, direction=true, d=0.1)
 	{
 		P = p!=undef ? p : [for (i=[0:1:len(v)-1]) 0];
 	
-		show_line ([P, P+v], c, direction, d);
+		show_line ([P, P+v], get_debug_color(c), direction, d);
 	}
 }
+
+module show_trace (p_list, c, closed=false, direction=false, d=0.1, p_factor=1.5)
+{
+	if (p_list!=undef)
+	{
+		size = len(p_list);
+		for (i=[0:1:size-1+(closed==true ? 0 : -1) ])
+		{
+			p1=p_list[ i        ];
+			p2=p_list[(i+1)%size];
+			
+			if (p1!=p2)
+				{ show_line ([p1, p2], get_debug_color(c,i,size), direction, d); }
+			else
+				{ show_point (p1, get_debug_color(c,i,size), d*p_factor); }
+		}
+	}
+}
+module show_trace_colored (p_list, closed=false, direction=false, d=0.1, p_factor=1.5)
+{
+	show_trace (p_list, true, closed, direction, d, p_factor);
+}
+
+module show_traces (p_lists, c, closed=false, direction=false, d=0.1, p_factor=1.5)
+{
+	if (p_lists!=undef)
+	{
+		size = len(p_lists);
+		for (i=[0:1:size-1])
+		{
+			show_trace (p_lists[i], get_debug_color(c,i,size), closed, direction, d, p_factor);
+		}
+	}
+}
+module show_traces_colored (p_lists, closed=false, direction=false, d=0.1, p_factor=1.5)
+{
+	show_traces (p_lists, true, closed, direction, d, p_factor);
+}
+
+module show_label (txt, h=2.5, p=[0,0,0], a=$vpr, valign="baseline", halign="left")
+{
+    color     ("black")
+	%
+	translate (p)
+	rotate    (a)
+	linear_extrude(0.01)
+	scale     (h/10)
+	text      (txt, valign=valign, halign=halign);
+}
+
+function get_debug_color (c, i, size, default="orange") =
+	(c!=true || i==undef) ?
+		c==undef || c==false ?
+			default
+		:	c
+	:		color_hsv_to_rgb ([i/size*360,1,1])
+;
 
 
 // - Teile von Objekte testen:
