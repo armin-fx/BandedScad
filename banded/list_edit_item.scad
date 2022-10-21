@@ -23,14 +23,11 @@ function reverse      (list, begin, last, count, range) =
 		Last  = Range[1],
 		size  = len(list)
 	)
-	concat(
-		 (Begin<=0)       ? []
-		 :[for (i=[0:1:Begin-1])     list[i] ]
-		,(Last<Begin)     ? []
-		 :[for (i=[Last:-1:Begin])   list[i] ]
-		,((Last+1)>=size) ? []
-		 :[for (i=[Last+1:1:size-1]) list[i] ]
-	)
+	[
+		 each ( Begin  <=0)     ? [] : [for (i=[0     :1:Begin-1]) list[i] ]
+		,each ( Last   < Begin) ? [] : [for (i=[Last :-1:Begin  ]) list[i] ]
+		,each ((Last+1)>=size)  ? [] : [for (i=[Last+1:1:size-1 ]) list[i] ]
+	]
 ;
 
 function rotate_list (list, middle, begin=0, last=-1) =
@@ -41,12 +38,12 @@ function rotate_list (list, middle, begin=0, last=-1) =
 		Middle = constrain (middle, Begin, Last),
 		Size   = len (list)
 	)
-	concat (
-		[ for (i=[0     :1:Begin-1 ]) list[i] ],
-		[ for (i=[Middle:1:Last    ]) list[i] ],
-		[ for (i=[Begin :1:Middle-1]) list[i] ],
-		[ for (i=[Last+1:1:Size-1  ]) list[i] ]
-	)
+	[
+		each [ for (i=[0     :1:Begin-1 ]) list[i] ],
+		each [ for (i=[Middle:1:Last    ]) list[i] ],
+		each [ for (i=[Begin :1:Middle-1]) list[i] ],
+		each [ for (i=[Last+1:1:Size-1  ]) list[i] ]
+	]
 ;
 
 function rotate_copy (list, middle, begin=0, last=-1) =
@@ -147,7 +144,7 @@ function extract (list, begin, last, count, range) =
 // Erzeugt eine Liste mit 'count' Elementen gefüllt mit 'value'
 function fill (count, value) =
 	(!is_num(count) || count<1) ? [] :
-	[ for (i=[0:count-1]) value ]
+	[ for (i=[0:1:count-1]) value ]
 ;
 
 // gibt eine Liste zurück mit den Werten von der Liste 'base' in den Positionen 'index'
@@ -176,9 +173,10 @@ use <banded/list_edit_data.scad>
 use <banded/list_edit_test.scad>
 function unselect (base, index) =
 	let (
+		size = len(base),
 		p = (is_sorted (index)) ? index : sort (index),
 		u = [for (
-			i=0  , is_in=p[0]!=0, l=  (is_in?0:1); i<=len(base)-1;
+			i=0  , is_in=p[0]!=0, l=  (is_in?0:1); i<=size-1;
 			i=i+ ( (!is_in)&&(p[l]==i) ? 0:1 )
 			,      is_in=p[l]!=i, l=l+(is_in?0:1)) if (is_in) i ]
 	)
@@ -200,8 +198,8 @@ function index_all_intern (lists, i=0, l=0, data=[], indices=[]) =
 	i>=len(lists) ? [data, indices] :
 	let ( size = len(lists[i]) )
 	index_all_intern (lists, i+1, l+size
-		, concat( data, lists[i] )
-		, concat( indices, [ [for (i=[l:1:l+size-1]) i ] ] )
+		, [ each data, each lists[i] ]
+		, [ each indices, [for (i=[l:1:l+size-1]) i ] ]
 	)
 ;
 
@@ -209,7 +207,7 @@ function index_all_intern (lists, i=0, l=0, data=[], indices=[]) =
 // gibt '[ Daten, [Index1, Index2, ... ] ]' zurück
 function remove_unselected (list, indices) =
 	let (
-		pos = remove_duplicate( sort( concat_list (indices) ) ),
+		pos = unique( sort( concat_list (indices) ) ),
 		pos_table = [
 			for (i=[-1:len(pos)-2])
 			for (e=(

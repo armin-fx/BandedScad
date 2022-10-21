@@ -10,6 +10,8 @@ Math functions
 ` `| \
 ` `+--> `banded/math_vector.scad`\
 ` `+--> `banded/math_matrix.scad`\
+` `+--> `banded/math_polygon.scad`\
+` `| \
 ` `+--> `banded/complex.scad`
 
 [<-- file overview](file_overview.md)\

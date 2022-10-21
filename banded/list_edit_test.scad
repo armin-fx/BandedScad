@@ -19,10 +19,10 @@ function all_of (list, f, type=0, begin, last, count, range) =
 ;
 function all_of_intern (list, f, type=0, begin=0, last=-1) =
 	begin>last ? true :
-	 type   == 0                   ? len([for(i=[begin:1:last]) if (f( list[i]                 )!=true) 0]) == 0
-	:type[0]>= 0                   ? len([for(i=[begin:1:last]) if (f( list[i][type[0]]        )!=true) 0]) == 0
-	:type[0]==-1 ? let( fn=type[1] ) len([for(i=[begin:1:last]) if (f( fn(list[i])             )!=true) 0]) == 0
-	:                                len([for(i=[begin:1:last]) if (f( get_value(list[i],type) )!=true) 0]) == 0
+	 type   == 0                   ? [for(i=[begin:1:last]) if (f( list[i]                 )!=true) 0] == []
+	:type[0]>= 0                   ? [for(i=[begin:1:last]) if (f( list[i][type[0]]        )!=true) 0] == []
+	:type[0]==-1 ? let( fn=type[1] ) [for(i=[begin:1:last]) if (f( fn(list[i])             )!=true) 0] == []
+	:                                [for(i=[begin:1:last]) if (f( get_value(list[i],type) )!=true) 0] == []
 ;
 
 // Führt Funktion 'f' auf die Elemente in der Liste aus und
@@ -34,10 +34,10 @@ function none_of (list, f, type=0, begin, last, count, range) =
 ;
 function none_of_intern (list, f, type=0, begin=0, last=-1) =
 	begin>last ? false :
-	 type   == 0                   ? len([for(i=[begin:1:last]) if (f( list[i]                 )==true) 0]) == 0
-	:type[0]>= 0                   ? len([for(i=[begin:1:last]) if (f( list[i][type[0]]        )==true) 0]) == 0
-	:type[0]==-1 ? let( fn=type[1] ) len([for(i=[begin:1:last]) if (f( fn(list[i])             )==true) 0]) == 0
-	:                                len([for(i=[begin:1:last]) if (f( get_value(list[i],type) )==true) 0]) == 0
+	 type   == 0                   ? [for(i=[begin:1:last]) if (f( list[i]                 )==true) 0] == []
+	:type[0]>= 0                   ? [for(i=[begin:1:last]) if (f( list[i][type[0]]        )==true) 0] == []
+	:type[0]==-1 ? let( fn=type[1] ) [for(i=[begin:1:last]) if (f( fn(list[i])             )==true) 0] == []
+	:                                [for(i=[begin:1:last]) if (f( get_value(list[i],type) )==true) 0] == []
 ;
 
 // Führt Funktion 'f' auf die Elemente in der Liste aus und
@@ -49,10 +49,10 @@ function any_of (list, f, type=0, begin, last, count, range) =
 ;
 function any_of_intern (list, f, type=0, begin=0, last=-1) =
 	begin>last ? true :
-	 type   == 0                   ? len([for(i=[begin:1:last]) if (f( list[i]                 )==true) 0]) > 0
-	:type[0]>= 0                   ? len([for(i=[begin:1:last]) if (f( list[i][type[0]]        )==true) 0]) > 0
-	:type[0]==-1 ? let( fn=type[1] ) len([for(i=[begin:1:last]) if (f( fn(list[i])             )==true) 0]) > 0
-	:                                len([for(i=[begin:1:last]) if (f( get_value(list[i],type) )==true) 0]) > 0
+	 type   == 0                   ? [for(i=[begin:1:last]) if (f( list[i]                 )==true) 0] != []
+	:type[0]>= 0                   ? [for(i=[begin:1:last]) if (f( list[i][type[0]]        )==true) 0] != []
+	:type[0]==-1 ? let( fn=type[1] ) [for(i=[begin:1:last]) if (f( fn(list[i])             )==true) 0] != []
+	:                                [for(i=[begin:1:last]) if (f( get_value(list[i],type) )==true) 0] != []
 ;
 
 // Testet 2 Listen nach Gleichheit und gibt 'true' bei Erfolg zurück
@@ -69,15 +69,15 @@ function equal (list1, list2, f, type=0, begin1=0, begin2=0, count=undef) =
 	Count!=Count2 ? false :
 	
 	f==undef ?
-		 type   == 0                   ? len([for(i=[0:1:Count-1]) if (list1[Begin1+i]                 != list2[Begin2+i]                ) 0]) == 0
-		:type[0]>= 0                   ? len([for(i=[0:1:Count-1]) if (list1[Begin1+i][type[0]]        != list2[Begin2+i][type[0]]       ) 0]) == 0
-		:type[0]==-1 ? let( fn=type[1] ) len([for(i=[0:1:Count-1]) if (fn(list1[Begin1+i])             != fn(list2[Begin2+i])            ) 0]) == 0
-		:                                len([for(i=[0:1:Count-1]) if (get_value(list1[Begin1+i],type) != get_value(list2[Begin1+i],type)) 0]) == 0
+		 type   == 0                   ? [for(i=[0:1:Count-1]) if (list1[Begin1+i]                 != list2[Begin2+i]                ) 0] == []
+		:type[0]>= 0                   ? [for(i=[0:1:Count-1]) if (list1[Begin1+i][type[0]]        != list2[Begin2+i][type[0]]       ) 0] == []
+		:type[0]==-1 ? let( fn=type[1] ) [for(i=[0:1:Count-1]) if (fn(list1[Begin1+i])             != fn(list2[Begin2+i])            ) 0] == []
+		:                                [for(i=[0:1:Count-1]) if (get_value(list1[Begin1+i],type) != get_value(list2[Begin1+i],type)) 0] == []
 	:
-		 type   == 0                   ? len([for(i=[0:1:Count-1]) if (f( list1[Begin1+i]                , list2[Begin2+i]                ) !=true) 0]) == 0
-		:type[0]>= 0                   ? len([for(i=[0:1:Count-1]) if (f( list1[Begin1+i][type[0]]       , list2[Begin2+i][type[0]]       ) !=true) 0]) == 0
-		:type[0]==-1 ? let( fn=type[1] ) len([for(i=[0:1:Count-1]) if (f( fn(list1[Begin1+i])            , fn(list2[Begin2+i])            ) !=true) 0]) == 0
-		:                                len([for(i=[0:1:Count-1]) if (f( get_value(list1[Begin1+i],type), get_value(list2[Begin1+i],type)) !=true) 0]) == 0
+		 type   == 0                   ? [for(i=[0:1:Count-1]) if (f( list1[Begin1+i]                , list2[Begin2+i]                ) !=true) 0] == []
+		:type[0]>= 0                   ? [for(i=[0:1:Count-1]) if (f( list1[Begin1+i][type[0]]       , list2[Begin2+i][type[0]]       ) !=true) 0] == []
+		:type[0]==-1 ? let( fn=type[1] ) [for(i=[0:1:Count-1]) if (f( fn(list1[Begin1+i])            , fn(list2[Begin2+i])            ) !=true) 0] == []
+		:                                [for(i=[0:1:Count-1]) if (f( get_value(list1[Begin1+i],type), get_value(list2[Begin1+i],type)) !=true) 0] == []
 ;
 
 // Testet, ob eine sortierte Liste 1 alle Elemente aus der sortierten Liste 2 enthält
@@ -211,15 +211,15 @@ function is_sorted (list, f=undef, type=0, begin, last, count, range) =
 ;
 function is_sorted_intern (list, f=undef, type=0, begin=0, last=-1) =
 	f==undef ?
-		 type   == 0                   ? len([for(i=[begin:1:last-1]) if (list[i+1]                 < list[i]                ) 0]) == 0
-		:type[0]>= 0                   ? len([for(i=[begin:1:last-1]) if (list[i+1][type[0]]        < list[i][type[0]]       ) 0]) == 0
-		:type[0]==-1 ? let( fn=type[1] ) len([for(i=[begin:1:last-1]) if (fn(list[i+1])             < fn(list[i])            ) 0]) == 0
-		:                                len([for(i=[begin:1:last-1]) if (get_value(list[i+1],type) < get_value(list[i],type)) 0]) == 0
+		 type   == 0                   ? [for(i=[begin:1:last-1]) if (list[i+1]                 < list[i]                ) 0] == []
+		:type[0]>= 0                   ? [for(i=[begin:1:last-1]) if (list[i+1][type[0]]        < list[i][type[0]]       ) 0] == []
+		:type[0]==-1 ? let( fn=type[1] ) [for(i=[begin:1:last-1]) if (fn(list[i+1])             < fn(list[i])            ) 0] == []
+		:                                [for(i=[begin:1:last-1]) if (get_value(list[i+1],type) < get_value(list[i],type)) 0] == []
 	:
-		 type   == 0                   ? len([for(i=[begin:1:last-1]) if (f( list[i+1]                , list[i]                )) 0]) == 0
-		:type[0]>= 0                   ? len([for(i=[begin:1:last-1]) if (f( list[i+1][type[0]]       , list[i][type[0]]       )) 0]) == 0
-		:type[0]==-1 ? let( fn=type[1] ) len([for(i=[begin:1:last-1]) if (f( fn(list[i+1])            , fn(list[i])            )) 0]) == 0
-		:                                len([for(i=[begin:1:last-1]) if (f( get_value(list[i+1],type), get_value(list[i],type))) 0]) == 0
+		 type   == 0                   ? [for(i=[begin:1:last-1]) if (f( list[i+1]                , list[i]                )) 0] == []
+		:type[0]>= 0                   ? [for(i=[begin:1:last-1]) if (f( list[i+1][type[0]]       , list[i][type[0]]       )) 0] == []
+		:type[0]==-1 ? let( fn=type[1] ) [for(i=[begin:1:last-1]) if (f( fn(list[i+1])            , fn(list[i])            )) 0] == []
+		:                                [for(i=[begin:1:last-1]) if (f( get_value(list[i+1],type), get_value(list[i],type))) 0] == []
 ;
 
 // Testet, ob eine Liste in 2 Bereiche aufgeteilt ist.
