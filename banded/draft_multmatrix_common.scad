@@ -10,7 +10,7 @@ use <banded/helper_recondition.scad>
 use <banded/math_matrix.scad>
 use <banded/math_vector.scad>
 use <banded/draft_multmatrix_basic.scad>
-use <banded/draft_transform_basic.scad>
+
 
 // gibt die Matrix zurück zum rückwärts rotieren von Objekten
 function matrix_rotate_backwards (a, v, d=3, short=false) =
@@ -59,9 +59,10 @@ function matrix_rotate_to_vector_vo (v, o, backwards=false, short=false) =
 	orientation = (is_list(o) && len(o)==3) ? o : [1,0,0],
 	//
 	base_vector = [1,0],
-	up_to_z     = multmatrix_points ( [orientation], matrix_rotate_to_vector_yz(V, backwards=true) ),
-	plane       = projection_points (up_to_z),
-	angle_base  = rotation_vector (base_vector, plane[0])
+	up_to_z     = matrix_rotate_to_vector_yz (V, backwards=true, short=true)
+	              * orientation,
+	plane       = [up_to_z.x, up_to_z.y],
+	angle_base  = rotation_vector (base_vector, plane)
 	)
 	matrix_rotate_to_vector_yz (V, angle_base, backwards, short=short)
 ;
