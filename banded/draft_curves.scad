@@ -417,9 +417,9 @@ function helix_curve (r, rotations, pitch, height, opposite, slices, angle) =
 
 // Koch Kurve
 function koch_curve (trace, iteration=1, closed=false) =
-	trace_lines (
+	lines_to_trace (
 		koch_lines (
-			 points_to_lines (closed!=true ? trace : concat (trace, [trace[0]]) )
+			 trace_to_lines (closed!=true ? trace : concat (trace, [trace[0]]) )
 			,iteration
 		)
 	)

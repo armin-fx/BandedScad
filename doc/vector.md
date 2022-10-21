@@ -56,8 +56,8 @@ Matrix and vector operations
     - [`length_line()`][length_line]
     - [`get_normal_face()`][get_normal_face]
   - [Convert polygon data](#convert-polygon-data-)
-    - [`points_to_lines()`][points_to_lines]
-    - [`trace_lines()`][trace_lines]
+    - [`trace_to_lines()`][trace_to_lines]
+    - [`lines_to_trace()`][lines_to_trace]
     - [`line_to_vector()`][line_to_vector]
     - [`vector_to_line()`][vector_to_line]
   - [Data from lines](#data-from-lines-)
@@ -422,8 +422,8 @@ defined by 3 points in 3D space.
 
 ### Convert polygon data [^][contents]
 
-#### `points_to_lines (trace, closed)` [^][contents]
-[points_to_lines]: #points_to_lines-trace-closed-
+#### `trace_to_lines (trace, closed)` [^][contents]
+[trace_to_lines]: #trace_to_lines-trace-closed-
 Convert a trace to a list with line segment.
 - `trace`
   - a point list
@@ -431,8 +431,8 @@ Convert a trace to a list with line segment.
   - `false` - the trace from first to last point, default
   - `true`  - the trace is a closed loop, the last point connect the first point
 
-#### `trace_lines (lines)` [^][contents]
-[trace_lines]: #trace_lines-lines-
+#### `lines_to_trace (lines)` [^][contents]
+[lines_to_trace]: #lines_to_trace-lines-
 Connect all lines in a list and return the trace as a point list.
 
 #### `line_to_vector (line)` [^][contents]

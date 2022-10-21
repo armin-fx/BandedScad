@@ -305,7 +305,7 @@ function get_normal_face (p1, p2, p3, points_3) =
 // - Daten von Strecken umwandeln:
 
 // Wandelt eine Spur von Punkten in eine Liste mit Streckenzügen um
-function points_to_lines (trace, closed=false) =
+function trace_to_lines (trace, closed=false) =
 	let (
 		size = len(trace)
 	)
@@ -316,7 +316,7 @@ function points_to_lines (trace, closed=false) =
 ;
 
 // Verbindet Strecken in einer Liste miteinander zu einer Spur aus Punkten
-function trace_lines (lines) =
+function lines_to_trace (lines) =
 	let (
 		size = len(lines)
 	)
@@ -344,6 +344,7 @@ function vector_to_line (vector) =
 
 // - Daten von Linien und Strecken ermitteln:
 
+// gibt den kürzesten Abstand eines Punktes zu einer Gerade zurück
 function distance_line (line, p) =
 	 len(line[0])==3 ? distance_line_3d (line, p)
 	:len(line[0])==2 ? distance_line_2d (line, p)
@@ -380,6 +381,8 @@ function distance_line_3d (line, p) =
 	d
 ;
 
+// gibt den Punkt auf einer Gerade liegend zurück,
+// der den kürzesten Abstand zum Punkt p hat
 function nearest_point_line (line, p) =
 	 len(line[0])==3 ? nearest_point_line_3d (line, p)
 	:len(line[0])==2 ? nearest_point_line_2d (line, p)
