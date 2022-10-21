@@ -30,6 +30,7 @@ Debug
 
 Debug modules [^][contents]
 ---------------------------
+
 Objects to make parts of objects and points in variables seeable.
 
 
@@ -63,26 +64,36 @@ All following objects are only shown
 in preview mode (F5) and are hidden in render mode (F6).
 The default color of these objects is "orange".
 
-#### `show_point (p, c, d)` [^][contents]
+#### `show_point (p, c, d, auto)` [^][contents]
 [show_point]: #show_point-p-c-d-
 Module to create a visible point.
 - `p` - a point
 - `c` - optional, the color of the point
 - `d` - optional, the diameter of the point, default = `0.2mm`
+- `auto` - optional, change the size in dependency of the displayed distance
+  - value range `0...1`, where
+    - `0` = don't change the size
+    - `1` = size is always the same size in display
+  - default = `0`, don't change the size
 
-#### `show_points (p_list, c, d)` [^][contents]
+#### `show_points (p_list, c, d, auto)` [^][contents]
 [show_points]: #show_points-
 Module to create visible points.
 - `p_list` - a list with points
 - `c` - optional, the color of the points
   - if set `true`, every point get an other color
 - `d` - optional, the diameter of the points, default = `0.2mm`
+- `auto` - optional, change the size in dependency of the displayed distance
+  - value range `0...1`, where
+    - `0` = don't change the size
+    - `1` = size is always the same size in display
+  - default = `0`, don't change the size
 
 _Specialized module:_
-- `show_points_colored (p_list, d)`
+- `show_points_colored (p_list, d, auto)`
   - every point get an other color by default
 
-#### `show_line (l, c, direction, d)` [^][contents]
+#### `show_line (l, c, direction, d, auto)` [^][contents]
 [show_line]: #show_line-l-c-d-
 Module to create a visible line.
 - `l` - a line, a list with 2 points
@@ -90,8 +101,13 @@ Module to create a visible line.
 - `d` - optional, the diameter of the line, default = `0.1mm`
 - `direction` - show the direction of the line with an arrow if set `true`
   - default = `false`
+- `auto` - optional, change the size in dependency of the displayed distance
+  - value range `0...1`, where
+    - `0` = don't change the size
+    - `1` = size is always the same size in display
+  - default = `0`, don't change the size
 
-#### `show_lines (l_list, c, direction, d)` [^][contents]
+#### `show_lines (l_list, c, direction, d, auto)` [^][contents]
 [show_lines]: #show_lines-l_list-c-d-
 Module to create visible lines in a list.
 - `l_list` - a list with lines, a line is a list with 2 points
@@ -100,12 +116,17 @@ Module to create visible lines in a list.
 - `d`  - optional, the diameter of a line, default = `0.1mm`
 - `direction` - show the direction of the line with an arrow if set `true`
   - default = `false`
+- `auto` - optional, change the size in dependency of the displayed distance
+  - value range `0...1`, where
+    - `0` = don't change the size
+    - `1` = size is always the same size in display
+  - default = `0`, don't change the size
 
 _Specialized module:_
-- `show_lines_colored (l_list, direction, d)`
+- `show_lines_colored (l_list, direction, d, auto)`
   - every line get an other color by default
 
-#### `show_vector (v, p, c, direction, d)` [^][contents]
+#### `show_vector (v, p, c, direction, d, auto)` [^][contents]
 [show_vector]: #show_vector-v-p-c-d-
 Module to create a visible line to show a vector.
 - `v` - a vector
@@ -114,8 +135,13 @@ Module to create a visible line to show a vector.
 - `d` - optional, the diameter of the line, default = `0.1mm`
 - `direction` - show the direction of the line with an arrow if set `true`
   - default = `true`
+- `auto` - optional, change the size in dependency of the displayed distance
+  - value range `0...1`, where
+    - `0` = don't change the size
+    - `1` = size is always the same size in display
+  - default = `0`, don't change the size
 
-#### `show_trace (p_list, c, closed, direction, d, p_factor)` [^][contents]
+#### `show_trace (p_list, c, closed, direction, d, p_factor, auto)` [^][contents]
 [show_trace]: #show_trace-p_list-c-closed-direction-d-p_factor-
 Module to create a visible trace.\
 Create a line between the points.
@@ -133,12 +159,17 @@ If the same point is twice in order, then it will create a visible point at this
   - default = `1.5 * d`
 - `direction` - show the direction of every line with an arrow if set `true`
   - default = `false`
+- `auto` - optional, change the size in dependency of the displayed distance
+  - value range `0...1`, where
+    - `0` = don't change the size
+    - `1` = size is always the same size in display
+  - default = `0`, don't change the size
 
 _Specialized module:_
-- `show_trace_colored (p_list, closed, direction, d, p_factor)`
+- `show_trace_colored (p_list, closed, direction, d, p_factor, auto)`
  - every line of the trace get an other color by default
 
-#### `show_traces (p_lists, c, closed, direction, d, p_factor)` [^][contents]
+#### `show_traces (p_lists, c, closed, direction, d, p_factor, auto)` [^][contents]
 [show_traces]: #show_traces-p_lists-c-closed-direction-d-p_factor-
 Module to create visible traces.\
 Create a line between the points of ervery trace.
@@ -156,21 +187,31 @@ If the same point is twice in order, then it will create a visible point at this
   - default = `1.5 * d`
 - `direction` - show the direction of every line with an arrow if set `true`
   - default = `false`
+- `auto` - optional, change the size in dependency of the displayed distance
+  - value range `0...1`, where
+    - `0` = don't change the size
+    - `1` = size is always the same size in display
+  - default = `0`, don't change the size
 
 _Specialized module:_
-- `show_traces_colored (p_lists, closed, direction, d, p_factor)`
+- `show_traces_colored (p_lists, closed, direction, d, p_factor, auto)`
   - every trace get an other color by default
 
-#### `show_label (txt, h, p, a, valign, halign)` [^][contents]
+#### `show_label (txt, h, a, valign, halign, auto)` [^][contents]
 [show_label]: #show_label-txt-h-p-a-valign-halign-
 Show a label with text.
 - `txt` - the text as string
 - `h` - the height of the letter, default = `2.5mm`
-- `p` - the position as point, where the label is positioned
 - `a` - the angle of the label
-  - default = `$vpr`, rotates on every preview update to show directly into the camera
+  - default = `$vpr`,
+    rotates on every preview update that the text always faces the camera
 - `valign` - The vertical alignment for the text, default = "baseline"
 - `halign` - The horizontal alignment for the text, default = "left"
+- `auto` - optional, change the size in dependency of the displayed distance
+  - value range `0...1`, where
+    - `0` = don't change the size
+    - `1` = size is always the same size in display
+  - default = `0`, don't change the size
 
 
 ### Test parts of objects [^][contents]
