@@ -52,7 +52,7 @@ Functions for edit lists
     - [`replace()`][replace]
     - [`extract()`][extract]
     - [`select()`][select]
-    - [`select_list()`][select_list]
+    - [`select_all()`][select_all]
     - [`select_link()`][select_link]
     - [`unselect()`][unselect]
   - [Edit list with use of data, depend on type](#edit-list-with-use-of-data-depend-on-type-)
@@ -64,6 +64,10 @@ Functions for edit lists
     - [`replace_value()`][replace_value]
     - [`replace_all_values()`][replace_all_values]
     - [`unique()`][unique]
+    - [`index()`][index]
+    - [`index_all()`][index_all]
+    - [`remove_unselected()`][remove_unselected]
+    - [`compress_selected()`][compress_selected]
   - [Get data from list](#get-data-from-list-)
     - [min or max value](#min-or-max-value-)
     - [`count()`][count]
@@ -302,29 +306,29 @@ Extract a sequence from a list
 [fill]: #fill-count-value-
 Makes a list with `count` elements filled with `value`
 
-#### `select (base, positions)` [^][contents]
-[select]: #select-base-positions-
-Create a list with values of list `base` at positions in order of list `positions`.\
-Run `base[ position ]` with every item in `positions` and create a new list.\
-`base <-- positions`
+#### `select (base, index)` [^][contents]
+[select]: #select-base-index-
+Create a list with values of list `base` at positions in order of list `index`.\
+Run `base[ position ]` with every item in `index` and create a new list.\
+`base <-- index`
 
-#### `select_list (base, positions_list)` [^][contents]
-[select_list]: #select_list-base-positions_list-
-Replace all entries in all lists in `positions_list` with data entries from list `base`.\
+#### `select_all (base, indices)` [^][contents]
+[select_all]: #select_all-base-indices-
+Replace all entries in all lists stored in `indices` with data entries from list `base`.\
 Every entry select a value at this position in list `base`.
-`base <-- [ positions_list[0], positions_list[1], ... ]`
+`base <-- [ indices[0], indices[1], ... ]`
 
-#### `select_link (base, link, positions)` [^][contents]
-[select_link]: #select_link-base-link-positions-
+#### `select_link (base, link, index)` [^][contents]
+[select_link]: #select_link-base-link-index-
 Create a list with values of list `base` at positions
-in list `link` in order of list `positions` to list `link`.\
-Run `base[ link[ position ] ]` with every item in `positions`.\
-`base <-- link <-- positions`
+in list `link` in order of list `index` to list `link`.\
+Run `base[ link[ position ] ]` with every item in `index`.\
+`base <-- link <-- index`
 
-#### `unselect (base, positions)` [^][contents]
-[unselect]: #unselect-base-positions-
-Remove all `positions` from list `base`.\
-Keep all positions in the list which are not listed in `positions`.
+#### `unselect (base, index)` [^][contents]
+[unselect]: #unselect-base-index-
+Remove all `index` from list `base`.\
+Keep all positions in the list which are not listed in `index`.
 
 Example:
 ```OpenSCAD
@@ -337,6 +341,28 @@ sel  = [0,1,1,2];
 echo( select   (list, sel) ); // ECHO: ["a", "b", "b", "c"]
 echo( unselect (list, sel) ); // ECHO: ["d", "e"]
 ```
+
+#### `index (list)` [^][contents]
+[index]: #index-list-
+Returns a list of positions on the data in `list` in ascending order.
+Returns `[ data list, [index] ]`
+
+#### `index_all (list)` [^][contents]
+[index_all]: #index_all-list-
+Appends all data to a list and stores lists with the positions on them.
+- `list` - contains lists of data, e.g. point lists as traces
+Returns `[ data list, [index1, index2, ... ] ]`
+
+#### `remove_unselected (list, indices)` [^][contents]
+[remove_unselected]: #remove_unselected-list-indices-
+Removes all data items that are not indexed and rewrites all indices.\
+Returns `[ data, [index1, index2, ... ] ]`
+- `indices` - a list that contains lists with positions to select data at this index in `list`
+
+#### `compress_selected (list, indices)` [^][contents]
+[compress_selected]: #compress_selected-list-indices-
+Summarizes all data elements that occur more than once, rewrites all indices.\
+Returns `[ data, [index1, index2, ... ] ]`
 
 
 Edit list with use of data, depend on type [^][contents]

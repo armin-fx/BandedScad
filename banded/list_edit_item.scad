@@ -150,38 +150,97 @@ function fill (count, value) =
 	[ for (i=[0:count-1]) value ]
 ;
 
-// gibt eine Liste zurück mit den Werten von der Liste 'base' in den Positionen 'positions'
-// b.z.w. bestückt die Positionen in der Liste 'positions' mit den entsprechenden Werten von 'base'
-//   base <-- positions
-function select (base, positions) =
-	[ for (position=positions) base[position] ]
+// gibt eine Liste zurück mit den Werten von der Liste 'base' in den Positionen 'index'
+// b.z.w. bestückt die Positionen in der Liste 'index' mit den entsprechenden Werten von 'base'
+//   base <-- index
+function select (base, index) =
+	[ for (i=index) base[i] ]
 ;
-// bestückt alle Listen in 'positions_list' mit den entsprechenden Werten von 'base'
-//   [ base <-- positions[0], base <-- positions[1], base <-- positions[2] ... ]
-function select_list (base, positions_list) =
-	[ for (positions=positions_list)
-		[ for (position=positions) base[position] ]
+// bestückt alle Listen in 'indices' mit den entsprechenden Werten von 'base'
+//   [ base <-- index[0], base <-- index[1], base <-- index[2] ... ]
+function select_all (base, indices) =
+	[ for (index=indices)
+		[ for (i=index) base[i] ]
 	]
 ;
 // gibt eine Liste zurück mit den Werten von der Liste 'base'
 // von der Liste mit den Positionen 'link' von 'base'
-// in den Positionen 'positions' in 'link'
-//   base <-- link <-- positions
-function select_link (base, link, positions) =
-	[ for (position=positions) base[link[position]] ]
+// in den Positionen 'index' in 'link'
+//   base <-- link <-- index
+function select_link (base, link, index) =
+	[ for (i=index) base[link[i]] ]
 ;
 
-// löscht alle Positionen 'positions' von einer Liste 'base'
+// löscht alle Positionen 'index' von einer Liste 'base'
 use <banded/list_edit_data.scad>
 use <banded/list_edit_test.scad>
-function unselect (base, positions) =
+function unselect (base, index) =
 	let (
-		p = (is_sorted (positions)) ? positions : sort (positions),
+		p = (is_sorted (index)) ? index : sort (index),
 		u = [for (
 			i=0  , is_in=p[0]!=0, l=  (is_in?0:1); i<=len(base)-1;
 			i=i+ ( (!is_in)&&(p[l]==i) ? 0:1 )
 			,      is_in=p[l]!=i, l=l+(is_in?0:1)) if (is_in) i ]
 	)
 	[ for (position=u) base[position] ]
+;
+
+// gibt eine Liste mit den Positionen auf den Daten zurück
+// in aufsteigender Reihenfolge
+// gibt '[ Daten, [Index] ]' zurück
+function index (list) = [ list, [[for (i=[0:1:len(list)-1]) i ]] ];
+
+// hängt alle Daten an einer Liste an und speichert Listen mit den Positionen darauf
+// - 'lists' - enthält Listen mit Daten
+// gibt '[ Daten, [Index1, Index2, ... ] ]' zurück
+function index_all (list) =
+	index_all_intern (list)
+;
+function index_all_intern (lists, i=0, l=0, data=[], indices=[]) =
+	i>=len(lists) ? [data, indices] :
+	let ( size = len(lists[i]) )
+	index_all_intern (lists, i+1, l+size
+		, concat( data, lists[i] )
+		, concat( indices, [ [for (i=[l:1:l+size-1]) i ] ] )
+	)
+;
+
+// entfernt alle Datenelemente, die nicht indiziert sind und schreibt alle Indizes neu
+// gibt '[ Daten, [Index1, Index2, ... ] ]' zurück
+function remove_unselected (list, indices) =
+	let (
+		pos = remove_duplicate( sort( concat_list (indices) ) ),
+		pos_table = [
+			for (i=[-1:len(pos)-2])
+			for (e=(
+				(i==-1) ?
+					[ for (j=[0     :1:pos[0]    ]) 0   ]
+				:	[ for (j=[pos[i]:1:pos[i+1]-1]) i+1 ]
+			) ) e
+			],
+		new_indices = [ for (x=indices) [ for (e=x) pos_table[e] ] ],
+		new_list    = [ for (i=pos) list[i] ]
+	)
+	[new_list, new_indices]
+;
+
+// fasst alle mehrfach vorkommenden Datenelemente zusammen, schreibt alle Indizes neu
+// gibt '[ Daten, [Index1, Index2, ... ] ]' zurück
+function compress_selected (list, indices) =
+	let (
+		data  = [for (i=[0:1:len(list)-1]) [list[i], i] ],
+		data1 = sort   (data , type=[0]),
+		data2 = unique (data1, type=[0]),
+		data3 = sort   (data2, type=[1]),
+		data4 = value_list (data3, [1]),
+		index_link = concat (
+			[for (i=[0:1:len(data4)-2])
+				each [for (j=[data4[i]           :1:data4[i+1]-1]) i ]
+			],       [for (j=[data4[len(data4)-1]:1:len(list) -1]) len(data4)-1 ]),
+		
+		indices_new = [for (index=indices) [for (i=index) index_link[i] ] ],
+		list_new    = value_list (data3, type=[0])
+	)
+	[list_new, indices_new]
 ;
 

@@ -429,7 +429,7 @@ then the new Y-axis is the direction which will set in the direction of the line
 - `trace` - 2D point list, which compose the line
 - `range` - index range of the trace used to extrude
   - You can use a part of the line `[first_point, last_point]`
-  - negative indexes will count backwards from the end of the trace
+  - negative indices will count backwards from the end of the trace
   - default = `[0, -1]` the complete trace from the first to last point
 - `convexity`
   - Integer. The convexity parameter specifies the maximum number
