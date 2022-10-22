@@ -34,38 +34,42 @@ function transform_function (object, fn) =
 // - Daten der Objekte:
 
 // Objekt in Liste in ein einheitliches Format ausgeben.
-// [ points, [path, path2, ...] ]
-function unify_object (object) =
+// to_trace = false:
+// - [ points, [path, path2, ...], (properties) ]
+// to_trace = true:
+// - [ [points, points2, ...], -empty- , (properties) ]
+//
+function unify_object (object, to_trace=false) =
+	to_trace==false
+	?	unify_object_path  (object)
+	:	unify_object_trace (object)
+;
+function unify_object_path (object) =
 	object==undef ? undef :
 	is_num(object[0][0][0]) ?          // [ points, ... ]
 		// standard format
 		//
 		!is_list(object[1]) ?          // [ points, -empty- ]
-			// no path -> only an object with a point list
+			// no path -> only an object with one point list
 			//
-			unify_object(object[0])
+			copy_object_properties (object,
+				unify_object(object[0])
+			)
 		:is_num(object[1][0][0]) ?     // [ points, [path, path2] ]
 			// standard format
 			// an object with a path list
 			//
-			 len(object[0])>0 && len(object[0][0])==2 ?
-				// 2D
-				object
-			:len(object[0])>2 && len(object[0][0])==3 ?
-				// 3D
+			(len(object[0])>0 && len(object[0][0])==2) ||
+			(len(object[0])>2 && len(object[0][0])==3) ?
+				// 2D or 3D
 				object
 			:undef
 		:is_num(object[1][0]) ?        // [ points, path ]
 			// path only as list
 			//
-			 len(object[0])>0 && len(object[0][0])==2 ?
-				// 2D
-				[ for (k=[0:1:len(object)-1])
-					k==1 ? [object[1]]
-					:	object[k]
-				]
-			:len(object[0])>2 && len(object[0][0])==3 ?
-				// 3D
+			(len(object[0])>0 && len(object[0][0])==2) ||
+			(len(object[0])>2 && len(object[0][0])==3) ?
+				// 2D or 3D
 				[ for (k=[0:1:len(object)-1])
 					k==1 ? [object[1]]
 					:	object[k]
@@ -89,7 +93,7 @@ function unify_object (object) =
 		is_list(object[1]) ?           // [ [points,points2], [path, path2] ]
 			// each point list with his path list
 			let(
-				// make a [point, path] pair list and remove unusable pair
+				// make a [points, path] pair list and remove unusable pair
 				len_pair = min( len(object[0]), len(object[1]) )
 				,pair =
 					len_pair==0 ? [] :
@@ -117,27 +121,108 @@ function unify_object (object) =
 			)
 			merged_points==[] ? undef :
 			paths==[]         ? undef :
-			[	merged_points
-			,	paths
-			,	each [ for (i=[2:1:len(object)-1]) object[i] ]
-			]
+			copy_object_properties (object,
+				[	merged_points
+				,	paths
+				] )
 		:                              // - [ [points,points2] ]
 			// a list with traces
 			//
-			 len(object[0][0][0])==2 ?
-				// 2D - put points together and make path lists
-				index_all (object[0])
-			:len(object[0][0][0])==3 ?
-				// 3D - put points together and make a triangle list
-				let (
-					points = [for (trace=object[0]) each [ for (i=[2:3:len(trace)-1]) each [trace[i-2],trace[i-1],trace[i]] ] ]
+			(len(object[0][0][0])==2) ||
+			(len(object[0][0][0])==3) ?
+				// 2D or 3D
+				// put points together and make path lists
+				copy_object_properties (object,
+					index_all (object[0])
 				)
-				[	points
-				,	[      for (i=[2:3:len(points)-1]) [i-2,i-1,i] ]
-				,	each [ for (i=[2:1:len(object)-1]) object[i] ]
-				]
 			:undef
 	:undef
+;
+function unify_object_trace (object) =
+	object==undef ? undef :
+	is_num(object[0][0][0]) ?          // [ points, ... ]
+		// standard format
+		//
+		!is_list(object[1]) ?          // [ points, -empty- ]
+			// no path -> only an object with one point list
+			//
+			copy_object_properties (object, [ [object[0]] ] )
+		:is_num(object[1][0][0]) ?     // [ points, [path, path2] ]
+			// standard format
+			// an object with a path list
+			//
+			(len(object[0])>0 && len(object[0][0])==2) ||
+			(len(object[0])>2 && len(object[0][0])==3) ?
+				// 2D or 3D
+				copy_object_properties (object,
+					 [ select_all (object[0], object[1]) ]
+				)
+			:undef
+		:is_num(object[1][0]) ?        // [ points, path ]
+			// path only as list
+			//
+			(len(object[0])>0 && len(object[0][0])==2) ?
+				// 2D only
+				copy_object_properties (object,
+					[ [ select (object[0], object[1]) ] ]
+				)
+			:undef
+		:undef
+	:is_num(object[0][0]) ?            // points
+		// only a point list as trace
+		//
+		(len(object)>0 && len(object[0])==2) ||
+		(len(object)>2 && len(object[0])==3) ?
+			// 2D and 3D
+			[ object ]
+		:undef
+	:is_num(object[0][0][0][0]) ?      // [ [points,points2], ... ]
+		//
+		is_list(object[1]) ?           // [ [points,points2], [path, path2] ]
+			// each point list with his path list
+			let(
+				// make a [points, path] pair list and remove unusable pair
+				len_pair = min( len(object[0]), len(object[1]) )
+				,pair =
+					len_pair==0 ? [] :
+					concat_list (
+					[ for (i=[0:1:len_pair-1])
+						!is_num(object[0][i][0][0]) ? []
+						:is_num(object[1][i][0][0][0]) ?
+							// a path list
+							[[object[0][i], object[1][i]]]
+						:is_num(object[1][i][0][0]) ?
+							// path only as list
+							[[object[0][i], [object[1][i]]]]
+						:[]
+					] )
+				// append point lists
+				,traces = [ for (e=pair) select (e[0],e[1]) ]
+			)
+			traces==[] ? undef :
+			copy_object_properties (object,
+				[ traces ] )
+		:                              // - [ [points,points2] ]
+			// a list with traces
+			//
+			(len(object[0][0][0])==2) ||
+			(len(object[0][0][0])==3) ?
+				// 2D or 3D
+				object
+			:undef
+	:undef
+;
+
+function copy_object_properties (source, target) =
+	len(source)<3 ?
+		target[1]==undef
+		? [ target[0] ]
+		: [ target[0], target[1] ]
+	:
+		[	target[0]
+		,	target[1]
+		,	each [ for (i=[2:1:len(source)-1]) source[i] ]
+		]
 ;
 
 function is_pointlist (list) =
