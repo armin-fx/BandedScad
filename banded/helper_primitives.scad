@@ -4,6 +4,8 @@
 // enthält Hilfsfunktionen, für Objekte in Listen
 //
 
+use <banded/list_edit.scad>
+
 
 // Schablone um Objekte zu transformieren,
 // wenn nur die Punkte alleine bearbeitet werden
@@ -35,17 +37,17 @@ function transform_function (object, fn) =
 // [ points, [path, path2, ...] ]
 function unify_object (object) =
 	object==undef ? undef :
-	is_num(object[0][0][0]) ?
+	is_num(object[0][0][0]) ?          // [ points, ... ]
 		// standard format
-		// [ points, ... ]
-		!is_list(object[1]) ?
+		//
+		!is_list(object[1]) ?          // [ points, -empty- ]
 			// no path -> only an object with a point list
-			// [ points, -empty- ]
+			//
 			unify_object(object[0])
-		:is_num(object[1][0][0]) ?
+		:is_num(object[1][0][0]) ?     // [ points, [path, path2] ]
 			// standard format
 			// an object with a path list
-			// [ points, [path, path2] ]
+			//
 			 len(object[0])>0 && len(object[0][0])==2 ?
 				// 2D
 				object
@@ -53,9 +55,9 @@ function unify_object (object) =
 				// 3D
 				object
 			:undef
-		:is_num(object[1][0]) ?
+		:is_num(object[1][0]) ?        // [ points, path ]
 			// path only as list
-			// [ points, path ]
+			//
 			 len(object[0])>0 && len(object[0][0])==2 ?
 				// 2D
 				[ for (k=[0:1:len(object)-1])
@@ -70,57 +72,71 @@ function unify_object (object) =
 				]
 			:undef
 		:undef
-	:is_num(object[0][0]) ?
-		// only a point list
-		// points
+	:is_num(object[0][0]) ?            // points
+		// only a point list as trace
+		//
 		 len(object)>0 && len(object[0])==2 ?
 			// 2D - count up all points
-			[ object
-			, [ [ for (i=[0:1:len(object)-1]) i ] ]
-			]
+			index (object)
 		:len(object)>2 && len(object[0])==3 ?
 			// 3D - create a path list with triangles on every next 3 point
-			[ object
-			, [ for (i=[2:3:len(object)-1]) [i-2,i-1,i] ]
+			[	object
+			,	[ for (i=[2:3:len(object)-1]) [i-2,i-1,i] ]
 			]
 		:undef
-	:is_num(object[0][0][0][0]) ?
-		// [ [points,points2], [path, path2] ]
+	:is_num(object[0][0][0][0]) ?      // [ [points,points2], ... ]
 		//
-		let(
-			// make a [point, path] pair list and remove unusable pair
-			len_pair = min( len(object[0]), len(object[1]) )
-			,pair =
-				len_pair==0 ? [] :
-				concat_list (
-				[ for (i=[0:1:len_pair-1])
-					!is_num(object[0][i][0][0]) ? []
-					:is_num(object[1][i][0][0][0]) ?
-						// a path list
-						[[object[0][i], object[1][i]]]
-					:is_num(object[1][i][0][0]) ?
-						// path only as list
-						[[object[0][i], [object[1][i]]]]
-					:[]
-				] )
-			// append and merge point lists, correct pair lists
-			,merged_points = [ for (e=pair) for (p=e[0]) p ]
-			,paths_offset = sum_each_next ([ for (e=pair) len(e[0]) ])
-			,paths  =
-				len(pair)==0 ? [] :
-				[ for (i=[0:1:len(pair)-1])
-					[ for (path=pair[i][1]) for (p=path)
-						[ for (e=p) e+paths_offset[i] ]
+		is_list(object[1]) ?           // [ [points,points2], [path, path2] ]
+			// each point list with his path list
+			let(
+				// make a [point, path] pair list and remove unusable pair
+				len_pair = min( len(object[0]), len(object[1]) )
+				,pair =
+					len_pair==0 ? [] :
+					concat_list (
+					[ for (i=[0:1:len_pair-1])
+						!is_num(object[0][i][0][0]) ? []
+						:is_num(object[1][i][0][0][0]) ?
+							// a path list
+							[[object[0][i], object[1][i]]]
+						:is_num(object[1][i][0][0]) ?
+							// path only as list
+							[[object[0][i], [object[1][i]]]]
+						:[]
+					] )
+				// append and merge point lists, correct pair lists
+				,merged_points = [ for (e=pair) for (p=e[0]) p ]
+				,paths_offset = sum_each_next ([ for (e=pair) len(e[0]) ])
+				,paths  =
+					len(pair)==0 ? [] :
+					[ for (i=[0:1:len(pair)-1])
+						[ for (path=pair[i][1]) for (p=path)
+							[ for (e=p) e+paths_offset[i] ]
+						]
 					]
+			)
+			merged_points==[] ? undef :
+			paths==[]         ? undef :
+			[	merged_points
+			,	paths
+			,	each [ for (i=[2:1:len(object)-1]) object[i] ]
+			]
+		:                              // - [ [points,points2] ]
+			// a list with traces
+			//
+			 len(object[0][0][0])==2 ?
+				// 2D - put points together and make path lists
+				index_all (object[0])
+			:len(object[0][0][0])==3 ?
+				// 3D - put points together and make a triangle list
+				let (
+					points = [for (trace=object[0]) each [ for (i=[2:3:len(trace)-1]) each [trace[i-2],trace[i-1],trace[i]] ] ]
+				)
+				[	points
+				,	[      for (i=[2:3:len(points)-1]) [i-2,i-1,i] ]
+				,	each [ for (i=[2:1:len(object)-1]) object[i] ]
 				]
-		)
-		merged_points==[] ? undef :
-		paths==[]         ? undef :
-		[ for (k=[0:1:len(object)-1])
-			k==0 ? merged_points :
-			k==1 ? paths :
-			object[k]
-		]
+			:undef
 	:undef
 ;
 
