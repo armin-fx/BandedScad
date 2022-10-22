@@ -226,25 +226,24 @@ function remove_unselected (list, indices) =
 // gibt '[ Daten, [Index1, Index2, ... ] ]' zurück
 function compress_selected (list, indices, comparable=false) =
 	let (
-		data  = [for (i=[0:1:len(list)-1]) [list[i], i] ],
-		data2 = comparable==true
-			? let (
-				data1 = sort   (data , type=[0])
-				)       unique (data1, type=[0])
-			:
-				remove_duplicate (data , type=[0])
-		,
-		data3 = sort       (data2, type=[1]),
-		data4 = value_list (data3, type=[1]),
-		size  = len (data4),
-		index_link = [
-			each [for (i=[0:1:size-2])
-				each [for (j=[data4[i]     :1:data4[i+1]-1]) i ]
+		size     = len(list),
+		data     = comparable==true
+			? [for (i=[0:1:size-1]) [i, list[i]]               ]
+			: [for (i=[0:1:size-1]) [i, list[i], str(list[i])] ],
+		data1    = sort       (data , type=[1 + (comparable==true? 0:1)]),
+		//
+		list1    = unique     (data1, type=[1]),
+	//	list1    = remove_duplicate (data1, type=[1]),
+		list_new = value_list (list1, type=[1]),
+		//
+		index1      =
+			[ for (i=0  ,new_i=0;  i<size;
+				   i=i+1,new_i=new_i + (data1[i-1][1]==data1[i][1] ? 0:1) )
+				[ data1[i][0], new_i]
 			],
-			each [    for (j=[data4[size-1]:1:len(list) -1]) size-1 ]
-			],
-		indices_new = [for (index=indices) [for (i=index) index_link[i] ] ],
-		list_new    = value_list (data3, type=[0])
+		index2      = sort       (index1, type=[0]),
+		index_link  = value_list (index2, type=[1]),
+		indices_new = [for (index=indices) [for (i=index) index_link[i] ] ]
 	)
 	[list_new, indices_new]
 ;
