@@ -301,6 +301,7 @@ Replace elements in a list with `list_insert` or part of it
 [extract]: #extract-list-range_args-
 Extract a sequence from a list
 - [`'range_args'`][range_args] - arguments to set the range to extract
+  - default = extract full list
 
 #### `fill (count, value)` [^][contents]
 [fill]: #fill-count-value-
@@ -359,10 +360,14 @@ Removes all data items that are not indexed and rewrites all indices.\
 Returns `[ data, [index1, index2, ... ] ]`
 - `indices` - a list that contains lists with positions to select data at this index in `list`
 
-#### `compress_selected (list, indices)` [^][contents]
+#### `compress_selected (list, indices, comparable)` [^][contents]
 [compress_selected]: #compress_selected-list-indices-
 Summarizes all data elements that occur more than once, rewrites all indices.\
 Returns `[ data, [index1, index2, ... ] ]`
+- `indices` - a list that contains lists with positions to select data at this index in `list`
+- `comparable` - optional setting how the data can be compared
+  - `false` - default, data entries only comparable with `==`
+  - `true`  - data entries comparable with `<`
 
 
 Edit list with use of data, depend on type [^][contents]

@@ -188,7 +188,7 @@ function unselect (base, index) =
 // gibt '[ Daten, [Index] ]' zurück
 function index (list) = [ list, [[for (i=[0:1:len(list)-1]) i ]] ];
 
-// hängt alle Daten an einer Liste an und speichert Listen mit den Positionen darauf
+// hängt alle Daten '[ Daten1, Daten2 ]' an einer Liste an und speichert Listen mit den Positionen darauf
 // - 'lists' - enthält Listen mit Daten
 // gibt '[ Daten, [Index1, Index2, ... ] ]' zurück
 function index_all (list) =
@@ -224,18 +224,25 @@ function remove_unselected (list, indices) =
 
 // fasst alle mehrfach vorkommenden Datenelemente zusammen, schreibt alle Indizes neu
 // gibt '[ Daten, [Index1, Index2, ... ] ]' zurück
-function compress_selected (list, indices) =
+function compress_selected (list, indices, comparable=false) =
 	let (
 		data  = [for (i=[0:1:len(list)-1]) [list[i], i] ],
-		data1 = sort   (data , type=[0]),
-		data2 = unique (data1, type=[0]),
-		data3 = sort   (data2, type=[1]),
-		data4 = value_list (data3, [1]),
-		index_link = concat (
-			[for (i=[0:1:len(data4)-2])
-				each [for (j=[data4[i]           :1:data4[i+1]-1]) i ]
-			],       [for (j=[data4[len(data4)-1]:1:len(list) -1]) len(data4)-1 ]),
-		
+		data2 = comparable==true
+			? let (
+				data1 = sort   (data , type=[0])
+				)       unique (data1, type=[0])
+			:
+				remove_duplicate (data , type=[0])
+		,
+		data3 = sort       (data2, type=[1]),
+		data4 = value_list (data3, type=[1]),
+		size  = len (data4),
+		index_link = [
+			each [for (i=[0:1:size-2])
+				each [for (j=[data4[i]     :1:data4[i+1]-1]) i ]
+			],
+			each [    for (j=[data4[size-1]:1:len(list) -1]) size-1 ]
+			],
 		indices_new = [for (index=indices) [for (i=index) index_link[i] ] ],
 		list_new    = value_list (data3, type=[0])
 	)

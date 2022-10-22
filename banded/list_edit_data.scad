@@ -212,15 +212,13 @@ function unique (list, type=0, f=undef) =
 		 type   == 0 ?
 			[ each
 				[ for (i=0  ,v=list[i]                ,is_unique=true      ,last=v; i<size-1;
-				       i=i+1,v=list[i]                ,is_unique=!(v==last),last=is_unique?v:last )
-				if (is_unique) v ]
+				       i=i+1,v=list[i]                ,is_unique=!(v==last),last=is_unique?v:last ) if (is_unique) v ]
 			, each (list[size-2]                ==list[size-1]                ) ? [] : [list[size-1]]
 			]
 		:type[0]>= 0 ?
 			[ each
 				[ for (i=0  ,v=list[i][type[0]]       ,is_unique=true      ,last=v; i<size-1;
-				       i=i+1,v=list[i][type[0]]       ,is_unique=!(v==last),last=is_unique?v:last )
-				if (is_unique) list[i] ]
+				       i=i+1,v=list[i][type[0]]       ,is_unique=!(v==last),last=is_unique?v:last ) if (is_unique) list[i] ]
 			, each (list[size-2][type[0]]       ==list[size-1][type[0]]       ) ? [] : [list[size-1]]
 			]
 		:type[0]==-1 ? let( fn=type[1] )
@@ -232,16 +230,14 @@ function unique (list, type=0, f=undef) =
 		:
 			[ each
 				[ for (i=0  ,v=get_value(list[i],type),is_unique=true      ,last=v; i<size-1;
-				       i=i+1,v=get_value(list[i],type),is_unique=!(v==last),last=is_unique?v:last )
-				if (is_unique) list[i] ]
+				       i=i+1,v=get_value(list[i],type),is_unique=!(v==last),last=is_unique?v:last ) if (is_unique) list[i] ]
 			, each (get_value(list[size-2],type)==get_value(list[size-1],type)) ? [] : [list[size-1]]
 			]
 	:
 		 type   == 0 ?
 			[ each
 				[ for (i=0  ,v=list[i]                ,is_unique=true      ,last=v; i<size-1;
-				       i=i+1,v=list[i]                ,is_unique=!f(v,last),last=is_unique?v:last )
-				if (is_unique) v ]
+				       i=i+1,v=list[i]                ,is_unique=!f(v,last),last=is_unique?v:last ) if (is_unique) v ]
 			, each f(list[size-2]                ,list[size-1]                ) ? [] : [list[size-1]]
 			]
 		:type[0]>= 0 ?
