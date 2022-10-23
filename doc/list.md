@@ -63,6 +63,8 @@ Functions for edit lists
     - [`remove_all_values()`][remove_all_values]
     - [`replace_value()`][replace_value]
     - [`replace_all_values()`][replace_all_values]
+    - [`keep_value()`][keep_value]
+    - [`keep_all_values()`][keep_all_values]
     - [`unique()`][unique]
     - [`index()`][index]
     - [`index_all()`][index_all]
@@ -402,6 +404,17 @@ Replace every entry with a given value in a list to a new value
 [replace_all_values]: #replace_all_values-list-value_list-new-type-
 Replace every entry with a given list of values in a list to a new value
 - `value_list` - a list with values to replace with value `new`
+
+#### `keep_value (list, value, type)` [^][contents]
+[keep_value]: #keep_value-list-value-type-
+Keep every entry with a given value in a list,
+remove all other entries.
+
+#### `keep_all_values (list, value_list, type)` [^][contents]
+[keep_all_values]: #keep_all_values-list-value_list-type-
+Keep every entry with a given list of values in a list,
+remove all other entries.
+- `value_list` - a list with values
 
 #### `unique (list, type, f)` [^][contents]
 [unique]: #unique-list-type-f-
