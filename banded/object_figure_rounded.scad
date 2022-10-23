@@ -319,12 +319,6 @@ module wedge_fillet (v_min, v_max, v2_min, v2_max
                     ,corner_bottom=[1,1,1,1],  corner_top=[1,1,1,1]
                     ,  type_bottom=[-1,-1,-1,-1],type_top=[-1,-1,-1,-1],type_side=[-1,-1,-1,-1] )
 {
-	function get_type (type_xxx, type=type) =
-		 (type_xxx == undef) ? get_type (type, 0)
-		:(type_xxx < 0     ) ? get_type (type, 0)
-		: type_xxx
-	;
-	
 	Type_bottom = parameter_types (type_bottom, type);
 	Type_top    = parameter_types (type_top   , type);
 	Type_side   = parameter_types (type_side  , type);
