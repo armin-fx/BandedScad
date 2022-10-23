@@ -78,7 +78,7 @@ function parameter_range (list, begin, last, count, range) =
 			:(range!=undef && range[0]!=undef && range[1]!=undef) ?
 				[get_position(list,range[0]), get_position(list,range[1])]
 			:(begin !=undef) ? [get_position(list,begin), len(list)-1]
-			:(last  !=undef) ? [0, get_position(list,begin)]
+			:(last  !=undef) ? [0, get_position(list,last)]
 			:(count !=undef) ? [0, get_position_insert(list,count)-1]
 			:[0, len(list)-1]
 	)
@@ -101,7 +101,7 @@ function parameter_range_safe (list, begin, last, count, range) =
 			:(range!=undef && range[0]!=undef && range[1]!=undef) ?
 				[get_position(list,range[0]), get_position_safe(list,range[1])]
 			:(begin !=undef) ? [get_position(list,begin), len(list)-1]
-			:(last  !=undef) ? [0, get_position_safe(list,begin)]
+			:(last  !=undef) ? [0, get_position_safe(list,last)]
 			:(count !=undef) ? [0, get_position_insert_safe(list,count)-1]
 			:[0, len(list)-1]
 	)
