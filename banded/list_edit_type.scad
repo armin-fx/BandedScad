@@ -14,7 +14,7 @@
 // Wird in den folgenden Listenfunktionen verwendet,
 // um zwischen den Daten umschalten zu können von außerhalb der Funktion
 // = Angabe Argument 'type'
-function get_value (data, type=0) =
+function value (data, type=0) =
 	 type   == 0 ? data
 	:type[0]>= 0 ? data[type[0]]
 	:type[0]==-1 ?
@@ -39,23 +39,23 @@ function value_list (list, type=0) =
 	 type   == 0 ? list
 	:type[0]>= 0 ? let(p =type[0]) [ for (e=list) e[p]  ]
 	:type[0]==-1 ? let(fn=type[1]) [ for (e=list) fn(e) ]
-	:                              [ for (e=list) get_value(e,type) ]
+	:                              [ for (e=list) value(e,type) ]
 ;
 
 // gibt den Typ der Liste zurück
 //
 // Elemente der Liste mit den normalen Werten direkt
-function set_type_direct   ()           = 0;
+function type_direct   ()           = 0;
 // Elemente der Liste mit Listen als Wert,
 // Angabe der Position des Wertes in diesen Listen
-function set_type_list     (position=0) = [position];
+function type_list     (position=0) = [position];
 // Elemente der Liste werden einer Funktion übergeben,
 // Angabe des Funktionsliterals, welches den Wert liefert
 //   Daten lesen:     fn()
 //   Daten schreiben: fn_write()  - optional
-function set_type_function (fn, fn_write) = fn_write==undef ? [-1, fn] : [-1, fn, fn_write];
+function type_function (fn, fn_write) = fn_write==undef ? [-1, fn] : [-1, fn, fn_write];
 // gibt den Typ der Liste zurück, entscheidet anhand des Arguments
-function set_type          (argument, option) =
+function type          (argument, option) =
 	 argument==undef       ? 0
 	:is_num(argument)      ? [argument]
 	:is_function(argument) ? option==undef ? [-1, argument] : [-1, argument, option]
@@ -75,8 +75,8 @@ function is_type_unknown        (type) = (type!=0) && (type[0]!=undef && type[0]
 // welche für den direkten Zugriff auf die Daten nötig sind
 //
 // ermittelt die Position der Liste aus der Typangabe
-function get_position_type       (type) = type[0];
+function position_type       (type) = type[0];
 // ermittelt das Funktionsliteral aus der Typangabe
-function get_function_type       (type) = type[1];
-function get_function_write_type (type) = type[2];
+function function_type       (type) = type[1];
+function function_write_type (type) = type[2];
 

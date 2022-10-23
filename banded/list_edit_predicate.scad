@@ -15,20 +15,20 @@ use <banded/list_edit_type.scad>
 // bei der diese 'true' zurück gibt
 function remove_if (list, f, type=0) =
 	list==undef || len(list)==0 ? list :
-	 type   == 0                   ? [ for (e=list) if (f( e                 )!=true) e ]
-	:type[0]>= 0                   ? [ for (e=list) if (f( e[type[0]]        )!=true) e ]
-	:type[0]==-1 ? let( fn=type[1] ) [ for (e=list) if (f( fn(e)             )!=true) e ]
-	:                                [ for (e=list) if (f( get_value(e,type) )!=true) e ]
+	 type   == 0                   ? [ for (e=list) if (f( e             )!=true) e ]
+	:type[0]>= 0                   ? [ for (e=list) if (f( e[type[0]]    )!=true) e ]
+	:type[0]==-1 ? let( fn=type[1] ) [ for (e=list) if (f( fn(e)         )!=true) e ]
+	:                                [ for (e=list) if (f( value(e,type) )!=true) e ]
 ;
 
 // Führt Funktion 'f' auf die Elemente in der Liste aus und
 // ersetzt alle Einträge bei der diese 'true' zurück gibt durch einen anderen Wert
 function replace_if (list, f, new, type=0) =
 	list==undef || len(list)==0 ? list :
-	 type   == 0 ?                   [ for (e=list) if (f( e                 )!=true) e else new ]
-	:type[0]>= 0 ?                   [ for (e=list) if (f( e[type[0]]        )!=true) e else new ]
-	:type[0]==-1 ? let( fn=type[1] ) [ for (e=list) if (f( fn(e)             )!=true) e else new ]
-	:                                [ for (e=list) if (f( get_value(e,type) )!=true) e else new ]
+	 type   == 0 ?                   [ for (e=list) if (f( e             )!=true) e else new ]
+	:type[0]>= 0 ?                   [ for (e=list) if (f( e[type[0]]    )!=true) e else new ]
+	:type[0]==-1 ? let( fn=type[1] ) [ for (e=list) if (f( fn(e)         )!=true) e else new ]
+	:                                [ for (e=list) if (f( value(e,type) )!=true) e else new ]
 ;
 
 // Teilt eine Liste in 2 Teile auf
@@ -38,10 +38,10 @@ function partition (list, f, type=0, begin, last, count, range) =
 	let(
 		Range = parameter_range_safe (list, begin, last, count, range),
 		choice_list =
-			 type   == 0                   ? [for (i=[Range[0]:1:Range[1]]) f( list[i]                ) ]
-			:type[0]>= 0                   ? [for (i=[Range[0]:1:Range[1]]) f( list[i][type[0]]       ) ]
-			:type[0]==-1 ? let( fn=type[1] ) [for (i=[Range[0]:1:Range[1]]) f( fn(list[i])            ) ]
-			:                                [for (i=[Range[0]:1:Range[1]]) f( get_value(list[i],type)) ]
+			 type   == 0                   ? [for (i=[Range[0]:1:Range[1]]) f( list[i]            ) ]
+			:type[0]>= 0                   ? [for (i=[Range[0]:1:Range[1]]) f( list[i][type[0]]   ) ]
+			:type[0]==-1 ? let( fn=type[1] ) [for (i=[Range[0]:1:Range[1]]) f( fn(list[i])        ) ]
+			:                                [for (i=[Range[0]:1:Range[1]]) f( value(list[i],type)) ]
 	)
 	[ [for (i=[Range[0]:1:Range[1]]) if (  choice_list[i-Range[0]]) list[i] ]
 	, [for (i=[Range[0]:1:Range[1]]) if (! choice_list[i-Range[0]]) list[i] ] ]
@@ -59,10 +59,10 @@ function for_each (list, f, type=0, begin, last, count, range) =
 	for_each_intern (list, f, type, Range[0], Range[1])
 ;
 function for_each_intern (list, f, type=0, begin=0, last=-1) =
-	 type   == 0 ?                   [ for (i=[begin:1:last]) f( list[i]                 ) ]
-	:type[0]>= 0 ?                   [ for (i=[begin:1:last]) f( list[i][type[0]]        ) ]
-	:type[0]==-1 ? let( fn=type[1] ) [ for (i=[begin:1:last]) f( fn(list[i])             ) ]
-	:                                [ for (i=[begin:1:last]) f( get_value(list[i],type) ) ]
+	 type   == 0 ?                   [ for (i=[begin:1:last]) f( list[i]             ) ]
+	:type[0]>= 0 ?                   [ for (i=[begin:1:last]) f( list[i][type[0]]    ) ]
+	:type[0]==-1 ? let( fn=type[1] ) [ for (i=[begin:1:last]) f( fn(list[i])         ) ]
+	:                                [ for (i=[begin:1:last]) f( value(list[i],type) ) ]
 ;
 
 // Führt Funktion 'f' auf die Elemente in der Liste aus und zählt Rückgaben von 'true'
@@ -83,10 +83,10 @@ function count_if        (list, f, type=0, begin, last, count, range) =
 // Zähle alles durch von Position n nach k
 function count_if_intern (list, f, type=0, n=0, k=-1) =
 	n>k ? 0 :
-	 type   == 0                   ? len([for(i=[n:1:k]) if (f( list[i]                 )==true) 0])
-	:type[0]>= 0                   ? len([for(i=[n:1:k]) if (f( list[i][type[0]]        )==true) 0])
-	:type[0]==-1 ? let( fn=type[1] ) len([for(i=[n:1:k]) if (f( fn(list[i])             )==true) 0])
-	:                                len([for(i=[n:1:k]) if (f( get_value(list[i],type) )==true) 0])
+	 type   == 0                   ? len([for(i=[n:1:k]) if (f( list[i]             )==true) 0])
+	:type[0]>= 0                   ? len([for(i=[n:1:k]) if (f( list[i][type[0]]    )==true) 0])
+	:type[0]==-1 ? let( fn=type[1] ) len([for(i=[n:1:k]) if (f( fn(list[i])         )==true) 0])
+	:                                len([for(i=[n:1:k]) if (f( value(list[i],type) )==true) 0])
 ;
 
 // Führt Funktion 'f' auf die Elemente in der Liste aus und gibt die Position zurück wo diese 'true' zurück gibt
@@ -130,7 +130,7 @@ function find_first_if_intern_function (list, f, index=0, fn, n=0, last=-1) =
 ;
 function find_first_if_intern_type (list, f, index=0, type, n=0, last=-1) =
 	(n>last) ? n :
-	(f( get_value(list[n],type) )==true) ?
+	(f( value(list[n],type) )==true) ?
 		(index==0) ? n
 		:	find_first_if_intern_type (list, f, index-1, type, n+1, last)
 	:		find_first_if_intern_type (list, f, index,   type, n+1, last)
@@ -149,19 +149,19 @@ function find_first_once_if_intern (list, f, type=0, n=0, last=-1) =
 	:              find_first_once_if_intern_type     (list, f, type   , n, last)
 ;
 function find_first_once_if_intern_direct   (list, f, n=0, last=-1) =
-	(n>last) || (f( list[n]                 )==true) ? n :
+	(n>last) || (f( list[n]             )==true) ? n :
 	find_first_once_if_intern_direct        (list, f, n+1, last)
 ;
 function find_first_once_if_intern_list     (list, f, position, n=0, last=-1) =
-	(n>last) || (f( list[n][position]       )==true) ? n :
+	(n>last) || (f( list[n][position]   )==true) ? n :
 	find_first_once_if_intern_list          (list, f, position, n+1, last)
 ;
 function find_first_once_if_intern_function (list, f, fn, n=0, last=-1) =
-	(n>last) || (f( fn(list[n])             )==true) ? n :
+	(n>last) || (f( fn(list[n])         )==true) ? n :
 	find_first_once_if_intern_function      (list, f, fn, n+1, last)
 ;
 function find_first_once_if_intern_type     (list, f, type, n=0, last=-1) =
-	(n>last) || (f( get_value(list[n],type) )==true) ? n :
+	(n>last) || (f( value(list[n],type) )==true) ? n :
 	find_first_once_if_intern_type          (list, f, type, n+1, last)
 ;
 
@@ -206,7 +206,7 @@ function find_last_if_intern_function (list, f, index=0, fn, n=-2, first=0) =
 ;
 function find_last_if_intern_type (list, f, index=0, type, n=-2, first=0) =
 	(n<first) ? n
-	:(f( get_value(list[n],type) )==true) ?
+	:(f( value(list[n],type) )==true) ?
 		(index==0) ? n
 		:	find_last_if_intern_type (list, f, index-1, type, n-1, first)
 	:		find_last_if_intern_type (list, f, index,   type, n-1, first)
@@ -237,7 +237,7 @@ function find_last_once_if_intern_function (list, f, fn, n=-2, first=0) =
 	find_last_once_if_intern_function      (list, f, fn, n-1, first)
 ;
 function find_last_once_if_intern_type     (list, f, type, n=-2, first=0) =
-	(n<first) || (f( get_value(list[n],type) )==true) ? n :
+	(n<first) || (f( value(list[n],type) )==true) ? n :
 	find_last_once_if_intern_type          (list, f, type, n-1, first)
 ;
 

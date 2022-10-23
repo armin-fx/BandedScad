@@ -51,7 +51,7 @@ function min_position_intern_function (list, fn, pos=0, i=0) =
 function min_position_intern_type (list, type, pos=0, i=0) =
 	i>=len(list) ? pos :
 	min_position_intern_type (list, type
-		,get_value(list[pos],type)<=get_value(list[i],type) ? pos : i
+		,value(list[pos],type)<=value(list[i],type) ? pos : i
 		,i+1
 		)
 ;
@@ -87,7 +87,7 @@ function max_position_intern_function (list, fn, pos=0, i=0) =
 function max_position_intern_type (list, type, pos=0, i=0) =
 	i>=len(list) ? pos :
 	max_position_intern_type (list, type
-		,get_value(list[pos],type)>=get_value(list[i],type) ? pos : i
+		,value(list[pos],type)>=value(list[i],type) ? pos : i
 		,i+1
 		)
 ;
@@ -110,10 +110,10 @@ function count        (list, value, type=0, begin, last, count, range) =
 // Zähle alles durch von Position n nach k
 function count_intern (list, value, type=0, n=0, k=-1) =
 	n>k ? 0 :
-	 type   == 0                   ? len([for(i=[n:1:k]) if (list[i]                ==value) 0])
-	:type[0]>= 0                   ? len([for(i=[n:1:k]) if (list[i][type[0]]       ==value) 0])
-	:type[0]==-1 ? let( fn=type[1] ) len([for(i=[n:1:k]) if (fn(list[i])            ==value) 0])
-	:                                len([for(i=[n:1:k]) if (get_value(list[i],type)==value) 0])
+	 type   == 0                   ? len([for(i=[n:1:k]) if (list[i]            ==value) 0])
+	:type[0]>= 0                   ? len([for(i=[n:1:k]) if (list[i][type[0]]   ==value) 0])
+	:type[0]==-1 ? let( fn=type[1] ) len([for(i=[n:1:k]) if (fn(list[i])        ==value) 0])
+	:                                len([for(i=[n:1:k]) if (value(list[i],type)==value) 0])
 ;
 function count_intern_old (list, value, type=0, n=0, k=-1, count=0) =
 	 type   == 0 ? count_intern_direct   (list, value,          n, k)
@@ -146,7 +146,7 @@ function count_intern_type (list, value, type, n=0, k=-1, count=0) =
 	n>k ? count :
 	count_intern_type (list, value, type
 		, n+1, k
-		, count + ( get_value(list[n],type)==value ? 1 : 0 )
+		, count + ( value(list[n],type)==value ? 1 : 0 )
 	)
 ;
 
@@ -191,7 +191,7 @@ function find_first_intern_function (list, value, index=0, fn, n=0, last=-1) =
 ;
 function find_first_intern_type (list, value, index=0, type, n=0, last=-1) =
 	(n>last) ? n :
-	(get_value(list[n],type)==value) ?
+	(value(list[n],type)==value) ?
 		(index==0) ? n
 		:	find_first_intern_type (list, value, index-1, type, n+1, last)
 	:		find_first_intern_type (list, value, index,   type, n+1, last)
@@ -210,19 +210,19 @@ function find_first_once_intern (list, value, type=0, n=0, last=-1) =
 	:              find_first_once_intern_type     (list, value, type   , n, last)
 ;
 function find_first_once_intern_direct   (list, value, n=0, last=-1) =
-	(n>last) || (list[n]                ==value) ? n :
+	(n>last) || (list[n]            ==value) ? n :
 	find_first_once_intern_direct        (list, value, n+1, last)
 ;
 function find_first_once_intern_list     (list, value, position, n=0, last=-1) =
-	(n>last) || (list[n][position]      ==value) ? n :
+	(n>last) || (list[n][position]  ==value) ? n :
 	find_first_once_intern_list          (list, value, position, n+1, last)
 ;
 function find_first_once_intern_function (list, value, fn, n=0, last=-1) =
-	(n>last) || (fn(list[n])            ==value) ? n :
+	(n>last) || (fn(list[n])        ==value) ? n :
 	find_first_once_intern_function      (list, value, fn, n+1, last)
 ;
 function find_first_once_intern_type     (list, value, type, n=0, last=-1) =
-	(n>last) || (get_value(list[n],type)==value) ? n :
+	(n>last) || (value(list[n],type)==value) ? n :
 	find_first_once_intern_type          (list, value, type, n+1, last)
 ;
 
@@ -267,7 +267,7 @@ function find_last_intern_function (list, value, index=0, fn, n=-2, first=0) =
 ;
 function find_last_intern_type (list, value, index=0, type, n=-2, first=0) =
 	(n<first) ? n
-	:(get_value(list[n],type)==value) ?
+	:(value(list[n],type)==value) ?
 		(index==0) ? n
 		:	find_last_intern_type (list, value, index-1, type, n-1, first)
 	:		find_last_intern_type (list, value, index,   type, n-1, first)
@@ -286,19 +286,19 @@ function find_last_once_intern (list, value, type=0, n=-1, first=0) =
 	:              find_last_once_intern_type     (list, value, type   , n, first)
 ;
 function find_last_once_intern_direct   (list, value, n=-2, first=0) =
-	(n<first) || (list[n]                ==value) ? n :
+	(n<first) || (list[n]            ==value) ? n :
 	find_last_once_intern_direct        (list, value, n-1, first)
 ;
 function find_last_once_intern_list     (list, value, position, n=-2, first=0) =
-	(n<first) || (list[n][position]      ==value) ? n :
+	(n<first) || (list[n][position]  ==value) ? n :
 	find_last_once_intern_list          (list, value, position, n-1, first)
 ;
 function find_last_once_intern_function (list, value, fn, n=-2, first=0) =
-	(n<first) || (fn(list[n])            ==value) ? n :
+	(n<first) || (fn(list[n])        ==value) ? n :
 	find_last_once_intern_function      (list, value, fn, n-1, first)
 ;
 function find_last_once_intern_type     (list, value, type, n=-2, first=0) =
-	(n<first) || (get_value(list[n],type)==value) ? n :
+	(n<first) || (value(list[n],type)==value) ? n :
 	find_last_once_intern_type          (list, value, type, n-1, first)
 ;
 
@@ -347,7 +347,7 @@ function mismatch_count_intern_function (list1, list2, fn, begin1=0, begin2=0, c
 ;
 function mismatch_count_intern_type (list1, list2, type, begin1=0, begin2=0, count=0, i=0) =
 	i>=count ? i :
-	(get_value(list1[begin1+i],type) != get_value(list2[begin2+i],type)) ? i :
+	(value(list1[begin1+i],type) != value(list2[begin2+i],type)) ? i :
 	mismatch_count_intern_type (list1, list2, type, begin1, begin2, count, i+1)
 ;
 //
@@ -368,7 +368,7 @@ function mismatch_count_intern_f_function (list1, list2, f, fn, begin1=0, begin2
 ;
 function mismatch_count_intern_f_type (list1, list2, f, type, begin1=0, begin2=0, count=0, i=0) =
 	i>=count ? i :
-	!f (get_value(list1[begin1+i],type), get_value(list2[begin2+i],type)) ? i :
+	!f (value(list1[begin1+i],type), value(list2[begin2+i],type)) ? i :
 	mismatch_count_intern_f_type (list1, list2, f, type, begin1, begin2, count, i+1)
 ;
 
@@ -388,15 +388,15 @@ function mismatch_list (list1, list2, begin1=0, begin2=0, count=undef, type=0, f
 	)
 	[ each
 	f==undef ?
-		 type   == 0                   ? [for(i=[0:1:Count-1]) if (list1[Begin1+i]                 != list2[Begin2+i]                ) [Begin1+i, Begin2+i] ]
-		:type[0]>= 0                   ? [for(i=[0:1:Count-1]) if (list1[Begin1+i][type[0]]        != list2[Begin2+i][type[0]]       ) [Begin1+i, Begin2+i] ]
-		:type[0]==-1 ? let( fn=type[1] ) [for(i=[0:1:Count-1]) if (fn(list1[Begin1+i])             != fn(list2[Begin2+i])            ) [Begin1+i, Begin2+i] ]
-		:                                [for(i=[0:1:Count-1]) if (get_value(list1[Begin1+i],type) != get_value(list1[Begin1+i],type)) [Begin1+i, Begin2+i] ]
+		 type   == 0                   ? [for(i=[0:1:Count-1]) if (list1[Begin1+i]             != list2[Begin2+i]            ) [Begin1+i, Begin2+i] ]
+		:type[0]>= 0                   ? [for(i=[0:1:Count-1]) if (list1[Begin1+i][type[0]]    != list2[Begin2+i][type[0]]   ) [Begin1+i, Begin2+i] ]
+		:type[0]==-1 ? let( fn=type[1] ) [for(i=[0:1:Count-1]) if (fn(list1[Begin1+i])         != fn(list2[Begin2+i])        ) [Begin1+i, Begin2+i] ]
+		:                                [for(i=[0:1:Count-1]) if (value(list1[Begin1+i],type) != value(list1[Begin1+i],type)) [Begin1+i, Begin2+i] ]
 	:
-		 type   == 0                   ? [for(i=[0:1:Count-1]) if (f( list1[Begin1+i]                , list2[Begin2+i]                ) !=true) [Begin1+i, Begin2+i] ]
-		:type[0]>= 0                   ? [for(i=[0:1:Count-1]) if (f( list1[Begin1+i][type[0]]       , list2[Begin2+i][type[0]]       ) !=true) [Begin1+i, Begin2+i] ]
-		:type[0]==-1 ? let( fn=type[1] ) [for(i=[0:1:Count-1]) if (f( fn(list1[Begin1+i])            , fn(list2[Begin2+i])            ) !=true) [Begin1+i, Begin2+i] ]
-		:                                [for(i=[0:1:Count-1]) if (f( get_value(list1[Begin1+i],type), get_value(list1[Begin1+i],type)) !=true) [Begin1+i, Begin2+i] ]
+		 type   == 0                   ? [for(i=[0:1:Count-1]) if (f( list1[Begin1+i]            , list2[Begin2+i]            ) !=true) [Begin1+i, Begin2+i] ]
+		:type[0]>= 0                   ? [for(i=[0:1:Count-1]) if (f( list1[Begin1+i][type[0]]   , list2[Begin2+i][type[0]]   ) !=true) [Begin1+i, Begin2+i] ]
+		:type[0]==-1 ? let( fn=type[1] ) [for(i=[0:1:Count-1]) if (f( fn(list1[Begin1+i])        , fn(list2[Begin2+i])        ) !=true) [Begin1+i, Begin2+i] ]
+		:                                [for(i=[0:1:Count-1]) if (f( value(list1[Begin1+i],type), value(list1[Begin1+i],type)) !=true) [Begin1+i, Begin2+i] ]
 	, each Count==Count_max ? [] : [for(i=[Count:1:Count_max-1]) [Begin1+i, Begin2+i] ]
 	]
 ;
@@ -440,12 +440,12 @@ function adjacent_find_intern_function_loop (list, fn, begin=0, last=-1, this, n
 ;
 function adjacent_find_intern_type (list, type, begin=0, last=-1) =
 	begin>=last ? last+1 :
-	adjacent_find_intern_type_loop (list, type, begin, last, get_value(list[begin],type), get_value(list[begin+1],type))
+	adjacent_find_intern_type_loop (list, type, begin, last, value(list[begin],type), value(list[begin+1],type))
 ;
 function adjacent_find_intern_type_loop (list, type, begin=0, last=-1, this, next) =
 	(this == next) ? begin :
 	begin+1>=last ? last+1 :
-	adjacent_find_intern_type_loop (list, type, begin+1, last, next, get_value(list[begin+2],type))
+	adjacent_find_intern_type_loop (list, type, begin+1, last, next, value(list[begin+2],type))
 ;
 //
 function adjacent_find_intern_f_direct (list, f, begin=0, last=-1) =
@@ -469,12 +469,12 @@ function adjacent_find_intern_f_function_loop (list, f, fn, begin=0, last=-1, th
 ;
 function adjacent_find_intern_f_type (list, f, type, begin=0, last=-1) =
 	begin>=last ? last+1 :
-	adjacent_find_intern_f_type_loop (list, f, type, begin, last, get_value(list[begin],type), get_value(list[begin+1],type))
+	adjacent_find_intern_f_type_loop (list, f, type, begin, last, value(list[begin],type), value(list[begin+1],type))
 ;
 function adjacent_find_intern_f_type_loop (list, f, type, begin=0, last=-1, this, next) =
 	f (this, next) ? begin :
 	begin+1>=last ? last+1 :
-	adjacent_find_intern_f_type_loop (list, f, type, begin+1, last, next, get_value(list[begin+2],type))
+	adjacent_find_intern_f_type_loop (list, f, type, begin+1, last, next, value(list[begin+2],type))
 ;
 
 // sucht einen Wert in einer aufsteigend sortierten Liste und gibt die Position zurück.
@@ -495,7 +495,7 @@ function binary_search_intern (list, value, type, begin, end) =
 			 type   == 0 ?                   list[middle]
 			:type[0]>= 0 ?                   list[middle][type[0]]
 			:type[0]==-1 ? let( fn=type[1] ) fn(list[middle])
-			:                                get_value(list[middle],type)
+			:                                value(list[middle],type)
 	)
 	 (v==value) ? middle
 	:(v< value) ? binary_search_intern (list, value, type, middle+1, end)
@@ -509,7 +509,7 @@ function binary_search_intern_f (list, value, type, f, begin, end) =
 			 type   == 0 ?                   list[middle]
 			:type[0]>= 0 ?                   list[middle][type[0]]
 			:type[0]==-1 ? let( fn=type[1] ) fn(list[middle])
-			:                                get_value(list[middle],type)
+			:                                value(list[middle],type)
 	)
 	 (f(v,value)==0) ? middle
 	:(f(v,value)< 0) ? binary_search_intern_f (list, value, type, f, middle+1, end)
@@ -554,12 +554,12 @@ function sorted_until_intern_function_loop (list, fn, begin=0, last=-1, this, ne
 ;
 function sorted_until_intern_type (list, type, begin=0, last=-1) =
 	begin>=last ? begin+1:
-	sorted_until_intern_type_loop (list, type, begin, last, get_value(list[begin],type), get_value(list[begin+1],type))
+	sorted_until_intern_type_loop (list, type, begin, last, value(list[begin],type), value(list[begin+1],type))
 ;
 function sorted_until_intern_type_loop (list, type, begin=0, last=-1, this, next) =
 	(next < this) ? begin+1 :
 	(begin+1)>=last ? begin+2 :
-	sorted_until_intern_type_loop (list, type, begin+1, last, next, get_value(list[begin+2],type))
+	sorted_until_intern_type_loop (list, type, begin+1, last, next, value(list[begin+2],type))
 ;
 //
 function sorted_until_intern_f_direct (list, f, begin=0, last=-1) =
@@ -583,12 +583,12 @@ function sorted_until_intern_f_function_loop (list, f, fn, begin=0, last=-1, thi
 ;
 function sorted_until_intern_f_type (list, f, type, begin=0, last=-1) =
 	begin>=last ? begin+1:
-	sorted_until_intern_f_type_loop (list, f, type, begin, last, get_value(list[begin],type), get_value(list[begin+1],type))
+	sorted_until_intern_f_type_loop (list, f, type, begin, last, value(list[begin],type), value(list[begin+1],type))
 ;
 function sorted_until_intern_f_type_loop (list, f, type, begin=0, last=-1, this, next) =
 	f (next, this) ? begin+1 :
 	(begin+1)>=last ? begin+2 :
-	sorted_until_intern_f_type_loop (list, f, type, begin+1, last, next, get_value(list[begin+2],type))
+	sorted_until_intern_f_type_loop (list, f, type, begin+1, last, next, value(list[begin+2],type))
 ;
 
 // Testet eine Liste ob diese sortiert ist und gibt alle Position als Liste zurück,
@@ -604,18 +604,19 @@ function sorted_until_list (list, f=undef, type=0, begin, last, count, range) =
 //
 function sorted_until_list_intern (list, f=undef, type=0, begin=0, last=-1) =
 	f==undef ?
-		 type   == 0                   ? [for(i=[begin:1:last-1]) if (list[i+1]                 < list[i]                ) i+1]
-		:type[0]>= 0                   ? [for(i=[begin:1:last-1]) if (list[i+1][type[0]]        < list[i][type[0]]       ) i+1]
-		:type[0]==-1 ? let( fn=type[1] ) [for(i=[begin:1:last-1]) if (fn(list[i+1])             < fn(list[i])            ) i+1]
-		:                                [for(i=[begin:1:last-1]) if (get_value(list[i+1],type) < get_value(list[i],type)) i+1]
-		//	[ each [for(i=begin,this=get_value(list[i],type),next=get_value(list[i+1],type); i<=last-2; i=i+1,this=next,next=get_value(list[i+1],type))
+		 type   == 0                   ? [for(i=[begin:1:last-1]) if (list[i+1]             < list[i]            ) i+1]
+		:type[0]>= 0                   ? [for(i=[begin:1:last-1]) if (list[i+1][type[0]]    < list[i][type[0]]   ) i+1]
+		:type[0]==-1 ? let( fn=type[1] ) [for(i=[begin:1:last-1]) if (fn(list[i+1])         < fn(list[i])        ) i+1]
+		:                                [for(i=[begin:1:last-1]) if (value(list[i+1],type) < value(list[i],type)) i+1]
+		//	[ each [for(i=begin,this=value(list[i],type),next=value(list[i+1],type); i<=last-2;
+		//	            i=i+1  ,this=next               ,next=value(list[i+1],type))
 		//		 if (next < this) i+1]
 		//	, each (fn(list[last]) < fn(list[last-1])) ? [last] : [] ]
 	:
-		 type   == 0                   ? [for(i=[begin:1:last-1]) if (f( list[i+1]                , list[i]                )) i+1]
-		:type[0]>= 0                   ? [for(i=[begin:1:last-1]) if (f( list[i+1][type[0]]       , list[i][type[0]]       )) i+1]
-		:type[0]==-1 ? let( fn=type[1] ) [for(i=[begin:1:last-1]) if (f( fn(list[i+1])            , fn(list[i])            )) i+1]
-		:                                [for(i=[begin:1:last-1]) if (f( get_value(list[i+1],type), get_value(list[i],type))) i+1]
+		 type   == 0                   ? [for(i=[begin:1:last-1]) if (f( list[i+1]            , list[i]            )) i+1]
+		:type[0]>= 0                   ? [for(i=[begin:1:last-1]) if (f( list[i+1][type[0]]   , list[i][type[0]]   )) i+1]
+		:type[0]==-1 ? let( fn=type[1] ) [for(i=[begin:1:last-1]) if (f( fn(list[i+1])        , fn(list[i])        )) i+1]
+		:                                [for(i=[begin:1:last-1]) if (f( value(list[i+1],type), value(list[i],type))) i+1]
 ;
 
 // Lexikographischer kleiner-als Vergleich zweier Listen

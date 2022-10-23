@@ -28,15 +28,15 @@ Functions for edit lists
   - [Different type of data][type]
     - [Internal type identifier convention](#internal-type-identifier-convention-)
     - [Set type identifier of data](#set-type-identifier-of-data-)
-	  - `set_type_direct()`
-	  - `set_type_list()`
-	  - `set_type_function()`
-	  - `set_type()`
+      - `type_direct()`
+      - `type_list()`
+      - `type_function()`
+      - `type()`
     - [Info from type identifier](#info-from-type-identifier-)
-	  - `get_position_type()`
-	  - `get_function_type()`
+      - `position_type()`
+      - `function_type()`
     - [Get data with type identifier](get-data-with-type-identifier-)
-      - `get_value()`
+      - `value()`
       - `value_list()`
       - `is_type_direct()`
       - `is_type_list()`
@@ -184,22 +184,22 @@ The data access can be switched with the argument `type`.
 This will set the type identifier which will control the data access
 in list edit functions.
 
-| function                       | description
-|--------------------------------|-------------
-| `set_type_direct   ()`         | uses the data direct
-| `set_type_list     (position)` | uses the data as list and uses the value at `position`
-| `set_type_function (fn)`       | call a function literal `fn` with the data as argument, this return the value.<br /> If fn is `undef`, then it calls a defined extern function `fn()`
-| `set_type          (argument)` | generalized function, set the type dependent of the argument
+| function                   | description
+|----------------------------|-------------
+| `type_direct   ()`         | uses the data direct
+| `type_list     (position)` | uses the data as list and uses the value at `position`
+| `type_function (fn)`       | call a function literal `fn` with the data as argument, this return the value.<br /> If fn is `undef`, then it calls a defined extern function `fn()`
+| `type          (argument)` | generalized function, set the type dependent of the argument
 
 
 ### Info from type identifier [^][contents]
 
 Get the information from type identifier which are needed to read the data.
 
-| function                   | description
-|----------------------------|-------------
-| `get_position_type (type)` | get the position in a list as data
-| `get_function_type (type)` | get the function literal `fn`
+| function               | description
+|------------------------|-------------
+| `position_type (type)` | get the position in a list as data
+| `function_type (type)` | get the function literal `fn`
 
 Test the type identifier.
 Return `true` if it fits.
@@ -216,7 +216,7 @@ Return `true` if it fits.
 
 | function                  | description
 |---------------------------|-------------
-| `get_value  (data, type)` | return the value from the `data` element with specified `type`
+| `value      (data, type)` | return the value from the `data` element with specified `type`
 | `value_list (list, type)` | return a list with only values from specified `type`
 
 

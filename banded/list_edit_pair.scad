@@ -11,8 +11,8 @@ use <banded/list_edit_data.scad>
 
 
 // Typ-Konstanten für die Listenfunktionen
-type_pair_key  = set_type_list(0);
-type_pair_value= set_type_list(1);
+type_pair_key  = type_list(0);
+type_pair_value= type_list(1);
 
 // gibt den Wert eines Schlüssels aus einer Liste heraus
 // Argumente:
@@ -21,7 +21,7 @@ type_pair_value= set_type_list(1);
 //   index   -Bei gleichen Schlüsselwerten wird index-mal übersprungen
 //            standartmäßig wird der erste gefundene Schlüssel genommen (index=0)
 function pair_value (list, key, index=0) =
-	list[find_first (list, key, index, type=type_pair_key)] [get_position_type(type_pair_value)];
+	list[find_first (list, key, index, type=type_pair_key)] [position_type(type_pair_value)];
 
 // gibt den Schlüssel eines Wertes aus einer Liste heraus
 // Argumente:
@@ -30,7 +30,7 @@ function pair_value (list, key, index=0) =
 //   index   -Bei gleichen Werten wird index-mal übersprungen
 //            standartmäßig wird der erste gefundene Wert genommen (index=0)
 function pair_key  (list, value, index=0) =
-	list[find_first(list, value, index, type=type_pair_value)] [get_position_type(type_pair_key)];
+	list[find_first(list, value, index, type=type_pair_value)] [position_type(type_pair_key)];
 
 // erzeugt ein Schlüssel-Werte-Paar
 function pair (key, value) = [key, value];
