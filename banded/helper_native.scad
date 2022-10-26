@@ -67,6 +67,10 @@ function get_position_insert_safe (list, position) =
 		(size+position+1<0) ? 0    : size+position+1
 ;
 
+// letztes Element in der Liste
+function last_position (list)          =       len(list) - 1;
+function last_value    (list, index=0) = list[ len(list) - 1 - index ];
+
 // testet eine numerische Variable auf eine gültige Zahl (Not A Number)
 function is_nan (value) = value!=value;
 // testet eine numerische Variable auf unendlich

@@ -30,6 +30,13 @@ function reverse      (list, begin, last, count, range) =
 	]
 ;
 
+// kehrt die Reihenfolge aller Listen in einer Liste um
+function reverse_all (list) =
+	[for (l=list)
+	[for (a=[len(l)-1:-1:0]) l[a]]
+	]
+;
+
 function rotate_list (list, middle, begin=0, last=-1) =
 	let (
 		Range  = parameter_range_safe (list, begin, last),

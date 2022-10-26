@@ -279,3 +279,28 @@ function unique (list, type=0, f=undef) =
 			]
 ;
 
+// Entfernt alle aufeinanderfolgenden Duplikate komplett,
+// behält nur die einzelstehenden Werte
+function keep_unique (list, type=0, f) =
+	list==undef ? list :
+	let( size=len(list) )
+	size==1     ? list :
+	keep_unique_intern (list, type, f, size, value(list[0],type))
+;
+function keep_unique_intern (list, type=0, f, size=0, last_v, i=1, last_pos=0, result=[]) =
+	i>size  ? result :
+	i==size ? (last_pos==size-1) ? [ each result, list[last_pos] ] : result
+	:
+	let(
+		v =
+			 type==0     ? list[i]
+			:type[0]>= 0 ? list[i][type[0]]
+			:              value(list[i],type)
+	)
+	(f==undef ? v==last_v : f(v,last_v) ) ?
+			keep_unique_intern (list, type, f, size, last_v, i+1, last_pos, result)
+	:	last_pos==i-1
+		?	keep_unique_intern (list, type, f, size, v     , i+1, i, [ each result, list[last_pos] ])
+		:	keep_unique_intern (list, type, f, size, v     , i+1, i, result)
+;
+

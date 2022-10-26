@@ -45,6 +45,7 @@ Functions for edit lists
   - [Edit list independent from the data](#edit-list-independent-from-the-data-)
     - [`concat_list()`][concat_list]
     - [`reverse()`][reverse]
+    - [`reverse_all()`][reverse_all]
     - [`rotate_list()`][rotate_list]
     - [`rotate_copy()`][rotate_copy]
     - [`remove()`][remove]
@@ -55,6 +56,10 @@ Functions for edit lists
     - [`select_all()`][select_all]
     - [`select_link()`][select_link]
     - [`unselect()`][unselect]
+    - [`index()`][index]
+    - [`index_all()`][index_all]
+    - [`remove_unselected()`][remove_unselected]
+    - [`compress_selected()`][compress_selected]
   - [Edit list with use of data, depend on type](#edit-list-with-use-of-data-depend-on-type-)
     - [`sort()`][sort]
     - [`merge()`][merge]
@@ -66,10 +71,7 @@ Functions for edit lists
     - [`keep_value()`][keep_value]
     - [`keep_all_values()`][keep_all_values]
     - [`unique()`][unique]
-    - [`index()`][index]
-    - [`index_all()`][index_all]
-    - [`remove_unselected()`][remove_unselected]
-    - [`compress_selected()`][compress_selected]
+    - [`keep_unique()`][keep_unique]
   - [Get data from list](#get-data-from-list-)
     - [min or max value](#min-or-max-value-)
     - [`count()`][count]
@@ -235,8 +237,13 @@ Reverse a sequence of elements in a list
   - arguments to set the range to reverse
   - default = full range, reverse complete list
 
-___Specialized function with full range of the list:___
+_Specialized function with full range of the list:_
 - `reverse_full (list)`
+
+#### `reverse_all (list)` [^][contents]
+[reverse_all]: #reverse_all-list-
+Reverse a sequence of elements in every list stored in a list.\
+Such as `[ [1,2,3], [4,5] ]` goes to `[ [3,2,1], [5,4] ]`
 
 #### `rotate_list (list, middle, begin, last)` [^][contents]
 [rotate_list]: #rotate_list-list-middle-begin-last-
@@ -412,14 +419,22 @@ remove all other entries.
 
 #### `keep_all_values (list, value_list, type)` [^][contents]
 [keep_all_values]: #keep_all_values-list-value_list-type-
-Keep every entry with a given list of values in a list,
-remove all other entries.
+Keep only listed entries, remove all other entries.
 - `value_list` - a list with values
 
 #### `unique (list, type, f)` [^][contents]
 [unique]: #unique-list-type-f-
 Remove consecutive duplicates in a list.\
 Removes all but the first element from every consecutive group of equivalent elements.
+The elements are compared using operator `==` or with function `f` if given.
+- `f`
+  - function literal with two arguments
+  - returns `true` or `false`
+
+#### `keep_unique (list, type, f)` [^][contents]
+[keep_unique]: #keep_unique-list-type-f-
+Remove duplicates in a list.\
+Removes all group of equivalent elements, keep only single elements.
 The elements are compared using operator `==` or with function `f` if given.
 - `f`
   - function literal with two arguments

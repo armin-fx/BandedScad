@@ -34,6 +34,7 @@ Helper functions
     - [`get_position_safe()`][get_position_safe]
     - [`get_position_insert()`][get_position_insert]
     - [`get_position_insert_safe()`][get_position_insert_safe]
+    - [`last_value()`][last_value]
   - [Data consistency](#data-consistency-)
     - [`is_good_list()`][is_good_list]
     - [`is_num_list()`][is_num_list]
@@ -197,6 +198,12 @@ Coding makes sense for insertion positions:
 Returns the real position within a list.\
 Same like [`get_position_insert()`][get_position_insert], but constrain the position to
 the first or 1 element after the last element if the value exceed the real size of the list.
+
+#### `last_value (list, index)` [^][contents]
+[last_value]: #last_value-list-index-
+Return the last element from a list.
+- `index` - optional position backwards from the last element position
+  - default = 0, last element
 
 
 ### Data consistency [^][contents]
