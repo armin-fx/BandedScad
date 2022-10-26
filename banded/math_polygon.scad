@@ -26,11 +26,16 @@ function is_point_on_line (line, point) =
 // gibt zurück, ob ein Punkt genau auf einer Strecke ist,
 // inclusive auf den Punkten
 // 2D oder 3D
-function is_point_on_segment (line, point) =
-	point==line[0] || point==line[1] ? true
-	:
+function is_point_on_segment (line, point, ends=0) =
+	point==line[0] ? ends<=0 :
+	point==line[1] ? ends>=0 :
+	//
 	is_nearly_collinear (line[1]-line[0], point-line[0]) &&
-	is_constrain(point, line[0], line[1])
+	(
+		ends<0 ? is_constrain_left (point, line[0],line[1]) :
+		ends>0 ? is_constrain_right(point, line[0],line[1]) :
+		/* ==0*/ is_constrain      (point, line[0],line[1])
+	)
 ;
 
 // gibt zurück, ob ein Punkt genau in einer Ebene liegt
@@ -81,27 +86,31 @@ function is_point_upper_plane (points_3, test_point) =
 
 // gibt zurück, ob sich zwei Strecken kreuzen
 // mit 'point' kann ein schon berechneter Schnittpunkt beider Geraden eingesetzt werden
-// mit only=true kann angegeben werden, ob die Linie nicht parallel seinen dürfen
+// mit no_parallel=true kann angegeben werden, ob die Linie nicht parallel seinen dürfen, Standart=false
 // in 2D
-function is_intersection_segments (line1, line2, point, only) =
+function is_intersection_segments (line1, line2, point, no_parallel=false, ends=0) =
 	is_collinear (line1[1]-line1[0], line2[1]-line2[0]) ?
-		only==true ? false :
+		no_parallel==true ? false :
 		let(
-			a = get_gradient_2d (line1),
-			b = get_gradient_2d (line2)
+			a = line1[0].x==line1[1].x ? line1[0].x : get_gradient_2d (line1),
+			b = line2[0].x==line2[1].x ? line2[0].x : get_gradient_2d (line2)
 		)
 		a!=b ? false
 		:
-		is_constrain (line2[0], line1[0], line1[1]) ||
-		is_constrain (line2[1], line1[0], line1[1])
+		is_constrain (line2[0], line1[0],line1[1]) ||
+		is_constrain (line2[1], line1[0],line1[1]) ||
+		is_constrain (line1[0], line2[0],line2[1])
 	:
 	let(
 		p = point!=undef ? point :
 			get_intersection_lines (line1, line2)
 	)
-	p!=undef &&
-	is_constrain_left (p, line1[0], line1[1]) &&
-	is_constrain_left (p, line2[0], line2[1])
+	(p!=undef && p!=false && p!=true) &&
+	(
+		ends==0  ? is_constrain       (p, line1[0],line1[1]) && is_constrain       (p, line2[0],line2[1]) :
+		ends< 0  ? is_constrain_left  (p, line1[0],line1[1]) && is_constrain_left  (p, line2[0],line2[1]) :
+		/*ends>0*/ is_constrain_right (p, line1[0],line1[1]) && is_constrain_right (p, line2[0],line2[1])
+	)
 ;
 
 // testet, ob ein Punkt innerhalb der Umrandung eines Polygonzuges in der Ebene ist
@@ -114,29 +123,69 @@ function is_point_inside_polygon (points, p, face) =
 		is_point_inside_polygon_3d (points, p, face)
 ;
 function is_point_inside_polygon_2d (points, p, face) =
-	let (
+	is_point_inside_polygon_2d_intern (
 		trace = face==undef ? points : select (points,face),
-		size = len(trace),
-		t_l = [ for (i=[0:1:size-1])
-			if ( is_point_on_line ([trace[i],trace[(i+1)%size]], p ) ) 0
-			]
+		p     = p,
+		size  = len(points)
 	)
-	len(t_l)>0 ? true
-	:
-	let (
-		// einen beliebigen Punkt außerhalb auswählen
-		p_outer = min( trace ) - [1,1],
+;
+function is_point_inside_polygon_2d_intern (trace, p, size=0, i=0, count=0) =
+	i>=size ? (count/2)%2!=0 :
+	//
+	// Die Linie vom Punkt aus zum Rand hin auf Kreuzungen testen.
+	// Durchläuft dabei eine horizontale Linie nach links
+	// Alle Kreuzungen durchzählen.
+	// Punktetreffer gesondert behandeln, hier lauern tückische Sonderfälle.
+	//
+	let(
+		 p1=trace[i]          - p
+		,p2=trace[(i+1)%size] - p
+	)
+	// Punkt genau auf dem Streckenabschnitt            -> raus, gefunden
+	is_point_on_segment ([p1,p2], [0,0] ) ? true :
+	//
+	// - komplett rechts vom Punkt,                     -> weiter
+	(p1.x>0 && p2.x>0) ? is_point_inside_polygon_2d_intern (trace, p, size, i+1, count) :
+	// - durchkreuzt nicht die Linie,                   -> weiter
+	p1.y*p2.y > 0      ? is_point_inside_polygon_2d_intern (trace, p, size, i+1, count) :
+	//
+	// - Punktetreffer gesondert behandeln:
+	//   - Punkte werden automatisch zweimal gezählt, 1 je Seite
+	p1.y==0 || p2.y==0 ?
+		// - horizontale Durchgänge nicht zählen    	-> weiter
+		p1.y==0 && p2.y==0 ? is_point_inside_polygon_2d_intern (trace, p, size, i+1, count) :
 		//
-		line = [p, p_outer],
-		// die Linie von diesen Punkt aus bis zum Testpunkt auf Kreuzungen testen
-		// Alle Kreuzungen durchzählen.
-		// TODO Kann noch optimiert werden, indem nur eine horizontale oder
-		//      vertikale Linie durchlaufen wird.
-		t_i = [ for (i=[0:1:size-1])
-			if ( is_intersection_segments (line, [trace[i],trace[(i+1)%size]] ) ) 0
-			]
-	)
-	(len(t_i))%2!=0
+		p1.y==0 ?
+			p1.x>0 ?
+				// - Punkt außerhalb            		-> weiter
+				is_point_inside_polygon_2d_intern (trace, p, size, i+1, count) :
+				// - trifft ersten Punkt        		-> zählen
+				//   - Treffer zählen
+				//   - Seitendurchgang berücksichtigen:
+				//     - anderes Ende oberhalb:  1 abziehen
+				//     - anderes Ende unterhalb: 1 zuzählen
+				//     - beim Treffer am anderen Punkt wird genauso verfahren
+				//     - zählt dadurch nur einen kompletten Durchgang durch den Rand
+				is_point_inside_polygon_2d_intern (trace, p, size, i+1
+					, count + 1 + ( p2.y==0 ? 0 : p2.y>0 ? -1:1)
+				) :
+		// p2.y==0 ?
+			p2.x>0 ?
+				// - Punkt außerhalb            		-> weiter
+				is_point_inside_polygon_2d_intern (trace, p, size, i+1, count) :
+				// - trifft zweiten Punkt       		-> zählen
+				//   - Treffer zählen, Seitendurchgang berücksichtigen
+				is_point_inside_polygon_2d_intern (trace, p, size, i+1
+					, count + 1 + ( p1.y==0 ? 0 : p1.y>0 ? -1:1)
+				) :
+	//
+	// - Liniendurchgang, doppelt zählen                -> zählen
+	p1.x-p1.y*(p1.x-p2.x)/(p1.y-p2.y) < 0 ?
+		is_point_inside_polygon_2d_intern (trace, p, size, i+1
+			, count+2
+		) :
+	// - Ende                                           -> weiter
+		is_point_inside_polygon_2d_intern (trace, p, size, i+1, count)
 ;
 // Alle Punkte müssen sich in der gleichen Ebene befinden.
 // Eventuell vorher nachprüfen
@@ -233,10 +282,14 @@ function get_gradient_3d (line) =
 // gibt den Kreuzungspunkt zurück, den zwei Geraden schneiden,
 // definiert mit je 2 Punkten pro Gerade
 // in 2D
+// Rückgaben:
+// - Geraden schneiden sich:    den Schnittpunkt beider Geraden
+// - liegen genau übereinander: true
+// - parallel zueinander      : false
 function get_intersection_lines (line1, line2) =
-	(line1[0].x==line1[1].x) ?
-	(line2[0].x==line2[1].x) ? undef :
-	get_intersection_lines (line2, line1)
+	(	 line1[0].x==line1[1].x) ?
+		(line2[0].x==line2[1].x) ? (line1[0].x==line2[0].x) ? true : false : // <- both parallel
+		get_intersection_lines (line2, line1)
 	:
 	(line2[0].x==line2[1].x) ?
 		// line2 steht senkrecht auf der x-Achse, der x-Wert liegt damit fest
@@ -249,7 +302,10 @@ function get_intersection_lines (line1, line2) =
 	:
 	let(
 		a = get_gradient_2d (line1),
-		b = get_gradient_2d (line2),
+		b = get_gradient_2d (line2)
+	)
+	a[1]==b[1] ? a[0]==b[0] ? true : false : // <- both parallel
+	let(
 		x =	  (b[0] - a[0])
 			/ (a[1] - b[1]),
 		y = a[1] * x + a[0]
@@ -362,7 +418,7 @@ function distance_line_2d (line, p) =
 					 [e, e]]
 				)
 				[ m * line[0], m * line[1] ],
-		g    = get_gradient_2d (line_), // [m, c]
+		g    = get_gradient_2d (line_), // [c, m]
 		p0   = [-g[0]/g[1], g[0]],
 		hypo = norm (p0),
 		h    = hypo==0

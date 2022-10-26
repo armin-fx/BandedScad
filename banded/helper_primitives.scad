@@ -174,7 +174,7 @@ function unify_object_trace (object) =
 		(len(object)>0 && len(object[0])==2) ||
 		(len(object)>2 && len(object[0])==3) ?
 			// 2D and 3D
-			[ object ]
+			[ [object] ]
 		:undef
 	:is_num(object[0][0][0][0]) ?      // [ [points,points2], ... ]
 		//

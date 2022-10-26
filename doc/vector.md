@@ -49,7 +49,7 @@ Matrix and vector operations
     - [`is_point_inside_polygon()`][is_point_inside_polygon]
   - [Straight line, line segment and surfaces](#straight-line-line-segment-and-surfaces-)
     - [`get_gradient()`][get_gradient]
-    - [`get_intersection_point()`][get_intersection_point]
+    - [`get_intersection_lines()`][get_intersection_lines]
     - [`get_intersection_line_plane()`][get_intersection_line_plane]
   - [Polygon functions](#polygon-functions-)
     - [`length_trace()`][length_trace]
@@ -264,12 +264,16 @@ Returns `true` if a point is exactly on a straight line.\
 In 2D or 3D.
 - `line` - a list with 2 points defines a straight line
 
-#### `is_point_on_segment (line, point)` [^][contents]
+#### `is_point_on_segment (line, point, ends)` [^][contents]
 [is_point_on_segment]: #is_point_on_segment-line-point-
 Returns `true` if a point is exactly on a line segment.\
 Inclusive on the points.
 In 2D or 3D.
 - `line` - a list with 2 points defines the line segment
+- `ends` - defines whether the endpoint is within the segment
+  - `0`   - default, both sides are within the segment
+  - `< 0` - left point is within the segment, e.g. `-1`
+  - `> 0` - right point is within the segment, e.g. `1`
 
 #### `is_point_on_plane (points_3, point)` [^][contents]
 [is_point_on_plane]: #is_point_on_plane-points_3-point-
@@ -285,19 +289,24 @@ Upper side means the same side of the direction of the normal vector
 from the triangle defined by the 3 points.
 - `points_3` - 3 points in a list defines the plane
 
-#### `is_intersection_segments (line1, line2, point, only)` [^][contents]
-[is_intersection_segments]: #is_intersection_segments-line1-line2-point-only-
+#### `is_intersection_segments (line1, line2, point, no_parallel, ends)` [^][contents]
+[is_intersection_segments]: #is_intersection_segments-line1-line2-point-no_parallel-
 Returns `true` if two line segment intersect.\
 Only in 2D plane.
 - `line1` and `line2`
   - a list with 2 points defines the line segment
 - `point`
   - optional
-  - an already calculated intersection of both straight lines can be used
-- `only`
+  - an already calculated intersection of both straight lines can be used,
+    see [`get_intersection_lines()`][get_intersection_lines]
+- `no_parallel`
   - optional, default = `false`
   - `false` - if the lines are collinear then it tests whether the straight lines overlap
   - `true`  - return always `false` if the lines are collinear
+- `ends` - defines whether the endpoint is within the segment
+  - `0`   - default, both sides are within the segment
+  - `< 0` - left point is within the segment, e.g. `-1`
+  - `> 0` - right point is within the segment, e.g. `1`
 
 #### `is_point_inside_polygon (points, p, face)` [^][contents]
 [is_point_inside_polygon]: #is_point_inside_polygon-points-p-face-
@@ -364,12 +373,17 @@ _Specialized functions:_
 - `get_gradient_2d (line)` - only in 2D plane
 - `get_gradient_3d (line)` - only in 3D space
 
-#### `get_intersection_point (line1, line2)` [^][contents]
-[get_intersection_point]: #get_intersection_point-line1-line2-
+#### `get_intersection_lines (line1, line2)` [^][contents]
+[get_intersection_lines]: #get_intersection_lines-line1-line2-
 Returns the crossing point where two straight lines intersect.\
 Only in 2D plane.
 - `line1` and `line2`
   - a list with 2 points defines the straight line
+
+_Return:_
+- straight lines intersect: the crossing point
+- lines lie in each other:  `true`
+- lines are parallel:       `false`
 
 _Example:_
 ```OpenSCAD
