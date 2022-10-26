@@ -59,21 +59,60 @@ module combine ()
 }
 
 // Experimentell,
-// funktioniert mit 2 Objekte, bei weitere treten Probleme auf
-module xor()
+// funktioniert bis 8 Objekte, manchmal treten Probleme auf
+module xor (d=3, skirt=epsilon)
+{
+	if ($children==1) children();
+	if ($children==2)
+		xor_2 (d, skirt) { children(0); children(1); };
+	if ($children==3)
+		xor_2 (d, skirt) {
+			xor_2 (d, skirt) { children(0); children(1); };
+			children(2);
+		};
+	if ($children==4)
+		xor_2 (d, skirt) {
+			xor_2 (d, skirt) { children(0); children(1); };
+			xor_2 (d, skirt) { children(2); children(3); };
+		};
+	if ($children==5)
+		xor_2 (d, skirt) {
+			xor_2 (d, skirt) { children(0); children(1); };
+			xor   (d, skirt) { children(2); children(3); children(4); };
+		};
+	if ($children==6)
+		xor_2 (d, skirt) {
+			xor   (d, skirt) { children(0); children(1); children(2); children(3); };
+			xor_2 (d, skirt) { children(4); children(5); };
+		};
+	if ($children==7)
+		xor_2 (d, skirt) {
+			xor (d, skirt) { children(0); children(1); children(2); children(3); };
+			xor (d, skirt) { children(4); children(5); children(6); };
+		};
+	if ($children==8)
+		xor_2 (d, skirt) {
+			xor (d, skirt) { children(0); children(1); children(2); children(3); };
+			xor (d, skirt) { children(4); children(5); children(6); children(7); };
+		};
+}
+module xor_2 (d=3, skirt=epsilon)
 {
 	difference()
 	{
 		children();
-		
+		//
+		if ($children>1)
 		minkowski()
 		{
-			intersection_for (i = [0 : $children-1])
-				children(i);
-			sphere(0.0000000001);
+			intersection_for (i = [0 :1: $children-1])
+			children(i);
+			if      (d==3) sphere(skirt);
+			else if (d==2) circle(skirt);
 		}
 	}
 }
+
 
 // - 2D zu 3D extrudieren:
 

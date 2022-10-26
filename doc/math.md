@@ -231,6 +231,10 @@ Returns `-1` if `x<0` and `1` if `x>=0`
 return a boolean value of operation xor
 - `bool`, `bool2` - boolean value
 
+_Additional functions with more then 2 arguments:_
+- `xor_3 (bool, bool2, bool3)`
+- `xor_4 (bool, bool2, bool3, bool4)`
+
 #### `normal_distribution (x, mean, sigma)` [^][contents]
 [normal_distribution]: #normal_distribution-x-mean-sigma-
 Calculate the Gauss normal distribution

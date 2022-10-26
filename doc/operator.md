@@ -395,10 +395,13 @@ combine()
 }
 ```
 
-#### `xor ()` [^][contents]
-[xor]: #xor--
-Create the exclusive or with 2 objects.\
-Experimental, works with 2 objects and make sometimes errors.
+#### `xor (d)` [^][contents]
+[xor]: #xor-d-
+Create the exclusive or with objects.\
+Experimental, works until 8 objects and make sometimes errors.
+- `d`     - dimension of the objects, default = `3` - 3D object
+- `skirt` - optional, create a little skirt around the object to prevent errors
+  - default = constant `epsilon`
 
 
 ### 2D to 3D extrusion [^][contents]
