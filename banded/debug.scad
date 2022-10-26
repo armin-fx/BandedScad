@@ -12,24 +12,39 @@ use <banded/draft_color.scad>
 
 module echo_line (length=50, char="-")
 {
-	function str_line (length, char, string="") =
-		length<=0 ? string :
-		str_line (length-1, char, str (string, char))
-	;
-	echo (str_line (length, char));
+	echo (echo_line_intern (length, char));
 }
+function echo_line (length=50, char="-") =
+	str( echo_line_intern (length, char), "\n" )
+;
+function echo_line_intern (length=50, char="-", string="") =
+	length<=0 ? string :
+	echo_line_intern (length-1, char, str (string, char))
+;
 
-module echo_thin_line (length=50) { echo_line (length/2, " -"); }
-module echo_bar       (length=50) { echo_line (length  , "=" ); }
-module echo_wall      (length=50) { echo_line (length  , "#" ); }
+module   echo_thin_line (length=50) { echo_line (length/2, " -"); }
+function echo_thin_line (length=50) = echo_line (length/2, " -");
+module   echo_bar       (length=50) { echo_line (length  , "=" ); }
+function echo_bar       (length=50) = echo_line (length  , "=" );
+module   echo_wall      (length=50) { echo_line (length  , "#" ); }
+function echo_wall      (length=50) = echo_line (length  , "#" );
 
 module echo_list (list, txt="", pre="\t")
 {
-	echo( echo_list_helper_intern (list, txt, pre) );
+	echo( echo_list_intern (list, txt, pre) );
 }
-function echo_list_helper_intern (list, txt="", pre="\t", i=0) =
+function echo_list (list, txt="", pre="\t") =
+	str( echo_list_intern (list, txt, pre), "\n" )
+;
+function echo_list_intern (list, txt="", pre="\t", i=0) =
 	i>=len(list) ? txt :
-	echo_list_helper_intern (list, str (txt ,"\n",pre, list[i]), pre, i+1 )
+	echo_list_intern (list, str (txt ,"\n",pre, list[i]), pre, i+1 )
+;
+
+// function returns value and echo a message if version of OpenSCAD is 2019.05 or greater
+function do_echo (value, message) =
+	version_num()<20190500 ? value
+	: echo(message) + value
 ;
 
 

@@ -38,7 +38,8 @@ Objects to make parts of objects and points in variables seeable.
 
 #### `echo_line (length, char)` [^][contents]
 [echo_line]: #echo_line-length-char-
-Echo a horizontal line into the console.
+Echo a horizontal line into the console.\
+As module or as function to generate the text for `echo()`.
 - `length` - length of line in letter, default = `50`
 - `char`   - character of line, default = `-`
 
@@ -51,6 +52,7 @@ ___Specialized modules with fixed character:___
 [echo_list]: #echo_list-list-txt-pre-
 Echo every entry from a list into the console.\
 Every entry will start in a new line.
+As module or as function to generate the text for `echo()`.
 - `txt`
   - optional text that echoes at first
 - `pre`

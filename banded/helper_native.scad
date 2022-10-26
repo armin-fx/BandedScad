@@ -460,9 +460,3 @@ function is_num_4d (list) =
 function is_split_block (block, last, first=0) = last-first > block*2;
 function    split_block (block, last, first=0) = last - (last-first)%block - block - 1;
 
-// function returns value and echo a message if version of OpenSCAD is 2019.05 or greater
-function do_echo (value, message) =
-	version_num()<20190500 ? value
-	: echo(message) + value
-;
-
