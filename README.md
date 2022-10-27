@@ -10,6 +10,8 @@ It's a playground for experiments.
 - [What it does](#what-it-does-)
 - [Installation](#installation-)
 - [Use](#use-)
+- [Table of contents -->](doc/contents.md)
+- [File overview -->](doc/file_overview.md)
 
 
 What it does [^][contents]
@@ -48,9 +50,6 @@ What it does [^][contents]
 - [Helper functions][helper]
 - [Benchmark functions for speed][benchmark]
 
-[table of contents -->](doc/contents.md)\
-[file overview -->](doc/file_overview.md)
-
 [extend]:      doc/extend.md
 [draft]:       doc/draft.md
 [curves]:      doc/curves.md
@@ -86,7 +85,7 @@ Installation [^][contents]
 
 You must extract archive and copy 'banded.scad' and folder 'banded/' into a directory
 and now you can use it here.
-  
+
 Or you can copy this into the library folder from OpenSCAD for global use.
 The path for this directory depends on your system:
 
@@ -125,6 +124,9 @@ include <banded/constants.scad>
 ### To consider [^][contents]
 
 This library is designed for OpenSCAD version 2021.01.\
+Because of the use of new language features that generates a syntax error
+on older OpenSCAD versions, the bibliothek can only used with
+version 2021.01 or higher.
 OpenSCAD can be downloaded from <https://www.openscad.org/>.
 
 
@@ -132,8 +134,22 @@ OpenSCAD can be downloaded from <https://www.openscad.org/>.
 
 If you want to use some new buildin functions from OpenSCAD in older OpenSCAD version
 you can include file 'compatibility_???.scad'.
+They emulate the missing functions
+and don't disturb on newer versions if you have forgotten to remove them.
+They are not needed for the library.\
+These are in the folder `antiquity`.
 
 #### For OpenSCAD version 2015.03
+Emulated functions:
+- `is_undef()`
+- `is_bool()`
+- `is_num()`
+- `is_list()`
+- `is_string()`
+- `is_function()`
+- `ord()`
+- `assert()` - in another file, generate an error on newer OpenSCAD versions
+
 ```OpenSCAD
 include <compatibility_v2015.scad>
 // If you want use assert()
@@ -141,6 +157,11 @@ include <compatibility_v2015_assert.scad>
 ```
 
 #### For OpenSCAD version 2019.05
+Emulated functions:
+- `is_function()`
+  - returns always `false` in older OpenSCAD versions
+    where function literals not exists
+
 ```OpenSCAD
 include <compatibility_v2019.scad>
 ```
