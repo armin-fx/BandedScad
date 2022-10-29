@@ -27,6 +27,8 @@ Matrix and vector operations
     - [`rotation_around_vector()`][rotation_around_vector]
     - [`rotation_around_line()`][rotation_around_line]
     - [`normal_vector()`][normal_vector]
+    - [`normal_unit_vector()`][normal_unit_vector]
+    - [`normal_triangle()`][normal_triangle]
     - [`triple_product()`][triple_product]
     - [`cross_universal()`][cross_universal]
   - [Test functions for vector](#test-functions-for-vector-)
@@ -46,7 +48,11 @@ Matrix and vector operations
     - [`is_point_on_plane()`][is_point_on_plane]
     - [`is_point_upper_plane()`][is_point_upper_plane]
     - [`is_intersection_segments()`][is_intersection_segments]
+    - [`is_intersection_polygon_segment()`][is_intersection_polygon_segment]
+    - [`is_point_inside_triangle()`][is_point_inside_triangle]
     - [`is_point_inside_polygon()`][is_point_inside_polygon]
+    - [`is_math_rotation_triangle()`][is_math_rotation_triangle]
+    - [`is_math_rotation_polygon()`][is_math_rotation_polygon]
   - [Straight line, line segment and surfaces](#straight-line-line-segment-and-surfaces-)
     - [`get_gradient()`][get_gradient]
     - [`get_intersection_lines()`][get_intersection_lines]
@@ -54,7 +60,6 @@ Matrix and vector operations
   - [Polygon functions](#polygon-functions-)
     - [`length_trace()`][length_trace]
     - [`length_line()`][length_line]
-    - [`get_normal_face()`][get_normal_face]
   - [Convert polygon data](#convert-polygon-data-)
     - [`trace_to_lines()`][trace_to_lines]
     - [`lines_to_trace()`][lines_to_trace]
@@ -176,6 +181,13 @@ A normal unit vector has the length 1.
   - returns a vector that is perpendicular to a spanned plane
     defined by 3 points origin, `v` and `w` as point
 
+#### `normal_triangle (p1, p2, p3, points)` [^][contents]
+[normal_triangle]: #normal_triangle-p1-p2-p3-
+Return the normal vector of a triangle
+defined by 3 points in 3D space.
+- 3 points defined in `p1`, `p2` and `p2`
+- or 3 points in a list `points`
+
 #### `triple_product (a, b, c)` [^][contents]
 [triple_product]: #triple_product-a-b-c-
 Calculate the triple productof three 3-dimensional vectors `a`, `b` and `c`.
@@ -275,19 +287,19 @@ In 2D or 3D.
   - `< 0` - left point is within the segment, e.g. `-1`
   - `> 0` - right point is within the segment, e.g. `1`
 
-#### `is_point_on_plane (points_3, point)` [^][contents]
-[is_point_on_plane]: #is_point_on_plane-points_3-point-
+#### `is_point_on_plane (points, point)` [^][contents]
+[is_point_on_plane]: #is_point_on_plane-points-point-
 Returns `true` if a point lies exactly in a plane.\
 In 3D.
-- `points_3` - 3 points in a list defines the plane
+- `points` - 3 points in a list defines the plane
 
-#### `is_point_upper_plane (points_3, point)` [^][contents]
-[is_point_upper_plane]: #is_point_upper_plane-points_3-point-
+#### `is_point_upper_plane (points, point)` [^][contents]
+[is_point_upper_plane]: #is_point_upper_plane-points-point-
 Returns `true` if a point is upper a plane.\
 In 3D.
 Upper side means the same side of the direction of the normal vector
 from the triangle defined by the 3 points.
-- `points_3` - 3 points in a list defines the plane
+- `points` - 3 points in a list defines the plane
 
 #### `is_intersection_segments (line1, line2, point, no_parallel, ends)` [^][contents]
 [is_intersection_segments]: #is_intersection_segments-line1-line2-point-no_parallel-
@@ -308,6 +320,40 @@ Only in 2D plane.
   - `< 0` - left point is within the segment, e.g. `-1`
   - `> 0` - right point is within the segment, e.g. `1`
 
+#### `is_intersection_polygon_segment (points, line, path, without)` [^][contents]
+[is_intersection_polygon_segment]: #is_intersection_polygon_segment-points-line-path-without-
+Returns `true` if a line segment intersect any line from a polygon.\
+Only in 2D plane.
+- `points` - a list with points defines the outline of the polygon
+- `line`   - a list with 2 points defines the line segment
+- `path`   - optional, a list with positions to `points`
+  - defines the outline of the polygon if defined
+- `without`
+  - optional, a list with point positions, which are excluded from test
+  - a point defined here will even exclude the point and the two line segments
+    in the polygon before and after the point
+  - there can set:
+    - a number as position in `points`
+    - a list with positions, if more then one point will excluded
+
+#### `is_point_inside_triangle (points, point, border, rotation)` [^][contents]
+[is_point_inside_triangle]: #is_point_inside_triangle-points-point-border-rotation-
+Returns `true` if a point lies exactly in a triangle.\
+Inclusive the on the line.
+Only 2D plane.
+- `points` - 3 points in a list defines the triangle
+- `border` - optional, specify whether the border is included to the triangle
+  - default = `true`, the triangle inclusive the border
+- `rotation`
+  - optional, set the rotation of the triangle must be, seen from top
+  - default = `0`, both rotations
+  - `== 0` - left rotation or right rotation
+  - ` > 0` - only for left rotation, mathematical rotation
+    - if the triangle is rotate the other way round, the point is always "outside"
+    - can be used to test the rotation of the triangle
+  - ` < 0` - only for right rotation, clockwise rotation
+
+
 #### `is_point_inside_polygon (points, p, face)` [^][contents]
 [is_point_inside_polygon]: #is_point_inside_polygon-points-p-face-
 Returns `true` if a point lies exactly in a closed trace.\
@@ -326,6 +372,14 @@ _Specialized functions:_
 - `is_point_inside_polygon_3d ()`
   - Test 3D trace
   - The points must lie in the same plane, possibly check beforehand
+
+#### `is_math_rotation_triangle (points)` [^][contents]
+[is_math_rotation_triangle]: #is_math_rotation_triangle-points-
+Returns `true` if the triangle is in mathematical rotation = counter clockwise.
+
+#### `is_math_rotation_polygon (trace)` [^][contents]
+[is_math_rotation_polygon]: #is_math_rotation_polygon-trace-
+Returns `true` if the polygon is in mathematical rotation.
 
 
 ### Straight line, segment line and surfaces [^][contents]
@@ -399,11 +453,11 @@ show_point( get_intersection_lines(l1,l2) ,"green");
 echo( is_intersection_segments(l1,l2) ); // ECHO: true
 ```
 
-#### `get_intersection_line_plane (points_3, line)` [^][contents]
-[get_intersection_line_plane]: #get_intersection_line_plane-points_3-line-
+#### `get_intersection_line_plane (points, line)` [^][contents]
+[get_intersection_line_plane]: #get_intersection_line_plane-points-line-
 Returns the intersecting point of a straight line through a plane.\
 In 3D space.
-- `points_3` - 3 points in a list defines the plane
+- `points` - 3 points in a list defines the plane
 - `line`     - 2 points in a list defines the straight line
 
 
@@ -425,13 +479,6 @@ Return the length of a trace.
 Return the length of a line segment.
 - `line`
   - a list with 2 points defines the ends of the segment line.
-
-#### `get_normal_face (p1, p2, p3, points_3)` [^][contents]
-[get_normal_face]: #get_normal_face-p1-p2-p3-
-Return the normal vector of a triangle
-defined by 3 points in 3D space.
-- 3 points defined in `p1`, `p2` and `p2`
-- or 3 points in a list `points_3`
 
 
 ### Convert polygon data [^][contents]

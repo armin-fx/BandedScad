@@ -40,17 +40,17 @@ function is_point_on_segment (line, point, ends=0) =
 
 // gibt zurück, ob ein Punkt genau in einer Ebene liegt
 // aufgespannt mit 3 Punkten in einer Liste
-function is_point_on_plane (points_3, point) =
-	is_coplanar(points_3[0]-points_3[2],points_3[1]-points_3[2],point-points_3[2])
+function is_point_on_plane (points, point) =
+	is_coplanar(points[0]-points[2], points[1]-points[2], point-points[2])
 ;
 
 // gibt zurück, ob ein Punkt oberhalb einer Ebene liegt
 // aufgespannt mit 3 Punkten in einer Liste
-function is_point_upper_plane (points_3, test_point) =
+function is_point_upper_plane (points, test_point) =
 	let(
-		o=points_3[0],
-		l=points_3[1]-o,
-		r=points_3[2]-o,
+		o=points[0],
+		l=points[1]-o,
+		r=points[2]-o,
 		p=test_point -o,
 		n=cross(l,r),
 		
@@ -101,6 +101,13 @@ function is_intersection_segments (line1, line2, point, no_parallel=false, ends=
 		is_constrain (line2[1], line1[0],line1[1]) ||
 		is_constrain (line1[0], line2[0],line2[1])
 	:
+	point==undef && ends==0 ?
+		 cross( line1[0]-line2[0], line1[1]-line2[0]) *
+		-cross( line1[0]-line2[1], line1[1]-line2[1]) >= 0
+		&&
+		 cross( line2[0]-line1[0], line2[1]-line1[0]) *
+		-cross( line2[0]-line1[1], line2[1]-line1[1]) >= 0
+	:
 	let(
 		p = point!=undef ? point :
 			get_intersection_lines (line1, line2)
@@ -113,23 +120,68 @@ function is_intersection_segments (line1, line2, point, no_parallel=false, ends=
 	)
 ;
 
+function is_intersection_polygon_segment (points, line, path, without) =
+	let (
+		size = path==undef ? len(points) : len(path),
+		crossing =
+			 without==undef
+			?	path==undef
+				? [for (i=[0:1:size-1])
+					if( is_intersection_segments( [points[     i ],points[     (i+1)%size] ], line) ) i ]
+				: [for (i=[0:1:size-1])
+					if( is_intersection_segments( [points[path[i]],points[path[(i+1)%size]]], line) ) i ]
+			:without[0]==undef
+			?	path==undef
+				? [for (i=[0:1:size-1])
+					if( (i!=without) && ((i+1)%size!=without) )
+					if( is_intersection_segments( [points[     i ],points[     (i+1)%size] ], line) ) i ]
+				: [for (i=[0:1:size-1])
+					if( (i!=without) && ((i+1)%size!=without) )
+					if( is_intersection_segments( [points[path[i]],points[path[(i+1)%size]]], line) ) i ]
+			:	path==undef
+				? [for (i=[0:1:size-1])
+					if( [ for (w=without) if ( (i!=w) && ((i+1)%size!=w) ) w ] == without )
+					if( is_intersection_segments( [points[     i ],points[     (i+1)%size] ], line) ) i ]
+				: [for (i=[0:1:size-1])
+					if( [ for (w=without) if ( (i!=w) && ((i+1)%size!=w) ) w ] == without )
+					if( is_intersection_segments( [points[path[i]],points[path[(i+1)%size]]], line) ) i ]
+	)
+	crossing != []
+;
+
+// in 2D
+// - 'rotation'
+//   - ==0 - left rotation or right rotation
+//   -  >0 - only left rotation, mathematical rotation
+//   -  <0 - only right rotation, clockwise rotation
+function is_point_inside_triangle (points, point, border=true, rotation=0) =
+	let (
+		a0 = cross(points[0]-point,points[1]-point),
+		a1 = cross(points[1]-point,points[2]-point),
+		a2 = cross(points[2]-point,points[0]-point)
+	//	,at = cross(points[1]-points[0], points[2]-points[0])
+	)
+	border==true
+	?	(rotation>=0 && a0>=0 && a1>=0 && a2>=0) || (rotation<=0 && a0<=0 && a1<=0 && a2<=0)
+	:	(rotation>=0 && a0>0  && a1>0  && a2>0 ) || (rotation<=0 && a0<0  && a1<0  && a2<0 )
+;
+
 // testet, ob ein Punkt innerhalb der Umrandung eines Polygonzuges in der Ebene ist
 // die Umrandung darf sich nicht selbst überschneiden
-function is_point_inside_polygon (points, p, face) =
+function is_point_inside_polygon (points, p, path) =
 	len(points[0])==2 ?
 		// 2D:
-		is_point_inside_polygon_2d (points, p, face)
+		is_point_inside_polygon_2d (points, p, path)
 	:	// 3D:
-		is_point_inside_polygon_3d (points, p, face)
+		is_point_inside_polygon_3d (points, p, path)
 ;
-function is_point_inside_polygon_2d (points, p, face) =
-	is_point_inside_polygon_2d_intern (
-		trace = face==undef ? points : select (points,face),
-		p     = p,
-		size  = len(points)
+function is_point_inside_polygon_2d (points, p, path) =
+	is_point_inside_polygon_2d_intern (points, p, path,
+		p1   = (path==undef ? points[0]   : points[ path[0] ]) - p,
+		size = (path==undef ? len(points) : len(path))
 	)
 ;
-function is_point_inside_polygon_2d_intern (trace, p, size=0, i=0, count=0) =
+function is_point_inside_polygon_2d_intern (points, p, path, p1, size=0, i=0, count=0) =
 	i>=size ? (count/2)%2!=0 :
 	//
 	// Die Linie vom Punkt aus zum Rand hin auf Kreuzungen testen.
@@ -138,27 +190,27 @@ function is_point_inside_polygon_2d_intern (trace, p, size=0, i=0, count=0) =
 	// Punktetreffer gesondert behandeln, hier lauern tückische Sonderfälle.
 	//
 	let(
-		 p1=trace[i]          - p
-		,p2=trace[(i+1)%size] - p
+	//	p1 = (path==undef ? points[  i       ] : points[ path[  i       ] ]) - p,
+		p2 = (path==undef ? points[(i+1)%size] : points[ path[(i+1)%size] ]) - p
 	)
 	// Punkt genau auf dem Streckenabschnitt            -> raus, gefunden
 	is_point_on_segment ([p1,p2], [0,0] ) ? true :
 	//
 	// - komplett rechts vom Punkt,                     -> weiter
-	(p1.x>0 && p2.x>0) ? is_point_inside_polygon_2d_intern (trace, p, size, i+1, count) :
+	(p1.x>0 && p2.x>0) ? is_point_inside_polygon_2d_intern (points, p, path, p2, size, i+1, count) :
 	// - durchkreuzt nicht die Linie,                   -> weiter
-	p1.y*p2.y > 0      ? is_point_inside_polygon_2d_intern (trace, p, size, i+1, count) :
+	p1.y*p2.y > 0      ? is_point_inside_polygon_2d_intern (points, p, path, p2, size, i+1, count) :
 	//
 	// - Punktetreffer gesondert behandeln:
 	//   - Punkte werden automatisch zweimal gezählt, 1 je Seite
 	p1.y==0 || p2.y==0 ?
 		// - horizontale Durchgänge nicht zählen    	-> weiter
-		p1.y==0 && p2.y==0 ? is_point_inside_polygon_2d_intern (trace, p, size, i+1, count) :
+		p1.y==0 && p2.y==0 ? is_point_inside_polygon_2d_intern (points, p, path, p2, size, i+1, count) :
 		//
 		p1.y==0 ?
 			p1.x>0 ?
 				// - Punkt außerhalb            		-> weiter
-				is_point_inside_polygon_2d_intern (trace, p, size, i+1, count) :
+				is_point_inside_polygon_2d_intern (points, p, path, p2, size, i+1, count) :
 				// - trifft ersten Punkt        		-> zählen
 				//   - Treffer zählen
 				//   - Seitendurchgang berücksichtigen:
@@ -166,35 +218,35 @@ function is_point_inside_polygon_2d_intern (trace, p, size=0, i=0, count=0) =
 				//     - anderes Ende unterhalb: 1 zuzählen
 				//     - beim Treffer am anderen Punkt wird genauso verfahren
 				//     - zählt dadurch nur einen kompletten Durchgang durch den Rand
-				is_point_inside_polygon_2d_intern (trace, p, size, i+1
+				is_point_inside_polygon_2d_intern (points, p, path, p2, size, i+1
 					, count + 1 + ( p2.y==0 ? 0 : p2.y>0 ? -1:1)
 				) :
 		// p2.y==0 ?
 			p2.x>0 ?
 				// - Punkt außerhalb            		-> weiter
-				is_point_inside_polygon_2d_intern (trace, p, size, i+1, count) :
+				is_point_inside_polygon_2d_intern (points, p, path, p2, size, i+1, count) :
 				// - trifft zweiten Punkt       		-> zählen
 				//   - Treffer zählen, Seitendurchgang berücksichtigen
-				is_point_inside_polygon_2d_intern (trace, p, size, i+1
+				is_point_inside_polygon_2d_intern (points, p, path, p2, size, i+1
 					, count + 1 + ( p1.y==0 ? 0 : p1.y>0 ? -1:1)
 				) :
 	//
 	// - Liniendurchgang, doppelt zählen                -> zählen
 	p1.x-p1.y*(p1.x-p2.x)/(p1.y-p2.y) < 0 ?
-		is_point_inside_polygon_2d_intern (trace, p, size, i+1
+		is_point_inside_polygon_2d_intern (points, p, path, p2, size, i+1
 			, count+2
 		) :
 	// - Ende                                           -> weiter
-		is_point_inside_polygon_2d_intern (trace, p, size, i+1, count)
+		is_point_inside_polygon_2d_intern (points, p, path, p2, size, i+1, count)
 ;
 // Alle Punkte müssen sich in der gleichen Ebene befinden.
 // Eventuell vorher nachprüfen
-function is_point_inside_polygon_3d (points, p, face) =
+function is_point_inside_polygon_3d (points, p, path) =
 	let (
-		trace    = (face==undef) ? points : select (points, face),
+		trace    = (path==undef) ? points : select (points, path),
 		size     = len(trace),
 		// TODO test 3 points they span 3 lines whether they are not collinear
-		n        = get_normal_face (points_3=trace), // function use only first 3 points
+		n        = normal_triangle (points=trace), // function use only first 3 points
 		m_flat   = matrix_rotate_to_vector (n, backwards=true, short=true),
 		points_flat = projection_points ( multmatrix_points (trace, m_flat), plane=true ),
 		p_flat      = projection_point  ( multmatrix_point  (p    , m_flat), plane=true )
@@ -212,6 +264,27 @@ function is_point_inside_polyhedron_hulled_intern (points, triangles, point, i=-
 	i<0 ? true  :
 	is_point_upper_plane ( select(points,triangles[i]), point) ? false :
 	is_point_inside_polyhedron_hulled_intern (points, triangles, point, i-1)
+;
+
+// gibt 'true' zurück, wenn ein Dreieck im mathematischen Drehsinn angeordnet ist
+// und 'false' im Uhrzeigersinn
+// in 2D
+function is_math_rotation_triangle (points) =
+	cross (points[1]-points[0], points[2]-points[0]) > 0
+;
+
+// in 2D
+function is_math_rotation_polygon (trace) =
+	let (
+		// the minimum position can guarantie that
+		// - the triangle is at the outer line,
+		//   not any "circle" that rotates otherwise in the inside
+		// - the triangle has at this point always an angle < 180°
+		//   or. the triangle is not in one line
+		 minpos = min_position (trace)
+		,size   = len(trace)
+	)
+	is_math_rotation_triangle ([ trace[(minpos-1+size)%size], trace[minpos], trace[(minpos+1)%size]])
 ;
 
 
@@ -316,14 +389,14 @@ function get_intersection_lines (line1, line2) =
 // gibt den Schnittpunkt einer Geraden durch einer Fläche zurück
 // Die Fläche wird definiert mit 3 Punkten
 // Die Linie wird definiert mit 2 Punkten
-function get_intersection_line_plane (points_3, line) =
+function get_intersection_line_plane (points, line) =
 	let (
-		n   = get_normal_face (points_3=points_3),
-		l_a = translate_points        (line, -points_3[0]),
+		n   = normal_triangle (points=points),
+		l_a = translate_points        (line, -points[0]),
 		l_b = rotate_to_vector_points (l_a, n, backwards=true),
 		p_b = [ concat ( get_gradient_3d(l_b)[0], 0) ],
 		p_a = rotate_to_vector_points (p_b, n, backwards=false),
-		p   = translate_points        (p_a, points_3[0])
+		p   = translate_points        (p_a, points[0])
 	)
 	p[0]
 ;
@@ -348,13 +421,6 @@ function length_trace (points, path, closed=false) =
 // gibt die Länge einer Strecke zurück
 function length_line (line) =
 	norm (line[1]-line[0])
-;
-
-// Ermittelt die Normale eines Dreiecks
-// definiert über 3 Punkte im 3D Raum
-function get_normal_face (p1, p2, p3, points_3) =
-	points_3==undef ? cross (p2-p1, p3-p1)
-	:                 cross (points_3[1]-points_3[0], points_3[2]-points_3[0])
 ;
 
 

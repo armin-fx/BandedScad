@@ -8,6 +8,7 @@
 // [ points ]
 // [ points, path ]
 // [ points, [path, path2, ...] ]    -> Standard
+// [ [points, points2, ...] ]
 // [ [points, points2, ...], [path, path2, ...] ]
 //
 // Position in der Objektliste:
@@ -192,7 +193,7 @@ function rotate_extrude_points (list, angle=360, slices) =
 ;
 function rotate_extrude_extend_points (list, angle=360, slices="x") =
 	let (
-		 r_max       = max_list (list, type=[0])
+		 r_max       = max_value (list, type=[0])
 		,angles      = parameter_angle (angle, [360,0])
 		,Angle_begin = angles[1]
 		,Angle       = constrain (angles[0], -360, 360)
@@ -296,7 +297,7 @@ function linear_extrude_points (list, height, center, twist, slices, scale) =
 ;
 
 function color (object, c, alpha) =
-	[ for (i=[0:1:max(3,len(object)-1)])
+	[ for (i=[0:1:max(2,len(object)-1)])
 		i!=2 ? object[i] :
 		// write color as rgb or rgba list
 		get_color (c, alpha)
@@ -320,19 +321,11 @@ function hull (object) =
 			:undef // unknown object
 	)
 	h==undef ? undef
-	:is_num(h[0][0]) ? // 2D trace
-		[
-			 h                        // all points as trace
-			,range (i=[0:1:len(h)-1]) // count up all points
-			,each [ for (k=[2:1:len(object)-1]) object[k] ] // keep all other data
-		]
-
+	:is_num(h[0][0]) ?    // 2D trace
+		// all points as trace
+		copy_object_properties (object, index(h) )
 	:is_num(h[0][0][0]) ? // 3D object
-		[
-			 h[0]
-			,h[1]
-			,each [ for (k=[2:1:len(object)-1]) object[k] ] // keep all other data
-		]
+		copy_object_properties (object, h)
 	:undef // unknown
 ;
 // get a point list and returns an objekt as list
@@ -429,7 +422,7 @@ function hull_3d_grub_out_points_next (points, triangles, remainder, last=0) =
 		keep_triangles =
 			[ for (triangle=triangles)
 			let (
-			//	normal    = get_normal_face (points_3=select (points,triangle) ),
+			//	normal    = normal_triangle (points=select (points,triangle) ),
 				normal    = cross (points[triangle[1]]-points[triangle[0]], points[triangle[2]]-points[triangle[0]]),
 				direction = next_point - points[triangle[0]],
 				angle     = angle_vector (normal, direction)

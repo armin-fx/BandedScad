@@ -85,7 +85,7 @@ function rotation_around_line (line, p1, p2) =
 		p2     -line[0])
 ;
 
-// Ermittelt die Normale eines Vektors
+// Ermittelt die Normale von Vektoren
 // 2D-Vektor -> 2D Normale von 'v'
 // 3D-Vektor -> 3D Normale (Kreuzprodukt) von 'v' und 'w'
 function normal_vector (v, w) =
@@ -101,6 +101,13 @@ function normal_unit_vector (v, w) =
 	 len(v)==2 ? let( n = [ -v.y, v.x ] ) n/norm(n)
 	:len(v)==3 ? let( n = cross (v, w)  ) n/norm(n)
 	:undef
+;
+
+// Ermittelt die Normale eines Dreiecks
+// definiert über 3 Punkte im 3D Raum
+function normal_triangle (p1, p2, p3, points) =
+	points==undef ? cross (p2-p1, p3-p1)
+	:               cross (points[1]-points[0], points[2]-points[0])
 ;
 
 // rechnet das Spatprodukt aus
