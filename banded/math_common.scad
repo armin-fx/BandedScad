@@ -130,19 +130,19 @@ function mod (x, n) =
 function sign_plus (x) = x<0 ? -1 : 1;
 
 // bildet das 'exklusive oder'
-function xor   (bool, bool2) = bool==bool2 ? false : true;
+function xor   (bool, bool2) = bool != bool2;
 //
 function xor_3 (bool, bool2, bool3, bool4) =
 	bool3==undef
-	?	bool3==(bool==bool2 ? false : true) ? false : true
-	:	bool==bool2 ? false : true
+	?	bool3 != (bool!=bool2)
+	:	bool!=bool2
 ;
 function xor_4 (bool, bool2, bool3, bool4) =
 	bool4==undef ?
 		bool3==undef ?
-			bool3==(bool==bool2 ? false : true) ? false : true
-		:	bool==bool2 ? false : true
-	:		(bool3==bool4 ? false : true)==(bool==bool2 ? false : true) ? false : true
+			bool3 != (bool!=bool2)
+		:	bool!=bool2
+	:		(bool3!=bool4) != (bool!=bool2)
 ;
 
 // Gaußsche Normalverteilung
