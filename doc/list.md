@@ -73,7 +73,10 @@ Functions for edit lists
     - [`unique()`][unique]
     - [`keep_unique()`][keep_unique]
   - [Get data from list](#get-data-from-list-)
-    - [min or max value](#min-or-max-value-)
+    - [Minimum or maximum value](#minimum-or-maximum-value-)
+      - `min_value()`,    `max_value()`
+      - `min_entry()`,    `max_entry()`
+      - `min_position()`, `max_position()`
     - [`count()`][count]
     - [`find_first()`][find_first]
     - [`find_first_once()`][find_first_once]
@@ -444,12 +447,14 @@ The elements are compared using operator `==` or with function `f` if given.
 Get data from list [^][contents]
 --------------------------------
 
-#### Min or max value [^][contents]
+#### Minimum or maximum value [^][contents]
 
 | function                    | description
 |-----------------------------|-------------
-| `min_list     (list, type)` | get the minimum value from a list with specified `type`
-| `max_list     (list, type)` | get the maximum value from a list with specified `type`
+| `min_value    (list, type)` | get the minimum value from a list with specified `type`
+| `max_value    (list, type)` | get the maximum value from a list with specified `type`
+| `min_entry    (list, type)` | get the element from a list which has the minimum value with specified `type`
+| `max_entry    (list, type)` | get the element from a list which has the maximum value with specified `type`
 | `min_position (list, type)` | get the position of minimum value in a list
 | `max_position (list, type)` | get the position of maximum value in a list
 

@@ -41,7 +41,7 @@ function helix_extrude_points (list, angle, rotations, pitch, height, r, opposit
 		,Pitch     = rp[1]
 		,Height    = Rotations * Pitch
 		,Opposite  = xor( (is_bool(opposite) ? opposite : false), rp[0]<0 )
-		,r_max_list = max_list (list, type=[0])
+		,r_max_list = max_value (list, type=[0])
 		,R_max      = max(R) + r_max_list
 		,Slices =
 			slices==undef ? get_slices_circle_current  (R_max, Angle) :

@@ -16,41 +16,46 @@ use <banded/list_edit_type.scad>
 
 
 // Maximum oder Minimum einer Liste gemäß des Typs
-function min_list (list, type=0) = min (value_list(list, type));
-function max_list (list, type=0) = max (value_list(list, type));
+function min_value (list, type=0) = min (value_list(list, type));
+function max_value (list, type=0) = max (value_list(list, type));
+
+function min_entry (list, type=0) = type==0 ? min(list) : list[ min_position (list, type) ];
+function max_entry (list, type=0) = type==0 ? max(list) : list[ max_position (list, type) ];
 
 // Position des kleinsten Wertes einer Liste gemäß des Typs zurückgeben
 function min_position (list, type=0) =
-	list==undef ? -1 :
-	 type   == 0 ? min_position_intern_direct   (list)
-	:type[0]>= 0 ? min_position_intern_list     (list, type[0])
-	:type[0]==-1 ? min_position_intern_function (list, type[1])
-	:              min_position_intern_type     (list, type)
+	list==undef || list==[] ? -1 :
+	let ( size=len(list) )
+	size==1 ? 0 :
+	 type   == 0 ? min_position_intern_direct   (list         , size)
+	:type[0]>= 0 ? min_position_intern_list     (list, type[0], size)
+	:type[0]==-1 ? min_position_intern_function (list, type[1], size)
+	:              min_position_intern_type     (list, type   , size)
 ;
-function min_position_intern_direct (list, pos=0, i=0) =
-	i>=len(list) ? pos :
-	min_position_intern_direct (list
+function min_position_intern_direct (list, size=0, pos=0, i=1) =
+	i>=size ? pos :
+	min_position_intern_direct (list, size
 		,list[pos]<=list[i] ? pos : i
 		,i+1
 		)
 ;
-function min_position_intern_list (list, position=0, pos=0, i=0) =
-	i>=len(list) ? pos :
-	min_position_intern_list (list, position
+function min_position_intern_list (list, position, size=0, pos=0, i=1) =
+	i>=size ? pos :
+	min_position_intern_list (list, position, size
 		,list[pos][position]<=list[i][position] ? pos : i
 		,i+1
 		)
 ;
-function min_position_intern_function (list, fn, pos=0, i=0) =
-	i>=len(list) ? pos :
-	min_position_intern_function (list, fn
+function min_position_intern_function (list, fn, size=0, pos=0, i=1) =
+	i>=size ? pos :
+	min_position_intern_function (list, fn, size
 		,fn(list[pos])<=fn(list[i]) ? pos : i
 		,i+1
 		)
 ;
-function min_position_intern_type (list, type, pos=0, i=0) =
-	i>=len(list) ? pos :
-	min_position_intern_type (list, type
+function min_position_intern_type (list, type, size, pos=0, i=1) =
+	i>=size ? pos :
+	min_position_intern_type (list, type, size
 		,value(list[pos],type)<=value(list[i],type) ? pos : i
 		,i+1
 		)
@@ -58,35 +63,37 @@ function min_position_intern_type (list, type, pos=0, i=0) =
 
 // Position des größten Wertes einer Liste gemäß des Typs zurückgeben
 function max_position (list, type=0) =
-	list==undef ? -1 :
-	 type   ==0 ? max_position_intern_direct (list)
-	:type[0]>=0 ? max_position_intern_list   (list, type[0])
-	:             max_position_intern_type   (list, type)
+	list==undef || list==[] ? -1 :
+	let ( size=len(list) )
+	size==1 ? 0 :
+	 type   ==0 ? max_position_intern_direct (list         , size)
+	:type[0]>=0 ? max_position_intern_list   (list, type[0], size)
+	:             max_position_intern_type   (list, type   , size)
 ;
-function max_position_intern_direct (list, pos=0, i=0) =
-	i>=len(list) ? pos :
-	max_position_intern_direct (list
+function max_position_intern_direct (list, size, pos=0, i=1) =
+	i>=size ? pos :
+	max_position_intern_direct (list, size
 		,list[pos]>=list[i] ? pos : i
 		,i+1
 		)
 ;
-function max_position_intern_list (list, position=0, pos=0, i=0) =
-	i>=len(list) ? pos :
-	max_position_intern_list (list, position
+function max_position_intern_list (list, position, size, pos=0, i=1) =
+	i>=size ? pos :
+	max_position_intern_list (list, position, size
 		,list[pos][position]>=list[i][position] ? pos : i
 		,i+1
 		)
 ;
-function max_position_intern_function (list, fn, pos=0, i=0) =
-	i>=len(list) ? pos :
-	max_position_intern_function (list, fn
+function max_position_intern_function (list, fn, size, pos=0, i=1) =
+	i>=size ? pos :
+	max_position_intern_function (list, fn, size
 		,fn(list[pos])>=fn(list[i]) ? pos : i
 		,i+1
 		)
 ;
-function max_position_intern_type (list, type, pos=0, i=0) =
-	i>=len(list) ? pos :
-	max_position_intern_type (list, type
+function max_position_intern_type (list, type, size, pos=0, i=1) =
+	i>=size ? pos :
+	max_position_intern_type (list, type, size
 		,value(list[pos],type)>=value(list[i],type) ? pos : i
 		,i+1
 		)
