@@ -378,8 +378,8 @@ Summarizes all data elements that occur more than once, rewrites all indices.\
 Returns `[ data, [index1, index2, ... ] ]`
 - `indices` - a list that contains lists with positions to select data at this index in `list`
 - `comparable` - optional setting how the data can be compared
-  - `false` - default, data entries only comparable with `==`
-  - `true`  - data entries comparable with `<`
+  - `true`  - default, data entries comparable with `<`
+  - `false` - mixed data entries only comparable with `==`, use `str (data)` instead
 
 
 Edit list with use of data, depend on type [^][contents]

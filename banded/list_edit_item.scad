@@ -231,7 +231,7 @@ function remove_unselected (list, indices) =
 
 // fasst alle mehrfach vorkommenden Datenelemente zusammen, schreibt alle Indizes neu
 // gibt '[ Daten, [Index1, Index2, ... ] ]' zurück
-function compress_selected (list, indices, comparable=false) =
+function compress_selected (list, indices, comparable=true) =
 	let (
 		size     = len(list),
 		data     = comparable==true
