@@ -45,8 +45,8 @@ function is_function (value) =
 
 // Convert the first character of the given string to a Unicode code point.
 function ord (string) =
-	!is_string(string)    ? undef :
-	!is_string(string[0]) ? undef :
+	!is_string(string) ? undef :
+	string[0]==""      ? undef :
 	ord_intern_range(string)
 ;
 function ord_intern_range (string, under=30, upper=128) =
