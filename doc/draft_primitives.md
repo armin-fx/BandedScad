@@ -93,7 +93,7 @@ Argument convention:
 - `multmatrix(object, m)`
 - `color     (object, c, alpha)`
 - `hull      (object)`
-
+- `linear_extrude (object, height, center, twist, slices, scale)`
 
 #### More functions to transform objects [^][contents]
 - All modules from file
@@ -150,9 +150,6 @@ Creates a helix with a 2D hull as trace similar rotate_extrude.
 ### Not yet implemented [^][contents]
 
 #### Planned [^][contents]
-- `linear_extrude()`
-  - but as function [`linear_extrude_points()`][linear_extrude_points]
-    to create an object from a 2D trace in a point list.
 - `rotate_extrude()`
   - but as function [`rotate_extrude_points()`][rotate_extrude_points]
     (and function `rotate_extrude_extend_points()`)

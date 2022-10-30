@@ -423,6 +423,10 @@ function length_line (line) =
 	norm (line[1]-line[0])
 ;
 
+function midpoint_2 (p1, p2)     = (p1+p2   )  / 2;
+function midpoint_3 (p1, p2, p3) = (p1+p2+p3)  / 3;
+function midpoint_line (l)       = (l[0]+l[1]) / 2;
+
 
 // - Daten von Strecken umwandeln:
 

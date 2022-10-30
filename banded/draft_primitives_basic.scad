@@ -237,15 +237,29 @@ function rotate_extrude_extend_points (list, angle=360, slices="x") =
 ;
 
 function linear_extrude_points (list, height, center, twist, slices, scale) =
-	(list==undef || len(list)<3) ? undef :
+	linear_extrude (list, height, center, twist, slices, scale)
+;
+// TODO work on the case scale=0
+// TODO better ends generation on bottom and top
+function linear_extrude (object, height, center, twist, slices, scale) =
 	let(
-		 H     = height!=undef ? height : 100
+		 unified    = unify_object_trace (object)
+	)
+	!is_object_2d (unified) ? undef :
+	let(
+		 traces     = unified[0]
+		,separate   = split_intersection_traces (traces)
+		,orientated = orientate_nested_traces (separate)
+		,indexed    = index_all (orientated)
+		,Object     = compress_selected (indexed[0], indexed[1])
+		//
+		,H     = height!=undef ? height : 100
 		,Twist = twist !=undef ? twist  : 0
 		,Scale = parameter_scale (scale, 2)
 		,Center = center==true
-		,Slices = get_slices_extrude (list, H, Twist, slices, Scale, $fn, $fs, $fa)
+		,Slices = get_slices_extrude (Object[0], H, Twist, slices, Scale, $fn, $fs, $fa)
 		//
-		,len_base = len(list)
+		,len_base = len(Object[0])
 		//
 		,points =
 			[ for (n=[0:1:Slices])
@@ -255,7 +269,7 @@ function linear_extrude_points (list, height, center, twist, slices, scale) =
 					,m_s = matrix_scale     ([1,1] * ((Slices-n)/Slices) + Scale * (n/Slices), d=2, short=true)
 					,z   = H * n/Slices
 				)
-				for (e=list) let( b = m_s * m_r * e ) [b.x,b.y, z]
+				for (e=Object[0]) let( b = m_s * m_r * e ) [b.x,b.y, z]
 			]
 		,faces =
 			[ for (n=[0:1:Slices-1])
@@ -263,37 +277,65 @@ function linear_extrude_points (list, height, center, twist, slices, scale) =
 				 n_a =  n   *len_base
 				,n_b = (n+1)*len_base
 				)
-			  for (k=[0:1:len_base-1])
-			  for (a=[0,1])
+			  for (p=Object[1])
+				let( len_p = len(p) )
+			  for (k=[0:1:len_p-1]) for (a=[0,1])
 				Twist>=0 ?
 					a==0 ?
-					[ n_a +  k
-					, n_b + (k+1)%len_base
-					, n_a + (k+1)%len_base
+					[ n_a + p[ k ]
+					, n_b + p[(k+1)%len_p ]
+					, n_a + p[(k+1)%len_p ]
 					]
 					:
-					[ n_a +  k
-					, n_b +  k
-					, n_b + (k+1)%len_base
+					[ n_a + p[ k ]
+					, n_b + p[ k ]
+					, n_b + p[(k+1)%len_p ]
 					]
 				:
 					a==0 ?
-					[ n_b +  k
-					, n_b + (k+1)%len_base
-					, n_a + (k+1)%len_base
+					[ n_b + p[ k ]
+					, n_b + p[(k+1)%len_p ]
+					, n_a + p[(k+1)%len_p ]
 					]
 					:
-					[ n_b +  k
-					, n_a + (k+1)%len_base
-					, n_a +  k
+					[ n_b + p[ k ]
+					, n_a + p[(k+1)%len_p ]
+					, n_a + p[ k ]
 					]
 			]
-		,faces_ends =
-			[[ for (i=[0:1:len_base-1])  i]
-			,[ for (i=[len_base-1:-1:0]) i + Slices*len_base]
-			]
+		,bottom_triangles = tesselate_all_traces ( select_all (Object[0], Object[1]) )
+		,bottom_flat      = index_all (bottom_triangles)
+		,bottom           = [ [ for (p=bottom_flat[0]) [p[0],p[1],0] ] , bottom_flat[1] ]
+		,top_points       = [ for (p=extract (points, begin=Slices*len_base)) [p[0],p[1]] ]
+		,top_triangles    = tesselate_all_traces ( select_all (top_points, Object[1]) )
+		,top_flat         = index_all (top_triangles)
+		,top              = [ [ for (p=top_flat   [0]) [p[0],p[1],H] ] , reverse_all(top_flat[1]) ]
+	//	,faces_ends =
+	//		[[ for (i=[0:1:len_base-1])  i]
+	//		,[ for (i=[len_base-1:-1:0]) i + Slices*len_base]
+	//		]
+		,points_size = len(points)
+		,bottom_size = len(bottom[0])
 	)
-	[points, concat(faces,faces_ends)]
+	//	echo("linear_extrude\n", points,"\n",Object[0],"\n",top_points,"\n",bottom)
+
+//	[points, faces]
+
+//	[points, concat(faces,faces_ends)]
+
+	let ( result =
+	[	[ each points
+			, each bottom[0]
+			, each top[0] ]
+	,	[ each faces
+		, each [ for (e=bottom[1]) add_each_with (e, points_size) ]
+		, each [ for (e=top   [1]) add_each_with (e, points_size+bottom_size) ]
+		]
+	]
+	)
+	//	echo("linear_extrude\n", echo_list(result), echo_list(compress_selected (result[0], result[1])))
+	//	result
+		compress_selected (result[0], result[1])
 ;
 
 function color (object, c, alpha) =

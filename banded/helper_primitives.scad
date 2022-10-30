@@ -6,6 +6,9 @@
 
 use <banded/list_edit.scad>
 
+include <banded/helper_primitives_path.scad>
+include <banded/helper_primitives_trace.scad>
+
 
 // Schablone um Objekte zu transformieren,
 // wenn nur die Punkte alleine bearbeitet werden
@@ -265,4 +268,7 @@ function is_object_3d (object) =
 		true :
 	false
 ;
+
+
+// - Daten der Objekte bearbeiten:
 
