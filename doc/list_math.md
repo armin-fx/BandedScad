@@ -14,7 +14,7 @@ Math on lists
 
 ### Contents
 [contents]: #contents "Up to Contents"
-- [Calculating mean ->](mean.md)
+- [Calculating mean ->](list_mean.md)
 
 - [Algorithm on lists](#algorithm-on-lists-)
   - [`summation()`][summation]

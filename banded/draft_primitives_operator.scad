@@ -5,7 +5,7 @@
 // die an polygon() oder polyhedron() übergeben werden können.
 
 use <banded/draft_curves.scad>
-use <banded/draft_multmatrix_basic.scad>
+use <banded/draft_matrix_basic.scad>
 //
 use <banded/helper.scad>
 use <banded/extend.scad>

@@ -13,10 +13,10 @@ Overview of scad files
 ` `| . . . +--> [`banded/math_common.scad`](math.md#more-math-functions- "Various common math functions")\
 ` `| . . . +--> [`banded/math_formula.scad`](math.md#formula-functions- "Formula functions")\
 ` `| . . . +--> [`banded/math_number.scad`](math.md#number-functions- "Number functions")\
-` `| . . . +--> [`banded/math_vector.scad`](vector.md "Vector operations")\
-` `| . . . +--> [`banded/math_matrix.scad`](matrix.md "Matrix operations")\
-` `| . . . +--> [`banded/math_polygon.scad`](matrix.md#polygones-and-lines- "Polygones and lines operations")\
-` `| . . . +--> [`banded/complex.scad`](complex.md "Working with complex numbers")\
+` `| . . . +--> [`banded/math_vector.scad`](math_vector.md "Vector operations")\
+` `| . . . +--> [`banded/math_matrix.scad`](math_matrix.md "Matrix operations")\
+` `| . . . +--> [`banded/math_polygon.scad`](math_matrix.md#polygones-and-lines- "Polygones and lines operations")\
+` `| . . . +--> [`banded/complex.scad`](math_complex.md "Working with complex numbers")\
 ` `|\
 ` `+--> `banded/function.scad`\
 ` `| . . . +--> [`banded/function_algorithmus.scad`](function.md "Algorithmus with function literals")\
@@ -32,7 +32,7 @@ Overview of scad files
 ` `| . . . | . . . . +--> [`banded/list_edit_pair.scad`](list.md#pair-functions- "Pair functions - key-value-pair")\
 ` `| . . . +--> [`banded/list_algorithmus.scad`](list_math.md#algorithm-on-lists- "Algorithm on lists")\
 ` `| . . . +--> [`banded/list_math.scad`](list.md#math-operation-on_each-list-element- "Math operation on each list element")\
-` `| . . . +--> [`banded/list_mean.scad`](mean.md "Calculating mean")\
+` `| . . . +--> [`banded/list_mean.scad`](list_mean.md "Calculating mean")\
 ` `|\
 ` `+--> [`banded/string.scad`](string.md "Functions for edit and convert strings")\
 ` `| . . . +--> [`banded/string_convert.scad`](string.md#convert-strings- "Convert strings")\
@@ -54,16 +54,16 @@ Overview of scad files
 ` `| . . . +--> [`banded/extend_object.scad`](extend.md#defined-modules-)\
 ` `|\
 ` `+--> `banded/draft.scad`\
-` `| . . . +--> [`banded/draft_curves.scad`](curves.md "Creates curves in a point list")\
-` `| . . . +--> [`banded/draft_multmatrix.scad`](multmatrix.md "Multmatrix functions")\
-` `| . . . | . . . . +--> [`banded/draft_multmatrix_basic.scad`](multmatrix.md#basic-multmatrix-functions- "Generate matrix like OpenSCAD buildin affine transformation")\
-` `| . . . | . . . . +--> [`banded/draft_multmatrix_common.scad`](multmatrix.md#more-multmatrix-functions- "Generate matrix for more affine transformations")\
-` `| . . . +--> [`banded/draft_transform.scad`](transform.md "Transform functions on point lists for affine transformations")\
-` `| . . . | . . . . +--> [`banded/draft_transform_basic.scad`](transform.md#basic-multmatrix-functions- "OpenSCAD buildin transformation on point lists")\
-` `| . . . | . . . . +--> [`banded/draft_transform_common.scad`](transform.md#more-multmatrix-functions- "More functions for affine transformations on point lists")\
+` `| . . . +--> [`banded/draft_curves.scad`](draft_curves.md "Creates curves in a point list")\
+` `| . . . +--> [`banded/draft_matrix.scad`](draft_math_matrix.md "Multmatrix functions")\
+` `| . . . | . . . . +--> [`banded/draft_matrix_basic.scad`](draft_math_matrix.md#basic-multmatrix-functions- "Generate matrix like OpenSCAD buildin affine transformation")\
+` `| . . . | . . . . +--> [`banded/draft_matrix_common.scad`](draft_math_matrix.md#more-multmatrix-functions- "Generate matrix for more affine transformations")\
+` `| . . . +--> [`banded/draft_transform.scad`](draft_transform.md "Transform functions on point lists for affine transformations")\
+` `| . . . | . . . . +--> [`banded/draft_transform_basic.scad`](draft_transform.md#basic-multmatrix-functions- "OpenSCAD buildin transformation on point lists")\
+` `| . . . | . . . . +--> [`banded/draft_transform_common.scad`](draft_transform.md#more-multmatrix-functions- "More functions for affine transformations on point lists")\
 ` `| . . . |\
 ` `| . . . +--> [`banded/draft_color.scad`](color.md "Convert colors")\
-` `| . . . +--> [`banded/draft_primitives.scad`](primitives.md "Create and edit OpenSCAD primitives in data lists")\
+` `| . . . +--> [`banded/draft_primitives.scad`](draft_primitives.md "Create and edit OpenSCAD primitives in data lists")\
 ` `| . . . . . . . . +--> `banded/draft_primitives_basic.scad`\
 ` `| . . . . . . . . +--> `banded/draft_primitives_figure.scad`\
 ` `| . . . . . . . . +--> `banded/draft_primitives_transform.scad`\

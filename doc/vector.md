@@ -13,7 +13,7 @@ Matrix and vector operations
 
 ### Contents
 [contents]: #contents "Up to Contents"
-- [Matrix operations ->](matrix.md)
+- [Matrix operations ->](math_matrix.md)
 
 - [Vector operations](#vector-operations-)
   - [Buildin vector operations in OpenSCAD](#buildin-vector-operations-in-openscad-)

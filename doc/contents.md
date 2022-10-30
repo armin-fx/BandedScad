@@ -4,14 +4,14 @@ Table of contents
 - [Constants](constants.md)
 - Math functions
   - [Common math functions](math.md)
-  - [Vector operations](vector.md)
-  - [Matrix operations](matrix.md)
-  - [Polygones and Lines](vector.md#polygones-and-lines-)
-  - [Complex numbers](complex.md)
+  - [Vector operations](math_vector.md)
+  - [Matrix operations](math_matrix.md)
+  - [Polygones and Lines](math_vector.md#polygones-and-lines-)
+  - [Complex numbers](math_complex.md)
 - [Math on lists](list_math.md)
   - [Algorithm on lists](list_math.md#algorithm-on-lists-)
   - [Math operation on each list element](list_math.md#math-operation-on_each-list-element-)
-  - [Calculating mean](mean.md)
+  - [Calculating mean](list_mean.md)
 - [Algorithmus with function literals](function.md)
 - [Editing lists](list.md#editing-lists-)
   - [Type-dependent access to the content](list.md#different-type-of-data-)
@@ -32,11 +32,11 @@ Table of contents
   - [Functions](extend.md#functions-)
   - [Defined modules](extend.md#defined-modules-)
 - Draft objects as data list
-  - [Creates curves in a point list](curves.md)
-  - [Multmatrix functions, generate matrix for affine transformation](multmatrix.md)
-  - [Transform functions on point lists for affine transformations](transform.md)
+  - [Creates curves in a point list](draft_curves.md)
+  - [Multmatrix functions, generate matrix for affine transformation](draft_math_matrix.md)
+  - [Transform functions on point lists for affine transformations](draft_transform.md)
   - [Convert colors](color.md)
-  - [Create and edit objects in data lists](primitives.md)
+  - [Create and edit objects in data lists](draft_primitives.md)
     - Buildin OpenSCAD primitives
     - More objects
     - Transform and edit

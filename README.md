@@ -52,10 +52,10 @@ What it does [^][contents]
 
 [extend]:      doc/extend.md
 [draft]:       doc/draft.md
-[curves]:      doc/curves.md
-[transform]:   doc/transform.md
-[multmatrix]:  doc/multmatrix.md
-[primitives]:  doc/primitives.md
+[curves]:      doc/draft_curves.md
+[transform]:   doc/draft_transform.md
+[multmatrix]:  doc/draft_math_matrix.md
+[primitives]:  doc/draft_primitives.md
 [color]:       doc/color.md
 [list]:           doc/list.md
 [list_edit_item]: doc/list.md#edit-list-independent-from-the-data-
@@ -64,16 +64,16 @@ What it does [^][contents]
 [list_math]:      doc/list_math.md
 [list_algorithm]: doc/list_math.md#algorithm-on-lists-
 [list_math_each]: doc/list_math.md#math-operation-on_each-list-element-
-[mean]:           doc/mean.md
+[mean]:           doc/list_mean.md
 [string]:      doc/string.md
 [function]:    doc/function.md
 [helper]:      doc/helper.md
 [benchmark]:   doc/helper.md#benchmark-function-
 [math]:        doc/math.md
 [math_common]: doc/math.md#various-math-functions-
-[vector]:      doc/vector.md
-[matrix]:      doc/matrix.md
-[complex]:     doc/complex.md
+[vector]:      doc/math_vector.md
+[matrix]:      doc/math_matrix.md
+[complex]:     doc/math_complex.md
 [operator]:    doc/operator.md
 [object]:      doc/object.md
 [edges]:       doc/object.md#rounded-edges-

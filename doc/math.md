@@ -19,9 +19,9 @@ Math functions
 
 ### Contents
 [contents]: #contents "Up to Contents"
-- [Complex numbers ->](complex.md)
-- [Vector operations ->](vector.md)
-- [Matrix operations ->](matrix.md)
+- [Complex numbers ->](math_complex.md)
+- [Vector operations ->](math_vector.md)
+- [Matrix operations ->](math_matrix.md)
 - [Math on lists ->](list_math.md)
 
 - [More math functions](#more-math-functions-)
@@ -401,7 +401,7 @@ The points must be in n dimensions.
 Calculates the parameter of a parabola from 3 points.\
 Parabola from type: `y = Ax² + Bx + C`\
 Return the result as a list `[C,B,A]`.\
-The result can directly used in function [`polynomial()`](curves.md#polynomial-function-).
+The result can directly used in function [`polynomial()`](draft_curves.md#polynomial-function-).
 - `p1, p2, p3` - arbitrary points on the parabola in 2D plane
 
 #### `get_parabola_from_midpoint (p1, p2, ym)` [^][contents]
@@ -412,7 +412,7 @@ Needs 2 outer points and the height of the midpoint.
 The distance in X-axis between the 3 points is the same.\
 Parabola from type: `y = Ax² + Bx + C`\
 Return the result as a list `[C,B,A]`.\
-The result can directly used in function [`polynomial()`](curves.md#polynomial-function-).
+The result can directly used in function [`polynomial()`](draft_curves.md#polynomial-function-).
 - `p1, p2` - the both outer points on the parabola in 2D plane
 - `ym`     - the height on Y-axis on the half way on X-axis between the outer points `p1` and `p2`
 

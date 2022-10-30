@@ -104,7 +104,7 @@ with extra special variables, some modules have extra arguments
 
 #### `circle_extend (r, angle, slices, piece, outer, align, d)` [^][contents]
 [circle]: #circle_extend-r-angle-slices-piece-outer-align-d-
-Creates a circle with [options of `circle_curve()`](curves.md#circle-)
+Creates a circle with [options of `circle_curve()`](draft_curves.md#circle-)
 - `r, d`
   - radius or diameter of circle
 - `angle`
@@ -133,7 +133,7 @@ Creates a circle with [options of `circle_curve()`](curves.md#circle-)
 
 #### `cylinder_extend (h, r1, r2, center, r, d, d1, d2, angle, slices, piece, outer, align)` [^][contents]
 [cylinder]: #cylinder_extend-h-r1-r2-center-r-d-d1-d2-angle-slices-piece-outer-align-
-Creates a cylinder with ground circle [options of `circle_curve()`](curves.md#circle-)
+Creates a cylinder with ground circle [options of `circle_curve()`](draft_curves.md#circle-)
 - `align`
   - Side from origin away that the part should be.
   - [Extra arguments - align](#extra-arguments-)
@@ -203,7 +203,7 @@ Functions [^][contents]
 Values:
 - `r`     - radius of a circle
 - `angle` - opening angle of a part of a circle in degrees
-- `piece` - control the look of the part of a circle [-> see options of `circle_curve()`](curves.md#circle-)
+- `piece` - control the look of the part of a circle [-> see options of `circle_curve()`](draft_curves.md#circle-)
 
 Control the fragment count of a circle (buildin):
 - `fn` - like `$fn`, fixed number of fragments

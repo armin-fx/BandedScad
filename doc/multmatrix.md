@@ -4,9 +4,9 @@ Draft objects as data list - Multmatrix
 ### defined in file
 `banded/draft.scad`\
 ` `| \
-` `+--> `banded/draft_multmatrix.scad`\
-` `| . . . . +--> `banded/draft_multmatrix_basic.scad`\
-` `| . . . . +--> `banded/draft_multmatrix_common.scad`\
+` `+--> `banded/draft_matrix.scad`\
+` `| . . . . +--> `banded/draft_matrix_basic.scad`\
+` `| . . . . +--> `banded/draft_matrix_common.scad`\
 ` `. . .
 
 [<-- file overview](file_overview.md)\

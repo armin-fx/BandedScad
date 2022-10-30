@@ -263,18 +263,18 @@ Axis = x, y or z. later named as '?'
 | projection()           | [projection_points()][projection_points] | -
 | multmatrix()           | [multmatrix_points()][multmatrix_points] | -
 
-[translate_points]:  transform.md#translate_points-list-v-
-[rotate_points]:     transform.md#rotate_points-list-a-v-backwards-
-[mirror_points]:     transform.md#mirror_points-list-v-
-[scale_points]:      transform.md#scale_points-list-v-
-[resize_points]:     transform.md#resize_points-list-newsize-
-[projection_points]: transform.md#projection_points-list-plane-
-[multmatrix_points]: transform.md#multmatrix_points-list-m-
+[translate_points]:  draft_transform.md#translate_points-list-v-
+[rotate_points]:     draft_transform.md#rotate_points-list-a-v-backwards-
+[mirror_points]:     draft_transform.md#mirror_points-list-v-
+[scale_points]:      draft_transform.md#scale_points-list-v-
+[resize_points]:     draft_transform.md#resize_points-list-newsize-
+[projection_points]: draft_transform.md#projection_points-list-plane-
+[multmatrix_points]: draft_transform.md#multmatrix_points-list-m-
 
-[matrix_translate]: multmatrix.md#matrix_translate-v-d-
-[matrix_rotate]:    multmatrix.md#matrix_rotate-a-v-backwards-d-
-[matrix_mirror]:    multmatrix.md#matrix_mirror-v-d-
-[matrix_scale]:     multmatrix.md#matrix_scale-v-d-
+[matrix_translate]: draft_math_matrix.md#matrix_translate-v-d-
+[matrix_rotate]:    draft_math_matrix.md#matrix_rotate-a-v-backwards-d-
+[matrix_mirror]:    draft_math_matrix.md#matrix_mirror-v-d-
+[matrix_scale]:     draft_math_matrix.md#matrix_scale-v-d-
 
 #### More operator modules [^][contents]
 
@@ -292,21 +292,21 @@ Axis = x, y or z. later named as '?'
 | [skew()][skew]                               | [skew_points()][skew_points]                               | [matrix_skew()][matrix_skew]
 | [skew_at()][skew_at]                         | [skew_at_points()][skew_at_points]                         | [matrix_skew_at()][matrix_skew_at]
 
-[rotate_backwards_points]:    transform.md#rotate_backwards_points-list-a-v-
-[rotate_at_points]:           transform.md#rotate_at_points-list-a-p-v-backwards-
-[rotate_to_vector_points]:    transform.md#rotate_to_vector_points-list-v-a-backwards-
-[rotate_to_vector_at_points]: transform.md#rotate_to_vector_at_points-list-v-p-a-backwards-
-[mirror_at_points]:           transform.md#mirror_at_points-list-v-p-
-[skew_points]:                transform.md#skew_points-list-v-t-m-a-
-[skew_at_points]:             transform.md#skew_at_points-list-v-t-m-a-p-
+[rotate_backwards_points]:    draft_transform.md#rotate_backwards_points-list-a-v-
+[rotate_at_points]:           draft_transform.md#rotate_at_points-list-a-p-v-backwards-
+[rotate_to_vector_points]:    draft_transform.md#rotate_to_vector_points-list-v-a-backwards-
+[rotate_to_vector_at_points]: draft_transform.md#rotate_to_vector_at_points-list-v-p-a-backwards-
+[mirror_at_points]:           draft_transform.md#mirror_at_points-list-v-p-
+[skew_points]:                draft_transform.md#skew_points-list-v-t-m-a-
+[skew_at_points]:             draft_transform.md#skew_at_points-list-v-t-m-a-p-
 
-[matrix_rotate_backwards]:    multmatrix.md#matrix_rotate_backwards-a-v-d-
-[matrix_rotate_at]:           multmatrix.md#matrix_rotate_at-a-p-v-backwards-d-
-[matrix_rotate_to_vector]:    multmatrix.md#matrix_rotate_to_vector-v-a-backwards-
-[matrix_rotate_to_vector_at]: multmatrix.md#matrix_rotate_to_vector_at-v-p-a-backwards-
-[matrix_mirror_at]:           multmatrix.md#matrix_mirror_at-v-p-d-
-[matrix_skew]:                multmatrix.md#matrix_skew-v-t-m-a-d-
-[matrix_skew_at]:             multmatrix.md#matrix_skew_at-v-t-m-a-p-d-
+[matrix_rotate_backwards]:    draft_math_matrix.md#matrix_rotate_backwards-a-v-d-
+[matrix_rotate_at]:           draft_math_matrix.md#matrix_rotate_at-a-p-v-backwards-d-
+[matrix_rotate_to_vector]:    draft_math_matrix.md#matrix_rotate_to_vector-v-a-backwards-
+[matrix_rotate_to_vector_at]: draft_math_matrix.md#matrix_rotate_to_vector_at-v-p-a-backwards-
+[matrix_mirror_at]:           draft_math_matrix.md#matrix_mirror_at-v-p-d-
+[matrix_skew]:                draft_math_matrix.md#matrix_skew-v-t-m-a-d-
+[matrix_skew_at]:             draft_math_matrix.md#matrix_skew_at-v-t-m-a-p-d-
 
 
 Place objects [^][contents]
@@ -457,7 +457,7 @@ Creates a helix with a 2D-polygon similar rotate_extrude.\
 This will generate every segment with operation `hull()` on the 2D-polygon ends.
 It makes sometimes trouble when you want to render the object.
 Then it is maybe better to use the function
-[`helix_extrude_points()`](primitives.md#helix_extrude_points-angle-rotations-pitch-height-r-opposite-slices-).
+[`helix_extrude_points()`](draft_primitives.md#helix_extrude_points-angle-rotations-pitch-height-r-opposite-slices-).
 
 modified from Gael Lafond, <https://www.thingiverse.com/thing:2200395>\
 License: CC0 1.0 Universal
