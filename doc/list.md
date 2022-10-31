@@ -385,13 +385,27 @@ Returns `[ data, [index1, index2, ... ] ]`
 Edit list with use of data, depend on type [^][contents]
 --------------------------------------------------------
 
-#### `sort (list, type)` [^][contents]
+#### `sort (list, type, f)` [^][contents]
 [sort]: #sort-list-type-
 Sort a list with a stable sort algorithm
+- `f`
+  - optional, function literal to compare the values with two arguments
+  - returns a numeric value to compare with `0`,
+    `f(a,b)` must return a value
+    - `< 0` if `a < b`
+    - `0`   if `a == b`
+    - `> 0` if `a > b`
 
-#### `merge (list1, list2, type)` [^][contents]
+#### `merge (list1, list2, type, f)` [^][contents]
 [merge]: #merge-list1-list2-type-
 Merge 2 sorted lists into one list
+- `f`
+  - optional, function literal to compare the values with two arguments
+  - returns a numeric value to compare with `0`,
+    `f(a,b)` must return a value
+    - `< 0` if `a < b`
+    - `0`   if `a == b`
+    - `> 0` if `a > b`
 
 #### `remove_duplicate (list, type)` [^][contents]
 [remove_duplicate]: #remove_duplicate-list-type-

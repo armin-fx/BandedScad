@@ -18,15 +18,24 @@ use <banded/list_edit_type.scad>
 // - Daten in der Liste bearbeiten:
 
 // Listen sortieren
-function sort (list, type=0) = sort_quicksort (list, type);
+function sort (list, type=0, f) =
+	sort_quicksort (list, type, f)
+//	sort_mergesort (list, type, f)
+;
 
 // stabiles sortieren mit Quicksort
-function sort_quicksort (list, type=0) =
+function sort_quicksort (list, type=0, f) =
 	list==undef ? list :
-	 type   ==0 ? sort_quicksort_direct (list)
-	:type[0]>=0 ? sort_quicksort_list   (list, type[0])
-	:             sort_quicksort_type   (list, type)
+	f==undef ?
+		 type   ==0 ? sort_quicksort_direct (list)
+		:type[0]>=0 ? sort_quicksort_list   (list, type[0])
+		:             sort_quicksort_type   (list, type)
+	:
+		 type   ==0 ? sort_quicksort_f_direct (list, f)
+		:type[0]>=0 ? sort_quicksort_f_list   (list, f, type[0])
+		:             sort_quicksort_f_type   (list, f, type)
 ;
+//
 function sort_quicksort_direct (list) =
 	list==[] ? list :
 	let ( size = len(list) )
@@ -64,43 +73,88 @@ function sort_quicksort_type (list, type) =
 	)
 	[ each sort_quicksort_type(lesser,type), each equal, each sort_quicksort_type(greater,type) ]
 ;
+//
+function sort_quicksort_f_direct (list, f) =
+	list==[] ? list :
+	let ( size = len(list) )
+	size<=1  ? list :
+	let(
+		pivot   = list[floor(size/2)],
+		lesser  = [ for (e=list) if ( f(e,pivot)  < 0 ) e ],
+		equal   = [ for (e=list) if ( f(e,pivot) == 0 ) e ],
+		greater = [ for (e=list) if ( f(e,pivot)  > 0 ) e ]
+	)
+	[ each sort_quicksort_f_direct(lesser,f), each equal, each sort_quicksort_f_direct(greater,f) ]
+;
+function sort_quicksort_f_list (list, f, position=0) =
+	list==[] ? list :
+	let ( size = len(list) )
+	size<=1  ? list :
+	let(
+		pivot   = list[floor(size/2)][position],
+		lesser  = [ for (e=list) if ( f(e[position],pivot)  < 0 ) e ],
+		equal   = [ for (e=list) if ( f(e[position],pivot) == 0 ) e ],
+		greater = [ for (e=list) if ( f(e[position],pivot)  > 0 ) e ]
+	)
+	[ each sort_quicksort_f_list(lesser,f,position), each equal, each sort_quicksort_f_list(greater,f,position) ]
+;
+function sort_quicksort_f_type (list, f, type) =
+	list==[] ? list :
+	let ( size = len(list) )
+	size<=1  ? list :
+	let(
+		values  = value_list (list,type),
+		pivot   = values[floor(size/2)],
+		lesser  = [ for (i=[0:1:size-1]) if ( f(values[i],pivot)  < 0 ) list[i] ],
+		equal   = [ for (i=[0:1:size-1]) if ( f(values[i],pivot) == 0 ) list[i] ],
+		greater = [ for (i=[0:1:size-1]) if ( f(values[i],pivot)  > 0 ) list[i] ]
+	)
+	[ each sort_quicksort_f_type(lesser,f,type), each equal, each sort_quicksort_f_type(greater,f,type) ]
+;
 
 // stabiles sortierten mit Mergesort
-function sort_mergesort (list, type=0) =
+function sort_mergesort (list, type=0, f) =
 	list==undef ? list :
 	let ( size = len(list) )
 	(size<=1) ? list :
 	(size==2) ?
-		type==0 ? list[0]            <list[1]             ? list : [list[1],list[0]]
-		:         value(list[0],type)<value(list[1],type) ? list : [list[1],list[0]]
+		f==undef ?
+			type==0 ?   list[0]            <list[1]                  ? list : [list[1],list[0]]
+			:           value(list[0],type)<value(list[1],type)      ? list : [list[1],list[0]]
+		:
+			type==0 ? f(list[0]            ,list[1]            ) < 0 ? list : [list[1],list[0]]
+			:         f(value(list[0],type),value(list[1],type)) < 0 ? list : [list[1],list[0]]
 	:
 	let(
 		middle = floor((size-1)/2)
 	)
 	merge(
-		 sort_mergesort([for (i=[0       :1:middle]) list[i]], type)
-		,sort_mergesort([for (i=[middle+1:1:size-1]) list[i]], type)
-		,type
+		 sort_mergesort([for (i=[0       :1:middle]) list[i]], type, f)
+		,sort_mergesort([for (i=[middle+1:1:size-1]) list[i]], type, f)
+		,type, f
 	)
 ;
 
 // 2 sortierte Listen miteinander verschmelzen
-// sehr langsame Implementierung
-function merge        (list1, list2, type=0) =
+function merge        (list1, list2, type=0, f) =
 	list1==undef ? list2 :
 	list2==undef ? list1 :
-	merge_intern_2 (list1, list2, type)
+//	merge_intern_1 (list1, list2, type, f, len(list1), len(list2))
+	merge_intern_2 (list1, list2, type, f)
 ;
-function merge_intern (list1, list2, type=0, i1=0, i2=0) =
-	(i1>=len(list1) || i2>=len(list2)) ?
-		 (i1>=len(list1)) ? [ for (e=[i2:len(list2)-1]) list2[e] ]
-		:(i2>=len(list2)) ? [ for (e=[i1:len(list1)-1]) list1[e] ]
+function merge_intern_1 (list1, list2, type=0, f, size1=0, size2=0, i1=0, i2=0) =
+	(i1>=size1 || i2>=size2) ?
+		 (i1>=size1) ? [ for (e=[i2:size2-1]) list2[e] ]
+		:(i2>=size2) ? [ for (e=[i1:size1-1]) list1[e] ]
 		:[]
-	:(value(list1[i1],type) <= value(list2[i2],type)) ?
-		 [ each [list1[i1]], each merge_intern (list1, list2, type, i1+1, i2)   ]
-		:[ each [list2[i2]], each merge_intern (list1, list2, type, i1,   i2+1) ]
+	:
+	(	f==undef ?  value(list1[i1],type) <= value(list2[i2],type)
+		:         f(value(list1[i1],type),   value(list2[i2],type)) <= 0
+	)
+	?	[ each [list1[i1]], each merge_intern_1 (list1, list2, type, f, size1, size2, i1+1, i2)   ]
+	:	[ each [list2[i2]], each merge_intern_1 (list1, list2, type, f, size1, size2, i1,   i2+1) ]
 ;
-function merge_intern_2 (list1, list2, type=0) =
+function merge_intern_2 (list1, list2, type=0, f) =
 	let(
 		enda=len(list1),
 		endb=len(list2),
@@ -110,6 +164,8 @@ function merge_intern_2 (list1, list2, type=0) =
 	)
 	!(enda>0) ? list2 :
 	!(endb>0) ? list1 :
+	//
+	f==undef ?
 	[for (
 		i=0,j=0,
 			A=type==0 ? a[i] : value(a[i],type),
@@ -121,12 +177,24 @@ function merge_intern_2 (list1, list2, type=0) =
 			B=type==0 ? b[j] : value(b[j],type),
 			q=j>=endb?true:i>=enda?false:A<B, v=q?a[i]:b[j]
 	) v ]
+	:
+	[for (
+		i=0,j=0,
+			A=type==0 ? a[i] : value(a[i],type),
+			B=type==0 ? b[j] : value(b[j],type),
+			q=j>=endb?true:i>=enda?false:f(A,B)<0, v=q?a[i]:b[j]
+		;i+j<=end;
+		i=q?i+1:i, j=q?j:j+1,
+			A=type==0 ? a[i] : value(a[i],type),
+			B=type==0 ? b[j] : value(b[j],type),
+			q=j>=endb?true:i>=enda?false:f(A,B)<0, v=q?a[i]:b[j]
+	) v ]
 ;
 
 // Entfernt alle Duplikate aus der Liste
 function remove_duplicate (list, type=0) =
 	list==undef ? list :
-	let ( size=len(list) ) 
+	let ( size=len(list) )
 	size==0     ? list :
 	 type   == 0 ? remove_duplicate_intern_direct   (list,          size=size)
 	:type[0]>= 0 ? remove_duplicate_intern_list     (list, type[0], size=size)
