@@ -279,8 +279,15 @@ function linear_extrude (object, height, center, twist, slices, scale) =
 				)
 			  for (p=Object[1])
 				let( len_p = len(p) )
-			  for (k=[0:1:len_p-1]) for (a=[0,1])
-				Twist>=0 ?
+			  for (k=[0:1:len_p-1])
+				let (
+					d1 = points[n_a + p[ k ]] - points[n_b + p[(k+1)%len_p]],
+					d2 = points[n_b + p[ k ]] - points[n_a + p[(k+1)%len_p]],
+				//	side = norm(d1) <= norm(d2)
+					side = (d1.x*d1.x+d1.y*d1.y+d1.z*d1.z) <= (d2.x*d2.x+d2.y*d2.y+d2.z*d2.z)
+				)
+				for (a=[0,1])
+				side ?
 					a==0 ?
 					[ n_a + p[ k ]
 					, n_b + p[(k+1)%len_p ]
