@@ -28,6 +28,14 @@ use <banded/list_edit_data.scad>
 //   slices    = count of segments from helix per full rotation
 //
 function helix_extrude_points (list, angle, rotations, pitch, height, r, opposite, orientation, slices) =
+	helix_extrude_points (list, angle, rotations, pitch, height, r, opposite, orientation, slices)
+;
+//
+function helix_extrude (object, angle, rotations, pitch, height, r, opposite, orientation, slices) =
+	let(
+		 Object = prepare_object_2d_path (object)
+	)
+	Object==undef ? undef :
 	let (
 		 R  = parameter_cylinder_r_basic (r, r[0], r[1], preset=[0,0])
 		,rp = parameter_helix_to_rp (
@@ -41,25 +49,25 @@ function helix_extrude_points (list, angle, rotations, pitch, height, r, opposit
 		,Pitch     = rp[1]
 		,Height    = Rotations * Pitch
 		,Opposite  = xor( (is_bool(opposite) ? opposite : false), rp[0]<0 )
-		,r_max_list = max_value (list, type=[0])
-		,R_max      = max(R) + r_max_list
+		,r_max_obj = max_value (Object[0], type=[0])
+		,R_max     = max(R) + r_max_obj
 		,Slices =
 			slices==undef ? get_slices_circle_current  (R_max, Angle) :
 			slices=="x"   ? get_slices_circle_current_x(R_max, Angle) :
 			max(2, ceil(slices * Rotations))
 		,is_full = Angle==360 && Pitch==0
-		,List =
+		,points_obj =
 			orientation==true ?
 				let(
 					m = matrix_rotate (-90, d=2, short=true)
 					  * matrix_rotate_to_vector ([-(R[0]-R[1]),Height], d=2, short=true)
 				)
-				[ for (e=list) m*e ]
-			:	list
+				[ for (e=Object[0]) m*e ]
+			:	Object[0]
 		
 		// Y-Axis --to--> Z-Axis
 		// TODO: use only right side
-		,base     = [ for (e=List) [e[0],0,e[1]] ]
+		,base     = [ for (e=points_obj) [e[0],0,e[1]] ]
 		,len_base = len(base)
 		,points =
 			[ for (n=[0:1: Slices - (is_full ? 1 : 0) ])
@@ -80,18 +88,22 @@ function helix_extrude_points (list, angle, rotations, pitch, height, r, opposit
 					 (n+1)%Slices*len_base
 					:(n+1)       *len_base
 				)
-			  for (k=[0:1:len_base-1])
-				[ n_a +  k
-				, n_a + (k+1)%len_base
-				, n_b + (k+1)%len_base
-				, n_b +  k
+			  for (p=Object[1])
+				let( len_p = len(p) )
+			  for (k=[0:1:len_p-1])
+				[ n_a + p[ k ]
+				, n_a + p[(k+1)%len_p ]
+				, n_b + p[(k+1)%len_p ]
+				, n_b + p[ k ]
 				]
-			]
-		,faces_ends = is_full ? [] :
-			[[ for (i=[len_base-1:-1:0]) i]
-			,[ for (i=[0:1:len_base-1])  i + Slices*len_base ]
 			]
 	)
 	is_full ? [points, faces]
-	:         [points, concat(faces,faces_ends)]
+	:
+	let (
+		 triangles        = tesselate_all_paths ( Object[0], Object[1] )
+		,bottom_triangles = reverse_all (triangles)
+		,top_triangles    = add_all_each_with (triangles, Slices*len_base )
+	)
+	[points, [ each faces, each bottom_triangles, each top_triangles ] ]
 ;

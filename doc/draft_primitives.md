@@ -23,7 +23,7 @@ Draft objects as data list - Primitives
     - Create object with [`build()`][build]
   - [Edit objects based on OpenSCAD buildin modules](#edit-objects-based-on-openscad-buildin-modules-)
   - [Edit objects](#edit-objects-)
-    - [`helix_extrude_points()`][helix_extrude_points]
+    - [`helix_extrude()`][helix_extrude]
 
 
 Primitives [^][contents]
@@ -170,8 +170,8 @@ Not yet implemented:
 - `mirror_repeat      (object, v, v2, v3)`
 - `mirror_repeat_copy (object, v, v2, v3)`
 
-#### `helix_extrude_points (list, angle, rotations, pitch, height, r, opposite, orientation, slices)` [^][contents]
-[helix_extrude_points]: #helix_extrude_points-list-angle-rotations-pitch-height-r-opposite-orientation-slices-
+#### `helix_extrude (object, angle, rotations, pitch, height, r, opposite, orientation, slices)` [^][contents]
+[helix_extrude]: #helix_extrude-object-angle-rotations-pitch-height-r-opposite-orientation-slices-
 Creates a helix with a 2D hull as trace similar rotate_extrude.
 - `angle`     - angle of helix in degrees - default: `360`
 - `rotations` - rotations of helix, can be used instead `angle`

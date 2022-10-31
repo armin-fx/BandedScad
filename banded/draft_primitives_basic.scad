@@ -217,7 +217,7 @@ function rotate_extrude_extend (object, angle=360, slices="x") =
 		// Y-Axis --to--> Z-Axis
 		// TODO: use only right side
 		,base     = [ for (e=Object[0]) [e[0],0,e[1]] ]
-		,len_base = len(Object[0])
+		,len_base = base
 		//
 		,points =
 			[ for (n=[0:1: Slices - (is_full ? 1 : 0) ])
