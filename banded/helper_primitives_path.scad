@@ -123,21 +123,212 @@ function remove_expendable_points_path (points, face) =
 
 //------------------------------------------------------------------------
 
-// TODO - function connect_polygon_holes_paths (points, paths)
+// Verbindet ineinander verschachtelte Polygone miteinander.
+// Löcher werden mit der Außenwand verbunden.
+// Vorbereitung zum Aufteilen in Dreiecke
+// returns only all path in a list
+function connect_polygon_holes_paths (points, paths) =
+	let (
+		,children  =         list_polygon_holes_next_paths (points, paths)
+		,orient    = [for (e=list_polygon_holes_parent_paths(points, paths)) len(e)]
+		,t_rotated = unify_polygon_rotation_paths (points, paths, orient)
+		,linked    =
+			[for (i=[0:1:len(paths)-1])
+				// only paths with math rotation has children holes
+				if (is_even (orient[i]))
+					connect_polygon_holes_path (points, t_rotated[i], select(t_rotated,children[i]) )
+			]
+	)
+	// echo("connect_polygon_holes_paths", echo_list(linked, "linked"))
+	value_list (linked, [0])
+;
+function connect_polygon_holes_path (points, path, holes=[],  i=0) =
+	holes==undef || holes==[] ? [path] :
+	i>=len(holes) ? [path, holes] :
+	let (
+		pos = find_polygon_connect_path (points, path, holes, i)
+	)
+	// echo("connect_polygon_holes_path",i, len(holes), pos,"\n",holes[i], echo_list(holes))
+	pos==undef ?
+		connect_polygon_holes_path (points, path, holes, i+1)
+	:
+	let (
+		 path_n =
+			[	each rotate_list (path,     pos[0])
+			,	path    [ pos[0] ]
+			,	each rotate_list (holes[i], pos[1])
+			,	holes[i][ pos[1] ]
+			]
+		,holes_n = remove (holes, i)
+	)
+	connect_polygon_holes_path (points, path_n, holes_n, 0)
+;
+// return = [pos_path, pos_hole]
+// return = undef in nothing found
+function find_polygon_connect_path (points, path, holes, hole_number,  pos_path=0, pos_hole=0) =
+	pos_path>=len(path) ? undef :
+	pos_hole>=len(holes[hole_number])
+	?	find_polygon_connect_path (points, path, holes, hole_number, pos_path+1, 0)
+	:
+	let (
+		 hole = holes[hole_number]
+		,line = [ points[path[pos_path]], points[hole[pos_hole]] ]
+	)
+	is_intersection_polygon_segment (points, line, path=path, without=pos_path) ||
+	is_intersection_polygon_segment (points, line, path=hole, without=pos_hole) ||
+	[for (i=[0:1:len(holes)-1])
+		if (i!=hole_number)
+		if (is_intersection_polygon_segment (points, line, path=holes[i]) )
+		i ] != []
+	?	find_polygon_connect_path (points, path, holes, hole_number, pos_path, pos_hole+1)
+	:
+	[pos_path, pos_hole]
+;
 
-// TODO - function connect_polygon_holes_path (points, path)
 
-// TODO - function list_polygon_holes_next_paths (points, paths)
+function list_polygon_holes_next_paths (points, paths) =
+	let (
+		ch_ldren = list_polygon_holes_children_paths (points, paths),
+		next =
+			[for (e=ch_ldren)
+				let(
+					not = [for (i=e) each ch_ldren[i] ],
+					yes = remove_all_values (e, not)
+				)
+				yes
+			]
+	)
+	next
+;
 
-// TODO - function list_polygon_holes_parent_paths (points, paths)
+function list_polygon_holes_parent_paths (points, paths) =
+	paths==undef ? [] :
+	[for (i=[0:1:len(paths)-1])
+		[ for (j=[0:1:len(paths)-1])
+			if (i!=j && is_point_inside_polygon (points, points[paths[i][0]], path=paths[j])) j ]
+	]
+;
 
-// TODO - function list_polygon_holes_children_paths (points, paths)
+function list_polygon_holes_children_paths (points, paths) =
+	paths==undef ? [] :
+	[for (i=[0:1:len(paths)-1])
+		[ for (j=[0:1:len(paths)-1])
+			if (i!=j && is_point_inside_polygon (points, points[paths[j][0]], path=paths[i])) j ]
+	]
+;
 
-// TODO - function unify_polygon_rotation_paths (points, paths, orientation)
+// 'orientation' - Liste mit Zahlen
+// - ohne Angabe = mathematischer Drehsinn
+// - gerade      = mathematischer Drehsinn
+// - ungerade    = Uhrzeigersinn
+function unify_polygon_rotation_paths (points, paths, orientation) =
+	[for (i=[0:1:len(paths)-1])
+		let (
+			keep =
+				!(orientation!=undef && is_odd(orientation[i]))
+				&& is_math_rotation_polygon (select (points, paths[i]))
+		)
+		keep ? paths[i] : reverse(paths[i])
+	]
+;
 
 //------------------------------------------------------------------------
 
-// TODO - function tesselate_all_paths (points, paths)
+// creates no new points
+function tesselate_all_paths (points, paths) =
+	let (
+		 linked = connect_polygon_holes_paths (points, paths)
+		,tessel = concat_list( [for (path=linked) tesselate_path (points, path) ] )
+	) tessel
+;
 
-// TODO - function tesselate_path (points, path)
+// returns only all path in a list
+function tesselate_path (points, path) =
+//	tesselate_path_next (points, path)
+	tesselate_path_split (points, path)
+;
+
+//----------------------------------------------------
+function tesselate_path_split (points, path, triangles=[]) =
+	let ( size = len(path) )
+	size<=2 ? triangles :
+	size==3 ? [ each triangles, path ] :
+	let (
+		// returns [pos1, pos2]
+		pos = tesselate_path_split_position (points, path, size)
+	)
+	//	echo("tesselate_path_split", size, pos)
+	pos==[]
+	?	 // TODO stupid tesselate at here possible
+	//	[ each triangles, each tesselate_path_next (points, path) ]
+		[ each triangles, each tesselate_trace_stupid (path) ]
+	//	[ each triangles, (path) ]
+	:
+	let (
+		 pos_s  = pos[0]<pos[1] ? pos : [pos[1],pos[0]]
+		,path_1 = extract (path, begin=pos_s[0], last=pos_s[1])
+		,path_2 = [ each extract (path, begin=pos_s[1])
+		          , each extract (path, last =pos_s[0]) ]
+	)
+	[ each tesselate_path_split (points, path_1, triangles)
+	, each tesselate_path_split (points, path_2, triangles)
+	]
+;
+function tesselate_path_split_position (points, path, size=0, i=0) =
+	i>=size ? [] :
+	let (
+		r = points[ path[(i-1+size)%size] ],
+		o = points[ path[  i  ] ],
+		l = points[ path[(i+1)%size] ],
+		angle = rotation_vector (l-o, r-o)
+	)
+	//	echo("tesselate_path_split_position", i, angle)
+	angle<180 || is_nan(angle)
+	?	tesselate_path_split_position (points, path, size, i+1)
+	:
+	// Einbuchtung gefunden, gegenüberliegenden Punkt finden
+	let (
+		pos = find_connect_path (points, path, i)
+	)
+	pos==i || o==points[ path[pos] ]
+	?	tesselate_path_split_position (points, path, size, i+1)
+	:	[i, pos]
+;
+
+// gibt '[position] zurück im Fehlerfall
+function find_connect_path (points, path, position, fast=true) =
+	find_connect_path_intern (points, path, position, fast, len(path)) [0]
+;
+function find_connect_path_intern (points, path, position, fast, size, i=0) =
+	i>=size     ? [position] :
+	i==(position-1+size)%size ? find_connect_path_intern (points, path, position, fast, size, i+1) :
+	i== position              ? find_connect_path_intern (points, path, position, fast, size, i+1) :
+	i==(position+1)%size      ? find_connect_path_intern (points, path, position, fast, size, i+1) :
+	let(
+		 without = [i, position]
+		,line    = select_link (points, path, without)
+	)
+	//	echo("find_connect_path", size, position, i)
+	    is_intersection_polygon_segment (points, line, path=path, without=without)
+	|| !is_point_inside_polygon_2d  (points, midpoint_line(line), path=path)
+	?	find_connect_path_intern (points, path, position, fast, size, i+1)
+	:	
+	//	echo("find_connect_path - found", size, position, i)
+	fast==true ? [i] :
+	// try a better position
+	let(
+		 d    = length_line (line)
+		,next = find_connect_path_intern (points, path, position, fast, size, i+1)
+	)
+	next[0]==position || d<next[1]
+	?	[i, d]
+	:	next
+;
+
+//-----------------------------------------------------
+// Entfernt nacheinander jedes Dreieck aus dem Polygon,
+// das keine Überschneidungen mit der Außenlinie hat.
+// TODO Hat Probleme mit Segmenten in einer Geraden verbunden.
+
+// TODO - function tesselate_path_next (points, path, triangles=[]) =
 

@@ -123,13 +123,30 @@ Not yet implemented:
 Extrudes a 2D object in a list to a 3D solid object.\
 Uses the same arguments like buildin module `linear_extrude()` in OpenSCAD.
 - `object` - 2D data object or a trace as point list
+- `slices`
+   - count of segments, optional, without specification it will set automatically
 
-#### `rotate_extrude_points (list, angle, slices)` [^][contents]
-[rotate_extrude_points]: #rotate_extrude_points-list-angle-slices-
+#### `rotate_extrude (object, angle, slices)` [^][contents]
+[rotate_extrude]: #rotate_extrude-object-angle-slices-
 Rotational extrudes a 2D hull as trace in a point list
 around the Z axis to a 3D solid object.\
 Uses the same arguments like `rotate_extrude()` in OpenSCAD.
-- `list` - 2D trace in a point list
+- `object` - 2D data object or a trace as point list
+- `angle` - drawn angle in degree, default=`360`
+  - as number -> angle from `0` to `angle` = opening angle
+  - as list   -> range `[opening angle, begin angle]`
+- `slices`
+   - count of segments, optional, without specification it will set automatically
+   - with `"x"` includes the [extra special variables](extend.md#special-variables-)
+     to automatically control the count of segments
+
+_Modified version:_
+- `rotate_extrude_extend (object, angle, slices)`
+  - see [`rotate_extrude_extend()`](extend.md#rotate_extrude_extend-angle-convexity-)
+  - Objects created with `rotate_extrude()` are rotated differently
+    as e.g. the object `cylinder()`.
+    With `rotate_extrude_extend()` these objects can be connected correctly.
+  - `slices` is by default set to `"x"`
 
 ### Edit objects [^][contents]
 

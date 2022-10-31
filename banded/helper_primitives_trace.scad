@@ -378,7 +378,7 @@ function xor_put_together_next (string, result=[]
 	, reverse=true, position=undef) =
 	// bestehende Runde fortsetzen
 	string==[] ?
-		echo("TODO xor_put_together next - empty working string")
+		echo("TODO xor_put_together_next - empty working string")
 		[ each result, append ]
 	:
 	let (
@@ -389,7 +389,7 @@ function xor_put_together_next (string, result=[]
 	pos==undef ?
 		reverse==false
 		?
-			echo("TODO xor_put_together next - no match found")
+			assert (false, "TODO xor_put_together_next - no match found")
 			result
 		:	xor_put_together_next (string, result, glue_point, is_reverse, append, reverse=false)
 	:
@@ -435,7 +435,7 @@ function get_next_trace_position (string, append, is_reverse) =
 // Vorbereitung zum Aufteilen in Dreiecke
 function connect_polygon_holes_traces (traces) =
 	let (
-		,children  = list_polygon_holes_next_traces (traces)
+		,children  =         list_polygon_holes_next_traces (traces)
 		,orient    = [for (e=list_polygon_holes_parent_traces(traces)) len(e)]
 		,t_rotated = unify_polygon_rotation_traces (traces, orient)
 		,linked    =
@@ -459,7 +459,7 @@ function connect_polygon_holes_trace (trace, holes=[],  i=0) =
 		connect_polygon_holes_trace (trace, holes, i+1)
 	:
 	let (
-		 trace_n = 
+		 trace_n =
 			[	each rotate_list (trace,    pos[0])
 			,	trace   [ pos[0] ]
 			,	each rotate_list (holes[i], pos[1])
@@ -530,7 +530,9 @@ function list_polygon_holes_children_traces (traces) =
 function unify_polygon_rotation_traces (traces, orientation) =
 	[for (i=[0:1:len(traces)-1])
 		let (
-			keep = !(orientation!=undef && is_odd(orientation[i])) && is_math_rotation_polygon (traces[i])
+			keep =
+				!(orientation!=undef && is_odd(orientation[i]))
+				&& is_math_rotation_polygon (traces[i])
 		)
 		keep ? traces[i] : reverse(traces[i])
 	]
@@ -538,6 +540,7 @@ function unify_polygon_rotation_traces (traces, orientation) =
 
 //------------------------------------------------------------------------
 
+//
 function tesselate_all_traces (traces) =
 	let (
 		 linked = connect_polygon_holes_traces (traces)
@@ -545,6 +548,7 @@ function tesselate_all_traces (traces) =
 	) tessel
 ;
 
+//
 function tesselate_trace (trace) =
 //	tesselate_trace_next (trace)
 	tesselate_trace_split (trace)

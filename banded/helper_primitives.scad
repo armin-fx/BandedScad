@@ -228,6 +228,45 @@ function copy_object_properties (source, target) =
 		]
 ;
 
+// prepare 2D objects, so they don't intersect himself and
+// holes have the counter direction,
+// remove unused points
+// returns 'false' if it fails
+function prepare_object_2d (object, to_trace=false) =
+	to_trace==false
+	?	prepare_object_2d_path  (object)
+	:	prepare_object_2d_trace (object)
+;
+function prepare_object_2d_path (object) =
+	let(
+		 unified    = unify_object_trace (object)
+	)
+	!is_object_2d (unified) ? undef :
+	let(
+		 traces     = unified[0]
+		,separate   = split_intersection_traces (traces)
+		,orientated = orientate_nested_traces (separate)
+		,indexed    = index_all (orientated)
+		,Object     = compress_selected (indexed[0], indexed[1])
+	)
+	copy_object_properties (object, Object)
+;
+function prepare_object_2d_trace (object) =
+	let(
+		 unified    = unify_object_trace (object)
+	)
+	!is_object_2d (unified) ? undef :
+	let(
+		 traces     = unified[0]
+		,separate   = split_intersection_traces (traces)
+		,orientated = orientate_nested_traces (separate)
+	)
+	copy_object_properties (object, [orientated])
+;
+
+
+// - Test der Objekt-Daten:
+
 function is_pointlist (list) =
 	   list!=undef
 	&& is_list(list)
@@ -270,5 +309,27 @@ function is_object_3d (object) =
 ;
 
 
-// - Daten der Objekte bearbeiten:
+// - Objekte bearbeiten:
 
+// append 2 objects without any data transformation
+function append_object (object, object2, to_trace=false) =
+	let(
+		 o1 = unify_object (object,  to_trace)
+		,o2 = unify_object (object2, to_trace)
+	)
+	o2==undef ? o1 :
+	to_trace!=true ?
+		let(
+			,p1_size = len(o1[0]),
+			,oa = [
+				[ each o1[0], each o2[0] ],
+				[ each o1[1], each add_all_each_with (o2[1], p1_size) ]
+			]
+		)
+		copy_object_properties (object, oa)
+	:
+		let(
+			,oa = [ [ each o1[0], each o2[0] ] ]
+		)
+		copy_object_properties (object, oa)
+;

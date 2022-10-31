@@ -130,7 +130,8 @@ __Options:__
     - as number -> angle from `0` to `angle` = opening angle
     - as list   -> range `[opening angle, begin angle]`
 - `slices`
-   - count of segments, without specification it gets the same like `circle()`
+   - count of segments, optional
+   - without specification it gets the same like module `circle()`
    - with `"x"` includes the [extra special variables](extend.md#special-variables-)
      to automatically control the count of segments
    - if an angle is specified, count of segments is like in `rotate_extrude()`
