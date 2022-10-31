@@ -18,8 +18,9 @@ Draft objects as data list - Primitives
 - [Primitives in data lists](#primitives-)
   - [List convention](#list-convention-)
   - [Generate objects](#functions-to-generate-objects-)
-    - buildin OpenSCAD primitives
-    - more primitives
+    - Buildin OpenSCAD primitives
+    - More primitives
+    - Create object with [`build()`][build]
   - [Functions to transform objects](#functions-to-transform-objects-)
     - [Based on OpenSCAD buildin modules](#functions-based-on-openscad-buildin-modules-)
     - [More functions to transform objects](#more-functions-to-transform-objects-)
@@ -35,7 +36,7 @@ Primitives [^][contents]
 Functions to create and edit OpenSCAD primitives in lists
 
 These list can set as argument for `polygon()` and `polyhedron()`,
-this is implemented in module `build_object()`.
+this is implemented in module `build()`.
 This functions to generate and transform objects have the same behavior
 like OpenSCAD modules.
 
@@ -66,7 +67,7 @@ like OpenSCAD modules.
   - [`ring_square()`](object.md#ring_square-h-r-w-ri-ro-angle-center-d-di-do-align-)
   - [`funnel()`](object.md#funnel-h-ri1-ri2-ro1-ro2-w-angle-di1-di2-do1-do2-align-)
 
-___example:___
+_Example:_
 ```OpenSCAD
 include <banded.scad>
 
@@ -74,9 +75,15 @@ a = cylinder (h=10, r=4);
 b = translate (a, v=[10,0,0]);
 c = color (b, "yellowgreen");
 
-build_object(a);
-build_object(c);
+build(a);
+build(c);
 ```
+
+#### `build (object, convexity)` [^][contents]
+[build]: #build-object-convexity-
+Create a real object from object in list.\
+The object can be in 2D or 3D.
+It will send to `polygon()` or `polyhedron()` and become the defined color.
 
 
 ### Functions to transform objects [^][contents]

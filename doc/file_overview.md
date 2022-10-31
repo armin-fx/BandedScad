@@ -81,4 +81,4 @@ Overview of scad files
 ` `|\
 ` `+--> [`banded/debug.scad`](debug.md "Debug modules - make parts and points seeable")\
 ` `|\
-` `+--> `banded/other.scad`\
+` `+--> `banded/other.scad`

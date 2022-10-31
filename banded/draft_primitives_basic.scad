@@ -503,7 +503,13 @@ function hull_3d_grub_out_points_next (points, triangles, remainder, last=0) =
 // - Objekt erzeugen:
 
 // Objekt in Liste direkt in ein Objekt umwandeln
+
 module build_object (object, convexity)
+{
+	echo ("\nDEPRECATED: build_object() will be removed in future releases. Use build() instead.")
+	build (object, convexity);
+}
+module build (object, convexity)
 {
 	o = unify_object (object);
 	
