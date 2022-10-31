@@ -416,12 +416,17 @@ function multmatrix_3d_point (p, m) =
 //          TODO nicht implementierbar ohne Zusammengehörigkeit der Punkte
 //  plane = true  = eine 2D-Liste machen - Standart
 //          false = 3D-Liste behalten, alle Punkte auf xy-Ebene
+//          Zahl  = 3D-Liste behalten, Z-Achse auf diese Höhe setzen
 function projection_points (list, plane) =
-	plane==false ? [ for (p=list) [p.x,p.y,0] ]
-	:              [ for (p=list) [p.x,p.y]   ]
+	 plane==true  ? [ for (p=list) [p.x,p.y] ]
+	:plane==undef ||
+	 plane==false ? [ for (p=list) [p.x,p.y,0] ]
+	:               [ for (p=list) [p.x,p.y,plane] ]
 ;
 function projection_point (p, plane) =
-	plane==false ? [p.x,p.y,0]
-	:              [p.x,p.y]
+	 plane==true  ? [p.x,p.y]
+	:plane==undef ||
+	 plane==false ? [p.x,p.y,0]
+	:               [p.x,p.y,plane]
 ;
 

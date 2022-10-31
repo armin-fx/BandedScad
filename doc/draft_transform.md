@@ -106,6 +106,7 @@ Get projection of every point in `list` to xy-plane.
 - `plane`
   - `true`  - make a 2D-list, default
   - `false` - make a 3D-list, keep points on xy-plane
+  - number  - make a 3D-list, set Z-axis to this height
 
 _Operation for one point:_ \
 `projection_point (p, plane)`
