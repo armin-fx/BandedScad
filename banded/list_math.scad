@@ -90,3 +90,13 @@ function mod_each (list, n) = [for (e=list) (e%n+n)%n];
 
 function constrain_each       (list, min, max) = [for (e=list) constrain       (e, min, max)];
 function constrain_range_each (list, a  , b  ) = [for (e=list) constrain_range (e, a  , b  )];
+
+
+// - For a list with lists:
+
+function add_all_each_with      (list, value)    = [ for (l=list) [ for (e=l) e + value ] ];
+function sub_all_each_with      (list, value)    = [ for (l=list) [ for (e=l) e - value ] ];
+function multiply_all_each_with (list, value)    = [ for (l=list) [ for (e=l) e * value ] ];
+function divide_all_each_with   (list, value)    = [ for (l=list) [ for (e=l) e / value ] ];
+function reciprocal_all_each (list, numerator=1) = [ for (l=list) [ for (e=l) numerator / e] ];
+

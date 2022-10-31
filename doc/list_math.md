@@ -25,6 +25,7 @@ Math on lists
   - [Integrated in Openscad](#integrated-in-openscad-)
   - [Operand with functions from OpenSCAD](#operand-with-functions-from-openscad-)
   - [Operand with extra functions](#operand-with-extra-functions-)
+  - [Operand on a list which containes lists](#operand-on-a-list-which-containes-lists-)
   - [Call function on each list element](#call-function-on-each-list-element-)
 
 
@@ -62,6 +63,8 @@ Calculates a operation on a list at each position.\
 Returns a list with the result.
 - `xxx_each (list)`         - do the operator xxx at each position
 - `xxx_each (list1, list2)` - operator xxx with 2 arguments gets his 2 argument from both lists at the same index
+- `xxx_all_each (list)`     - for lists in a list, do the operator xxx at each position in each list
+
 
 ### Integrated in Openscad [^][contents]
 
@@ -125,7 +128,18 @@ Returns a list with the result.
 | `constrain_range_each (list,a,b)`    | constrain each value in the list within value `a` and `b`
 
 
-#### Call function on each list element [^][contents]
+### Operand on a list which containes lists [^][contents]
+
+| function                                 | description
+|------------------------------------------|-------------
+| `add_all_each_with      (list1,value)`   | add each value in all included lists with a (numeric) value.
+| `sub_all_each_with      (list1,value)`   | subtract each value in all included lists with a (numeric) value.
+| `multiply_all_each_with (list,value)`    | multiply each value in all included lists with a (numeric) value.
+| `divide_all_each_with (list,value)`      | divide each value in all included lists with a numeric value.
+| `reciprocal_all_each (list,numerator=1)` | reciprocate each value `1 / list[n]` in all all included lists. Optional argument `numerator` can set with a value: `numerator / list[n]`
+
+
+### Call function on each list element [^][contents]
 
 | function                           | description
 |------------------------------------|-------------
