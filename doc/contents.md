@@ -33,7 +33,7 @@ Table of contents
   - [Defined modules](extend.md#defined-modules-)
 - Draft objects as data list
   - [Creates curves in a point list](draft_curves.md)
-  - [Multmatrix functions, generate matrix for affine transformation](draft_math_matrix.md)
+  - [Generate matrices for affine transformation](draft_matrix.md)
   - [Transform functions on point lists for affine transformations](draft_transform.md)
   - [Convert colors](color.md)
   - [Create and edit objects in data lists](draft_primitives.md)

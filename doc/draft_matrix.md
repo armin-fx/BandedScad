@@ -1,5 +1,5 @@
-Draft objects as data list - Multmatrix
-=======================================
+Draft objects as data list - Generate matrix
+============================================
 
 ### defined in file
 `banded/draft.scad`\
@@ -14,15 +14,15 @@ Draft objects as data list - Multmatrix
 
 ### Contents
 [contents]: #contents "Up to Contents"
-- [Multmatrix](#multmatrix-)
+- [Generate matrices](#generate-matrices-)
   - [Parameter `short`, size of the matrix][short]
-  - [Basic multmatrix functions](#basic-multmatrix-functions-)
+  - [Basic functions to generate a matrix](#basic-functions-to-generate-a-matrix-)
     - [`matrix_translate()`][matrix_translate]
     - [`matrix_rotate()`][matrix_rotate]
     - [`matrix_mirror()`][matrix_mirror]
     - [`matrix_scale()`][matrix_scale]
     - [`matrix_projection()`][matrix_projection]
-  - [More multmatrix functions](#more-multmatrix-functions-)
+  - [More functions to generate a matrix](#more-functions-to-generate-a-matrix-)
     - [`matrix_rotate_backwards()`][matrix_rotate_backwards]
     - [`matrix_rotate_at()`][matrix_rotate_at]
     - [`matrix_rotate_to_vector()`][matrix_rotate_to_vector]
@@ -30,13 +30,13 @@ Draft objects as data list - Multmatrix
     - [`matrix_mirror_at()`][matrix_mirror_at]
     - [`matrix_skew()`][matrix_skew]
     - [`matrix_skew_at()`][matrix_skew_at]
-  - [Multmatrix with preset defaults](#multmatrix-with-preset-defaults-)
-    - [Multmatrix function backwards](#multmatrix-function-backwards-)
-    - [Multmatrix on a fixed axis](#multmatrix-on-a-fixed-axis-)
+  - [Generate matrix with preset defaults](#generate-matrix-with-preset-defaults-)
+    - [Transform backwards](#transform-backwards-)
+    - [Transform on a fixed axis](#transform-on-a-fixed-axis-)
 
 
-Multmatrix [^][contents]
-------------------------
+Generate matrices [^][contents]
+-------------------------------
 Returns matrices for use with `multmatrix()`.
 These can linked with matrix multiplication.
 ```OpenSCAD
@@ -78,7 +78,7 @@ m = repair_matrix (m_short, n + 1);
 ```
 
 
-### Basic multmatrix functions [^][contents]
+### Basic functions to generate a matrix [^][contents]
 
 #### `matrix_translate (v, d)` [^][contents]
 [matrix_translate]: #matrix_translate-v-d-
@@ -149,7 +149,7 @@ which crosses origin.
   - `true`  = short d×d matrix
 
 
-### More multmatrix functions [^][contents]
+### More functions to generate a matrix [^][contents]
 
 #### `matrix_rotate_backwards (a, v, d, short)` [^][contents]
 [matrix_rotate_backwards]: #matrix_rotate_backwards-a-v-d-short-
@@ -273,9 +273,9 @@ see [`matrix_skew()`][matrix_skew]
 - `p` - origin position at where it skews
 
 
-### Multmatrix with preset defaults [^][contents]
+### Generate matrix with preset defaults [^][contents]
 
-#### Multmatrix function backwards [^][contents]
+#### Transform backwards [^][contents]
 Contains functions that define known functions with operation backwards.\
 Option `backwards` is removed and internally set to `true`.\
 Name convention: 'base operation' + '_backwards' + 'additional operations'
@@ -287,12 +287,12 @@ Name convention: 'base operation' + '_backwards' + 'additional operations'
 | [`matrix_rotate_to_vector()`][matrix_rotate_to_vector]       | `matrix_rotate_backwards_to_vector (v, a, short)`
 | [`matrix_rotate_to_vector_at()`][matrix_rotate_to_vector_at] | `matrix_rotate_backwards_to_vector_at (v, p, a)`
 
-#### Multmatrix on a fixed axis [^][contents]
+#### Transform on a fixed axis [^][contents]
 Contains functions that define known functions on a fixed axis.\
 Name convention: 'function operation name' + '_axis'\
 Axis = x, y or z. later named as '?'
 
-##### Basic multmatrix at fixed axis [^][contents]
+##### Basic at fixed axis [^][contents]
 | Base function                              | with fixed axis                  | description
 |--------------------------------------------|----------------------------------|-------------
 | [`matrix_translate()`][matrix_translate]   | `matrix_translate_?  (l, d)`     | `l` - length to translate        <br> `d` - dimension
@@ -306,7 +306,7 @@ Axis = x, y or z. later named as '?'
 | [`matrix_projection()`][matrix_projection] | `matrix_projection_? (d, short)` | `d` - dimension
 | .                                          | `matrix_projection_z (d, short)` | only in 3 dimension
 
-##### More multmatrix at fixed axis [^][contents]
+##### More matrix at fixed axis [^][contents]
 | Base function                            | with fixed axis                           | description
 |------------------------------------------|-------------------------------------------|-------------
 | `matrix_rotate_backwards()`              | `matrix_rotate_backwards_? (a, short)`    | `a` - angle <br> only in 3 dimension

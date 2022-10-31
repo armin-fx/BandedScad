@@ -271,10 +271,10 @@ Axis = x, y or z. later named as '?'
 [projection_points]: draft_transform.md#projection_points-list-plane-
 [multmatrix_points]: draft_transform.md#multmatrix_points-list-m-
 
-[matrix_translate]: draft_math_matrix.md#matrix_translate-v-d-
-[matrix_rotate]:    draft_math_matrix.md#matrix_rotate-a-v-backwards-d-
-[matrix_mirror]:    draft_math_matrix.md#matrix_mirror-v-d-
-[matrix_scale]:     draft_math_matrix.md#matrix_scale-v-d-
+[matrix_translate]: draft_matrix.md#matrix_translate-v-d-
+[matrix_rotate]:    draft_matrix.md#matrix_rotate-a-v-backwards-d-
+[matrix_mirror]:    draft_matrix.md#matrix_mirror-v-d-
+[matrix_scale]:     draft_matrix.md#matrix_scale-v-d-
 
 #### More operator modules [^][contents]
 
@@ -300,13 +300,13 @@ Axis = x, y or z. later named as '?'
 [skew_points]:                draft_transform.md#skew_points-list-v-t-m-a-
 [skew_at_points]:             draft_transform.md#skew_at_points-list-v-t-m-a-p-
 
-[matrix_rotate_backwards]:    draft_math_matrix.md#matrix_rotate_backwards-a-v-d-
-[matrix_rotate_at]:           draft_math_matrix.md#matrix_rotate_at-a-p-v-backwards-d-
-[matrix_rotate_to_vector]:    draft_math_matrix.md#matrix_rotate_to_vector-v-a-backwards-
-[matrix_rotate_to_vector_at]: draft_math_matrix.md#matrix_rotate_to_vector_at-v-p-a-backwards-
-[matrix_mirror_at]:           draft_math_matrix.md#matrix_mirror_at-v-p-d-
-[matrix_skew]:                draft_math_matrix.md#matrix_skew-v-t-m-a-d-
-[matrix_skew_at]:             draft_math_matrix.md#matrix_skew_at-v-t-m-a-p-d-
+[matrix_rotate_backwards]:    draft_matrix.md#matrix_rotate_backwards-a-v-d-
+[matrix_rotate_at]:           draft_matrix.md#matrix_rotate_at-a-p-v-backwards-d-
+[matrix_rotate_to_vector]:    draft_matrix.md#matrix_rotate_to_vector-v-a-backwards-
+[matrix_rotate_to_vector_at]: draft_matrix.md#matrix_rotate_to_vector_at-v-p-a-backwards-
+[matrix_mirror_at]:           draft_matrix.md#matrix_mirror_at-v-p-d-
+[matrix_skew]:                draft_matrix.md#matrix_skew-v-t-m-a-d-
+[matrix_skew_at]:             draft_matrix.md#matrix_skew_at-v-t-m-a-p-d-
 
 
 Place objects [^][contents]

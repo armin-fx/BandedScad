@@ -54,7 +54,7 @@ What it does [^][contents]
 [draft]:       doc/draft.md
 [curves]:      doc/draft_curves.md
 [transform]:   doc/draft_transform.md
-[multmatrix]:  doc/draft_math_matrix.md
+[multmatrix]:  doc/draft_matrix.md
 [primitives]:  doc/draft_primitives.md
 [color]:       doc/color.md
 [list]:           doc/list.md
