@@ -8,7 +8,7 @@
 
 // Assert evaluates a logical expression,
 // but it can not stop the process like new real assert in OpenSCAD
-module assert (condition, string)
+module assert (condition, message)
 {
 	if (! condition)
 	{
@@ -16,13 +16,13 @@ module assert (condition, string)
 		str_begin = str("<font color=\"red\"><br>\n","ERROR: Assertion failed");
 		str_tree  = tree=="" ? "" : str(" in parent modules \'",tree,"\'");
 		str_end   = str("        </font><br>");
-		if (string==undef) echo (str(
+		if (message==undef) echo (str(
 			str_begin,
 			str_tree,
 			str_end));
 		else echo (str(
-			str_begin, " \"",
-			string,
+			str_begin, ": \"",
+			message,
 			"\"",
 			str_tree,
 			str_end));
