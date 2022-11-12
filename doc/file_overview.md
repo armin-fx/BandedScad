@@ -37,8 +37,7 @@ Overview of scad files
 ` `+--> [`banded/string.scad`](string.md "Functions for edit and convert strings")\
 ` `| . . . +--> [`banded/string_convert.scad`](string.md#convert-strings- "Convert strings")\
 ` `| . . . +--> `banded/string_edit.scad`\
-` `| . . . . . . . +--> [`banded/string_edit_item.scad`](string.md#edit-strings-independent-from-data- "Edit strings independent from data")\
-` `| . . . . . . . +--> [`banded/string_edit_data.scad`](string.md#edit-strings-with-use-of-data- "Edit strings with use of data")\
+` `| . . . . . . . +--> [`banded/string_edit_letter.scad`](string.md#edit-letter-in-strings- "Edit letter in strings")\
 ` `|\
 ` `+--> [`banded/helper.scad`](helper.md "Helper functions")\
 ` `| . . . +--> [`banded/helper_native.scad`](helper.md#native-helper-functions- "Contains various helper functions")\

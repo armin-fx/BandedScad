@@ -3,5 +3,4 @@
 //
 // lädt Funktionen zum Bearbeiten von Strings
 
-include <banded/string_edit_item.scad>
-include <banded/string_edit_data.scad>
+include <banded/string_edit_letter.scad>

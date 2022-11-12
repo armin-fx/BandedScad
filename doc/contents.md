@@ -21,7 +21,7 @@ Table of contents
   - [Use function literal on data](list.md#edit-list-use-function-literal-on-data-)
   - [Test entries of lists](list.md#test-entries-of-lists-)
   - [Pair functions (key-value-pair)](list.md#pair-functions-)
-- [Functions for edit and convert strings](string.md)
+- [Edit and convert strings](string.md)
 - [Helper functions](helper.md)
   - [Various helper](helper.md#native-helper-functions-)
   - [Argument recondition](helper.md#recondition-arguments-of-functions-)

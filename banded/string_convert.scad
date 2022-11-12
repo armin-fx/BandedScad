@@ -118,7 +118,7 @@ function hex_letter_to_value (txt, pos=0, error=undef) =
 ;
 
 // put every once letter from a string 'txt' into a list
-function str_to_list (txt) = [ for (e=txt) e ]
+function str_to_list (txt) = [ each txt ]
 ;
 
 // concat every entry in a list to a string
