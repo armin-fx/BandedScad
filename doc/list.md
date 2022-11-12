@@ -255,10 +255,10 @@ in such a way that the element pointed by `middle` becomes the new first element
 Keep the elements outer the range `[begin,last]` as it is.
 
 #### `rotate_copy (list, middle, begin, last)` [^][contents]
-[rotate_copy]: #rotate_list-list-middle-begin-last-
-Copies the elements in the range `[begin,last]` and
-rotates the order of the elements in such a way
-that the element pointed by `middle` becomes the first element in the resulting range.
+[rotate_copy]: #rotate_copy-list-middle-begin-last-
+Copies the elements from the range `[begin,last]` and
+rotates the order of these elements in such a way
+that the element pointed by `middle` becomes the first element.
 
 #### `remove (list, begin, count)` [^][contents]
 [remove]: #remove-list-begin-count-
@@ -386,7 +386,7 @@ Edit list with use of data, depend on type [^][contents]
 --------------------------------------------------------
 
 #### `sort (list, type, f)` [^][contents]
-[sort]: #sort-list-type-
+[sort]: #sort-list-type-f-
 Sort a list with a stable sort algorithm
 - `f`
   - optional, function literal to compare the values with two arguments
@@ -397,7 +397,7 @@ Sort a list with a stable sort algorithm
     - `> 0` if `a > b`
 
 #### `merge (list1, list2, type, f)` [^][contents]
-[merge]: #merge-list1-list2-type-
+[merge]: #merge-list1-list2-type-f-
 Merge 2 sorted lists into one list
 - `f`
   - optional, function literal to compare the values with two arguments
@@ -417,7 +417,7 @@ Remove every entry with a given value in a list
 
 #### `remove_all_values (list, value_list, type)` [^][contents]
 [remove_all_values]: #remove_all_values-list-value_list-type-
-Remove every entry with a given list of values in a list
+Remove every entry from a list, where a value matches in a list of values
 - `value_list` - a list with values to remove
 
 #### `replace_value (list, value, new, type)` [^][contents]
@@ -512,7 +512,7 @@ but return always the position of the first hit.
 #### `mismatch (list1, list2, begin1, begin2, count, type, f)` [^][contents]
 [mismatch]: #mismatch-list1-list2-begin1-begin2-count-type-f-
 Compares the elements in `list1` and `list2`,
-and returns the first element of both sequences that does not match.\
+and returns the position of the first element of both sequences that does not match.\
 The elements are compared using operator ==  or with function `f` if given.
 Returns the position that does not match of both lists as a list like `[position list1, position list2]`
 - `f`
@@ -522,7 +522,7 @@ Returns the position that does not match of both lists as a list like `[position
 #### `mismatch_list (list1, list2, begin1, begin2, count, type, f)` [^][contents]
 [mismatch_list]: #mismatch_list-list1-list2-begin1-begin2-count-type-f-
 Compares the elements in `list1` and `list2`,
-and returns all element of both sequences as list that does not match.\
+and returns the positions of all elements of both sequences as list that does not match.\
 The elements are compared using operator ==  or with function `f` if given.
 Returns a list of the positions that the sequences does not match of both lists
 as a list like `[position list1, position list2]`.
@@ -621,7 +621,7 @@ replace every entry which this function returns `true` to a new value.
   - returns `true` or `false`
 
 #### `partition (list, f, type, 'range_args')` [^][contents]
-[partition]: partition-list-f-type-range_args-
+[partition]: #partition-list-f-type-range_args-
 Split a list in two parts.\
 Returns 2 lists: `[ [first part], [second part] ]`.
 The first part contains all elements which function `f()` returns `true`.
@@ -649,7 +649,7 @@ Return the list of results.
 - [`'range_args'`][range_args] - arguments to set the range of the list, standard = full list
 
 #### `count_if (list, f, type, 'range_args')` [^][contents]
-[count]: #count-list-value-type-range_args-
+[count_if]: #count_if-list-f-type-range_args-
 Count how often the function `f()` hits `true` on an entry in a list
 - [`'range_args'`][range_args] - arguments to set the range in which will count, default = full list
 - `f`
@@ -658,7 +658,8 @@ Count how often the function `f()` hits `true` on an entry in a list
 
 #### `find_first_if (list, f, index, type, 'range_args')` [^][contents]
 [find_first_if]: #find_first_if-list-f-index-type-range_args-
-Run function `f()` at the entries in a list and returns the position which this function returns `true`.\
+Run function `f()` at the entries in a list and
+returns the position which this function returns `true`.\
 Returns the position after the last element in the defined range if nothing was found.
 - `f`
   - function literal with one argument
@@ -742,7 +743,7 @@ Compares the data directly or with function `f` if given.
   - default = full list
 
 #### `includes (list1, list2, f, type, 'range_args1', 'range_args2')` [^][contents]
-[includes]: #includes-list1-list2-f-type
+[includes]: #includes-list1-list2-f-type-range_args1-range_args2-
 Returns `true` if the sorted list `list1` contains all the elements in the sorted list `list2`.\
 The elements are compared using operator `<` or with function `f` if given.
 - `list1`, `list2` - sorted lists to compare
@@ -775,7 +776,7 @@ The elements are compared using operator `<` or with function `f` if given.
   - returns `true` or `false`
 
 #### `is_partitioned (list, f, type, 'range_args')` [^][contents]
-[is_partitioned]: is_partitioned-list-f-type-range_args-
+[is_partitioned]: #is_partitioned-list-f-type-range_args-
 Returns `true` if all the elements in the list are split in two parts.\
 Where the function `f()` must return `true` on each element of the first part
 and `f()` returns `false` on each element of the second part.

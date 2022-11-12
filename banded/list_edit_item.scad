@@ -60,10 +60,10 @@ function rotate_copy (list, middle, begin=0, last=-1) =
 		Last   = Range[1],
 		Middle = constrain (middle, Begin, Last)
 	)
-	concat (
-		[ for (i=[Middle:1:Last    ]) list[i] ],
-		[ for (i=[Begin :1:Middle-1]) list[i] ]
-	)
+	[
+		each [ for (i=[Middle:1:Last    ]) list[i] ],
+		each [ for (i=[Begin :1:Middle-1]) list[i] ]
+	]
 ;
 
 // entfernt Elemente aus einer Liste
@@ -74,12 +74,14 @@ function remove (list, begin, count=1) =
 		,real_begin=get_position(list,begin)
 		,real_count=get_position(list,count)
 	)
-	concat(
-		 (real_begin==0)                ? []
-		 :[for (i=[0:min(real_begin-1,size-1)])               list[i] ]
-		,((real_begin+real_count)>=size) ? []
-		 :[for (i=[min(real_begin+real_count,size-1):size-1]) list[i] ]
-	)
+	[
+		 each
+			(real_begin==0)                ? []
+			:[for (i=[0:1:min(real_begin-1,size-1)])               list[i] ]
+		,each
+			((real_begin+real_count)>=size) ? []
+			:[for (i=[min(real_begin+real_count,size-1):1:size-1]) list[i] ]
+	]
 ;
 
 // fügt alle Elemente einer Liste in die Liste ein
@@ -94,14 +96,17 @@ function insert (list, list_insert, position=-1, begin_insert=0, count_insert=-1
 		,real_count_insert = get_position_insert(list_insert,count_insert)
 		,real_last_insert  = min(real_begin_insert+real_count_insert-1,size_insert-1)
 	)
-	concat(
-		 (real_position<=0)     ? []
-		 :[for (i=[0:min(real_position-1,size-1)])           list[i] ]
-		,(real_begin_insert>real_last_insert) ? []
-		 :[for (i=[real_begin_insert:real_last_insert])      list_insert[i] ]
-		,(real_position>=size)  ? []
-		 :[for (i=[max(0,min(real_position,size-1)):size-1]) list[i] ]
-	)
+	[
+		 each
+			(real_position<=0)     ? []
+			:[for (i=[0:1:min(real_position-1,size-1)])           list[i] ]
+		,each
+			(real_begin_insert>real_last_insert) ? []
+			:[for (i=[real_begin_insert:1:real_last_insert])      list_insert[i] ]
+		,each
+			(real_position>=size)  ? []
+			:[for (i=[max(0,min(real_position,size-1)):1:size-1]) list[i] ]
+	]
 ;
 
 // ersetzt Elemente in einer Liste durch alle Elemente einer weiteren Liste
@@ -117,14 +122,17 @@ function replace (list, list_insert, begin=-1, count=0, begin_insert=0, count_in
 		,real_count_insert = get_position_insert(list_insert,count_insert)
 		,real_last_insert  = min(real_begin_insert+real_count_insert-1,size_insert-1)
 	)
-	concat(
-		 (real_begin==0)                ? []
-		 :[for (i=[0:min(real_begin-1,size-1)])               list[i] ]
-		,(real_begin_insert>real_last_insert) ? []
-		 :[for (i=[real_begin_insert:real_last_insert])       list_insert[i] ]
-		,((real_begin+real_count)>=size) ? []
-		 :[for (i=[min(real_begin+real_count,size-1):size-1]) list[i] ]
-	)
+	[
+		 each
+			(real_begin==0)                 ? []
+			:[for (i=[0:1:min(real_begin-1,size-1)])               list[i] ]
+		,each
+			(real_begin_insert>real_last_insert) ? []
+			:[for (i=[real_begin_insert:1:real_last_insert])       list_insert[i] ]
+		,each
+			((real_begin+real_count)>=size) ? []
+			:[for (i=[min(real_begin+real_count,size-1):1:size-1]) list[i] ]
+	]
 ;
 
 // extrahiert eine Sequenz aus der Liste
@@ -145,7 +153,7 @@ function extract (list, begin, last, count, range) =
 		Last  = Range[1]
 	)
 	(Begin==0) && (Last==len(list)-1) ? list :
-	[for (i=[Begin:1:Last]) list[i]]
+	[ for (i=[Begin:1:Last]) list[i] ]
 ;
 
 // Erzeugt eine Liste mit 'count' Elementen gefüllt mit 'value'
@@ -196,17 +204,17 @@ function unselect (base, index) =
 function index (list) = [ list, [[for (i=[0:1:len(list)-1]) i ]] ];
 
 // hängt alle Daten '[ Daten1, Daten2 ]' an einer Liste an und speichert Listen mit den Positionen darauf
-// - 'lists' - enthält Listen mit Daten
+// - 'list' - enthält Listen mit Daten
 // gibt '[ Daten, [Index1, Index2, ... ] ]' zurück
 function index_all (list) =
-	index_all_intern (list)
+	index_all_intern (list, len(list))
 ;
-function index_all_intern (lists, i=0, l=0, data=[], indices=[]) =
-	i>=len(lists) ? [data, indices] :
-	let ( size = len(lists[i]) )
-	index_all_intern (lists, i+1, l+size
+function index_all_intern (lists, size=0, i=0, l=0, data=[], indices=[]) =
+	i>=size ? [data, indices] :
+	let ( size_i = len(lists[i]) )
+	index_all_intern (lists, size, i+1, l+size_i
 		, [ each data, each lists[i] ]
-		, [ each indices, [for (i=[l:1:l+size-1]) i ] ]
+		, [ each indices, [for (i=[l:1:l+size_i-1]) i ] ]
 	)
 ;
 
@@ -234,10 +242,10 @@ function remove_unselected (list, indices) =
 function compress_selected (list, indices, comparable=true) =
 	let (
 		size     = len(list),
-		data     = comparable==true
+		data     = comparable!=false
 			? [for (i=[0:1:size-1]) [i, list[i]]               ]
 			: [for (i=[0:1:size-1]) [i, list[i], str(list[i])] ],
-		data1    = sort       (data , type=[1 + (comparable==true? 0:1)]),
+		data1    = sort       (data , type=[1 + (comparable!=false ? 0:1)]),
 		//
 		list1    = unique     (data1, type=[1]),
 	//	list1    = remove_duplicate (data1, type=[1]),

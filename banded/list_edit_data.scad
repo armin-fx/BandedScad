@@ -293,8 +293,9 @@ function keep_all_values (list, value_list, type=0) =
 
 // Entfernt alle aufeinanderfolgenden Duplikate
 function unique (list, type=0, f=undef) =
-	list==undef || len(list)<=1 ? list :
+	list==undef ? list :
 	let( size = len(list) )
+	size<=1     ? list :
 	f==undef ?
 		 type   == 0 ?
 			[ each

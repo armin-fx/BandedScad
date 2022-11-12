@@ -32,7 +32,8 @@ function replace_if (list, f, new, type=0) =
 ;
 
 // Teilt eine Liste in 2 Teile auf
-// gibt 2 Listen zurück
+// Führt Funktion 'f' auf jedes Element in der Liste aus.
+// Gibt 2 Listen zurück
 // [ [Elemente mif f()==true], [Elemente mif f()==false] ]
 function partition (list, f, type=0, begin, last, count, range) =
 	let(
