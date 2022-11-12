@@ -19,9 +19,9 @@
 - [Defined modules](#defined-modules-)
   - [Extra arguments](#extra-arguments-)
   - [Modules controlled with extra special variables](#modules-controlled-with-extra-special-variables-)
-    - [`circle_extend()`][circle]
-    - [`cylinder_extend()`][cylinder]
-    - [`sphere_extend()`][sphere]
+    - [`circle_extend()`][circle_x]
+    - [`cylinder_extend()`][cylinder_x]
+    - [`sphere_extend()`][sphere_x]
   - [Modules with extra arguments only ](#modules-with-extra-arguments-only-)
     - [`square_extend()`][square]
     - [`cube_extend()`][cube]
@@ -43,6 +43,10 @@
     - [`if_sf_value()`][if_sf_value]
     - [`sf_safe()`][sf_safe]
     - [`sf_constrain_minmax()`][sf_constrain_minmax]
+
+[circle]:   https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Using_the_2D_Subsystem#circle
+[cylinder]: https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Primitive_Solids#cylinder
+[sphere]:   https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Primitive_Solids#sphere
 
 
 Special variables [^][contents]
@@ -80,11 +84,11 @@ Defined modules [^][contents]
 Keep compatibility with buildin modules in OpenSCAD with same arguments and can controlled
 with extra special variables, some modules have extra arguments
 
-| buildin      | extended
-|--------------|----------
-| `circle()`   | `circle_extend()`
-| `cylinder()` | `cylinder_extend()`
-| `sphere()`   | `sphere_extend()`
+| buildin                  | extended
+|--------------------------|----------
+| [`circle()`][circle]     | [`circle_extend()`][circle_x]
+| [`cylinder()`][cylinder] | [`cylinder_extend()`][cylinder_x]
+| [`sphere()`][sphere]     | [`sphere_extend()`][sphere_x]
 
 
 ### Extra arguments [^][contents]
@@ -103,7 +107,7 @@ with extra special variables, some modules have extra arguments
 ### Modules controlled with extra special variables [^][contents]
 
 #### `circle_extend (r, angle, slices, piece, outer, align, d)` [^][contents]
-[circle]: #circle_extend-r-angle-slices-piece-outer-align-d-
+[circle_x]: #circle_extend-r-angle-slices-piece-outer-align-d-
 Creates a circle with [options of `circle_curve()`](draft_curves.md#circle-)
 - `r, d`
   - radius or diameter of circle
@@ -132,7 +136,7 @@ Creates a circle with [options of `circle_curve()`](draft_curves.md#circle-)
   - default = `[0,0]` = centered
 
 #### `cylinder_extend (h, r1, r2, center, r, d, d1, d2, angle, slices, piece, outer, align)` [^][contents]
-[cylinder]: #cylinder_extend-h-r1-r2-center-r-d-d1-d2-angle-slices-piece-outer-align-
+[cylinder_x]: #cylinder_extend-h-r1-r2-center-r-d-d1-d2-angle-slices-piece-outer-align-
 Creates a cylinder with ground circle [options of `circle_curve()`](draft_curves.md#circle-)
 - `align`
   - Side from origin away that the part should be.
@@ -140,7 +144,7 @@ Creates a cylinder with ground circle [options of `circle_curve()`](draft_curves
   - default = `[0,0,1]` = X-Y-axis centered
 
 #### `sphere_extend (r, d, align)` [^][contents]
-[sphere]: #sphere_extend-r-d-align-
+[sphere_x]: #sphere_extend-r-d-align-
 Creates a sphere at moment only control with extra special variables.
 - `align`
   - Side from origin away that the part should be.
