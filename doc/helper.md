@@ -15,7 +15,7 @@ Helper functions
 ### Contents
 [contents]: #contents "Up to Contents"
 - [Native helper functions](#native-helper-functions-)
-  - [Test functions](test-functions-)
+  - [Test functions](#test-functions-)
     - `is_nan()`
     - `is_inf()`
     - `is_inf_abs()`
@@ -313,7 +313,7 @@ Contains functions that evaluate the passed arguments
 from modules and functions.
 
 #### `repair_matrix (m, d)` [^][contents]
-[repair_matrix]: #-repair_matrix-m-d-
+[repair_matrix]: #repair_matrix-m-d-
 Test an repair matrices for affine transformation.\
 Fill missing elements with elements from the unity matrix.
 - `d`
@@ -620,7 +620,7 @@ Arguments:
 - `n`    - a different number of elements than the default 4 can be specified here
 
 #### `parameter_type (type, n)` [^][contents]
-[parameter_type]: #parameter_type-type_list-type-n-
+[parameter_type]: #parameter_type-type-n-
 Evaluates one `type` parameter.
 
 Arguments:

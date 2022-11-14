@@ -36,7 +36,7 @@ function set_value (data, value, type=0) =
 
 // Gibt eine Liste des gewählten Typs zurück aus einer Liste
 function value_list (list, type=0) =
-	 type   == 0 ? [ each list ]
+	 type   == 0 ?                 [ each list ]
 	:type[0]>= 0 ? let(p =type[0]) [ for (e=list) e[p]  ]
 	:type[0]==-1 ? let(fn=type[1]) [ for (e=list) fn(e) ]
 	:                              [ for (e=list) value(e,type) ]

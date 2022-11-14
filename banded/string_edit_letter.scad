@@ -181,6 +181,10 @@ function remove_all_letter (txt, letter_list) =
 	list_to_str ( remove_all_values (txt, letter_list) )
 ;
 
+function remove_sequence_str (txt, sequence, begin, last, count, range) =
+	list_to_str ( remove_sequence (txt, sequence, 0, begin, last, count, range) )
+;
+
 // Ersetzt alle Vorkommen eines Buchstaben durch einen anderen
 function replace_letter (txt, letter, new) =
 	list_to_str ( replace_value (txt, letter, new) )
@@ -189,6 +193,10 @@ function replace_letter (txt, letter, new) =
 // Ersetzt alle Vorkommen von Buchstaben aus einer Liste durch einen anderen
 function replace_all_letter (txt, letter_list, new) =
 	list_to_str ( replace_all_values (txt, letter_list, new) )
+;
+
+function replace_sequence_str (txt, sequence, new, begin, last, count, range) =
+	list_to_str ( replace_sequence (txt, sequence, new, 0, begin, last, count, range) )
 ;
 
 // Behält alle Vorkommen eines Buchstaben, entfernt alle anderen.

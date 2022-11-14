@@ -23,10 +23,9 @@ function reverse      (list, begin, last, count, range) =
 		Last  = Range[1],
 		size  = len(list)
 	)
-	[
-		 each ( Begin  <=0)     ? [] : [for (i=[0     :1:Begin-1]) list[i] ]
-		,each ( Last   < Begin) ? [] : [for (i=[Last :-1:Begin  ]) list[i] ]
-		,each ((Last+1)>=size)  ? [] : [for (i=[Last+1:1:size-1 ]) list[i] ]
+	[	each ( Begin  <=0)     ? [] : [for (i=[0     :1:Begin-1]) list[i] ]
+	,	each ( Last   < Begin) ? [] : [for (i=[Last :-1:Begin  ]) list[i] ]
+	,	each ((Last+1)>=size)  ? [] : [for (i=[Last+1:1:size-1 ]) list[i] ]
 	]
 ;
 
@@ -45,11 +44,10 @@ function rotate_list (list, middle, begin=0, last=-1) =
 		Middle = constrain (middle, Begin, Last),
 		Size   = len (list)
 	)
-	[
-		each [ for (i=[0     :1:Begin-1 ]) list[i] ],
-		each [ for (i=[Middle:1:Last    ]) list[i] ],
-		each [ for (i=[Begin :1:Middle-1]) list[i] ],
-		each [ for (i=[Last+1:1:Size-1  ]) list[i] ]
+	[	for (i=[0     :1:Begin-1 ]) list[i]
+	,	for (i=[Middle:1:Last    ]) list[i]
+	,	for (i=[Begin :1:Middle-1]) list[i]
+	,	for (i=[Last+1:1:Size-1  ]) list[i]
 	]
 ;
 
@@ -60,9 +58,8 @@ function rotate_copy (list, middle, begin=0, last=-1) =
 		Last   = Range[1],
 		Middle = constrain (middle, Begin, Last)
 	)
-	[
-		each [ for (i=[Middle:1:Last    ]) list[i] ],
-		each [ for (i=[Begin :1:Middle-1]) list[i] ]
+	[	for (i=[Middle:1:Last    ]) list[i]
+	,	for (i=[Begin :1:Middle-1]) list[i]
 	]
 ;
 
@@ -74,11 +71,10 @@ function remove (list, begin, count=1) =
 		,real_begin=get_position(list,begin)
 		,real_count=get_position(list,count)
 	)
-	[
-		 each
+	[	each
 			(real_begin==0)                ? []
 			:[for (i=[0:1:min(real_begin-1,size-1)])               list[i] ]
-		,each
+	,	each
 			((real_begin+real_count)>=size) ? []
 			:[for (i=[min(real_begin+real_count,size-1):1:size-1]) list[i] ]
 	]
@@ -96,14 +92,13 @@ function insert (list, list_insert, position=-1, begin_insert=0, count_insert=-1
 		,real_count_insert = get_position_insert(list_insert,count_insert)
 		,real_last_insert  = min(real_begin_insert+real_count_insert-1,size_insert-1)
 	)
-	[
-		 each
+	[	each
 			(real_position<=0)     ? []
 			:[for (i=[0:1:min(real_position-1,size-1)])           list[i] ]
-		,each
+	,	each
 			(real_begin_insert>real_last_insert) ? []
 			:[for (i=[real_begin_insert:1:real_last_insert])      list_insert[i] ]
-		,each
+	,	each
 			(real_position>=size)  ? []
 			:[for (i=[max(0,min(real_position,size-1)):1:size-1]) list[i] ]
 	]
@@ -122,14 +117,13 @@ function replace (list, list_insert, begin=-1, count=0, begin_insert=0, count_in
 		,real_count_insert = get_position_insert(list_insert,count_insert)
 		,real_last_insert  = min(real_begin_insert+real_count_insert-1,size_insert-1)
 	)
-	[
-		 each
+	[	each
 			(real_begin==0)                 ? []
 			:[for (i=[0:1:min(real_begin-1,size-1)])               list[i] ]
-		,each
+	,	each
 			(real_begin_insert>real_last_insert) ? []
 			:[for (i=[real_begin_insert:1:real_last_insert])       list_insert[i] ]
-		,each
+	,	each
 			((real_begin+real_count)>=size) ? []
 			:[for (i=[min(real_begin+real_count,size-1):1:size-1]) list[i] ]
 	]

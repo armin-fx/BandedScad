@@ -132,8 +132,10 @@ _The argument names differs:_
 | [`remove_duplicate()`][rd]    | `remove_duplicate_str (txt)`                 | Remove every duplicate letter in a string, so a letter exists only once
 | [`remove_value()`][rmv]       | `remove_letter      (txt, letter)`           | Remove every letter that matches in a string
 | [`remove_all_values()`][rma]  | `remove_all_letter  (txt, letter_list)`      | Remove every letter from a string, which matches in a list of letter
+| [`remove_sequence()`][rs]     | `remove_sequence_str (txt, sequence, 'range_args' )`       | Remove all presence of a sequence in the string.
 | [`replace_value()`][rpv]      | `replace_letter     (txt, letter, new)`      | Replace every letter that matches in a string with a string
 | [`replace_all_values()`][rpa] | `replace_all_letter (txt, letter_list, new)` | Replace every letter in a string with a string, which matches a list of letter
+| [`replace_sequence()`][rps]   | `replace_sequence_str (txt, sequence, new, 'range_args' )` | Replace all presence of a sequence in the string with another sequence.
 | [`keep_value()`][kv]          | `keep_letter     (txt, letter)`              | Keep every letter that matches in a string. Remove the remainder. Makes little sense, for the sake of completeness.
 | [`keep_all_values()`][ka]     | `keep_all_letter (txt, letter_list)`         | Keep every letter in a string, which matches in a list of letter. Remove the remainder.
 | [`unique()`][uq]              | `unique_str      (txt, f)`                   | Removes all but the first letter from every consecutive group of equivalent
@@ -157,8 +159,12 @@ Use list functions directly:
 | [`count()`][ct]                     | Count how often a letter is in a string
 | [`find_first()`][ff]                | Search at a letter in a string and returns the first position. Same letter can skipped `index` times.
 | [`find_first_once()`][ffo]          | Search at a letter in a string and returns the first position.
-| [`find_last()`][fl]                 | Search at a letter in a string and returns the last position. Same letter can skipped `index` times.
-| [`find_last_once()`][flo]           | Search at a letter in a string and returns the last position.
+| [`find_first_of()`][fff]            | Search a list of letter in a string and returns the first position. Same letter can skipped `index` times.
+| [`find_first_of_once()`][ffg]       | Search a list of letter in a string and returns the first position.
+| [`find_last()`][fl]                 | Search at a letter backwards in a string and returns the last position. Same letter can skipped `index` times.
+| [`find_last_once()`][flo]           | Search at a letter backwards in a string and returns the last position.
+| [`find_last_of()`][flf]             | Search a list of letter backwards in a string and returns the last position. Same letter can skipped `index` times.
+| [`find_last_of_once()`][flg]        | Search a list of letter backwards in a string and returns the last position.
 | [`mismatch()`][mm]                  | Compares the letter in 2 strings and returns the positions of the first letter of both sequences that does not match.
 | [`mismatch_list()`][ml]             | Compares the letter in 2 strings and returns the positions of all letter of both sequences as list that does not match.
 | [`adjacent_find()`][af]             | Find equal adjacent letter in a string
@@ -171,6 +177,8 @@ Use list functions directly:
 | [`find_first_once_if()`][ffj]       | Run function `f()` at the letter in a string and returns the position which this function returns `true`.
 | [`find_last_if()`][fli]             | Run function `f()` at the letter backwards in a string and returns the position which this function returns `true`. Same letter can skipped `index` times.
 | [`find_last_once_if()`][flj]        | Run function `f()` at the letter backwards in a string and returns the position which this function returns `true`.
+| [`search_sequence()`][ss]           | Search a sequence in the string and return the position of the first presence.
+| [`sequence_positions()`][sp]        | Search a sequence in the string and return all positions of the presence in a list.
 | [`all_of()`][ao]                    | Returns `true` if `f()` returns `true` for all the letter in the range
 | [`none_of()`][no]                   | Returns `true` if `f()` returns `false` for all the letter in the range
 | [`any_of()`][so]                    | Returns `true` if `f()` returns `true` for any letter in the range
@@ -204,8 +212,10 @@ Use list functions directly:
 [rd]:  list.md#remove_duplicate-list-type-
 [rmv]: list.md#remove_value-list-value-type-
 [rma]: list.md#remove_all_values-list-value_list-type-
+[rs]:  list.md#remove_sequence-list-sequence-type-range_args-
 [rpv]: list.md#replace_value-list-value-new-type-
 [rpa]: list.md#replace_all_values-list-value_list-new-type-
+[rps]: list.md#replace_sequence-list-sequence-new-type-range_args-
 [kv]:  list.md#keep_value-list-value-type-
 [ka]:  list.md#keep_all_values-list-value_list-type-
 [uq]:  list.md#unique-list-type-f-
@@ -222,8 +232,12 @@ Use list functions directly:
 [ct]:  list.md#count-list-value-type-range_args-
 [ff]:  list.md#find_first-list-value-index-type-range_args-
 [ffo]: list.md#find_first_once-list-value-type-range_args-
+[fff]: list.md#find_first_of-list-value_list-index-type-range_args-
+[ffg]: list.md#find_first_of_once-list-value_list-type-range_args-
 [fl]:  list.md#find_last-list-value-index-type-range_args-
 [flo]: list.md#find_last_once-list-value-type-range_args-
+[flf]: list.md#find_last_of-list-value_list-index-type-range_args-
+[flg]: list.md#find_last_of_once-list-value_list-type-range_args-
 [mm]:  list.md#mismatch-list1-list2-begin1-begin2-count-type-f-
 [ml]:  list.md#mismatch_list-list1-list2-begin1-begin2-count-type-f-
 [af]:  list.md#adjacent_find-list-type-range_args-f-
@@ -236,6 +250,8 @@ Use list functions directly:
 [ffj]: list.md#find_first_once_if-list-f-type-range_args-
 [fli]: list.md#find_last_if-list-f-index-type-range_args-
 [flj]: list.md#find_last_once_if-list-f-type-range_args-
+[ss]:  list.md#search_sequence-list-sequence-type-range_args-
+[sp]:  list.md#sequence_positions-list-sequence-type-range_args-
 [ao]:  list.md#all_of-list-f-type-range_args-
 [no]:  list.md#none_of-list-f-type-range_args-
 [so]:  list.md#any_of-list-f-type-range_args-

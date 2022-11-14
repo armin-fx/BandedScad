@@ -66,22 +66,31 @@ Functions for edit lists
     - [`remove_duplicate()`][remove_duplicate]
     - [`remove_value()`][remove_value]
     - [`remove_all_values()`][remove_all_values]
+    - [`remove_sequence()`][remove_sequence]
     - [`replace_value()`][replace_value]
     - [`replace_all_values()`][replace_all_values]
+    - [`replace_sequence()`][replace_sequence]
     - [`keep_value()`][keep_value]
     - [`keep_all_values()`][keep_all_values]
     - [`unique()`][unique]
     - [`keep_unique()`][keep_unique]
+    - [`extract_value()`][extract_value]
   - [Get data from list](#get-data-from-list-)
     - [Minimum or maximum value](#minimum-or-maximum-value-)
       - `min_value()`,    `max_value()`
       - `min_entry()`,    `max_entry()`
       - `min_position()`, `max_position()`
     - [`count()`][count]
-    - [`find_first()`][find_first]
+    - [`find_first()`, `find()`][find_first]
     - [`find_first_once()`][find_first_once]
+    - [`find_first_of()`][find_first_of]
+    - [`find_first_of_once()`][find_first_of_once]
     - [`find_last()`][find_last]
     - [`find_last_once()`][find_last_once]
+    - [`find_last_of()`][find_last_of]
+    - [`find_last_of_once()`][find_last_of_once]
+    - [`search_sequence()`][search_sequence]
+    - [`sequence_positions()`][sequence_positions]
     - [`mismatch()`][mismatch]
     - [`mismatch_list()`][mismatch_list]
     - [`adjacent_find()`][adjacent_find]
@@ -420,6 +429,13 @@ Remove every entry with a given value in a list
 Remove every entry from a list, where a value matches in a list of values
 - `value_list` - a list with values to remove
 
+#### `remove_sequence (list, sequence, type, 'range_args')` [^][contents]
+[remove_sequence]: #remove_sequence-list-sequence-type-range_args-
+Remove all presence of a data sequence in the list.
+- `list`     - list with data elements
+- `sequence` - sequence with data of given type
+- [`'range_args'`][range_args] - arguments to set the range of operation in the list, default = full list
+
 #### `replace_value (list, value, new, type)` [^][contents]
 [replace_value]: #replace_value-list-value-new-type-
 Replace every entry with a given value in a list to a new value
@@ -428,6 +444,14 @@ Replace every entry with a given value in a list to a new value
 [replace_all_values]: #replace_all_values-list-value_list-new-type-
 Replace every entry with a given list of values in a list to a new value
 - `value_list` - a list with values to replace with value `new`
+
+#### `replace_sequence (list, sequence, new, type, 'range_args')` [^][contents]
+[replace_sequence]: #replace_sequence-list-sequence-new-type-range_args-
+Replace all presence of a data sequence in the list with another sequence.
+- `list`     - list with data elements
+- `sequence` - sequence with data of given type
+- `new`      - the new data sequence
+- [`'range_args'`][range_args] - arguments to set the range of operation in the list, default = full list
 
 #### `keep_value (list, value, type)` [^][contents]
 [keep_value]: #keep_value-list-value-type-
@@ -456,6 +480,12 @@ The elements are compared using operator `==` or with function `f` if given.
 - `f`
   - function literal with two arguments
   - returns `true` or `false`
+
+#### `extract_value (list, type, 'range_args')` [^][contents]
+[extract_value]: #extract_value-list-type-range_args-
+Extract a sequence from a list.\
+Return the data of the given type.
+- [`'range_args'`][range_args] - arguments to set the range of the list, default = full list
 
 
 Get data from list [^][contents]
@@ -486,11 +516,29 @@ Returns the position after the last element in the defined range if nothing was 
   - Standard = get first hit, `index` = 0
 - [`'range_args'`][range_args] - arguments to set the range of the list, default = full list
 
+Function `find()` will be redirected to `find_first()`.
+
 #### `find_first_once (list, value, type, 'range_args')` [^][contents]
 [find_first_once]: #find_first_once-list-value-type-range_args-
 Search at a value in a list and returns the position.\
 Returns the position after the last element in the defined range if nothing was found.\
 Like [`find_first()`][find_first],
+but return always the position of the first hit.
+
+#### `find_first_of (list, value_list, index, type, 'range_args')` [^][contents]
+[find_first_of]: #find_first_of-list-value_list-index-type-range_args-
+Search a list of values in a list and returns the position.\
+Returns the position after the last element in the defined range if nothing was found.
+- `index`
+  - Same values are skipped `index` times
+  - Standard = get first hit, `index` = 0
+- [`'range_args'`][range_args] - arguments to set the range of the list, default = full list
+
+#### `find_first_of_once (list, value_list, type, 'range_args')` [^][contents]
+[find_first_of_once]: #find_first_of_once-list-value_list-type-range_args-
+Search a list of values in a list and returns the position.\
+Returns the position after the last element in the defined range if nothing was found.\
+Like [`find_first_of()`][find_first_of],
 but return always the position of the first hit.
 
 #### `find_last (list, value, index, type, 'range_args')` [^][contents]
@@ -508,6 +556,36 @@ Search at a value in a list backwards from the end to first value and returns th
 Returns the position before the first element in the defined range if nothing was found.\
 Like [`find_last()`][find_last],
 but return always the position of the first hit.
+
+#### `find_last_of (list, value_list, index, type, 'range_args')` [^][contents]
+[find_last_of]: #find_last_of-list-value_list-index-type-range_args-
+Search a list of values in a list backwards from the end to first value and returns the position.\
+Returns the position before the first element in the defined range if nothing was found.
+- `index`
+  - Same values are skipped `index` times
+  - Standard = get first hit, `index` = 0
+- [`'range_args'`][range_args] - arguments to set the range of the list, default = full list
+
+#### `find_last_of_once (list, value_list, type, 'range_args')` [^][contents]
+[find_last_of_once]: #find_last_of_once-list-value_list-type-range_args-
+Search a list of values in a list backwards from the end to first value and returns the position.\
+Returns the position before the first element in the defined range if nothing was found.\
+Like [`find_last_of()`][find_last_of],
+but return always the position of the first hit.
+
+#### `search_sequence (list, sequence, type, 'range_args')` [^][contents]
+[search_sequence]: #search_sequence-list-sequence-type-range_args-
+Search a sequence of a given type in the list and return the position of the first presence.\
+Returns the position after the last element if nothing was found.
+- `sequence` - sequence with data of given type
+- [`'range_args'`][range_args] - arguments to set the range of the list, default = full list
+
+#### `sequence_positions (list, sequence, type, 'range_args')` [^][contents]
+[sequence_positions]: #sequence_positions-list-sequence-type-range_args-
+Search a sequence of a given type in the list and return all positions of the presence in a list.\
+Returns an empty list if nothing was found.
+- `sequence` - sequence with data of given type
+- [`'range_args'`][range_args] - arguments to set the range of the list, default = full list
 
 #### `mismatch (list1, list2, begin1, begin2, count, type, f)` [^][contents]
 [mismatch]: #mismatch-list1-list2-begin1-begin2-count-type-f-

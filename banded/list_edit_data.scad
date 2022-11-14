@@ -253,6 +253,22 @@ function remove_all_values (list, value_list, type=0) =
 	:                                [ for (e=list) let(ev = value(e,type)) if ( [for(value=value_list) if (ev==value) 0] == [] ) e ]
 ;
 
+// remove all presence of a sequence of data
+// - 'list'     - list with data elements
+// - 'sequence' - list with data of given type
+function remove_sequence (list, sequence, type=0, begin, last, count, range) =
+	let(
+		pos_list = sequence_positions (list, sequence, type, begin, last, count, range),
+		size_s   = len (sequence),
+		size_p   = len (pos_list)
+	)
+	pos_list==[] ? list :
+	[ for (i=[0:1:pos_list[0]-1]) list[i]
+	, for (p=[1:1:size_p-1]) for (i=[pos_list[p-1]+size_s :1: pos_list[p]-1]) list[i]
+	, for (i=[pos_list[size_p-1]+size_s :1: len(list)-1]) list[i]
+	]
+;
+
 // Ersetzt alle Vorkommen eines Wertes durch einen anderen Wert
 function replace_value (list, value, new, type=0) =
 	list==undef || len(list)==0 ? list :
@@ -270,6 +286,23 @@ function replace_all_values (list, value_list, new, type=0) =
 	:type[0]>= 0 ?                   [ for (e=list) let(ev = e[type[0]])    if ( [for(value=value_list) if (ev==value) 0] == [] ) e else new ]
 	:type[0]==-1 ? let( fn=type[1] ) [ for (e=list) let(ev = fn(e))         if ( [for(value=value_list) if (ev==value) 0] == [] ) e else new ]
 	:                                [ for (e=list) let(ev = value(e,type)) if ( [for(value=value_list) if (ev==value) 0] == [] ) e else new ]
+;
+
+// replace all presence of a sequence of data with a new sequence
+// - 'list'     - list with data elements
+// - 'sequence' - list with data of given type
+// - 'new'      - list with data elements
+function replace_sequence (list, sequence, new, type=0, begin, last, count, range) =
+	let(
+		pos_list = sequence_positions (list, sequence, type, begin, last, count, range),
+		size_s   = len (sequence),
+		size_p   = len (pos_list)
+	)
+	pos_list==[] ? list :
+	[ for (i=[0:1:pos_list[0]-1]) list[i]
+	, for (p=[1:1:size_p-1]) each [ each new, for (i=[pos_list[p-1]+size_s :1: pos_list[p]-1]) list[i] ]
+	, each [ each new, for (i=[pos_list[size_p-1]+size_s :1: len(list)-1]) list[i] ]
+	]
 ;
 
 // Behält alle Vorkommen eines Wertes, entfernt alle anderen Werte
@@ -373,3 +406,23 @@ function keep_unique_intern (list, type=0, f, size=0, last_v, i=1, last_pos=0, r
 		:	keep_unique_intern (list, type, f, size, v     , i+1, i, result)
 ;
 
+// Extrahiert die Daten aus einem Bereich
+function extract_value (list, type, begin, last, count, range) =
+	let(
+		Range = parameter_range_safe (list, begin, last, count, range)
+	)
+	extract_value_intern (list, type, Range[0], Range[1])
+;
+function extract_value_intern (list, type=0, begin=0, last=-1) =
+	(begin==0) && (last==len(list)-1)
+	? // value_list (list, type)
+	 type   == 0 ?                 [ each list ]
+	:type[0]>= 0 ? let(p =type[0]) [ for (e=list) e[p]  ]
+	:type[0]==-1 ? let(fn=type[1]) [ for (e=list) fn(e) ]
+	:                              [ for (e=list) value(e,type) ]
+	:
+	 type   == 0 ?                 [ for (i=[begin:1:last]) list[i]             ]
+	:type[0]>= 0 ? let(p =type[0]) [ for (i=[begin:1:last]) list[i][p]          ]
+	:type[0]==-1 ? let(fn=type[1]) [ for (i=[begin:1:last]) fn(list[i])         ]
+	:                              [ for (i=[begin:1:last]) value(list[i],type) ]
+;
