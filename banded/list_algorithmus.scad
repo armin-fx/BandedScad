@@ -96,6 +96,32 @@ function unit_product (list) =
 ;
 
 
+// Polynomdivision a / b
+// Ergebnis: [ Ergebnispolynom, Restpolynom ]
+function polynomial_division (a, b) =
+	polynominal_division_intern (a, b, len(a), len(b))
+;
+function polynominal_division_intern (a, b, size_a, size_b, result=[]) =
+	a[size_a-1]==0 ?
+		let (
+			next = [for (i=[0:1:size_a-2]) a[i]]
+		)
+		size_a<size_b  ? [result, next] :
+		polynominal_division_intern (next, b, size_a-1, size_b, [0, each result ] )
+	:
+		size_a<size_b  ? [result, a] :
+		let (
+			f    = (a[size_a-1] / b[size_b-1]),
+			d    = b * f,
+			diff = size_a-size_b,
+			next = [
+				each [for (i=[0:1:diff-1])      a[i] ],
+				each [for (i=[diff:1:size_a-2]) a[i]-d[i-diff] ]
+				]
+		)
+		polynominal_division_intern (next, b, size_a-1, size_b, [f, each result])
+;
+
 // Polynomdivision
 // Ergebnis: Restpolynom
 function polynomial_division_remainder (a, b) =

@@ -21,6 +21,7 @@ Math on lists
   - [`product()`][product]
   - [`unit_summation()`][unit_summation]
   - [`unit_product()`][unit_product]
+  - [`polynomial_division()`][polynomial_division]
   - [`polynomial_division_remainder()`][polynomial_division_remainder]
 - [Math operation on each list element](#math-operation-on-each-list-element-)
   - [Integrated in Openscad](#integrated-in-openscad-)
@@ -56,15 +57,25 @@ Scale the complete list that the summation of the list equals `1`
 [unit_product]: #unit_product-list-
 Scale the complete list that the product of the list equals `1`
 
-#### `polynomial_division_remainder (a, b)` [^][contents]
-[polynomial_division_remainder]: polynomial_division_remainder-a-b-
+#### `polynomial_division (a, b)` [^][contents]
+[polynomial_division]: #polynomial_division-a-b-
 Calculates the polynomial division from a polynomial in a list `a` with `b`.\
-Returns only the remainder polynomial.\
+Returns the result polynomial and the remainder polynomial in a list.\
+- `[result, remainder]`
+
 The coefficients of the polynomial are stored in a list like:
 - `P(x) = a[0] + a[1]*x + a[2]*x^2 + ... + a[n]*x^n`
 - The index in the list means the coefficient from `x^index`
 
 [Wikipedia -> Polynomial long division](https://en.wikipedia.org/wiki/Polynomial_long_division)
+
+#### `polynomial_division_remainder (a, b)` [^][contents]
+[polynomial_division_remainder]: #polynomial_division_remainder-a-b-
+Calculates the polynomial division from a polynomial in a list `a` with `b`.\
+Returns only the remainder polynomial.\
+The coefficients of the polynomial are stored in a list like:
+- `P(x) = a[0] + a[1]*x + a[2]*x^2 + ... + a[n]*x^n`
+- The index in the list means the coefficient from `x^index`
 
 
 Math operation on each list element [^][contents]
