@@ -60,7 +60,7 @@ Scale the complete list that the product of the list equals `1`
 #### `polynomial_division (a, b)` [^][contents]
 [polynomial_division]: #polynomial_division-a-b-
 Calculates the polynomial division from a polynomial in a list `a` with `b`.\
-Returns the result polynomial and the remainder polynomial in a list.\
+Returns the result polynomial and the remainder polynomial in a list.
 - `[result, remainder]`
 
 The coefficients of the polynomial are stored in a list like:

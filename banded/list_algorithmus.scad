@@ -125,12 +125,11 @@ function polynominal_division_intern (a, b, size_a, size_b, result=[]) =
 // Polynomdivision
 // Ergebnis: Restpolynom
 function polynomial_division_remainder (a, b) =
-	let (
-		size_a = len(a),
-		size_b = len(b)
-	)
+	polynomial_division_remainder_intern (a, b, len(a), len(b))
+;
+function polynomial_division_remainder_intern (a, b, size_a, size_b) =
 	a[size_a-1]==0 ?
-		polynomial_division_remainder ([for (i=[0:1:size_a-2]) a[i]], b)
+		polynomial_division_remainder_intern ([for (i=[0:1:size_a-2]) a[i]], b, size_a-1, size_b)
 	:
 	size_a<size_b  ? a :
 	let (
@@ -141,6 +140,6 @@ function polynomial_division_remainder (a, b) =
 			each [for (i=[diff:1:size_a-2]) a[i]-d[i-diff] ]
 			]
 	)
-	polynomial_division_remainder (next, b)
+	polynomial_division_remainder_intern (next, b, size_a-1, size_b)
 ;
 
