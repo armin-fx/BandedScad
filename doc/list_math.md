@@ -21,6 +21,7 @@ Math on lists
   - [`product()`][product]
   - [`unit_summation()`][unit_summation]
   - [`unit_product()`][unit_product]
+  - [`polynomial_division()`][polynomial_division]
 - [Math operation on each list element](#math-operation-on-each-list-element-)
   - [Integrated in Openscad](#integrated-in-openscad-)
   - [Operand with functions from OpenSCAD](#operand-with-functions-from-openscad-)
@@ -54,6 +55,16 @@ Scale the complete list that the summation of the list equals `1`
 #### `unit_product (list)` [^][contents]
 [unit_product]: #unit_product-list-
 Scale the complete list that the product of the list equals `1`
+
+#### `polynomial_division (a, b)` [^][contents]
+[polynomial_division]: #polynomial_division-a-b-
+Calculates the polynomial division from a polynomial in a list `a` with `b`.\
+Returns the remainder polynomial.\
+The coefficients of the polynomial are stored in a list like:
+- `P(x) = a[0] + a[1]*x + a[2]*x^2 + ... + a[n]*x^n`
+- The index in the list means the coefficient from `x^index`
+
+[Wikipedia -> Polynomial long division](https://en.wikipedia.org/wiki/Polynomial_long_division)
 
 
 Math operation on each list element [^][contents]

@@ -94,3 +94,27 @@ function unit_summation (list) =
 function unit_product (list) =
 	list / pow (product(list), 1/len(list))
 ;
+
+
+// Polynomdivision
+// Ergebnis: Restpolynom
+function polynomial_division (a, b) =
+	let (
+		size_a = len(a),
+		size_b = len(b)
+	)
+	a[size_a-1]==0 ?
+		polynomial_division ([for (i=[0:1:size_a-2]) a[i]], b)
+	:
+	size_a<size_b  ? a :
+	let (
+		d    = b * (a[size_a-1] / b[size_b-1]),
+		diff = size_a-size_b,
+		next = [
+			each [for (i=[0:1:diff-1])      a[i] ],
+			each [for (i=[diff:1:size_a-2]) a[i]-d[i-diff] ]
+			]
+	)
+	polynomial_division (next, b)
+;
+
