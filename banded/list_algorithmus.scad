@@ -98,13 +98,13 @@ function unit_product (list) =
 
 // Polynomdivision
 // Ergebnis: Restpolynom
-function polynomial_division (a, b) =
+function polynomial_division_remainder (a, b) =
 	let (
 		size_a = len(a),
 		size_b = len(b)
 	)
 	a[size_a-1]==0 ?
-		polynomial_division ([for (i=[0:1:size_a-2]) a[i]], b)
+		polynomial_division_remainder ([for (i=[0:1:size_a-2]) a[i]], b)
 	:
 	size_a<size_b  ? a :
 	let (
@@ -115,6 +115,6 @@ function polynomial_division (a, b) =
 			each [for (i=[diff:1:size_a-2]) a[i]-d[i-diff] ]
 			]
 	)
-	polynomial_division (next, b)
+	polynomial_division_remainder (next, b)
 ;
 
