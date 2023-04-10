@@ -47,7 +47,6 @@ Transform and edit objects
   - [2D to 3D extrusion](#2d-to-3d-extrusion-)
     - [`extrude_line()`][extrude_line]
     - [`plain_trace_extrude()`][plain_trace_extrude]
-    - [`plain_trace_connect_extrude()`][plain_trace_connect_extrude]
     - [`helix_extrude()`][helix_extrude]
 
 
@@ -421,8 +420,8 @@ will touch the point of `rotational`.
   - Integer. The convexity parameter specifies the maximum number
     of front sides (or back sides) a ray intersecting the object might penetrate.
 
-#### `plain_trace_extrude (trace, range, convexity, limit)` [^][contents]
-[plain_trace_extrude]: #plain_trace_extrude-trace-range-convexity-limit-
+#### `plain_trace_extrude (trace, range, closed, convexity, limit)` [^][contents]
+[plain_trace_extrude]: #plain_trace_extrude-trace-range-closed-convexity-limit-
 This will extrude an 2D-object in the X-Y plane along a 2D-trace
 (keeping only the right half, X >= 0).
 Note that the object started on the X-Y plane but is tilted up
@@ -434,6 +433,9 @@ then the new Y-axis is the direction which will set in the direction of the line
   - You can use a part of the line `[first_point, last_point]`
   - negative indices will count backwards from the end of the trace
   - default = `[0, -1]` the complete trace from the first to last point
+- `closed`
+  - `true`  - the trace is a closed loop, the last point connect the first point
+  - `false` - the trace from first to last point, default
 - `convexity`
   - Integer. The convexity parameter specifies the maximum number
     of front sides (or back sides) a ray intersecting the object might penetrate.
@@ -445,11 +447,13 @@ then the new Y-axis is the direction which will set in the direction of the line
     are to small.
   - default = `1000`
 
-#### `plain_trace_connect_extrude (trace, range, convexity, limit)` [^][contents]
-[plain_trace_connect_extrude]: #plain_trace_connect_extrude-trace-range-convexity-limit-
-This will extrude an 2D-object in the X-Y plane along a 2D-trace
-like [plain_trace_extrude()][plain_trace_extrude] and connect both ends
-to a closed trace.
+_Specialized modules:_
+- `plain_trace_extrude_open (trace, range, convexity, limit)`
+  - This will keep the ends open
+  - same as `plain_trace_extrude()` with `closed` set to the default `false`
+- `plain_trace_extrude_closed (trace, range, convexity, limit)`
+  - This will connect both ends to a closed trace.
+  - like `plain_trace_extrude()` with `closed` set to `true`
 
 #### `helix_extrude (angle, rotations, pitch, height, r, opposite, orientation, slices, convexity, scope, step)` [^][contents]
 [helix_extrude]: #helix_extrude-angle-rotations-pitch-height-r-opposite-orientation-slices-convexity-scope-step-

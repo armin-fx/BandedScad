@@ -147,7 +147,14 @@ function get_angle_between (ratio, a, b) =
 ;
 
 //
-module plain_trace_extrude (trace, range=[0,-1], convexity, limit=1000)
+module plain_trace_extrude (trace, range=[0,-1], closed=false, convexity, limit=1000)
+{
+	if (closed!=true)
+		plain_trace_extrude_open   (trace, range, convexity, limit) children();
+	else
+		plain_trace_extrude_closed (trace, range, convexity, limit) children();
+}
+module plain_trace_extrude_open (trace, range=[0,-1], convexity, limit=1000)
 {
 	begin = get_position(trace, range[0]);
 	last  = get_position(trace, range[1]) - 1;
@@ -180,10 +187,10 @@ module plain_trace_extrude (trace, range=[0,-1], convexity, limit=1000)
 		}
 	}
 }
-module plain_trace_connect_extrude (trace, range=[0,-1], convexity, limit=1000)
+module plain_trace_extrude_closed (trace, range=[0,-1], convexity, limit=1000)
 {
 	if (is_list(trace) && len(trace)>1)
-	plain_trace_extrude (
+	plain_trace_extrude_open (
 		trace=get_trace_connect(extract(trace, range=range))
 		,range=range_connect, convexity=convexity, limit=limit
 	) children();
