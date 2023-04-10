@@ -30,9 +30,8 @@ use <banded/operator_transform.scad>
 //   extra   zusätzlichen Überstand anlegen, wegen Z-Fighting
 module edge_fillet (h=1, r, angle=90, type, center=false, extra=extra)
 {
-	Type = is_num(type) ? type : 0;
-	if (Type==1) edge_rounded (h, r, angle, center, extra=extra);
-	if (Type==2) edge_chamfer (h, r, angle, center, extra=extra);
+	if (type==1) edge_rounded (h, r, angle, center, extra=extra);
+	if (type==2) edge_chamfer (h, r, angle, center, extra=extra);
 }
 // erzeugt eine gefaste Kante eines Zylinders zum auschneiden oder ankleben, wahlweise abgerundet oder angeschrägt
 // Argumente:
@@ -40,16 +39,20 @@ module edge_fillet (h=1, r, angle=90, type, center=false, extra=extra)
 //   angle_ring  Winkel des Zylinders, Standart=360°
 module edge_ring_fillet (r_ring, r, angle=90, angle_ring=360, type, outer, slices, extra=extra)
 {
-	Type = is_num(type) ? type : 0;
-	if (Type==1) edge_ring_rounded (r_ring, r, angle, angle_ring, outer, slices=slices, extra=extra);
-	if (Type==2) edge_ring_chamfer (r_ring, r, angle, angle_ring, outer, slices=slices, extra=extra);
+	if (type==1) edge_ring_rounded (r_ring, r, angle, angle_ring, outer, slices=slices, extra=extra);
+	if (type==2) edge_ring_chamfer (r_ring, r, angle, angle_ring, outer, slices=slices, extra=extra);
+}
+// erzeugt eine gefaste Kante entlang einer 2D Spur zum auschneiden oder ankleben
+module edge_trace_fillet (trace, r, angle=90, type, closed=false, extra=extra)
+{
+	if (type==1) edge_trace_rounded (trace, r, angle, closed, extra=extra);
+	if (type==2) edge_trace_chamfer (trace, r, angle, closed, extra=extra);
 }
 // erzeugt einen Umriss einer gefaste Kante als 2D-Objekt
 module edge_fillet_plane (r, angle=90, type, extra=extra)
 {
-	Type = is_num(type) ? type : 0;
-	if (Type==1) edge_rounded_plane (r, angle, extra=extra);
-	if (Type==2) edge_chamfer_plane (r, angle, extra=extra);
+	if (type==1) edge_rounded_plane (r, angle, extra=extra);
+	if (type==2) edge_chamfer_plane (r, angle, extra=extra);
 }
 
 // erzeugt eine abgerundete Kante zum auschneiden oder ankleben
@@ -85,6 +88,17 @@ module edge_ring_rounded (r_ring, r, angle=90, angle_ring=360, outer, slices, ex
 		rotate_extrude_extend (angle=angles_ring, convexity=4, $fn=fn_ring)
 		translate_x (R_ring_outer)
 		edge_rounded_plane (R, angle, extra=extra, $fn=fn);
+	}
+}
+// erzeugt eine abgerundete Kante entlang einer 2D Spur zum auschneiden oder ankleben
+module edge_trace_rounded (trace, r, angle=90, closed=false, extra=extra, d)
+{
+	R = parameter_circle_r(r, d);
+	//
+	if (R!=undef && R>0) // TODO no fillet
+	{
+		plain_trace_extrude (trace, closed=closed, convexity=4)
+		edge_rounded_plane (R, angle, extra=extra);
 	}
 }
 // erzeugt einen Umriss einer abgerundeten Kante als 2D-Objekt
@@ -126,7 +140,7 @@ module edge_chamfer (h=1, c, angle=90, center=false, extra=extra)
 		linear_extrude (height=h, center=center, convexity=2)
 		edge_chamfer_plane (c, angle, extra=extra);
 }
-// erzeugt eine abgerundete Kante eines Zylinders zum auschneiden oder ankleben
+// erzeugt eine abgeschrägte Kante eines Zylinders zum auschneiden oder ankleben
 // Argumente:
 //   r_ring      Radius der Kante des Zylinders
 //   angle_ring  Winkel des Zylinders, Standart=360°
@@ -142,6 +156,15 @@ module edge_ring_chamfer (r_ring, c, angle=90, angle_ring=360, outer, slices, ex
 	{
 		rotate_extrude_extend (angle=angles_ring, convexity=2, $fn=fn_ring)
 		translate_x (R_ring_outer)
+		edge_chamfer_plane (c, angle, extra=extra);
+	}
+}
+// erzeugt eine abgeschrägte Kante entlang einer 2D Spur zum auschneiden oder ankleben
+module edge_trace_chamfer (trace, c, angle=90, closed=false, extra=extra, d)
+{
+	if (c!=undef && c>0) // TODO no fillet
+	{
+		plain_trace_extrude (trace, closed=closed, convexity=2)
 		edge_chamfer_plane (c, angle, extra=extra);
 	}
 }

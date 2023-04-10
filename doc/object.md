@@ -25,6 +25,7 @@ Configurable objects
   - [Cutting or adding parts for edges](#cutting-or-adding-parts-for-edges-)
     - [`edge_fillet()`][edge_fillet]
     - [`edge_ring_fillet()`][edge_ring_fillet]
+    - [`edge_trace_fillet()`][edge_trace_fillet]
     - [`edge_fillet_plane()`][edge_fillet_plane]
     - [`edge_fillet_to()`][edge_fillet_to]
   - [Figures with rounded edges](#figures-with-rounded-edges-)
@@ -270,10 +271,10 @@ It does `rotate_extrude()` with module [`edge_fillet_plane()`][edge_fillet_plane
   - default = constant `extra`
 
 ___Specialized modules with no argument `type`___
-- `edge_ring_rounded()` - creates a rounded edges
+- `edge_ring_rounded()` - creates a rounded edge
   - `d`      - diameter of the rounded edge, optional parameter
   - `d_ring` - diameter of the cylinder, optional parameter
-- `edge_ring_chamfer()` - creates a chamfered edges
+- `edge_ring_chamfer()` - creates a chamfered edge
 
 Example:
 ```OpenSCAD
@@ -300,6 +301,50 @@ difference()
 	// cut the upper edge on the cylinder and make a round edge
 	#translate([0,0,10])
 	edge_ring_rounded (r_ring=3, r=2, angle=[90, 180] , angle_ring=angle);
+}
+```
+
+#### `edge_trace_fillet (trace, r, angle, type, closed, extra)` [^][contents]
+[edge_trace_fillet]: #edge_trace_fillet-trace-r-angle-type-closed-extra-
+Creates a chamfered edge along a 2D trace for cutting or gluing.\
+Optionally rounded or chamfered.
+It does [`plane_trace_extrude()`](operator.md#plain_trace_extrude-trace-range-closed-convexity-limit-)
+with module [`edge_fillet_plane()`][edge_fillet_plane].
+- `trace` - 2D point list, which compose the line from the edge
+- `r`     - parameter of the chamfer
+- `angle` - angle of the edge in degree
+  - opening angle between `0...180`
+  - as number, default=`90` (right angle)
+  - as list, `[opening_angle, begin_angle]`
+- `type`  - specify, which chamfer type should be used for the edge
+  - `0` = no chamfer (default)
+  - `1` = rounding
+  - `2` = chamfer
+- `closed`
+  - `true`  - the trace is a closed loop, the last point connect the first point
+  - `false` - the trace from first to last point, default
+- `extra`  - set an amount extra overhang, because of z-fighting
+  - default = constant `extra`
+
+___Specialized modules with no argument `type`___
+- `edge_trace_rounded()` - creates a rounded edge
+  - `d`      - diameter of the rounded edge, optional parameter
+- `edge_trace_chamfer()` - creates a chamfered edge
+
+Example:
+```OpenSCAD
+include <banded.scad>
+
+$fd=0.02;
+
+trace=bezier_curve ([[10,0],[0,0],[0,5]]);
+
+difference()
+{
+	linear_extrude(5) polygon(trace);
+	
+	render(convexity=2)
+	edge_trace_rounded (trace, 2);
 }
 ```
 
