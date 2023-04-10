@@ -38,11 +38,11 @@ module edge_fillet (h=1, r, angle=90, type, center=false, extra=extra)
 // Argumente:
 //   r_ring      Radius der Kante des Zylinders
 //   angle_ring  Winkel des Zylinders, Standart=360°
-module edge_ring_fillet (r_ring, r, angle=90, angle_ring=360, type, outer, extra=extra)
+module edge_ring_fillet (r_ring, r, angle=90, angle_ring=360, type, outer, slices, extra=extra)
 {
 	Type = is_num(type) ? type : 0;
-	if (Type==1) edge_ring_rounded (r_ring, r, angle, angle_ring, outer, extra=extra);
-	if (Type==2) edge_ring_chamfer (r_ring, r, angle, angle_ring, outer, extra=extra);
+	if (Type==1) edge_ring_rounded (r_ring, r, angle, angle_ring, outer, slices=slices, extra=extra);
+	if (Type==2) edge_ring_chamfer (r_ring, r, angle, angle_ring, outer, slices=slices, extra=extra);
 }
 // erzeugt einen Umriss einer gefaste Kante als 2D-Objekt
 module edge_fillet_plane (r, angle=90, type, extra=extra)
@@ -70,13 +70,13 @@ module edge_rounded (h=1, r, angle=90, center=false, extra=extra, d)
 // Argumente:
 //   r_ring      Radius des Zylinders an der Kante
 //   angle_ring  Winkel des Zylinders, Standart=360°
-module edge_ring_rounded (r_ring, r, angle=90, angle_ring=360, outer, extra=extra, d, d_ring)
+module edge_ring_rounded (r_ring, r, angle=90, angle_ring=360, outer, slices, extra=extra, d, d_ring)
 {
 	R       = parameter_circle_r(r, d);
 	R_ring  = parameter_circle_r(r_ring, d_ring);
 	angles_ring = parameter_angle(angle_ring, 360);
-	fn      = get_slices_circle_current_x(R);
-	fn_ring = get_slices_circle_current_x(R_ring);
+	fn      =                 get_slices_circle_current_x(R);
+	fn_ring = slices==undef ? get_slices_circle_current_x(R_ring) : slices;
 	Outer   = outer!=undef ? outer : 0;
 	R_ring_outer = R_ring * get_circle_factor (fn_ring, Outer, angles_ring[0]);
 	//
@@ -130,11 +130,11 @@ module edge_chamfer (h=1, c, angle=90, center=false, extra=extra)
 // Argumente:
 //   r_ring      Radius der Kante des Zylinders
 //   angle_ring  Winkel des Zylinders, Standart=360°
-module edge_ring_chamfer (r_ring, c, angle=90, angle_ring=360, outer, extra=extra, d_ring)
+module edge_ring_chamfer (r_ring, c, angle=90, angle_ring=360, outer, slices, extra=extra, d_ring)
 {
 	R_ring   = parameter_circle_r(r_ring, d_ring);
 	angles_ring = parameter_angle(angle_ring, 360);
-	fn_ring = get_slices_circle_current_x(R_ring);
+	fn_ring = slices==undef ? get_slices_circle_current_x(R_ring) : slices;
 	Outer   = outer!=undef ? outer : 0;
 	R_ring_outer = R_ring * get_circle_factor (fn_ring, Outer, angles_ring[0]);
 	//

@@ -241,7 +241,7 @@ ___Specialized modules with no argument `type`___
   - `d` - diameter of the rounded edge, optional parameter
 - `edge_chamfer()` - creates a chamfered edges
 
-#### `edge_ring_fillet (r_ring, r, angle, angle_ring, type, outer, extra)` [^][contents]
+#### `edge_ring_fillet (r_ring, r, angle, angle_ring, type, outer, slices, extra)` [^][contents]
 [edge_ring_fillet]: #edge_ring_fillet-r_ring-r-angle-angle_ring-type-outer-extra-
 Creates a chamfered edge for a cylinder for cutting or gluing.\
 Optionally rounded or chamfered.
@@ -261,6 +261,11 @@ It does `rotate_extrude()` with module [`edge_fillet_plane()`][edge_fillet_plane
     - `0` - edges on real circle line from the cylinder, default
     - `1` - tangent on real circle line
     - any value between, such as `0.5` = middle around inner or outer circle
+- `slices`
+   - count of segments of the cylinder, optional.
+   - Without specification it includes the [extra special variables](extend.md#special-variables-)
+     to automatically control the count of segments
+   - if an angle is specified, count of segments is like in `rotate_extrude()`
 - `extra`  - set an amount extra overhang, because of z-fighting
   - default = constant `extra`
 
