@@ -17,6 +17,7 @@ It's a playground for experiments.
 What it does [^][contents]
 --------------------------
 
+Main functionality:
 - [More control of the level of detail for a mesh][extend],
     extend the control of number of facets used to generate an arc
 - [Configurable object modules][object]
@@ -51,6 +52,10 @@ What it does [^][contents]
 - [Helper functions][helper]
 - [Benchmark functions for speed][benchmark]
 
+Separate stuff:
+- [Compatibility files][antiquity]
+  to use some new buildin functions from OpenSCAD in older OpenSCAD version
+
 [extend]:      doc/extend.md
 [draft]:       doc/draft.md
 [curves]:      doc/draft_curves.md
@@ -79,6 +84,7 @@ What it does [^][contents]
 [object]:      doc/object.md
 [edges]:       doc/object.md#rounded-edges-
 [figures]:     doc/object.md#figures-
+[antiquity]:   doc/antiquity.md
 
 
 Installation [^][contents]
@@ -130,39 +136,3 @@ on older OpenSCAD versions, the bibliothek can only used with
 version 2021.01 or higher.
 OpenSCAD can be downloaded from <https://www.openscad.org/>.
 
-
-### Compatibility files [^][contents]
-
-If you want to use some new buildin functions from OpenSCAD in older OpenSCAD version
-you can include file 'compatibility_???.scad'.
-They emulate the missing functions
-and don't disturb on newer versions if you have forgotten to remove them.
-They are not needed for the library.\
-These are in the folder `antiquity`.
-
-#### For OpenSCAD version 2015.03
-Emulated functions:
-- `is_undef()`
-- `is_bool()`
-- `is_num()`
-- `is_list()`
-- `is_string()`
-- `is_function()`
-- `ord()`
-- `assert()` - in another file, generate an error on newer OpenSCAD versions
-
-```OpenSCAD
-include <compatibility_v2015.scad>
-// If you want use assert()
-include <compatibility_v2015_assert.scad>
-```
-
-#### For OpenSCAD version 2019.05
-Emulated functions:
-- `is_function()`
-  - returns always `false` in older OpenSCAD versions
-    where function literals not exists
-
-```OpenSCAD
-include <compatibility_v2019.scad>
-```

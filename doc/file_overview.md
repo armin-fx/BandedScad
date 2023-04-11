@@ -81,3 +81,10 @@ Overview of scad files
 ` `+--> [`banded/debug.scad`](debug.md "Debug modules - make parts and points seeable")\
 ` `|\
 ` `+--> `banded/other.scad`
+
+[`antiquity/*`](antiquity.md)\
+` `|\
+` `+- `compatibility_v2015.scad`\
+` `+- `compatibility_v2015_assert.scad`\
+` `|\
+` `+- `compatibility_v2019.scad`
