@@ -113,6 +113,44 @@ function mirror_at_z (object, p) = transform_function (object, function (list)
     mirror_at_z_points (list, p) )
 ;
 
+function mirror_copy (object, v) =
+	let (
+		copy = mirror (object, v)
+	)
+	append_object (object, copy)
+;
+function mirror_copy_x () = mirror_copy (object, [1,0,0]);
+function mirror_copy_y () = mirror_copy (object, [0,1,0]);
+function mirror_copy_z () = mirror_copy (object, [0,0,1]);
+
+function mirror_copy_at (object, v, p) =
+	let (
+		copy = mirror_at (object, v, p)
+	)
+	append_object (object, copy)
+;
+function mirror_copy_at_x (object, p) = mirror_copy_at (object, [1,0,0], !is_num(p) ? p : [p,0,0]);
+function mirror_copy_at_y (object, p) = mirror_copy_at (object, [0,1,0], !is_num(p) ? p : [0,p,0]);
+function mirror_copy_at_z (object, p) = mirror_copy_at (object, [0,0,1], !is_num(p) ? p : [0,0,p]);
+
+function mirror_repeat (object, v=[1,0,0], v2, v3) =
+	mirror       (v=v , object=
+	mirror_check (v=v2, object=
+	mirror_check (v=v3, object=object
+	)))
+;
+
+function mirror_repeat_copy (object, v=[1,0,0], v2, v3) =
+	let (
+		copy = mirror_repeat (object, v, v2, v3)
+	)
+	append_object (object, copy)
+;
+
+function mirror_check (object, v) =
+	v==undef ? object : mirror (object, v)
+;
+
 //---------------------------------------------------------
 function scale_x (object, f) = transform_function (object, function (list)
     scale_x_points (list, f) )

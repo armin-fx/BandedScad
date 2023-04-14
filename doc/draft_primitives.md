@@ -105,12 +105,9 @@ Implemented functions:
 - `color     (object, c, alpha)`
 - `hull      (object)`
 - `linear_extrude (object, height, center, twist, slices, scale)`
+- `rotate_extrude (object, angle, slices)`
 
 Not yet implemented:
-- `rotate_extrude()`
-  - but as function [`rotate_extrude_points()`][rotate_extrude_points]
-    (and function `rotate_extrude_extend_points()`)
-    to create an object from a 2D trace in a point list.
 - `union()`
 - `difference()`
 - `intersection()`
@@ -160,11 +157,11 @@ Implemented:
 - `rotate_at           (object, a, p, v, backwards)`
 - `rotate_to_vector    (object, v, a, backwards, d)`
 - `rotate_to_vector_at (object, v, p, a, backwards)`
- `mirror_at (object, v, p)`
+- `mirror_at (object, v, p)`
 - `skew    (object, v, t, m, a, d)`
 - `skew_at (object, v, t, m, a, p, d)`
 
-Not yet implemented:
+Implemented, but needs rework:
 - `mirror_copy        (object, v)`
 - `mirror_copy_at     (object, v, p)`
 - `mirror_repeat      (object, v, v2, v3)`

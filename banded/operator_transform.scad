@@ -60,14 +60,14 @@ module mirror_copy_at (v, p)
 }
 
 // spiegelt ein Objekt mehrfach (bis zu 3 mal) hintereinander
-module mirror_repeat (v=[1,0,0], v2=undef, v3=undef)
+module mirror_repeat (v=[1,0,0], v2, v3)
 {
 	mirror(v) mirror_check(v2) mirror_check(v3) children();
 }
 
 // erzeugt ein Objekt und ein gespiegeltes Objekt
 // spiegelt das Objekt mehrfach (bis zu 3 mal) hintereinander
-module mirror_repeat_copy (v=[1,0,0], v2=undef, v3=undef)
+module mirror_repeat_copy (v=[1,0,0], v2, v3)
 {
 	children();
 	mirror(v) mirror_check(v2) mirror_check(v3) children();

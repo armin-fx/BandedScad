@@ -182,7 +182,7 @@ function projection (object, cut, plane) =
 	is_num(object[0][0]) ?
 		projection_points (object, plane)
 	:
-	echo("Not working yet")
+	echo("projection - Not working yet")
 	let(
 		Object = unify_object(object)
 	)
