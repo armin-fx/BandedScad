@@ -1,6 +1,5 @@
 // Copyright (c) 2020 Armin Frenzel
 // License: LGPL-2.1-or-later
-// Version: 2023.04
 //
 //
 // load the entire BandedScad-bibliothek
@@ -9,6 +8,13 @@
 //
 
 /* [bibliothek BandedScad] */
+
+// Version number
+// Number format: year 4 digit - month 2 digit - day 2 digit
+//
+function version_banded() = 20230414;
+
+version_banded = version_banded();
 
 include <banded/constants.scad>
 include <banded/math.scad>
