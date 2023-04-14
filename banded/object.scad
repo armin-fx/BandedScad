@@ -3,13 +3,8 @@
 //
 // Enthält einige zusätzliche Objekte
 //
-// innerer Aufbau einiger Module:
-//     <Modulname>_basic - Objekt nicht zentriert   
-//     <Modulname>       - Objekt kann zentriert werden mit center=true im Argument
 
 
 include <banded/object_figure.scad>
 include <banded/object_figure_rounded.scad>
 include <banded/object_rounded.scad>
-//
-include <banded/object_circle.scad>
