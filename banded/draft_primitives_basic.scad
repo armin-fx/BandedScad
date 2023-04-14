@@ -108,21 +108,24 @@ function cylinder (h, r1, r2, center, r, d, d1, d2, angle=360, slices="x", piece
 	]
 ;
 
-function sphere (r, d, align) =
+function sphere (r, d, outer, align) =
 	let(
 		 R        = parameter_circle_r (r, d)
 		,Align    = parameter_align (align, [0,0,0])
 		,translate_align = R*Align
 		,fn       = get_slices_circle_current_x (R)
 		,fn_polar = fn + fn%2
+		,Outer    = outer!=undef ? outer : 0
+		,fudge_pol = get_circle_factor (fn_polar, Outer)
+		,fudge_mid = get_circle_factor (fn      , Outer)
 		,c =
 			[ for (a=[1:2:fn_polar])
 				let(
 					// von oben nach unten: [höhe, radius]
-					p=circle_point_r (R, 180*a/fn_polar)
+					p=circle_point_r (R, 180*a/fn_polar) * fudge_pol
 				)
 				// von unten nach oben [Kreisscheiben]
-				[ for (e=circle_curve_intern (r=p[1], slices=fn))
+				[ for (e=circle_curve_intern (r=p[1], slices=fn) * fudge_mid)
 					[e[0],e[1],-p[0]]
 					+ translate_align
 				]

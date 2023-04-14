@@ -75,13 +75,27 @@ module cylinder_extend (h, r1, r2, center, r, d, d1, d2, angle=360, slices="x", 
 // Erzeugt eine Kugel
 // Argumente wie OpenSCAD Modul sphere()
 // TODO Argument angle
-module sphere_extend (r, d, align)
+module sphere_extend (r, d, outer, align)
 {
 	R     = parameter_circle_r (r, d);
 	Align = parameter_align (align, [0,0,0]);
+	Outer = outer!=undef ? outer : 0;
+	fn    = get_slices_circle_current_x (R);
 	
 	translate (Align*R)
-	sphere (r=R, $fn=get_slices_circle_current_x(R));
+	if (outer==0)
+		sphere (r=R, $fn=fn);
+	else
+	{
+		fn_polar  = fn + fn%2;
+		fudge_pol = get_circle_factor (fn_polar, Outer);
+		fudge_mid = get_circle_factor (fn      , Outer);
+		fudge_all = fudge_pol * fudge_mid;
+		//
+		//scale (fudge_pol)
+		scale ([fudge_all,fudge_all,fudge_pol])
+		sphere (r=R, $fn=fn);
+	}
 }
 
 // - 2D to 3D:

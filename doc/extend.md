@@ -130,6 +130,8 @@ Creates a circle with [options of `circle_curve()`](draft_curves.md#circle-)
     - `0` - edges on real circle line, default like `circle()` in OpenSCAD
     - `1` - tangent on real circle line
     - any value between, such as `0.5` = middle around inner or outer circle
+  - the problem is described in website
+    <https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/undersized_circular_objects>
 - `align`
   - Side from origin away that the part should be.
   - [Extra arguments - align](extend.md#extra-arguments-)
@@ -143,13 +145,20 @@ Creates a cylinder with ground circle [options of `circle_curve()`](draft_curves
   - [Extra arguments - align](#extra-arguments-)
   - default = `[0,0,1]` = X-Y-axis centered
 
-#### `sphere_extend (r, d, align)` [^][contents]
+#### `sphere_extend (r, d, outer, align)` [^][contents]
 [sphere_x]: #sphere_extend-r-d-align-
 Creates a sphere at moment only control with extra special variables.
 - `align`
   - Side from origin away that the part should be.
   - [Extra arguments - align](#extra-arguments-)
   - default = `[0,0,0]` = centered
+- `outer`
+  - value `0`...`1`
+    - `0` - edges on real sphere surface, default like `sphere()` in OpenSCAD
+    - `1` - each face on real sphere surface
+    - any value between, such as `0.5` = middle around inner or outer sphere
+  - the problem is described in website
+    <https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/undersized_circular_objects>
 
 
 ### Modules with extra arguments only [^][contents]

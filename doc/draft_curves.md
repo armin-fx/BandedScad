@@ -145,6 +145,8 @@ __Options:__
     - `0` - edges on real circle line, default like `circle()` in OpenSCAD
     - `1` - tangent on real circle line
     - any value between, such as `0.5` = middle around inner or outer circle
+    - the problem is described in website
+      <https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/undersized_circular_objects>
 - `align`
   - Side from origin away that the part should be.
   - [Extra arguments - align](extend.md#extra-arguments-)
