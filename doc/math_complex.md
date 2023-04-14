@@ -264,7 +264,7 @@ Return the square root of a complex number
 ### Complex inverse hyperbolic trigonometric functions [^][contents]
 
 | function      | description
-|------ --------|-------------
+|---------------|-------------
 | `c_asinh (c)` | Complex area hyperbolic sinus
 | `c_acosh (c)` | Complex area hyperbolic cosinus
 | `c_atanh (c)` | Complex area hyperbolic tangent
