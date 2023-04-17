@@ -96,7 +96,7 @@ function color_name (name, alpha) =
 	name==undef || len(name)<1 ? undef :
 	let(
 		 a = alpha!=undef ? alpha : 1
-		,n = to_lower_case(name)
+		,n = to_lower_str(name)
 		,p = binary_search (color_name_list, n, [1])
 	)
 	p<0 ? undef :

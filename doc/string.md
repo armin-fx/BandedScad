@@ -5,6 +5,7 @@ Functions for editing strings
 `banded/string.scad`\
 ` `| \
 ` `+--> `banded/string_convert.scad`\
+` `+--> `banded/string_character.scad`\
 ` `| \
 ` `+--> `banded/string_edit.scad`\
 ` `. . . . +--> `banded/string_edit_letter.scad`
@@ -15,26 +16,43 @@ Functions for editing strings
 ### Contents
 [contents]: #contents "Up to Contents"
 - [Convert strings](#convert-strings-)
-  - [`to_lower_case()`][to_lower_case]
-  - [`to_upper_case()`][to_upper_case]
+  - [`to_lower_str()`][to_lower_str]
+  - [`to_upper_str()`][to_upper_str]
   - [`value_to_hex()`][value_to_hex]
   - [`hex_to_value()`][hex_to_value]
   - [`hex_letter_to_value()`][hex_letter_to_value]
+  - [`int_to_str()`][int_to_str]
+  - [`str_to_int()`][str_to_int]
   - [`str_to_list()`][str_to_list]
   - [`list_to_str()`][list_to_str]
+- [Convert and test letter in strings](#convert-and-test-letter-in-strings-)
+  - [`to_lower()`][to_lower]
+  - [`to_upper()`][to_upper]
+  - [`is_digit()`][is_digit]
+  - [`is_alpha()`][is_alpha]
+  - [`is_alnum()`][is_alnum]
+  - [`is_xdigit()`][is_xdigit]
+  - [`is_lower()`][is_lower]
+  - [`is_upper()`][is_upper]
+  - [`is_space()`][is_space]
+  - [`is_blanc()`][is_blanc]
+  - [`is_punct()`][is_punct]
+  - [`is_cntrl`][is_cntrl]
+  - [`is_print`][is_print]
+  - [`is_graph`][is_graph]
 - [Edit letter in strings](#edit-letter-in-strings-)
 
 
 Convert strings [^][contents]
 -----------------------------
 
-#### `to_lower_case (txt)` [^][contents]
-[to_lower_case]: #to_lower_case-txt-
-Replace every big letter in text `txt` to a low letter
+#### `to_lower_str (txt)` [^][contents]
+[to_lower_str]: #to_lower_str-txt-
+Replace every uppercase letter in text `txt` to lowercase letter
 
-#### `to_upper_case (txt)` [^][contents]
-[to_upper_case]: #to_upper_case-txt-
-Replace every low letter in text `txt` to an upper letter
+#### `to_upper_str (txt)` [^][contents]
+[to_upper_str]: #to_upper_str-txt-
+Replace every lowercase letter in text `txt` to uppercase letter
 
 #### `value_to_hex (value, size)` [^][contents]
 [value_to_hex]: #value_to_hex-value-size-
@@ -67,6 +85,17 @@ optional arguments:
   - return this value if string is no hex value
   - default = `undef`
 
+#### `int_to_str (x)` [^][contents]
+[int_to_str]: #int_to_str-x-
+Convert an integer to a string.
+
+#### `str_to_int (txt, begin)` [^][contents]
+[str_to_int]: #str_to_int-txt-begin-
+Convert a string to an integer.
+- `begin`
+ - optional, position in the string where the number begin_insert
+ - default = position `0`
+
 #### `str_to_list (txt)` [^][contents]
 [str_to_list]: #str_to_list-txt-
 Put every once letter from a string `txt` into a list
@@ -74,6 +103,109 @@ Put every once letter from a string `txt` into a list
 #### `list_to_str (list)` [^][contents]
 [list_to_str]: #list_to_str-list-
 Concat every entry in a `list` to a string
+
+
+Convert and test letter in strings [^][contents]
+------------------------------------------------
+
+Functions like in programming language C in file `ctype.h`.
+But based on the naming scheme from OpenSCAD.
+
+Arguments:
+- `txt`
+  - a string, uses only one character
+- `pos`
+  - optional, position of letter in string `txt`,
+  - default = position `0` = first position
+
+#### `to_lower (txt, pos)` [^][contents]
+[to_lower]: #to_lower-txt-pos-
+Replace an uppercase letter to a lowercase letter.\
+Returns one letter.
+
+#### `to_upper (txt, pos)` [^][contents]
+[to_upper]: #to_upper-txt-pos-
+Replace a lowercase letter to an uppercase letter.\
+Returns one letter.
+
+#### `is_digit (txt, pos)` [^][contents]
+[is_digit]: #is_digit-txt-pos-
+Check if one character at position `pos` is a numeric value.\
+Returns `true` if the character is a decimal digit
+
+#### `is_alpha (txt, pos)` [^][contents]
+[is_alpha]: #is_alpha-txt-pos-
+Check if one character at position `pos` is alphabetic.\
+Returns `true` if the character is an uppercase or lowercase letter.
+
+#### `is_alnum (txt, pos)` [^][contents]
+[is_alnum]: #is_alnum-txt-pos-
+Check if character is alphanumeric.\
+Returns `true` if the character is either a decimal digit
+or an uppercase or lowercase letter.
+
+#### `is_xdigit (txt, pos)` [^][contents]
+[is_xdigit]: #is_xdigit-txt-pos-
+Check if character is hexadecimal digit.\
+Hexadecimal digits are any of: 0 1 2 3 4 5 6 7 8 9 a b c d e f A B C D E F
+
+#### `is_lower (txt, pos)` [^][contents]
+[is_lower]: #is_lower-txt-pos-
+Check if character is lowercase letter.
+
+#### `is_upper (txt, pos)` [^][contents]
+[is_upper]: #is_upper-txt-pos-
+Check if character is uppercase letter.
+
+#### `is_space (txt, pos)` [^][contents]
+[is_space]: #is_space-txt-pos-
+Check if character is a white-space.
+
+White-space characters are any of:
+- `" "` 	(0x20)	space (SPC)
+- `"\t"`	(0x09)	horizontal tab (TAB)
+- `"\n"`	(0x0a)	newline (LF)
+- `"\v"`	(0x0b)	vertical tab (VT)
+- `"\f"`	(0x0c)	feed (FF)
+- `"\r"`	(0x0d)	carriage return (CR)
+
+#### `is_blanc (txt, pos)` [^][contents]
+[is_blanc]: #is_blanc-txt-pos-
+Check if character is blanc.\
+Blank characters are the tab character (`"\t"`) and the space character (`" "`)
+
+#### `is_punct (txt, pos)` [^][contents]
+[is_punct]: #is_punct-txt-pos-
+Check if character is a punctuation character.\
+Punctuation characters are all graphic characters (as in [`is_graph`][is_graph])
+that are not alphanumeric (as in [`is_alnum`][is_alnum]).
+
+#### `is_cntrl (txt, pos)` [^][contents]
+[is_cntrl]: #is_cntrl-txt-pos-
+Check if character is a control character.
+
+A _control character_ is a character that does not occupy a printing position on a display
+(this is the opposite of a printable character, checked with [`is_print`][is_print]).\
+For the standard ASCII character set, control characters are those between
+ASCII codes 0x00 (NUL) and 0x1f (US), plus 0x7f (DEL).
+
+#### `is_print (txt, pos)` [^][contents]
+[is_print]: #is_print-txt-pos-
+Check if character is printable.
+
+A _printable character_ is a character that occupies a printing position on a display
+(this is the opposite of a control character, checked with [`is_cntrl`][is_cntrl]).\
+For the standard ASCII character set, printing characters are all with an
+ASCII code greater than 0x1f (US), except 0x7f (DEL).\
+[`is_graph`][is_graph] returns `true` for the same cases as `is_print`
+except for the space character (`" "`).
+
+#### `is_graph (txt, pos)` [^][contents]
+[is_graph]: #is_graph-txt-pos-
+Check if character has graphical representation.
+
+The characters with graphical representation are all those characters than can be printed
+(as determined by [`is_print`][is_print] except the space character (`" "`).
 
 
 Edit letter in strings [^][contents]
@@ -99,7 +231,7 @@ _The argument names differs:_
 | `value_list` | `letter_list`
 
 
-#### Without use of letter:
+#### Without use of letter: [^][contents]
 
 | base function               | string function                         | description
 |-----------------------------|-----------------------------------------|-------------
@@ -123,7 +255,7 @@ _The argument names differs:_
 | [`compress_selected()`][cs] | `compress_selected_str (list, indices)` | Summarizes all letter that occur more than once, rewrites all indices.
 
 
-#### With access to letter:
+#### With access to letter: [^][contents]
 
 | base function                 | string function                              | description
 |-------------------------------|----------------------------------------------|-------------
@@ -146,7 +278,7 @@ _The argument names differs:_
 | [`for_each()`][fe]            | `for_each_str  (txt, f, 'range_args' )`      | Run a function on each letter in the string and return the result string.
 
 
-#### Info from strings:
+#### Info from strings: [^][contents]
 
 Use list functions directly:
 

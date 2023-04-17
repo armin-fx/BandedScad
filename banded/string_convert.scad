@@ -4,32 +4,33 @@
 // Enthält Funktionen zum Umwandeln von Strings
 //
 
+
 // convert all letter in string 'txt' to a lower case version
-function to_lower_case (txt) =
+function to_lower_str (txt) =
 	txt==undef || len(txt)==0 ? txt :
-	to_lower_case_intern (txt)
+	to_lower_str_intern (txt)
 ;
-function to_lower_case_intern (txt, i=0, new_txt="") =
+function to_lower_str_intern (txt, i=0, new_txt="") =
 	i==len(txt) ? new_txt :
 	let(
 		v = ord(txt[i]),
 		l = v>=65 && v<=90  ? chr(v+32) : txt[i]
 	)
-	to_lower_case_intern (txt, i+1, str(new_txt,l) )
+	to_lower_str_intern (txt, i+1, str(new_txt,l) )
 ;
 
 // convert all letter in string 'txt' to a upper case version
-function to_upper_case (txt) =
+function to_upper_str (txt) =
 	txt==undef || len(txt)==0 ? txt :
-	to_upper_case_intern (txt)
+	to_upper_str_intern (txt)
 ;
-function to_upper_case_intern (txt, i=0, new_txt="") =
+function to_upper_str_intern (txt, i=0, new_txt="") =
 	i==len(txt) ? new_txt :
 	let(
 		v = ord(txt[i]),
 		l = v>=97 && v<=122  ? chr(v-32) : txt[i]
 	)
-	to_upper_case_intern (txt, i+1, str(new_txt,l) )
+	to_upper_str_intern (txt, i+1, str(new_txt,l) )
 ;
 
 // convert a numeric integer value to a hexadecimal string
@@ -115,6 +116,37 @@ function hex_letter_to_value (txt, pos=0, error=undef) =
 					t=="e" ? 14 :
 					/*="f"*/ 15
 	:error
+;
+
+// convert an integer to a string
+function int_to_str (x) =
+	x<0
+	? str("-", int_to_str_intern (-x))
+	:          int_to_str_intern (x)
+;
+function int_to_str_intern (x, num=308, txt="") =
+	x<1 || num<=0 ? txt :
+	int_to_str_intern (x/10, num-1, str(floor(x)%10,txt) )
+;
+
+// convert a string to an integer
+function str_to_int (txt, begin=0) =
+	str_to_int_intern (txt, begin)
+;
+function str_to_int_intern (txt, begin=0, v=0, s=1) =
+	txt[begin]=="0" ? str_to_int_intern (txt, begin+1, v*10  ,  s) :
+	txt[begin]=="1" ? str_to_int_intern (txt, begin+1, v*10+1,  s) :
+	txt[begin]=="2" ? str_to_int_intern (txt, begin+1, v*10+2,  s) :
+	txt[begin]=="3" ? str_to_int_intern (txt, begin+1, v*10+3,  s) :
+	txt[begin]=="4" ? str_to_int_intern (txt, begin+1, v*10+4,  s) :
+	txt[begin]=="5" ? str_to_int_intern (txt, begin+1, v*10+5,  s) :
+	txt[begin]=="6" ? str_to_int_intern (txt, begin+1, v*10+6,  s) :
+	txt[begin]=="7" ? str_to_int_intern (txt, begin+1, v*10+7,  s) :
+	txt[begin]=="8" ? str_to_int_intern (txt, begin+1, v*10+8,  s) :
+	txt[begin]=="9" ? str_to_int_intern (txt, begin+1, v*10+9,  s) :
+	txt[begin]=="-" ? str_to_int_intern (txt, begin+1, v, -1) :
+	txt[begin]=="+" ? str_to_int_intern (txt, begin+1, v,  1) :
+	v * s
 ;
 
 // put every once letter from a string 'txt' into a list

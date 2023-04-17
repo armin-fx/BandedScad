@@ -4,4 +4,5 @@
 // lädt Funktionen zum Bearbeiten und Umwandeln von Strings
 
 include <banded/string_convert.scad>
+include <banded/string_character.scad>
 include <banded/string_edit.scad>
