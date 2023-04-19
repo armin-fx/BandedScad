@@ -85,9 +85,28 @@ optional arguments:
   - return this value if string is no hex value
   - default = `undef`
 
-#### `int_to_str (x)` [^][contents]
-[int_to_str]: #int_to_str-x-
+#### `int_to_str (x, size, sign, padding, align)` [^][contents]
+[int_to_str]: #int_to_str-x-size-sign-padding-align-
 Convert an integer to a string.
+- `x`    - integer value
+- `size` - min size of number length inclusive the sign
+  - default = 1 character
+- `sign` - character of positive sign
+  - default = empty `""`
+  - you can use e.g. a space `" "` or a plus `"+"`
+- `padding` - padding character to fill the left empty letters
+  - default = space `" "`
+    you can use an other spaceholder like `"."`
+  - if you set number `0`, the sign will set left before the padding letter
+- `align` - align of number
+  - `-1` = left
+  -  `0` = middle
+  -  `1` = right, default
+
+_Specialized function:_
+- `int_to_str_basic (x)`
+  - returns only the integer number as string without any formatting
+  - negative values prepend an `"-"`
 
 #### `str_to_int (txt, begin)` [^][contents]
 [str_to_int]: #str_to_int-txt-begin-

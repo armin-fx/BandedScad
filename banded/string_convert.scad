@@ -118,19 +118,40 @@ function hex_letter_to_value (txt, pos=0, error=undef) =
 	:error
 ;
 
-// convert an integer to a string
-function int_to_str (x) =
-	x<0
-	? str("-", int_to_str_intern (-x))
-	:          int_to_str_intern (x)
+// convert an integer to a string with formatting the text
+function int_to_str (x, size=1, sign="", padding=" ", align=1) =
+	let (
+		  is_n   = x<0
+		, s_num  = int_to_str_basic (x * (is_n ? -1 : 1))
+		, s_sign = is_n ? "-" : sign
+		, l      = len(s_num) + len(s_sign)
+	)
+	l>=size ? str (s_sign, s_num) :
+	let (
+		  l_pad   = size - l,
+		, l_pad_l = floor( (align+1)/2 * l_pad )
+		, l_pad_r = l_pad - l_pad_l
+	)
+	padding==0
+		? str( s_sign, fill_str(l_pad_l, "0"    )        , s_num, fill_str(l_pad_r, " ") )
+		: str(         fill_str(l_pad_l, padding), s_sign, s_num, fill_str(l_pad_r, " ") )
 ;
-function int_to_str_intern (x, num=308, txt="") =
+
+// convert an integer to a string
+function int_to_str_basic (x) =
+	x<0
+	? str("-", int_to_str_basic_intern (-x))
+	:          int_to_str_basic_intern (x)
+;
+function int_to_str_basic_intern (x, num=308, txt="") =
 	x<1 || num<=0 ? txt :
-	int_to_str_intern (x/10, num-1, str(floor(x)%10,txt) )
+	int_to_str_basic_intern (x/10, num-1, str(floor(x)%10,txt) )
 ;
 
 // convert a string to an integer
 function str_to_int (txt, begin=0) =
+	txt[begin]=="-" ? str_to_int_intern (txt, begin+1, s=-1) :
+	txt[begin]=="+" ? str_to_int_intern (txt, begin+1, s= 1) :
 	str_to_int_intern (txt, begin)
 ;
 function str_to_int_intern (txt, begin=0, v=0, s=1) =
@@ -144,8 +165,6 @@ function str_to_int_intern (txt, begin=0, v=0, s=1) =
 	txt[begin]=="7" ? str_to_int_intern (txt, begin+1, v*10+7,  s) :
 	txt[begin]=="8" ? str_to_int_intern (txt, begin+1, v*10+8,  s) :
 	txt[begin]=="9" ? str_to_int_intern (txt, begin+1, v*10+9,  s) :
-	txt[begin]=="-" ? str_to_int_intern (txt, begin+1, v, -1) :
-	txt[begin]=="+" ? str_to_int_intern (txt, begin+1, v,  1) :
 	v * s
 ;
 
