@@ -4,6 +4,8 @@
 // Enthält Funktionen zum Umwandeln von Strings
 //
 
+use <banded/string_edit_letter.scad>
+
 
 // convert all letter in string 'txt' to a lower case version
 function to_lower_str (txt) =
@@ -140,32 +142,180 @@ function int_to_str (x, size=1, sign="", padding=" ", align=1) =
 // convert an integer to a string
 function int_to_str_basic (x) =
 	x<0
-	? str("-", int_to_str_basic_intern (-x))
-	:          int_to_str_basic_intern (x)
+	? str("-", uint_to_str_basic (-x))
+	:          uint_to_str_basic (x)
 ;
-function int_to_str_basic_intern (x, num=308, txt="") =
+
+function uint_to_str_basic (x) =
+	x<1 ? "0" :
+	uint_to_str_basic_intern (x)
+;
+function uint_to_str_basic_intern (x, num=308, txt="") =
 	x<1 || num<=0 ? txt :
-	int_to_str_basic_intern (x/10, num-1, str(floor(x)%10,txt) )
+	uint_to_str_basic_intern (x/10, num-1, str(floor(x)%10,txt) )
 ;
 
 // convert a string to an integer
 function str_to_int (txt, begin=0) =
-	txt[begin]=="-" ? str_to_int_intern (txt, begin+1, s=-1) :
-	txt[begin]=="+" ? str_to_int_intern (txt, begin+1, s= 1) :
-	str_to_int_intern (txt, begin)
+	txt[begin]=="-" ? str_to_uint (txt, begin+1) * -1 :
+	txt[begin]=="+" ? str_to_uint (txt, begin+1)      :
+	str_to_uint (txt, begin)
 ;
-function str_to_int_intern (txt, begin=0, v=0, s=1) =
-	txt[begin]=="0" ? str_to_int_intern (txt, begin+1, v*10  ,  s) :
-	txt[begin]=="1" ? str_to_int_intern (txt, begin+1, v*10+1,  s) :
-	txt[begin]=="2" ? str_to_int_intern (txt, begin+1, v*10+2,  s) :
-	txt[begin]=="3" ? str_to_int_intern (txt, begin+1, v*10+3,  s) :
-	txt[begin]=="4" ? str_to_int_intern (txt, begin+1, v*10+4,  s) :
-	txt[begin]=="5" ? str_to_int_intern (txt, begin+1, v*10+5,  s) :
-	txt[begin]=="6" ? str_to_int_intern (txt, begin+1, v*10+6,  s) :
-	txt[begin]=="7" ? str_to_int_intern (txt, begin+1, v*10+7,  s) :
-	txt[begin]=="8" ? str_to_int_intern (txt, begin+1, v*10+8,  s) :
-	txt[begin]=="9" ? str_to_int_intern (txt, begin+1, v*10+9,  s) :
-	v * s
+function str_to_uint (txt, begin=0, v=0) =
+	txt[begin]=="0" ? str_to_uint (txt, begin+1, v*10) :
+	txt[begin]=="1" ? str_to_uint (txt, begin+1, v*10+1) :
+	txt[begin]=="2" ? str_to_uint (txt, begin+1, v*10+2) :
+	txt[begin]=="3" ? str_to_uint (txt, begin+1, v*10+3) :
+	txt[begin]=="4" ? str_to_uint (txt, begin+1, v*10+4) :
+	txt[begin]=="5" ? str_to_uint (txt, begin+1, v*10+5) :
+	txt[begin]=="6" ? str_to_uint (txt, begin+1, v*10+6) :
+	txt[begin]=="7" ? str_to_uint (txt, begin+1, v*10+7) :
+	txt[begin]=="8" ? str_to_uint (txt, begin+1, v*10+8) :
+	txt[begin]=="9" ? str_to_uint (txt, begin+1, v*10+9) :
+	v
+;
+
+// convert a string to an integer
+// return a list '[ integer value, position after the last letter ]'
+function str_to_int_pos (txt, begin=0) =
+	txt[begin]=="-" ? str_to_int_pos_intern (txt, begin+1, s=-1) :
+	txt[begin]=="+" ? str_to_int_pos_intern (txt, begin+1, s= 1) :
+	str_to_int_pos_intern (txt, begin)
+;
+function str_to_uint_pos (txt, begin=0) =
+	str_to_int_pos_intern (txt, begin)
+;
+function str_to_int_pos_intern (txt, begin=0, v=0, s=1) =
+	txt[begin]=="0" ? str_to_int_pos_intern (txt, begin+1, v*10  ,  s) :
+	txt[begin]=="1" ? str_to_int_pos_intern (txt, begin+1, v*10+1,  s) :
+	txt[begin]=="2" ? str_to_int_pos_intern (txt, begin+1, v*10+2,  s) :
+	txt[begin]=="3" ? str_to_int_pos_intern (txt, begin+1, v*10+3,  s) :
+	txt[begin]=="4" ? str_to_int_pos_intern (txt, begin+1, v*10+4,  s) :
+	txt[begin]=="5" ? str_to_int_pos_intern (txt, begin+1, v*10+5,  s) :
+	txt[begin]=="6" ? str_to_int_pos_intern (txt, begin+1, v*10+6,  s) :
+	txt[begin]=="7" ? str_to_int_pos_intern (txt, begin+1, v*10+7,  s) :
+	txt[begin]=="8" ? str_to_int_pos_intern (txt, begin+1, v*10+8,  s) :
+	txt[begin]=="9" ? str_to_int_pos_intern (txt, begin+1, v*10+9,  s) :
+	[v * s, begin]
+;
+
+// convert a floating point number to a string
+function float_to_str (x, size=6) =
+	let (
+		 X = x<0 ? -x : x
+	)
+	(X<=10^size) && (X>=10/10^size)
+	?	float_to_str_comma (x, size=6, compress=true)
+	:	float_to_str_exp   (x, size=6, compress=true)
+;
+
+function float_to_str_comma (x, size=16, precision, compress=false) =
+	x==0 ?
+		compress==true ? "0"
+		: precision!=undef ?
+			precision>=1 ? str("0.", fill_str(precision, "0"))
+			: "0"
+		: size>1 ? str("0.", fill_str(size-1, "0"))
+		: "0"
+	:
+	let (
+		 X      = x<0 ? -x : x
+		,exp    = floor(log(X))
+	)
+	(precision==undef && (exp>=size-1 || size<2)) || (precision!=undef && precision<1)
+	?	int_to_str_basic (round(x))
+	:
+	let (
+		 n      = precision==undef ? size-1-exp : precision
+		,s_full = int_to_str_basic (round (X * 10^n) )
+		,s_sign = x<0 ? "-" : ""
+	)
+	compress==false
+	?	str( s_sign , insert_str (s_full, ".", exp+1) )
+	:	
+	let(
+		pos_comp = find_last_zero_intern (s_full, len(s_full)-1)
+	)
+	pos_comp <= exp
+	?	str( s_sign, extract_str (s_full, 0, exp) )
+	:	str( s_sign, extract_str (s_full, 0, exp), ".", extract_str (s_full, exp+1, pos_comp) )
+;
+
+
+function float_to_str_exp (x, size=16, compress=false) =
+	x==0 ? "0" :
+	let (
+		,exp     = floor(log(abs(x)))
+		,exp_10  = 10^exp
+		,size_10 = 10^size
+		,x_size  = round (x/exp_10 * size_10 / 10)
+		,X_size  = x_size<0 ? -x_size : x_size
+		,X_compr = compress!=true ? X_size : X_size / 10^count_zero_intern (X_size)
+		,X_str   = int_to_str(X_compr)
+		//,X_str_f = int_to_str(X_size)
+		//,X_str   = compress!=true ? X_str_f : extract_str (X_str_f, 0, find_last_zero_intern(X_str_f,len(X_str_f)-1))
+	)
+	str (
+		 x<0 ? "-" : ""
+		,	X_str[1]==undef ? X_str : insert_str(X_str, ".", 1)
+		,"e", int_to_str(exp, sign="+")
+	)
+;
+
+function count_zero_intern (x, n=0) =
+	x==0 ? -1 :
+	let (
+		 next = floor(x/10)
+		,d    = x - next*10
+	)
+	d!=0 ? n :
+	count_zero_intern (next, n+1)
+;
+function find_last_zero_intern (x_str, pos) =
+	pos<=0 ? 0 :
+	x_str[pos]!="0" ? pos :
+	find_last_zero_intern (x_str, pos-1)
+;
+
+// convert a string to a floating point number
+function str_to_float (txt, begin=0) =
+	let (
+		pre = str_to_int_pos (txt, begin)
+	)
+	txt[pre[1]]!="."
+	?	pre[0]
+	:
+	let (
+		aft = str_to_uint_pos (txt, pre[1]+1)
+		,v  = pre[0] + aft[0] * 10^-(aft[1]-pre[1]-1) * (pre[0]<0 ? -1 : 1)
+	)
+	txt[aft[1]]!="e" && txt[aft[1]]!="E"
+	?	v
+	:
+	let (
+		exp = str_to_int (txt, aft[1]+1)
+	)
+	v * 10^exp
+;
+
+function str_to_float_pos (txt, begin=0) =
+	let (
+		pre = str_to_int_pos (txt, begin)
+	)
+	txt[pre[1]]!="."
+	?	pre
+	:
+	let (
+		aft = str_to_uint_pos (txt, pre[1]+1)
+		,v  = pre[0] + aft[0] * 10^-(aft[1]-pre[1]-1) * (pre[0]<0 ? -1 : 1)
+	)
+	txt[aft[1]]!="e" && txt[aft[1]]!="E"
+	?	[ v, aft[1] ]
+	:
+	let (
+		exp = str_to_int_pos (txt, aft[1]+1)
+	)
+	[v * 10^exp[0], exp[1]]
 ;
 
 // put every once letter from a string 'txt' into a list

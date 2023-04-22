@@ -281,7 +281,7 @@ Ascents:
 - element is not undef
 - element is a list of (at least) size `size` with valid values
 - if `size`==`0` the item is a valid value and not a list
-- ___a valid value:___ any data type except `undef`
+- _a valid value:_ any data type except `undef`
 
 Arguments:
 - `list` - list of items
@@ -298,7 +298,7 @@ Ascents:
 - element is not undef
 - element is a list of (at least) size `size` with valid values
 - if `size`==`0` the item is a valid value and not a list
-- ___a valid value:___ a numeric value
+- _a valid value:_ a numeric value
 
 Arguments:
 - `list` - list of items

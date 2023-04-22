@@ -23,6 +23,8 @@ Functions for editing strings
   - [`hex_letter_to_value()`][hex_letter_to_value]
   - [`int_to_str()`][int_to_str]
   - [`str_to_int()`][str_to_int]
+  - [`float_to_str()`][float_to_str]
+  - [`str_to_float()`][str_to_float]
   - [`str_to_list()`][str_to_list]
   - [`list_to_str()`][list_to_str]
 - [Convert and test letter in strings](#convert-and-test-letter-in-strings-)
@@ -89,7 +91,7 @@ optional arguments:
 [int_to_str]: #int_to_str-x-size-sign-padding-align-
 Convert an integer to a string.
 - `x`    - integer value
-- `size` - min size of number length inclusive the sign
+- `size` - min size of number length (without the sign letter)
   - default = 1 character
 - `sign` - character of positive sign
   - default = empty `""`
@@ -107,13 +109,76 @@ _Specialized function:_
 - `int_to_str_basic (x)`
   - returns only the integer number as string without any formatting
   - negative values prepend an `"-"`
+- `uint_to_str_basic (x)`
+  - returns only the integer number as string without any formatting
+  - no negative values, `x` must be positive
 
 #### `str_to_int (txt, begin)` [^][contents]
 [str_to_int]: #str_to_int-txt-begin-
 Convert a string to an integer.
 - `begin`
- - optional, position in the string where the number begin_insert
- - default = position `0`
+  - optional, position in the string where the number begin
+  - default = position `0`
+
+_Specialized function:_
+- `str_to_uint (txt, begin)`
+  - Convert only numbers in a string to a positive integer.
+  - breaks on sign letter like `+` or `-`
+- `str_to_int_pos (txt, begin)`
+  - like `str_to_int()`, but returns a list with the integer number
+    and the next position in string `txt` after the integer string.
+    - `[ number, position ]`
+- `str_to_uint_pos (txt, begin)`
+  - like `str_to_int_pos()`, but returns a list with a positive integer number
+    and the next position in string `txt` after the integer string.
+    - `[ number, position ]`
+  - breaks on sign letter like `+` or `-`
+
+#### `float_to_str (x, size)` [^][contents]
+[float_to_str]: #float_to_str-x-size-
+Convert a floating point number to a string.\
+Result like numbers converted with `str()`.\
+This function will automatically switch between:
+- show as integer part and fraction part
+- show as significand part in normalized form and exponent with base 10
+
+Arguments:
+- `x`    - floating point value
+- `size` - size of number letters
+  - default = 6 character
+
+_Specialized function:_
+- `float_to_str_comma (x, size, precision, compress)`
+  - returns the floating point always as integer part and fraction part
+- `float_to_str_exp   (x, size, compress)`
+  - returns the floating point always as significand part in normalized form and
+    exponent with base 10
+
+Extra arguments:
+- `size` - size of number letters
+  - default = 16 character, machine accuracy
+- `precision`
+  - disables argument `size` if defined, default = `undef`
+  - count of letters in fraction part of the floating point
+- `compress`
+  - if set `true`: remove appending `"0"` in fraction part to reduce the size of the string
+  - default:
+    - `false` - `float_to_str_comma()`, `float_to_str_exp()`
+    - `true`  - `float_to_str()`
+
+#### `str_to_float (txt, begin)` [^][contents]
+[str_to_float]: #str_to_float-txt-begin-
+Convert a string to a floating point number.
+- `begin`
+  - optional, position in the string where the number begin
+  - default = position `0`
+
+_Specialized function:_
+- `str_to_float_pos (txt, begin)`
+  - like `str_to_float()`, but returns a list with the floating point number
+    and the next position in string `txt` after the floating point string.
+    - `[ number, position ]`
+
 
 #### `str_to_list (txt)` [^][contents]
 [str_to_list]: #str_to_list-txt-
