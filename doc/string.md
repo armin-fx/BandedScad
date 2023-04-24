@@ -106,12 +106,14 @@ Convert an integer to a string.
   -  `1` = right, default
 
 _Specialized function:_
-- `int_to_str_basic (x)`
+- `int_to_str_basic (x, sign)`
   - returns only the integer number as string without any formatting
-  - negative values prepend an `"-"`
-- `uint_to_str_basic (x)`
+  - negative values prepend an `"-"`,
+    positive values prepent the string `sign`, default = empty `""`
+- `uint_to_str_basic (x, count)`
   - returns only the integer number as string without any formatting
   - no negative values, `x` must be positive
+  - `count` - maximum number of letters, default = `308`
 
 #### `str_to_int (txt, begin)` [^][contents]
 [str_to_int]: #str_to_int-txt-begin-
@@ -134,8 +136,8 @@ _Specialized function:_
     - `[ number, position ]`
   - breaks on sign letter like `+` or `-`
 
-#### `float_to_str (x, size)` [^][contents]
-[float_to_str]: #float_to_str-x-size-
+#### `float_to_str (x, size, compress, sign)` [^][contents]
+[float_to_str]: #float_to_str-x-size-compress-sign-
 Convert a floating point number to a string.\
 Result like numbers converted with `str()`.\
 This function will automatically switch between:
@@ -146,25 +148,25 @@ Arguments:
 - `x`    - floating point value
 - `size` - size of number letters
   - default = 6 character
-
-_Specialized function:_
-- `float_to_str_comma (x, size, precision, compress)`
-  - returns the floating point always as integer part and fraction part
-- `float_to_str_exp   (x, size, compress)`
-  - returns the floating point always as significand part in normalized form and
-    exponent with base 10
-
-Extra arguments:
-- `size` - size of number letters
-  - default = 16 character, machine accuracy
 - `precision`
   - disables argument `size` if defined, default = `undef`
   - count of letters in fraction part of the floating point
+  - control only the result when show as integer part and fraction part
 - `compress`
   - if set `true`: remove appending `"0"` in fraction part to reduce the size of the string
-  - default:
-    - `false` - `float_to_str_comma()`, `float_to_str_exp()`
-    - `true`  - `float_to_str()`
+  - default = `true`
+- `sign` - character of positive sign
+  - default = empty `""`
+  - you can use e.g. a space `" "` or a plus `"+"`
+
+_Specialized function:_
+- `float_to_str_comma (x, size, precision, compress, sign)`
+  - returns the floating point always as integer part and fraction part
+  - `size` - default = 16 character, machine accuracy
+- `float_to_str_exp   (x, size, compress, sign)`
+  - returns the floating point always as significand part in normalized form and
+    exponent with base 10
+  - `size` - default = 16 character, machine accuracy
 
 #### `str_to_float (txt, begin)` [^][contents]
 [str_to_float]: #str_to_float-txt-begin-

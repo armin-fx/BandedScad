@@ -123,16 +123,15 @@ function hex_letter_to_value (txt, pos=0, error=undef) =
 // convert an integer to a string with formatting the text
 function int_to_str (x, size=1, sign="", padding=" ", align=1) =
 	let (
-		  is_n   = x<0
-		, s_num  = int_to_str_basic (x * (is_n ? -1 : 1))
-		, s_sign = is_n ? "-" : sign
-		, l      = len(s_num) + len(s_sign)
+		,s_num  = int_to_str_basic (x * (x<0 ? -1 : 1))
+		,s_sign = x<0 ? "-" : sign
+		,l      = len(s_num) + len(s_sign)
 	)
 	l>=size ? str (s_sign, s_num) :
 	let (
-		  l_pad   = size - l,
-		, l_pad_l = floor( (align+1)/2 * l_pad )
-		, l_pad_r = l_pad - l_pad_l
+		 l_pad   = size - l,
+		,l_pad_l = floor( (align+1)/2 * l_pad )
+		,l_pad_r = l_pad - l_pad_l
 	)
 	padding==0
 		? str( s_sign, fill_str(l_pad_l, "0"    )        , s_num, fill_str(l_pad_r, " ") )
@@ -140,19 +139,21 @@ function int_to_str (x, size=1, sign="", padding=" ", align=1) =
 ;
 
 // convert an integer to a string
-function int_to_str_basic (x) =
+function int_to_str_basic (x, sign="") =
 	x<0
-	? str("-", uint_to_str_basic (-x))
-	:          uint_to_str_basic (x)
+	? str("-",  uint_to_str_basic (-x))
+	: sign==""
+	?           uint_to_str_basic (x)
+	: str(sign, uint_to_str_basic (x))
 ;
 
-function uint_to_str_basic (x) =
+function uint_to_str_basic (x, count=308) =
 	x<1 ? "0" :
-	uint_to_str_basic_intern (x)
+	uint_to_str_basic_intern (x, count)
 ;
-function uint_to_str_basic_intern (x, num=308, txt="") =
-	x<1 || num<=0 ? txt :
-	uint_to_str_basic_intern (x/10, num-1, str(floor(x)%10,txt) )
+function uint_to_str_basic_intern (x, count=308, txt="") =
+	x<1 || count<=0 ? list_to_str(txt) :
+	uint_to_str_basic_intern (x/10, count-1, [ floor(x)%10, each txt ] )
 ;
 
 // convert a string to an integer
@@ -200,16 +201,16 @@ function str_to_int_pos_intern (txt, begin=0, v=0, s=1) =
 ;
 
 // convert a floating point number to a string
-function float_to_str (x, size=6) =
+function float_to_str (x, size=6, compress=true, sign="") =
 	let (
 		 X = x<0 ? -x : x
 	)
 	(X<=10^size) && (X>=10/10^size)
-	?	float_to_str_comma (x, size=6, compress=true)
-	:	float_to_str_exp   (x, size=6, compress=true)
+	?	float_to_str_comma (x, size=6, compress=compress, sign=sign)
+	:	float_to_str_exp   (x, size=6, compress=compress, sign=sign)
 ;
 
-function float_to_str_comma (x, size=16, precision, compress=false) =
+function float_to_str_comma (x, size=16, precision, compress=true, sign="") =
 	x==0 ?
 		compress==true ? "0"
 		: precision!=undef ?
@@ -228,21 +229,24 @@ function float_to_str_comma (x, size=16, precision, compress=false) =
 	let (
 		 n      = precision==undef ? size-1-exp : precision
 		,s_full = int_to_str_basic (round (X * 10^n) )
-		,s_sign = x<0 ? "-" : ""
+		,s_sign = x<0 ? "-" : sign
 	)
-	compress==false
-	?	str( s_sign , insert_str (s_full, ".", exp+1) )
+	compress==false ?
+		X>=1
+		?	str( s_sign, insert_str (s_full, ".", exp+1) )
+		:	str( s_sign, "0.", fill_str(-exp-1, "0"), s_full)
 	:	
 	let(
 		pos_comp = find_last_zero_intern (s_full, len(s_full)-1)
 	)
-	pos_comp <= exp
-	?	str( s_sign, extract_str (s_full, 0, exp) )
-	:	str( s_sign, extract_str (s_full, 0, exp), ".", extract_str (s_full, exp+1, pos_comp) )
+	X>=1 ?
+		pos_comp <= exp
+		?	str( s_sign, extract_str (s_full, 0, exp) )
+		:	str( s_sign, extract_str (s_full, 0, exp), ".", extract_str (s_full, exp+1, pos_comp) )
+	:		str( s_sign, "0.", fill_str(-exp-1, "0"), extract_str (s_full, 0, pos_comp) )
 ;
 
-
-function float_to_str_exp (x, size=16, compress=false) =
+function float_to_str_exp (x, size=16, compress=true, sign="") =
 	x==0 ? "0" :
 	let (
 		,exp     = floor(log(abs(x)))
@@ -256,7 +260,7 @@ function float_to_str_exp (x, size=16, compress=false) =
 		//,X_str   = compress!=true ? X_str_f : extract_str (X_str_f, 0, find_last_zero_intern(X_str_f,len(X_str_f)-1))
 	)
 	str (
-		 x<0 ? "-" : ""
+		 x<0 ? "-" : sign
 		,	X_str[1]==undef ? X_str : insert_str(X_str, ".", 1)
 		,"e", int_to_str(exp, sign="+")
 	)

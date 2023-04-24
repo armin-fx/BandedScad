@@ -91,7 +91,7 @@ function extract_str (txt, begin, last, count, range) =
 
 // Erzeugt einen String mit 'count' Elementen gefüllt mit 'value'
 function fill_str (count, value) =
-	(!is_num(count) || count<1) ? "" :
+	(count==undef || count<1) ? "" :
 	list_to_str ([ for (i=[0:count-1]) value ])
 ;
 
