@@ -221,7 +221,7 @@ function float_to_str_comma (x, digits=16, precision, compress=true, sign="") =
 	:
 	let (
 		 X      = x<0 ? -x : x
-		,exp    = floor(log(X))
+		,exp    = get_10(X)
 	)
 	(precision==undef && (exp>=digits-1 || digits<2)) || (precision!=undef && precision<1)
 	?	int_to_str_basic (round(x))
@@ -249,7 +249,7 @@ function float_to_str_comma (x, digits=16, precision, compress=true, sign="") =
 function float_to_str_exp (x, digits=16, compress=true, sign="") =
 	x==0 ? "0" :
 	let (
-		,exp     = floor(log(abs(x)))
+		,exp     = get_10(x)
 		,exp_10  = 10^exp
 		,digits_10 = 10^digits
 		,x_digits  = round (x/exp_10 * digits_10 / 10)
@@ -266,6 +266,16 @@ function float_to_str_exp (x, digits=16, compress=true, sign="") =
 	)
 ;
 
+// returns the number of digits minus 1 before the decimal point
+// with little correction
+function get_10 (x) =
+	let (
+		 X      = x<0 ? -x : x
+	//	,exp    = floor(log(X))
+		,exp    = floor(log(X) * ((log(X*2)%3)<1 ? 1.00000000000000012 : 1) )
+	)
+	exp
+;
 function count_zero_intern (x, n=0) =
 	x==0 ? -1 :
 	let (
