@@ -91,9 +91,9 @@ optional arguments:
 [int_to_str]: #int_to_str-x-size-sign-padding-align-
 Convert an integer to a string.
 - `x`    - integer value
-- `size` - min size of number length (without the sign letter)
+- `size` - min count of letters (with the sign letter)
   - default = 1 character
-- `sign` - character of positive sign
+- `sign`   - character of positive sign
   - default = empty `""`
   - you can use e.g. a space `" "` or a plus `"+"`
 - `padding` - padding character to fill the left empty letters
@@ -136,8 +136,8 @@ _Specialized function:_
     - `[ number, position ]`
   - breaks on sign letter like `+` or `-`
 
-#### `float_to_str (x, size, compress, sign)` [^][contents]
-[float_to_str]: #float_to_str-x-size-compress-sign-
+#### `float_to_str (x, digits, compress, sign)` [^][contents]
+[float_to_str]: #float_to_str-x-digits-compress-sign-
 Convert a floating point number to a string.\
 Result like numbers converted with `str()`.\
 This function will automatically switch between:
@@ -145,11 +145,11 @@ This function will automatically switch between:
 - show as significand part in normalized form and exponent with base 10
 
 Arguments:
-- `x`    - floating point value
-- `size` - size of number letters
+- `x`      - floating point value
+- `digits` - count of number letters
   - default = 6 character
 - `precision`
-  - disables argument `size` if defined, default = `undef`
+  - disables argument `digits` if defined, default = `undef`
   - count of letters in fraction part of the floating point
   - control only the result when show as integer part and fraction part
 - `compress`
@@ -160,13 +160,13 @@ Arguments:
   - you can use e.g. a space `" "` or a plus `"+"`
 
 _Specialized function:_
-- `float_to_str_comma (x, size, precision, compress, sign)`
+- `float_to_str_comma (x, digits, precision, compress, sign)`
   - returns the floating point always as integer part and fraction part
-  - `size` - default = 16 character, machine accuracy
-- `float_to_str_exp   (x, size, compress, sign)`
+  - `digits` - default = 16 character, machine accuracy
+- `float_to_str_exp   (x, digits, compress, sign)`
   - returns the floating point always as significand part in normalized form and
     exponent with base 10
-  - `size` - default = 16 character, machine accuracy
+  - `digits` - default = 16 character, machine accuracy
 
 #### `str_to_float (txt, begin)` [^][contents]
 [str_to_float]: #str_to_float-txt-begin-

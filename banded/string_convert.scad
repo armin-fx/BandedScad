@@ -201,33 +201,33 @@ function str_to_int_pos_intern (txt, begin=0, v=0, s=1) =
 ;
 
 // convert a floating point number to a string
-function float_to_str (x, size=6, compress=true, sign="") =
+function float_to_str (x, digits=6, compress=true, sign="") =
 	let (
 		 X = x<0 ? -x : x
 	)
-	(X<=10^size) && (X>=10/10^size)
-	?	float_to_str_comma (x, size=6, compress=compress, sign=sign)
-	:	float_to_str_exp   (x, size=6, compress=compress, sign=sign)
+	(X<=10^digits) && (X>=10/10^digits)
+	?	float_to_str_comma (x, digits=6, compress=compress, sign=sign)
+	:	float_to_str_exp   (x, digits=6, compress=compress, sign=sign)
 ;
 
-function float_to_str_comma (x, size=16, precision, compress=true, sign="") =
+function float_to_str_comma (x, digits=16, precision, compress=true, sign="") =
 	x==0 ?
 		compress==true ? "0"
 		: precision!=undef ?
 			precision>=1 ? str("0.", fill_str(precision, "0"))
 			: "0"
-		: size>1 ? str("0.", fill_str(size-1, "0"))
+		: digits>1 ? str("0.", fill_str(digits-1, "0"))
 		: "0"
 	:
 	let (
 		 X      = x<0 ? -x : x
 		,exp    = floor(log(X))
 	)
-	(precision==undef && (exp>=size-1 || size<2)) || (precision!=undef && precision<1)
+	(precision==undef && (exp>=digits-1 || digits<2)) || (precision!=undef && precision<1)
 	?	int_to_str_basic (round(x))
 	:
 	let (
-		 n      = precision==undef ? size-1-exp : precision
+		 n      = precision==undef ? digits-1-exp : precision
 		,s_full = int_to_str_basic (round (X * 10^n) )
 		,s_sign = x<0 ? "-" : sign
 	)
@@ -246,17 +246,17 @@ function float_to_str_comma (x, size=16, precision, compress=true, sign="") =
 	:		str( s_sign, "0.", fill_str(-exp-1, "0"), extract_str (s_full, 0, pos_comp) )
 ;
 
-function float_to_str_exp (x, size=16, compress=true, sign="") =
+function float_to_str_exp (x, digits=16, compress=true, sign="") =
 	x==0 ? "0" :
 	let (
 		,exp     = floor(log(abs(x)))
 		,exp_10  = 10^exp
-		,size_10 = 10^size
-		,x_size  = round (x/exp_10 * size_10 / 10)
-		,X_size  = x_size<0 ? -x_size : x_size
-		,X_compr = compress!=true ? X_size : X_size / 10^count_zero_intern (X_size)
+		,digits_10 = 10^digits
+		,x_digits  = round (x/exp_10 * digits_10 / 10)
+		,X_digits  = x_digits<0 ? -x_digits : x_digits
+		,X_compr = compress!=true ? X_digits : X_digits / 10^count_zero_intern (X_digits)
 		,X_str   = int_to_str(X_compr)
-		//,X_str_f = int_to_str(X_size)
+		//,X_str_f = int_to_str(X_digits)
 		//,X_str   = compress!=true ? X_str_f : extract_str (X_str_f, 0, find_last_zero_intern(X_str_f,len(X_str_f)-1))
 	)
 	str (
