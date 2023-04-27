@@ -136,8 +136,8 @@ _Specialized function:_
     - `[ number, position ]`
   - breaks on sign letter like `+` or `-`
 
-#### `float_to_str (x, digits, compress, sign)` [^][contents]
-[float_to_str]: #float_to_str-x-digits-compress-sign-
+#### `float_to_str (x, digits, compress, sign, point)` [^][contents]
+[float_to_str]: #float_to_str-x-digits-compress-sign-point-
 Convert a floating point number to a string.\
 Result like numbers converted with `str()`.\
 This function will automatically switch between:
@@ -158,12 +158,16 @@ Arguments:
 - `sign` - character of positive sign
   - default = empty `""`
   - you can use e.g. a space `" "` or a plus `"+"`
+- `point`
+  - `true`  - show always a decimal point
+  - `false` - show decimal point only when needed, default
 
 _Specialized function:_
-- `float_to_str_comma (x, digits, precision, compress, sign)`
+- `float_to_str_comma (x, digits, precision, compress, sign, point)`
   - returns the floating point always as integer part and fraction part
   - `digits` - default = 16 character, machine accuracy
-- `float_to_str_exp   (x, digits, compress, sign)`
+    - defines the significand count of digits
+- `float_to_str_exp   (x, digits, compress, sign, point)`
   - returns the floating point always as significand part in normalized form and
     exponent with base 10
   - `digits` - default = 16 character, machine accuracy

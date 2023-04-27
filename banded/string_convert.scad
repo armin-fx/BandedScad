@@ -201,30 +201,33 @@ function str_to_int_pos_intern (txt, begin=0, v=0, s=1) =
 ;
 
 // convert a floating point number to a string
-function float_to_str (x, digits=6, compress=true, sign="") =
+function float_to_str (x, digits=6, compress=true, sign="", point=false) =
 	let (
 		 X = x<0 ? -x : x
 	)
 	(X<=10^digits) && (X>=10/10^digits)
-	?	float_to_str_comma (x, digits=6, compress=compress, sign=sign)
-	:	float_to_str_exp   (x, digits=6, compress=compress, sign=sign)
+	?	float_to_str_comma (x, digits=6, compress=compress, sign=sign, point=point)
+	:	float_to_str_exp   (x, digits=6, compress=compress, sign=sign, point=point)
 ;
 
-function float_to_str_comma (x, digits=16, precision, compress=true, sign="") =
+function float_to_str_comma (x, digits=16, precision, compress=true, sign="", point=false) =
 	x==0 ?
-		compress==true ? "0"
+		compress==true ?
+			point==false ? "0" : "0."
 		: precision!=undef ?
 			precision>=1 ? str("0.", fill_str(precision, "0"))
-			: "0"
+			: point==false ? "0" : "0."
 		: digits>1 ? str("0.", fill_str(digits-1, "0"))
-		: "0"
+		: point==false ? "0" : "0."
 	:
 	let (
 		 X      = x<0 ? -x : x
 		,exp    = get_10(X)
 	)
-	(precision==undef && (exp>=digits-1 || digits<2)) || (precision!=undef && precision<1)
-	?	int_to_str_basic (round(x))
+	(precision==undef && (exp>=digits-1 || digits<2)) || (precision!=undef && precision<1) ?
+		point==false
+		?      int_to_str_basic (round(x))
+		: str( int_to_str_basic (round(x)), ".")
 	:
 	let (
 		 n      = precision==undef ? digits-1-exp : precision
@@ -241,12 +244,12 @@ function float_to_str_comma (x, digits=16, precision, compress=true, sign="") =
 	)
 	X>=1 ?
 		pos_comp <= exp
-		?	str( s_sign, extract_str (s_full, 0, exp) )
+		?	str( s_sign, extract_str (s_full, 0, exp), point==false ? "" : "." )
 		:	str( s_sign, extract_str (s_full, 0, exp), ".", extract_str (s_full, exp+1, pos_comp) )
 	:		str( s_sign, "0.", fill_str(-exp-1, "0"), extract_str (s_full, 0, pos_comp) )
 ;
 
-function float_to_str_exp (x, digits=16, compress=true, sign="") =
+function float_to_str_exp (x, digits=16, compress=true, sign="", point=false) =
 	x==0 ? "0" :
 	let (
 		,exp     = get_10(x)
@@ -261,7 +264,7 @@ function float_to_str_exp (x, digits=16, compress=true, sign="") =
 	)
 	str (
 		 x<0 ? "-" : sign
-		,	X_str[1]==undef ? X_str : insert_str(X_str, ".", 1)
+		,(X_str[1]==undef && point==false) ? X_str : insert_str(X_str, ".", 1)
 		,"e", int_to_str(exp, sign="+")
 	)
 ;
