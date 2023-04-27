@@ -123,19 +123,10 @@ function hex_letter_to_value (txt, pos=0, error=undef) =
 // convert an integer to a string with formatting the text
 function int_to_str (x, size=1, sign="", padding=" ", align=1) =
 	let (
-		,s_num  = int_to_str_basic (x * (x<0 ? -1 : 1))
+		,s_num  = int_to_str_basic (x<0 ? -x : x)
 		,s_sign = x<0 ? "-" : sign
-		,l      = len(s_num) + len(s_sign)
 	)
-	l>=size ? str (s_sign, s_num) :
-	let (
-		 l_pad   = size - l,
-		,l_pad_l = floor( (align+1)/2 * l_pad )
-		,l_pad_r = l_pad - l_pad_l
-	)
-	padding==0
-		? str( s_sign, fill_str(l_pad_l, "0"    )        , s_num, fill_str(l_pad_r, " ") )
-		: str(         fill_str(l_pad_l, padding), s_sign, s_num, fill_str(l_pad_r, " ") )
+	add_padding_str (s_num, pre=s_sign, size=size, padding=padding, align=align)
 ;
 
 // convert an integer to a string
@@ -201,16 +192,32 @@ function str_to_int_pos_intern (txt, begin=0, v=0, s=1) =
 ;
 
 // convert a floating point number to a string
-function float_to_str (x, digits=6, compress=true, sign="", point=false) =
+function float_to_str (x, digits=6, compress=true, sign="", point=false, size=1, padding=" ", align=1) =
+	let (
+		 s_sign = x<0 ? "-" : sign
+		,s_num  = float_to_str_basic (x<0 ? -x : x, digits=digits, compress=compress, point=point)
+	)
+	add_padding_str (s_num, pre=s_sign, size=size, padding=padding, align=align)
+;
+//
+function float_to_str_basic (x, digits=6, compress=true, sign="", point=false) =
 	let (
 		 X = x<0 ? -x : x
 	)
 	(X<=10^digits) && (X>=10/10^digits)
-	?	float_to_str_comma (x, digits=6, compress=compress, sign=sign, point=point)
-	:	float_to_str_exp   (x, digits=6, compress=compress, sign=sign, point=point)
+	?	float_to_str_comma_basic (x, digits=6, compress=compress, sign=sign, point=point)
+	:	float_to_str_exp_basic   (x, digits=6, compress=compress, sign=sign, point=point)
 ;
 
-function float_to_str_comma (x, digits=16, precision, compress=true, sign="", point=false) =
+function float_to_str_comma (x, digits=16, precision, compress=true, sign="", point=false, size=1, padding=" ", align=1) =
+	let (
+		 s_sign = x<0 ? "-" : sign
+		,s_num  = float_to_str_comma_basic (x<0 ? -x : x, digits=digits, precision=precision, compress=compress, point=point)
+	)
+	add_padding_str (s_num, pre=s_sign, size=size, padding=padding, align=align)
+;
+//
+function float_to_str_comma_basic (x, digits=16, precision, compress=true, sign="", point=false) =
 	x==0 ?
 		compress==true ?
 			point==false ? "0" : "0."
@@ -249,7 +256,15 @@ function float_to_str_comma (x, digits=16, precision, compress=true, sign="", po
 	:		str( s_sign, "0.", fill_str(-exp-1, "0"), extract_str (s_full, 0, pos_comp) )
 ;
 
-function float_to_str_exp (x, digits=16, compress=true, sign="", point=false) =
+function float_to_str_exp (x, digits=16, compress=true, sign="", point=false, size=1, padding=" ", align=1) =
+	let (
+		 s_sign = x<0 ? "-" : sign
+		,s_num  = float_to_str_exp_basic (x<0 ? -x : x, digits=digits, compress=compress, point=point)
+	)
+	add_padding_str (s_num, pre=s_sign, size=size, padding=padding, align=align)
+;
+//
+function float_to_str_exp_basic (x, digits=16, compress=true, sign="", point=false) =
 	x==0 ? "0" :
 	let (
 		,exp     = get_10(x)
@@ -269,6 +284,26 @@ function float_to_str_exp (x, digits=16, compress=true, sign="", point=false) =
 	)
 ;
 
+//
+function add_padding_str (txt="", pre="", size=1, padding=" ", align=1) =
+	let (
+		l = len(pre) + len(txt)
+	)
+	l>=size ?
+		pre==""
+		? txt
+		: str (pre, txt)
+	:
+	
+	let (
+		 l_pad   = size - l,
+		,l_pad_l = floor( (align+1)/2 * l_pad )
+		,l_pad_r = l_pad - l_pad_l
+	)
+	padding==0
+		? str( pre, fill_str(l_pad_l, "0"    )     , txt, fill_str(l_pad_r, " ") )
+		: str(      fill_str(l_pad_l, padding), pre, txt, fill_str(l_pad_r, " ") )
+;
 // returns the number of digits minus 1 before the decimal point
 // with little correction
 function get_10 (x) =

@@ -89,7 +89,9 @@ optional arguments:
 [int_to_str]: #int_to_str-x-size-sign-padding-align-
 Convert an integer to a string.
 - `x`    - integer value
-- `size` - min count of letters (with the sign letter)
+- `size`
+  - minimum count of letters (with the sign letter)
+  - the remainder will be filled with padding letters
   - default = 1 character
 - `sign`   - character of positive sign
   - default = empty `""`
@@ -134,8 +136,8 @@ _Specialized function:_
     - `[ number, position ]`
   - breaks on sign letter like `+` or `-`
 
-#### `float_to_str (x, digits, compress, sign, point)` [^][contents]
-[float_to_str]: #float_to_str-x-digits-compress-sign-point-
+#### `float_to_str (x, digits, compress, sign, point, size, padding, align)` [^][contents]
+[float_to_str]: #float_to_str-x-digits-compress-sign-point-size-padding-align-
 Convert a floating point number to a string.\
 Result like numbers converted with `str()`.\
 This function will automatically switch between:
@@ -159,16 +161,37 @@ Arguments:
 - `point`
   - `true`  - show always a decimal point
   - `false` - show decimal point only when needed, default
+- `size`
+  - minimum count of letters (with the sign letter)
+  - the remainder will be filled with padding letters
+  - default = 1 character
+- `padding` - padding character to fill the left empty letters
+  - default = space `" "`
+    you can use an other spaceholder like `"."`
+  - if you set number `0`, the sign will set left before the padding letter
+- `align` - align of number
+  - `-1` = left
+  -  `0` = middle
+  -  `1` = right, default
 
 _Specialized function:_
-- `float_to_str_comma (x, digits, precision, compress, sign, point)`
+- `float_to_str_comma (x, digits, precision, compress, sign, point, size, padding, align)`
   - returns the floating point always as integer part and fraction part
   - `digits` - default = 16 character, machine accuracy
     - defines the significand count of digits
-- `float_to_str_exp   (x, digits, compress, sign, point)`
+- `float_to_str_exp   (x, digits, compress, sign, point, size, padding, align)`
   - returns the floating point always as significand part in normalized form and
     exponent with base 10
   - `digits` - default = 16 character, machine accuracy
+
+_Basic function without padding character:_
+- `float_to_str_basic       (x, digits, compress, sign, point)`
+  - returns a floating point like numbers converted with `str()`
+- `float_to_str_comma_basic (x, digits, precision, compress, sign, point)`
+  - returns the floating point always as integer part and fraction part
+- `float_to_str_exp_basic   (x, digits, compress, sign, point)`
+  - returns the floating point always as significand part in normalized form and
+    exponent with base 10
 
 #### `str_to_float (txt, begin)` [^][contents]
 [str_to_float]: #str_to_float-txt-begin-
