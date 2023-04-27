@@ -4,7 +4,7 @@
 // Enthält Funktionen zum Umwandeln von Strings
 //
 
-use <banded/string_edit_letter.scad>
+use <banded/string_edit.scad>
 
 
 // convert all letter in string 'txt' to a lower case version

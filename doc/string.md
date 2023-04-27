@@ -6,9 +6,7 @@ Functions for editing strings
 ` `| \
 ` `+--> `banded/string_convert.scad`\
 ` `+--> `banded/string_character.scad`\
-` `| \
-` `+--> `banded/string_edit.scad`\
-` `. . . . +--> `banded/string_edit_letter.scad`
+` `+--> `banded/string_edit.scad`
 
 [<-- file overview](file_overview.md)\
 [<-- table of contents](contents.md)

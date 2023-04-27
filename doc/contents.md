@@ -22,6 +22,8 @@ Table of contents
   - [Test entries of lists](list.md#test-entries-of-lists-)
   - [Pair functions (key-value-pair)](list.md#pair-functions-)
 - [Edit and convert strings](string.md)
+  - [Read numbers from string, write numbers into a string](string.md#convert-strings-)
+  - [Edit letter in strings like editing lists](string.md#edit-letter-in-strings-)
 - [Helper functions](helper.md)
   - [Various helper](helper.md#native-helper-functions-)
   - [Argument recondition](helper.md#recondition-arguments-of-functions-)
