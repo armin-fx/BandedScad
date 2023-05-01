@@ -45,6 +45,7 @@ Functions for editing strings
 - [Edit letter in strings](#edit-letter-in-strings-)
 - [Format strings](#format-strings-)
   - [`add_padding_str()`][add_padding_str]
+  - [`print()`][print]
 
 
 Convert strings [^][contents]
@@ -515,3 +516,121 @@ extra arguments `size`, `padding` and `align`:
   - base on [`float_to_str_comma()`][float_to_str]
 - `float_to_str_exp_format   (x, digits, compress, sign, point, upper, size, padding, align)`
   - base on [`float_to_str_exp()`][float_to_str]
+
+#### `print (format, values)` [^][contents]
+[print]: #print-format-values-
+Composes a string by format the text with format specifiers.\
+It's based on the function `sprintf()` from programming language 'C'.
+If string `format` includes ___format specifiers___ (subsequences beginning with `%`),
+the additional arguments following format are formatted and inserted
+in the resulting string replacing their respective specifiers.\
+Returns the composed string.
+
+Arguments:
+- `format`
+  - string to print into the returned string,
+    format specifier will be replaced with the associated value
+- `values`
+  - a list with the values in order
+
+A ___format specifier___ follows this prototype:\
+`%[flags][width][.precision][length]specifier`
+
+Where the ___specifier character___ at the end is the most significant component,
+since it defines the type and the interpretation of its corresponding argument:
+
+| specifier | meaning
+|-----------|---------
+| `d`, `i`  | signed integer
+| `u`       | obsolete, same as `i` (originally unsigned integer)
+| `o`       | unsigned octal value
+| `x`       | hexadecimal, lowercase
+| `X`       | hexadecimal, uppercase
+| `f` `F`   | floating point
+| `e`       | scientific notation (mantissa/exponent), lowercase
+| `E`       | scientific notation (mantissa/exponent), uppercase
+| `g`       | use the shortest representation: `%e` or `%f`
+| `G`       | use the shortest representation: `%E` or `%F`
+| `c`       | character
+| `s`       | string of character
+| `%`       | A % followed by another % character will write a single % to the stream.
+
+The ___format specifier___ can also contain sub-specifiers:
+___flags___, ___width___, ___.precision___ and ___modifiers___ (in that order),
+which are optional and follow these specifications:
+
+___flags:___
+- `-`
+  - Left-justify within the given field width;
+    Right justification is the default (see width sub-specifier).
+- `+`
+  - Forces to preceed the result with a plus or minus sign (+ or -)
+    even for positive numbers.
+    By default, only negative numbers are preceded with a - sign.
+- (space)
+  - If no sign is going to be written, a blank space is inserted before the value.
+- `#`
+  - Used with `o`, `x` or `X` specifiers the value is preceeded
+    with `0`, `0x` or `0X` respectively for values different than zero.
+  - Used with `e`, `E`, `f`, `F`, `g` or `G` it forces the written output
+    to contain a decimal point even if no more digits follow.
+    By default, if no digits follow, no decimal point is written.
+- `0`
+  - The conversion will be zero padded for numeric values.
+
+___width:___
+- (number)
+  - Minimum number of characters to be printed.
+  - If the value to be printed is shorter than this number,
+    the result is padded with blank spaces.
+  - The value is not truncated even if the result is larger.
+- `*`
+  - The width is not specified in the format string,
+    but as an additional integer value argument preceding
+    the argument that has to be formatted.
+
+___.precision___
+- (number)
+  - For integer specifiers (`d`, `i`, `o`, `u`, `x`, `X`):
+    precision specifies the minimum number of digits to be written.
+	If the value to be written is shorter than this number,
+	the result is padded with leading zeros.
+	The value is not truncated even if the result is longer.
+	A precision of 0 means that no character is written for the value 0.
+  - For `e`, `E`, `f` and `F` specifiers:
+    this is the number of digits to be printed after the decimal point
+    (by default, this is 6).
+  - For `g` and `G` specifiers:
+    This is the maximum number of significant digits to be printed.
+  - For `s`:
+    this is the maximum number of characters to be printed.
+    By default all characters are printed.
+  - If the period is specified without an explicit value for precision, 0 is assumed.
+- `*`
+  - The precision is not specified in the format string,
+    but as an additional integer value argument preceding
+    the argument that has to be formatted.
+
+___Example:___
+```OpenSCAD
+include <banded.scad>
+
+echo( print ("String, character: %.4s - %c - %c", ["Testosterone", ord("A"), 9786] ) );
+echo( print ("Decimal: %+i - %i", [99, 42] ) );
+echo( print ("Proceeding with blanc: %5i" , [42] ) );
+echo( print ("Proceeding with zeros: %05i", [42] ) );
+echo( print ("Some different radices: %d - %x - %o - %#x - %#o", [100, 100, 100, 100, 100] ) );
+echo( print ("Floats: %4.2f - %+.0e - %E", [3.1416, 3.1416, 3.1416] ) );
+echo( print ("Width trick: %*d", [5, 10] ) );
+```
+
+Output:
+```
+ECHO: "String, character: Test - A - ☺"
+ECHO: "Decimal: +99 - 42"
+ECHO: "Proceeding with blanc:    42"
+ECHO: "Proceeding with zeros: 00042"
+ECHO: "Some different radices: 100 - 64 - 144 - 0x64 - 0144"
+ECHO: "Floats: 3.14 - +3e+0 - 3.141600E+0"
+ECHO: "Width trick:    10"
+```
