@@ -19,6 +19,7 @@ Functions for editing strings
   - [`value_to_hex()`][value_to_hex]
   - [`hex_to_value()`][hex_to_value]
   - [`hex_letter_to_value()`][hex_letter_to_value]
+  - [`value_to_octal()`][value_to_octal]
   - [`int_to_str()`][int_to_str]
   - [`str_to_int()`][str_to_int]
   - [`float_to_str()`][float_to_str]
@@ -54,12 +55,15 @@ Replace every uppercase letter in text `txt` to lowercase letter
 [to_upper_str]: #to_upper_str-txt-
 Replace every lowercase letter in text `txt` to uppercase letter
 
-#### `value_to_hex (value, size)` [^][contents]
-[value_to_hex]: #value_to_hex-value-size-
+#### `value_to_hex (value, size, upper)` [^][contents]
+[value_to_hex]: #value_to_hex-value-size-upper-
 Turn a positive integer to a hexadecimal string
 - `size`
   - set the minimum size of hex string, filled with `0`
   - default = 1 letter
+- `upper`
+  - `true`  - return string in uppercase letters
+  - `false` - return string in lowercase letters, default
 
 #### `hex_to_value (txt, pos, size, error)` [^][contents]
 [hex_to_value]: #hex_to_value-txt-pos-size-error-
@@ -84,6 +88,13 @@ optional arguments:
 - `error`
   - return this value if string is no hex value
   - default = `undef`
+
+#### `value_to_octal (value, size)` [^][contents]
+[value_to_octal]: #value_to_octal-value-size-
+Turn a positive integer to a octal number string
+- `size`
+  - set the minimum size of octal string, filled with `0`
+  - default = 1 letter
 
 #### `int_to_str (x, size, sign, padding, align)` [^][contents]
 [int_to_str]: #int_to_str-x-size-sign-padding-align-
@@ -136,8 +147,8 @@ _Specialized function:_
     - `[ number, position ]`
   - breaks on sign letter like `+` or `-`
 
-#### `float_to_str (x, digits, compress, sign, point, size, padding, align)` [^][contents]
-[float_to_str]: #float_to_str-x-digits-compress-sign-point-size-padding-align-
+#### `float_to_str (x, digits, compress, sign, point, upper, size, padding, align)` [^][contents]
+[float_to_str]: #float_to_str-x-digits-compress-sign-point-upper-size-padding-align-
 Convert a floating point number to a string.\
 Result like numbers converted with `str()`.\
 This function will automatically switch between:
@@ -161,6 +172,9 @@ Arguments:
 - `point`
   - `true`  - show always a decimal point
   - `false` - show decimal point only when needed, default
+- `upper`
+  - `true`  - return string in uppercase letters
+  - `false` - return string in lowercase letters, default
 - `size`
   - minimum count of letters (with the sign letter)
   - the remainder will be filled with padding letters
@@ -179,17 +193,17 @@ _Specialized function:_
   - returns the floating point always as integer part and fraction part
   - `digits` - default = 16 character, machine accuracy
     - defines the significand count of digits
-- `float_to_str_exp   (x, digits, compress, sign, point, size, padding, align)`
+- `float_to_str_exp   (x, digits, compress, sign, point, upper, size, padding, align)`
   - returns the floating point always as significand part in normalized form and
     exponent with base 10
   - `digits` - default = 16 character, machine accuracy
 
 _Basic function without padding character:_
-- `float_to_str_basic       (x, digits, compress, sign, point)`
+- `float_to_str_basic       (x, digits, compress, sign, point, upper)`
   - returns a floating point like numbers converted with `str()`
 - `float_to_str_comma_basic (x, digits, precision, compress, sign, point)`
   - returns the floating point always as integer part and fraction part
-- `float_to_str_exp_basic   (x, digits, compress, sign, point)`
+- `float_to_str_exp_basic   (x, digits, compress, sign, point, upper)`
   - returns the floating point always as significand part in normalized form and
     exponent with base 10
 

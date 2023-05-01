@@ -36,20 +36,20 @@ function to_upper_str_intern (txt, i=0, new_txt="") =
 ;
 
 // convert a numeric integer value to a hexadecimal string
-function value_to_hex (value, size=1) =
+function value_to_hex (value, size=1, upper=false) =
 	value<0  ? undef :
-	value_to_hex_intern (value, size)
+	value_to_hex_intern (value, size, upper)
 ;
-function value_to_hex_intern (value, size=0, string="") =
+function value_to_hex_intern (value, size=0, upper=false, string="") =
 	value==0 && size<=0 ? string :
 	let(
 		hex_value  = value%16,
 		remainder  = floor( value/16 ),
-		hex_letter = hex_value<10 ? chr(48+hex_value) : chr(65-10+hex_value)
+		hex_letter = hex_value<10 ? chr(48+hex_value) : upper ? chr(65-10+hex_value) : chr(97-10+hex_value)
 	)
 	remainder==0 && size<=0 ?
 		str(hex_letter, string)
-	:	value_to_hex_intern (remainder, size-1, str(hex_letter,string))
+	:	value_to_hex_intern (remainder, size-1, upper, str(hex_letter,string))
 ;
 
 // convert a hexadecimal string to a numeric value
@@ -118,6 +118,22 @@ function hex_letter_to_value (txt, pos=0, error=undef) =
 					t=="e" ? 14 :
 					/*="f"*/ 15
 	:error
+;
+
+function value_to_octal (value, size=1) =
+	value<0  ? undef :
+	value_to_octal_intern (value, size)
+;
+function value_to_octal_intern (value, size=0, string="") =
+	value==0 && size<=0 ? string :
+	let(
+		hex_value  = value%8,
+		remainder  = floor( value/8 ),
+		hex_letter = chr(48+hex_value)
+	)
+	remainder==0 && size<=0 ?
+		str(hex_letter, string)
+	:	value_to_octal_intern (remainder, size-1, str(hex_letter,string))
 ;
 
 // convert an integer to a string with formatting the text
@@ -192,21 +208,21 @@ function str_to_int_pos_intern (txt, begin=0, v=0, s=1) =
 ;
 
 // convert a floating point number to a string
-function float_to_str (x, digits=6, compress=true, sign="", point=false, size=1, padding=" ", align=1) =
+function float_to_str (x, digits=6, compress=true, sign="", point=false, upper=false, size=1, padding=" ", align=1) =
 	let (
 		 s_sign = x<0 ? "-" : sign
-		,s_num  = float_to_str_basic (x<0 ? -x : x, digits=digits, compress=compress, point=point)
+		,s_num  = float_to_str_basic (x<0 ? -x : x, digits=digits, compress=compress, point=point, upper=upper)
 	)
 	add_padding_str (s_num, pre=s_sign, size=size, padding=padding, align=align)
 ;
 //
-function float_to_str_basic (x, digits=6, compress=true, sign="", point=false) =
+function float_to_str_basic (x, digits=6, compress=true, sign="", point=false, upper=false) =
 	let (
 		 X = x<0 ? -x : x
 	)
 	(X<=10^digits) && (X>=10/10^digits)
 	?	float_to_str_comma_basic (x, digits=6, compress=compress, sign=sign, point=point)
-	:	float_to_str_exp_basic   (x, digits=6, compress=compress, sign=sign, point=point)
+	:	float_to_str_exp_basic   (x, digits=6, compress=compress, sign=sign, point=point, upper=upper)
 ;
 
 function float_to_str_comma (x, digits=16, precision, compress=true, sign="", point=false, size=1, padding=" ", align=1) =
@@ -256,16 +272,23 @@ function float_to_str_comma_basic (x, digits=16, precision, compress=true, sign=
 	:		str( s_sign, "0.", fill_str(-exp-1, "0"), extract_str (s_full, 0, pos_comp) )
 ;
 
-function float_to_str_exp (x, digits=16, compress=true, sign="", point=false, size=1, padding=" ", align=1) =
+function float_to_str_exp (x, digits=16, compress=true, sign="", point=false, upper=false, size=1, padding=" ", align=1) =
 	let (
 		 s_sign = x<0 ? "-" : sign
-		,s_num  = float_to_str_exp_basic (x<0 ? -x : x, digits=digits, compress=compress, point=point)
+		,s_num  = float_to_str_exp_basic (x<0 ? -x : x, digits=digits, compress=compress, point=point, upper=upper)
 	)
 	add_padding_str (s_num, pre=s_sign, size=size, padding=padding, align=align)
 ;
 //
-function float_to_str_exp_basic (x, digits=16, compress=true, sign="", point=false) =
-	x==0 ? "0" :
+function float_to_str_exp_basic (x, digits=16, compress=true, sign="", point=false, upper=false) =
+	x==0 ?
+		compress==true ? "0" :
+		digits<=1 ?
+			point==false
+			? upper ? "0E+0"  : "0e+0"
+			: upper ? "0.E+0" : "0.e+0"
+		: str ("0.", fill_str(digits-1, "0"), upper ? "E+0" : "e+0")
+	:
 	let (
 		,exp     = get_10(x)
 		,exp_10  = 10^exp
@@ -280,7 +303,7 @@ function float_to_str_exp_basic (x, digits=16, compress=true, sign="", point=fal
 	str (
 		 x<0 ? "-" : sign
 		,(X_str[1]==undef && point==false) ? X_str : insert_str(X_str, ".", 1)
-		,"e", int_to_str(exp, sign="+")
+		,upper ? "E" : "e", int_to_str(exp, sign="+")
 	)
 ;
 
