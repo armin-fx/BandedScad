@@ -38,6 +38,7 @@ Overview of scad files
 ` `| . . . +--> [`banded/string_convert.scad`](string.md#convert-strings- "Convert strings")\
 ` `| . . . +--> [`banded/string_character.scad`](string.md#convert-and-test-letter-in-strings- "Convert and test letter in strings")\
 ` `| . . . +--> [`banded/string_edit.scad`](string.md#edit-letter-in-strings- "Edit letter in strings")\
+` `| . . . +--> [`banded/string_format.scad`](string.md#format-strings- "Format strings")\
 ` `|\
 ` `+--> [`banded/helper.scad`](helper.md "Helper functions")\
 ` `| . . . +--> [`banded/helper_native.scad`](helper.md#native-helper-functions- "Contains various helper functions")\

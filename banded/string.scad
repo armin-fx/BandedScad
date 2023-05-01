@@ -6,3 +6,4 @@
 include <banded/string_convert.scad>
 include <banded/string_character.scad>
 include <banded/string_edit.scad>
+include <banded/string_format.scad>

@@ -6,7 +6,8 @@ Functions for editing strings
 ` `| \
 ` `+--> `banded/string_convert.scad`\
 ` `+--> `banded/string_character.scad`\
-` `+--> `banded/string_edit.scad`
+` `+--> `banded/string_edit.scad`\
+` `+--> `banded/string_format.scad`
 
 [<-- file overview](file_overview.md)\
 [<-- table of contents](contents.md)
@@ -42,6 +43,8 @@ Functions for editing strings
   - [`is_print`][is_print]
   - [`is_graph`][is_graph]
 - [Edit letter in strings](#edit-letter-in-strings-)
+- [Format strings](#format-strings-)
+  - [`add_padding_str()`][add_padding_str]
 
 
 Convert strings [^][contents]
@@ -96,32 +99,16 @@ Turn a positive integer to a octal number string
   - set the minimum size of octal string, filled with `0`
   - default = 1 letter
 
-#### `int_to_str (x, size, sign, padding, align)` [^][contents]
-[int_to_str]: #int_to_str-x-size-sign-padding-align-
+#### `int_to_str (x, sign)` [^][contents]
+[int_to_str]: #int_to_str-x-sign-
 Convert an integer to a string.
 - `x`    - integer value
-- `size`
-  - minimum count of letters (with the sign letter)
-  - the remainder will be filled with padding letters
-  - default = 1 character
 - `sign`   - character of positive sign
   - default = empty `""`
   - you can use e.g. a space `" "` or a plus `"+"`
-- `padding` - padding character to fill the left empty letters
-  - default = space `" "`
-    you can use an other spaceholder like `"."`
-  - if you set number `0`, the sign will set left before the padding letter
-- `align` - align of number
-  - `-1` = left
-  -  `0` = middle
-  -  `1` = right, default
 
 _Specialized function:_
-- `int_to_str_basic (x, sign)`
-  - returns only the integer number as string without any formatting
-  - negative values prepend an `"-"`,
-    positive values prepent the string `sign`, default = empty `""`
-- `uint_to_str_basic (x, count)`
+- `uint_to_str (x, count)`
   - returns only the integer number as string without any formatting
   - no negative values, `x` must be positive
   - `count` - maximum number of letters, default = `308`
@@ -147,8 +134,8 @@ _Specialized function:_
     - `[ number, position ]`
   - breaks on sign letter like `+` or `-`
 
-#### `float_to_str (x, digits, compress, sign, point, upper, size, padding, align)` [^][contents]
-[float_to_str]: #float_to_str-x-digits-compress-sign-point-upper-size-padding-align-
+#### `float_to_str (x, digits, compress, sign, point, upper)` [^][contents]
+[float_to_str]: #float_to_str-x-digits-compress-sign-point-upper-
 Convert a floating point number to a string.\
 Result like numbers converted with `str()`.\
 This function will automatically switch between:
@@ -175,37 +162,16 @@ Arguments:
 - `upper`
   - `true`  - return string in uppercase letters
   - `false` - return string in lowercase letters, default
-- `size`
-  - minimum count of letters (with the sign letter)
-  - the remainder will be filled with padding letters
-  - default = 1 character
-- `padding` - padding character to fill the left empty letters
-  - default = space `" "`
-    you can use an other spaceholder like `"."`
-  - if you set number `0`, the sign will set left before the padding letter
-- `align` - align of number
-  - `-1` = left
-  -  `0` = middle
-  -  `1` = right, default
 
 _Specialized function:_
-- `float_to_str_comma (x, digits, precision, compress, sign, point, size, padding, align)`
+- `float_to_str_comma (x, digits, precision, compress, sign, point)`
   - returns the floating point always as integer part and fraction part
   - `digits` - default = 16 character, machine accuracy
     - defines the significand count of digits
-- `float_to_str_exp   (x, digits, compress, sign, point, upper, size, padding, align)`
+- `float_to_str_exp   (x, digits, compress, sign, point, upper)`
   - returns the floating point always as significand part in normalized form and
     exponent with base 10
   - `digits` - default = 16 character, machine accuracy
-
-_Basic function without padding character:_
-- `float_to_str_basic       (x, digits, compress, sign, point, upper)`
-  - returns a floating point like numbers converted with `str()`
-- `float_to_str_comma_basic (x, digits, precision, compress, sign, point)`
-  - returns the floating point always as integer part and fraction part
-- `float_to_str_exp_basic   (x, digits, compress, sign, point, upper)`
-  - returns the floating point always as significand part in normalized form and
-    exponent with base 10
 
 #### `str_to_float (txt, begin)` [^][contents]
 [str_to_float]: #str_to_float-txt-begin-
@@ -516,3 +482,36 @@ Use list functions directly:
 [inc]: list.md#includes-list1-list2-f-type-range_args1-range_args2-
 [is]:  list.md#is_sorted-list-f-type-range_args-
 [ip]:  list.md#is_partitioned-list-f-type-range_args-
+
+
+Format strings [^][contents]
+----------------------------
+
+#### `add_padding_str (txt, pre, size, padding, align)` [^][contents]
+[add_padding_str]: #add_padding_str-txt-pos-
+Add padding letters to a string.
+- `txt` - text to format
+- `pre` - text will prepend on `txt`, position depends on the arguments
+- `size`
+  - minimum count of lettersof text (`pre` and `txt` together)
+  - the remainder will be filled with padding letters
+  - default = 1 character
+- `padding` - padding character to fill the left empty letters
+  - default = space `" "`
+    you can use an other spaceholder like `"."`
+  - if you set number `0`, text `pre` will set left before the padding letter `"0"`
+- `align` - align of number
+  - `-1` = left
+  -  `0` = middle
+  -  `1` = right, default
+
+Functions which demonstrate this with appended
+extra arguments `size`, `padding` and `align`:
+- `int_to_str_format (x, sign, size, padding, align)`
+  - base on [`int_to_str()`][int_to_str]
+- `float_to_str_format       (x, digits, compress, sign, point, upper, size, padding, align)`
+  - base on [`float_to_str()`][float_to_str]
+- `float_to_str_comma_format (x, digits, precision, compress, sign, point, size, padding, align)`
+  - base on [`float_to_str_comma()`][float_to_str]
+- `float_to_str_exp_format   (x, digits, compress, sign, point, upper, size, padding, align)`
+  - base on [`float_to_str_exp()`][float_to_str]
