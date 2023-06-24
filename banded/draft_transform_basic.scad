@@ -418,15 +418,15 @@ function multmatrix_3d_point (p, m) =
 //          false = 3D-Liste behalten, alle Punkte auf xy-Ebene
 //          Zahl  = 3D-Liste behalten, Z-Achse auf diese Höhe setzen
 function projection_points (list, plane) =
+	 plane==undef ||
 	 plane==true  ? [ for (p=list) [p.x,p.y] ]
-	:plane==undef ||
-	 plane==false ? [ for (p=list) [p.x,p.y,0] ]
+	:plane==false ? [ for (p=list) [p.x,p.y,0] ]
 	:               [ for (p=list) [p.x,p.y,plane] ]
 ;
 function projection_point (p, plane) =
+	 plane==undef ||
 	 plane==true  ? [p.x,p.y]
-	:plane==undef ||
-	 plane==false ? [p.x,p.y,0]
+	:plane==false ? [p.x,p.y,0]
 	:               [p.x,p.y,plane]
 ;
 
