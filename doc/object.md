@@ -56,6 +56,28 @@ Creates a wedge with the parameter form FreeCAD's wedge.
 - `v2_min` = `[X2min, Z2min]`
 - `v2_max` = `[X2max, Z2max]`
 
+Location of the parameter:
+```
+           X2min X2max
+             +-----+ Z2max
+           / :    /|
+        /    :   / | - - Ymax
+ Zmax +---------+  |
+      |      + -|- + Z2min
+      |    ·    | /
+      |  ·      |- - - - Ymin
+      |.        |/
+ Zmin +---------+
+     Xmin      Xmax
+
+
+   Z
+   ^ .Y
+   |/
+   +--> X
+
+```
+
 #### `torus (r, w, ri, ro, angle, center, fn_ring, align)` [^][contents]
 [torus]: #torus-r-w-ri-ro-angle-center-fn_ring-align-
 Creates a torus.
@@ -186,13 +208,13 @@ for example on a cube:
   4 / :     5 / |
    +---------+  |
    |  + - - -|- +
-   | . 3     | / 2
-   |.        |/
+   | · 3     | / 2
+   |·        |/
    +---------+
   0          1
 
 
-   Z 
+   Z
    ^ .Y
    |/
    +--> X
