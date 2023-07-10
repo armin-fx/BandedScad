@@ -19,6 +19,7 @@ Color
   - [`color_list_to_hex()`][color_list_to_hex]
   - [`color_hex_to_list()`][color_hex_to_list]
   - [`color_name()`][color_name]
+  - [`color_brightness()`][color_brightness]
 
 
 Convert colors [^][contents]
@@ -118,4 +119,19 @@ Hex string formats:
 Return the name of color to rgb value as list.\
 The color names are taken from the World Wide Web consortium's SVG color list.
 - `alpha` - optional alpha value - transparent to opaque: `0...1`, default = `1`.
+
+#### `color_brightness (rgb, gamma)` [^][contents]
+[color_brightness]: #color_brightness-rgb-gamma-
+Return the brightness of a color from rgb list
+- `rgb` - as list `[r, g, b]`
+  - `r` = red:   `0...1`
+  - `g` = green: `0...1`
+  - `b` = blue:  `0...1`
+- `gamma` - the gamma correctur factor, optional
+  - by gefault `1`
+  - a typical value for monitors is `2.2`
+  - [=> Wikipedia - Gamma correction](https://en.wikipedia.org/wiki/Gamma_correction)
+- return a value of brightness `0...1`
+  - `0` = black
+  - `1` = white
 

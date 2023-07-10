@@ -18,6 +18,7 @@ function get_color (c, alpha, default=undef) =
 ;
 
 // transform color from hsv model to rgb model
+//
 // hsv - as list [h, s, v] or [h, s, v, alpha]
 //   h = hue:               0...360°
 //   s = saturation:        0...1
@@ -56,6 +57,7 @@ function color_hsv_to_rgb (hsv, alpha) =
 ;
 
 // transform color from rgb model to hsv model
+//
 // rgb - as list [r, g, b] or [r, g, b, alpha]
 //   r = red:   0...1
 //   g = green: 0...1
@@ -172,6 +174,36 @@ function color_hex_to_list (hex, alpha) =
 	c==undef ? undef :
 	alpha!=undef && len(c)==3 ? concat (c, alpha) :
 	c
+;
+
+// return the brightness of a color from rgb list
+//
+// rgb - as list [r, g, b]
+//   r = red:   0...1
+//   g = green: 0...1
+//   b = blue:  0...1
+// gamma - the gamma correctur factor
+//   by gefault 1, but a typical value for monitors is 2.2
+//
+// return a value of brightness 0...1
+//   0 = black
+//   1 = white
+function color_brightness (rgb, gamma=1) =
+	let (
+		 r=rgb[0]
+		,g=rgb[1]
+		,b=rgb[2]
+	)
+	gamma!=1 ?
+		pow (
+			  0.299 * pow(r, gamma)
+			+ 0.587 * pow(g, gamma)
+			+ 0.114 * pow(b, gamma)
+		, 1/gamma)
+	: // gamma==1
+			  0.299 * r
+			+ 0.587 * g
+			+ 0.114 * b
 ;
 
 // list of names of color
