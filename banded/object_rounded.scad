@@ -81,7 +81,7 @@ module edge_ring_rounded (r_ring, r, angle=90, angle_ring=360, outer, slices, ex
 	fn      =                 get_slices_circle_current_x(R);
 	fn_ring = slices==undef ? get_slices_circle_current_x(R_ring) : slices;
 	Outer   = outer!=undef ? outer : 0;
-	R_ring_outer = R_ring * get_circle_factor (fn_ring, Outer, angles_ring[0]);
+	R_ring_outer = R_ring * get_circle_factor (fn_ring, Outer);
 	//
 	if (R>0 && R_ring>0) // TODO no fillet
 	{
@@ -150,7 +150,7 @@ module edge_ring_chamfer (r_ring, c, angle=90, angle_ring=360, outer, slices, ex
 	angles_ring = parameter_angle(angle_ring, 360);
 	fn_ring = slices==undef ? get_slices_circle_current_x(R_ring) : slices;
 	Outer   = outer!=undef ? outer : 0;
-	R_ring_outer = R_ring * get_circle_factor (fn_ring, Outer, angles_ring[0]);
+	R_ring_outer = R_ring * get_circle_factor (fn_ring, Outer);
 	//
 	if (c>0 && R_ring>0) // TODO no fillet
 	{

@@ -470,8 +470,8 @@ Based on `cylinder()`
 - `r`, `d` - radius or diameter of the cylinder
 - `center` - center the cylinder if set `true`
 
-#### `cylinder_edges_fillet (h, r1, r2, r_edges, type, center, r, d, d1, d2, angle, align)` [^][contents]
-[cylinder_edges_fillet]: #cylinder_edges_fillet-h-r1-r2-r_edges-type-center-r-d-d1-d2-angle-align-
+#### `cylinder_edges_fillet (h, r1, r2, r_edges, type, center, r, d, d1, d2, angle, slices, outer, align)` [^][contents]
+[cylinder_edges_fillet]: #cylinder_edges_fillet-h-r1-r2-r_edges-type-center-r-d-d1-d2-angle-slices-outer-align-
 Cylinder with chamfered edges on bottom and top.\
 Based on [`cylinder_extend()`][cylinder_extend], compatible with `cylinder()`
 - `r_edges` - radius of both edges
@@ -487,6 +487,19 @@ Based on [`cylinder_extend()`][cylinder_extend], compatible with `cylinder()`
   - drawed angle in degree, default=`360`
     - as number -> angle from `0` to `angle` = opening angle
     - as list   -> range `[opening angle, begin angle]`
+- `slices`
+   - count of segments of the cylinder,
+     without specification it gets the same like `circle()`
+   - includes the [extra special variables](extend.md#special-variables-)
+     to automatically control the count of segments
+   - if an angle is specified, count of segments is like in `rotate_extrude()`
+- `outer`
+  - value `0`...`1`
+    - `0` - edges on real circle line, default like `circle()` in OpenSCAD
+    - `1` - tangent on real circle line
+    - any value between, such as `0.5` = middle around inner or outer circle
+  - the problem is described in website
+    <https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/undersized_circular_objects>
 - `align`
   - Side from origin away that the part should be.
   - [Extra arguments - align](extend.md#extra-arguments-)

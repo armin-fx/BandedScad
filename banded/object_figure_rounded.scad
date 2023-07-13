@@ -260,13 +260,15 @@ module cylinder_rounded (h=3, r, center=false, d)
 
 // Zylinder mit gefasten Kanten, wahlweise abgerundet oder angeschrägt
 // fehlt noch: outer, piece
-module cylinder_edges_fillet (h, r1, r2, r_edges=0, type=0, center, r, d, d1, d2, angle=360, outer, align)
+module cylinder_edges_fillet (h, r1, r2, r_edges=0, type=0, center, r, d, d1, d2, angle=360, slices, outer, align)
 {
 	R        = parameter_cylinder_r (r, r1, r2, d, d1, d2);
 	R_max    = max(R);
 	H        = get_first_num (h, 1);
 	Types    = parameter_types (type, 0, 2);
-	a        = atan ( H / (R[0]-R[1]) );
+	fn = slices==undef ? get_slices_circle_current_x (R_max) : slices;
+	R_outer  = R * get_circle_factor (fn, outer);
+	a        = atan ( H / (R_outer[0]-R_outer[1]) );
 	angle_bottom = a<0 ? a+180 : a;
 	angle_edges  = [angle_bottom, 180-angle_bottom];
 	R_edges  = parameter_numlist (2, r_edges, [0,0], true);
@@ -276,7 +278,6 @@ module cylinder_edges_fillet (h, r1, r2, r_edges=0, type=0, center, r, d, d1, d2
 		];
 	angles   = parameter_angle (angle, [360,0]);
 	Align    = parameter_align (align, [0,0,1], center);
-	fn = get_slices_circle_current_x (R_max);
 	
 	translate ([ Align[0]*R_max, Align[1]*R_max, Align[2]*H/2 - H/2])
 	difference()
@@ -286,13 +287,13 @@ module cylinder_edges_fillet (h, r1, r2, r_edges=0, type=0, center, r, d, d1, d2
 		if (R_both[0] > 0)
 		{
 			edge_ring_fillet (r_ring=R[0], r=R_both[0], angle=[angle_edges[0],180-angle_edges[0]],
-				angle_ring=angles, type=Types[0], outer=outer);
+				angle_ring=angles, type=Types[0], slices=fn, outer=outer);
 		}
 		if (R_both[1] > 0)
 		{
 			translate_z (H)
 			edge_ring_fillet (r_ring=R[1], r=R_both[1], angle=[angle_edges[1],180],
-				angle_ring=angles, type=Types[1], outer=outer);
+				angle_ring=angles, type=Types[1], slices=fn, outer=outer);
 		}
 	}
 }
