@@ -28,7 +28,7 @@ use <banded/list_edit_data.scad>
 //   slices    = count of segments from helix per full rotation
 //
 function helix_extrude_points (list, angle, rotations, pitch, height, r, opposite, orientation, slices) =
-	helix_extrude_points (list, angle, rotations, pitch, height, r, opposite, orientation, slices)
+	helix_extrude (list, angle, rotations, pitch, height, r, opposite, orientation, slices)
 ;
 //
 function helix_extrude (object, angle, rotations, pitch, height, r, opposite, orientation, slices) =
