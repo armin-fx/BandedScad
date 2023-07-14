@@ -267,7 +267,8 @@ module cylinder_edges_fillet (h, r1, r2, r_edges=0, type=0, center, r, d, d1, d2
 	H        = get_first_num (h, 1);
 	Types    = parameter_types (type, 0, 2);
 	fn = slices==undef ? get_slices_circle_current_x (R_max) : slices;
-	R_outer  = R * get_circle_factor (fn, outer);
+	Outer   = outer!=undef ? outer : 0;
+	R_outer  = R * get_circle_factor (fn, Outer);
 	a        = atan ( H / (R_outer[0]-R_outer[1]) );
 	angle_bottom = a<0 ? a+180 : a;
 	angle_edges  = [angle_bottom, 180-angle_bottom];
@@ -282,30 +283,30 @@ module cylinder_edges_fillet (h, r1, r2, r_edges=0, type=0, center, r, d, d1, d2
 	translate ([ Align[0]*R_max, Align[1]*R_max, Align[2]*H/2 - H/2])
 	difference()
 	{
-		cylinder_extend (r1=R[0], r2=R[1], h=H, angle=angles, outer=outer);
+		cylinder_extend (r1=R[0], r2=R[1], h=H, angle=angles, outer=Outer);
 		//
 		if (R_both[0] > 0)
 		{
 			edge_ring_fillet (r_ring=R[0], r=R_both[0], angle=[angle_edges[0],180-angle_edges[0]],
-				angle_ring=angles, type=Types[0], slices=fn, outer=outer);
+				angle_ring=angles, type=Types[0], slices=fn, outer=Outer);
 		}
 		if (R_both[1] > 0)
 		{
 			translate_z (H)
 			edge_ring_fillet (r_ring=R[1], r=R_both[1], angle=[angle_edges[1],180],
-				angle_ring=angles, type=Types[1], slices=fn, outer=outer);
+				angle_ring=angles, type=Types[1], slices=fn, outer=Outer);
 		}
 	}
 }
 // Zylinder mit abgerundeten Kanten
-module cylinder_edges_rounded (h, r1, r2, r_edges=0, center, r, d, d1, d2, angle=360, outer, align)
+module cylinder_edges_rounded (h, r1, r2, r_edges=0, center, r, d, d1, d2, angle=360, slices, outer, align)
 {
-	cylinder_edges_fillet (h, r1, r2, r_edges, 1, center, r, d, d1, d2, angle, outer, align);
+	cylinder_edges_fillet (h, r1, r2, r_edges, 1, center, r, d, d1, d2, angle, slices, outer, align);
 }
 // Zylinder mit abgeschrägten Kanten
-module cylinder_edges_chamfer (h, r1, r2, r_edges=0, center, r, d, d1, d2, angle=360, outer, align)
+module cylinder_edges_chamfer (h, r1, r2, r_edges=0, center, r, d, d1, d2, angle=360, slices, outer, align)
 {
-	cylinder_edges_fillet (h, r1, r2, r_edges, 2, center, r, d, d1, d2, angle, outer, align);
+	cylinder_edges_fillet (h, r1, r2, r_edges, 2, center, r, d, d1, d2, angle, slices, outer, align);
 }
 
 // Erzeugt einen Keil mit den Parametern von FreeCAD mit gefasten Kanten
