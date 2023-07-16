@@ -44,7 +44,7 @@ Figures [^][contents]
 Modules to create configurable objects
 
 #### `empty ()` [^][contents]
-[empty]: #empty-
+[empty]: #empty--
 Module which create nothing.\
 Useful if an operator needs an object.
 
@@ -265,7 +265,7 @@ ___Specialized modules with no argument `type`___
 - `edge_chamfer()` - creates a chamfered edges
 
 #### `edge_ring_fillet (r_ring, r, angle, angle_ring, type, outer, slices, extra)` [^][contents]
-[edge_ring_fillet]: #edge_ring_fillet-r_ring-r-angle-angle_ring-type-outer-extra-
+[edge_ring_fillet]: #edge_ring_fillet-r_ring-r-angle-angle_ring-type-outer-slices-extra-
 Creates a chamfered edge for a cylinder for cutting or gluing.\
 Optionally rounded or chamfered.
 It does `rotate_extrude()` with module [`edge_fillet_plane()`][edge_fillet_plane].
@@ -411,9 +411,9 @@ Creates a chamfered edge from the data
   - If the angle around the line from point1 to point2 counter clockwise
     is greater then 180°, a chamfered edge is impossible to create.
     This parameter controls the behavior.
-  - `true` = default, line is considered as directed
+  - `true` = default, line is considered as directed\
     Create nothing if the angle is greater then 180°.
-  - `false`, line is considered as undirected
+  - `false`, line is considered as undirected\
     Flip the chamfered edge to the side with an angle < 180°
 
 ___Specialized modules with no argument `type`___
