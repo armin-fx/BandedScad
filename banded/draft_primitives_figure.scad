@@ -108,17 +108,21 @@ function torus (r, w, ri, ro, angle=360, center=false, fn_ring, align) =
 // Angegeben müssen:
 //   h
 //   genau 2 Angaben von r oder ri oder ro oder w
-function ring_square (h=1, r, w, ri, ro, angle=360, center=false, d, di, do, align) =
+function ring_square (h=1, r, w, ri, ro, angle=360, center=false, d, di, do, outer, align) =
 	let (
 		 rx    = parameter_ring_2r(r, w, ri, ro, d, di, do)
+		,angles = parameter_angle (angle, [360,0])
+		,slices = get_slices_circle_current_x (max(rx), angles[0], true)
+		,Outer  = parameter_numlist (2, outer, [0,0], true)
+		,rx_o   = [for (i=[0:1]) rx[i] * get_circle_factor (slices, Outer[i], angles[0]) ]
 		,Align = parameter_align (align, [0,0,1], center)
 	)
 	translate (v=[ Align[0]*rx[1], Align[1]*rx[1], Align[2]*h/2 - h/2], object=
 	rotate_extrude_extend_points (
-		angle= angle,
+		angle= angles,
 		list =
-			translate_points( v=[rx[0], 0], list=
-			square_curve([ rx[1]-rx[0], h ]) )
+			translate_points( v=[rx_o[0], 0], list=
+			square_curve([ rx_o[1]-rx_o[0], h ]) )
 	) )
 ;
 
@@ -129,19 +133,22 @@ function ring_square (h=1, r, w, ri, ro, angle=360, center=false, d, di, do, ali
 //   ro1, ro2 - Außenradius unten, oben
 //   w        - Breite der Wand. Optional
 //   angle    - Öffnungswinkel des Trichters. Standard=360°. Benötigt Version 2019.05
-function funnel (h=1, ri1, ri2, ro1, ro2, w, angle=360, di1, di2, do1, do2, align) =
+function funnel (h=1, ri1, ri2, ro1, ro2, w, angle=360, di1, di2, do1, do2, outer, align) =
 	let (
 		// return [ri1, ri2, ro1, ro2]
 		 r  = parameter_funnel_r (ri1, ri2, ro1, ro2, w, di1, di2, do1, do2)
 		,max_r = max(r)
-		,fn = get_slices_circle_current_x( max_r )
+		,fn    = get_slices_circle_current_x( max_r )
+		,angles = parameter_angle (angle, [360,0])
+		,Outer  = parameter_numlist (2, outer, [0,0], true)
+		,r_o    = [for (s=[0:1]) for (i=[0:1]) r[i+2*s] * get_circle_factor (fn, Outer[s], angles[0]) ]
 		,Align = parameter_align (align, [0,0,1])
 	)
 	translate (v=[ Align[0]*max_r, Align[1]*max_r, Align[2]*h/2 - h/2], object=
-	rotate_extrude_extend_points (angle=angle, $fn=fn,
+	rotate_extrude_extend_points (angle=angles, $fn=fn,
 		list=[
-			[r[0],0], [r[2],0],
-			[r[3],h], [r[1],h]
+			[r_o[0],0], [r_o[2],0],
+			[r_o[3],h], [r_o[1],h]
 		]
 	) )
 ;

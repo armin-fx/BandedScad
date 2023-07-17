@@ -101,8 +101,8 @@ More arguments:
   - [Extra arguments - align](extend.md#extra-arguments-)
   - default = `[0,0,1]` = X-Y-axis centered
 
-#### `ring_square (h, r, w, ri, ro, angle, center, d, di, do, align)` [^][contents]
-[ring_square]: #ring_square-h-r-w-ri-ro-angle-center-d-di-do-align-
+#### `ring_square (h, r, w, ri, ro, angle, center, d, di, do, outer, align)` [^][contents]
+[ring_square]: #ring_square-h-r-w-ri-ro-angle-center-d-di-do-outer-align-
 Creates a square ring.
 - `h`        - height
 - `r`        - mean radius, middle line of the ring
@@ -116,6 +116,14 @@ Creates a square ring.
   - Side from origin away that the part should be.
   - [Extra arguments - align](extend.md#extra-arguments-)
   - default = `[0,0,1]` = X-Y-axis centered
+- `outer`
+  - value `0`...`1`
+    - `0` - edges on real circle line, default like `circle()` in OpenSCAD
+    - `1` - tangent on real circle line
+    - any value between, such as `0.5` = middle around inner or outer circle
+  - or as list `[inner circle, outer circle]`
+  - the problem is described in website
+    <https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/undersized_circular_objects>
 
 ___Must specify:___
 - `h`
@@ -135,6 +143,14 @@ Creates a funnel.
   - Side from origin away that the part should be.
   - [Extra arguments - align](extend.md#extra-arguments-)
   - default = `[0,0,1]` = X-Y-axis centered
+- `outer`
+  - value `0`...`1`
+    - `0` - edges on real circle line, default like `circle()` in OpenSCAD
+    - `1` - tangent on real circle line
+    - any value between, such as `0.5` = middle around inner or outer circle
+  - or as list `[inner circle, outer circle]`
+  - the problem is described in website
+    <https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/undersized_circular_objects>
 
 Example:
 ```OpenSCAD

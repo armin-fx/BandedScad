@@ -77,19 +77,21 @@ module torus (r, w, ri, ro, angle=360, center=false, fn_ring, align)
 // Angegeben müssen:
 //   h
 //   genau 2 Angaben von r oder ri oder ro oder w
-module ring_square (h=1, r, w, ri, ro, angle=360, center=false, d, di, do, align)
+module ring_square (h=1, r, w, ri, ro, angle=360, center=false, d, di, do, outer, align)
 {
 	rx     = parameter_ring_2r (r, w, ri, ro, d, di, do);
 	angles = parameter_angle (angle, [360,0]);
 	slices = get_slices_circle_current_x (max(rx), angles[0], true);
+	Outer  = parameter_numlist (2, outer, [0,0], true);
+	rx_o   = [for (i=[0:1]) rx[i] * get_circle_factor (slices, Outer[i], angles[0]) ];
 	Align  = parameter_align (align, [0,0,1], center);
 	//
 	translate ([ Align[0]*rx[1], Align[1]*rx[1], Align[2]*h/2 - h/2])
 	linear_extrude(height=h, convexity=4)
 	difference()
 	{
-		polygon(circle_curve(r = rx[1], angle=angles, piece=true, slices=slices));
-		polygon(circle_curve(r = rx[0], angle=angles, piece=true, slices=slices));
+		polygon(circle_curve(r = rx_o[1], angle=angles, piece=true, slices=slices));
+		polygon(circle_curve(r = rx_o[0], angle=angles, piece=true, slices=slices));
 	}
 }
 
@@ -100,20 +102,23 @@ module ring_square (h=1, r, w, ri, ro, angle=360, center=false, d, di, do, align
 //   ro1, ro2 - Außenradius unten, oben
 //   w        - Breite der Wand. Optional
 //   angle    - Öffnungswinkel des Trichters. Standard=360°. Benötigt Version 2019.05
-module funnel (h=1, ri1, ri2, ro1, ro2, w, angle=360, di1, di2, do1, do2, align)
+module funnel (h=1, ri1, ri2, ro1, ro2, w, angle=360, di1, di2, do1, do2, outer, align)
 {
 	// return [ri1, ri2, ro1, ro2]
 	r  = parameter_funnel_r (ri1, ri2, ro1, ro2, w, di1, di2, do1, do2);
 	max_r = max(r);
-	fn = get_slices_circle_current_x( max_r );
+	fn    = get_slices_circle_current_x( max_r );
+	angles = parameter_angle (angle, [360,0]);
+	Outer  = parameter_numlist (2, outer, [0,0], true);
+	r_o    = [for (s=[0:1]) for (i=[0:1]) r[i+2*s] * get_circle_factor (fn, Outer[s], angles[0]) ];
 	Align = parameter_align (align, [0,0,1]);
 	
 	translate ([ Align[0]*max_r, Align[1]*max_r, Align[2]*h/2 - h/2])
-	rotate_extrude_extend (angle=angle, $fn=fn)
+	rotate_extrude_extend (angle=angles, $fn=fn)
 	{
 		polygon([
-			[r[0],0], [r[2],0],
-			[r[3],h], [r[1],h]
+			[r_o[0],0], [r_o[2],0],
+			[r_o[3],h], [r_o[1],h]
 		]);
 	}
 }
