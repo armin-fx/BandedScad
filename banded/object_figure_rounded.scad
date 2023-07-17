@@ -133,9 +133,9 @@ module cube_fillet (size, r, type=0
 	r_top    = parameter_edges_radius (edges_top   , r);
 	r_side   = parameter_edges_radius (edges_side  , r);
 	
-	module trans_side   ()  {                                  children(); }
-	module trans_bottom ()  { rotate_y(90)rotate_z(90)         children(); }
-	module trans_top    ()  { translate_z(Size[2])rotate_y(90) children(); }
+	module trans_side   ()  {                                  translate_z(-extra) children(); }
+	module trans_bottom ()  { rotate_y(90)rotate_z(90)         translate_z(-extra) children(); }
+	module trans_top    ()  { translate_z(Size[2])rotate_y(90) translate_z(-extra) children(); }
 	//
 	module trans_up () { mirror_at_z(Size[2]/2) children(); }
 	//
@@ -153,24 +153,24 @@ module cube_fillet (size, r, type=0
 		
 		union ()
 		{ // Fase in der Seite (edges_side)
-		trans_0() trans_side() edge_fillet (h=Size[2], r=r_side[0], type=Type_side[0]);
-		trans_1() trans_side() edge_fillet (h=Size[2], r=r_side[1], type=Type_side[1]);
-		trans_2() trans_side() edge_fillet (h=Size[2], r=r_side[2], type=Type_side[2]);
-		trans_3() trans_side() edge_fillet (h=Size[2], r=r_side[3], type=Type_side[3]);
+		trans_0() trans_side() edge_fillet (h=Size[2]+2*extra, r=r_side[0], type=Type_side[0]);
+		trans_1() trans_side() edge_fillet (h=Size[2]+2*extra, r=r_side[1], type=Type_side[1]);
+		trans_2() trans_side() edge_fillet (h=Size[2]+2*extra, r=r_side[2], type=Type_side[2]);
+		trans_3() trans_side() edge_fillet (h=Size[2]+2*extra, r=r_side[3], type=Type_side[3]);
 		}
 		union ()
 		{ // Fase auf dem Boden (edges_bottom)
-		trans_0() trans_bottom() edge_fillet (h=Size[0], r=r_bottom[0], type=Type_bottom[0]);
-		trans_1() trans_bottom() edge_fillet (h=Size[1], r=r_bottom[1], type=Type_bottom[1]);
-		trans_2() trans_bottom() edge_fillet (h=Size[0], r=r_bottom[2], type=Type_bottom[2]);
-		trans_3() trans_bottom() edge_fillet (h=Size[1], r=r_bottom[3], type=Type_bottom[3]);
+		trans_0() trans_bottom() edge_fillet (h=Size[0]+2*extra, r=r_bottom[0], type=Type_bottom[0]);
+		trans_1() trans_bottom() edge_fillet (h=Size[1]+2*extra, r=r_bottom[1], type=Type_bottom[1]);
+		trans_2() trans_bottom() edge_fillet (h=Size[0]+2*extra, r=r_bottom[2], type=Type_bottom[2]);
+		trans_3() trans_bottom() edge_fillet (h=Size[1]+2*extra, r=r_bottom[3], type=Type_bottom[3]);
 		}
 		union ()
 		{ // Fase auf der Dachseite (edges_top)
-		trans_0() trans_top() edge_fillet (h=Size[0], r=r_top[0], type=Type_top[0]);
-		trans_1() trans_top() edge_fillet (h=Size[1], r=r_top[1], type=Type_top[1]);
-		trans_2() trans_top() edge_fillet (h=Size[0], r=r_top[2], type=Type_top[2]);
-		trans_3() trans_top() edge_fillet (h=Size[1], r=r_top[3], type=Type_top[3]);
+		trans_0() trans_top() edge_fillet (h=Size[0]+2*extra, r=r_top[0], type=Type_top[0]);
+		trans_1() trans_top() edge_fillet (h=Size[1]+2*extra, r=r_top[1], type=Type_top[1]);
+		trans_2() trans_top() edge_fillet (h=Size[0]+2*extra, r=r_top[2], type=Type_top[2]);
+		trans_3() trans_top() edge_fillet (h=Size[1]+2*extra, r=r_top[3], type=Type_top[3]);
 		}
 		
 		// TODO verschiedene Ecken testen
