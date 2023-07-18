@@ -134,7 +134,9 @@ __Options:__
    - without specification it gets the same like module `circle()`
    - with `"x"` includes the [extra special variables](extend.md#special-variables-)
      to automatically control the count of segments
-   - if an angle is specified, count of segments is like in `rotate_extrude()`
+   - if an angle is specified, the circle section keeps the count of segments.
+     Elsewise with `$fn` the segment count scale down to the circle section,
+     the behavior like in `rotate_extrude()`
 - `piece`
   - `true`  - like a pie, like `rotate_extrude()` in OpenSCAD
   - `false` - connect the ends of the circle,

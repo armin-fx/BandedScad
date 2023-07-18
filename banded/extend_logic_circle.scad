@@ -17,15 +17,24 @@ function get_slices_circle_closed (r, fn, fa, fs) =
 ;
 // gibt die Anzahl der Segmente des Teilstücks eines Kreises zurück,
 function get_slices_circle (r, angle=360, piece=true, fn, fa, fs) =
-	get_slices_circle_pie (r, angle, piece, get_slices_circle_closed(r, fn, fa, fs))
+	get_slices_circle_pie (angle, piece, get_slices_circle_closed(r, fn, fa, fs))
 ;
 // gibt die Anzahl der Segmente des Teilstücks eines Kreises zurück,
 // bei Angabe der Segmente eines vollen Kreises.
 // Angelehnt an das Verhalten von rotate_extrude()
-function get_slices_circle_pie (r, angle=360, piece=true, fn) =
+function get_slices_circle_pie (angle=360, piece=true, fn) =
 	max( floor(fn * abs(angle)/360),
 	     (piece==true || piece==0) ? 1 : 2
 	)
+;
+
+// gibt die Angabe für $fn zurück, wenn eine feste Anzahl an Segmenten gewünscht ist.
+// Für z.B. rotate_extrude(), wenn ein Öffnungswinkel angegeben wird,
+// wird die Segmentanzahl intern heruntergeteilt.
+// Dies Funktion ermittelt den Wert für $fn,
+// so dass das Objekt die korrekte Anzahl an Segmenten hat.
+function get_fn_circle (slices, angle) = 
+	ceil (slices*360/abs(angle))
 ;
 
 // gibt die Anzahl der Segmente eines geschlossenen Kreises zurück
@@ -50,7 +59,7 @@ function get_slices_circle_closed_x (r, fn, fa, fs, fn_min, fn_max, fd, fa_enabl
 		)))
 ;
 function get_slices_circle_x (r, angle=360, piece=true, fn, fa, fs, fn_min, fn_max, fd, fa_enabled, fs_enabled) = 
-	get_slices_circle_pie (r, angle, piece, get_slices_circle_closed_x(r, fn, fa, fs, fn_min, fn_max, fd, fa_enabled, fs_enabled))
+	get_slices_circle_pie (angle, piece, get_slices_circle_closed_x(r, fn, fa, fs, fn_min, fn_max, fd, fa_enabled, fs_enabled))
 ;
 
 // aktuelle Fragmentanzahl gemäß den Angaben in $fxxx zurückgeben bei angegeben Radius, optional Winkel
@@ -62,3 +71,4 @@ function get_slices_circle_current_x (r, angle=360, piece=true) = get_slices_cir
 	is_undef($fa_enabled) ? undef : $fa_enabled,
 	is_undef($fs_enabled) ? undef : $fs_enabled
 );
+

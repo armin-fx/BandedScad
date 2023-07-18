@@ -64,6 +64,7 @@ Helper functions
   - [`parameter_align()`][parameter_align]
   - [`parameter_numlist()`][parameter_numlist]
   - [`parameter_angle()`][parameter_angle]
+  - [`parameter_slices_circle()`][parameter_slices_circle]
   - [`parameter_mirror_vector_2d()`][parameter_mirror_vector_2d]
   - [`parameter_mirror_vector_3d()`][parameter_mirror_vector_3d]
   - [`parameter_edges_radius()`][parameter_edges_radius]
@@ -568,6 +569,32 @@ Arguments:
   - as a list
     - `[opening_angle, start_angle]`
 - `angle_std` - default angle if `angle` is not set (default = `[360, 0]`)
+
+#### `parameter_slices_circle (slices, r, angle, piece)` [^][contents]
+[parameter_slices_circle]: #parameter_slices_circle-slices-r-angle-piece-
+Evaluate the fragments count of a circle (section)
+
+Arguments:
+- `slices`
+   - count of segments, optional
+   - without specification it gets the same like module `circle()`
+   - with `"x"` includes the [extra special variables](extend.md#special-variables-)
+     to automatically control the count of segments
+   - if an angle is specified, the circle section keeps the count of segments.
+     Elsewise with `$fn` the segment count scale down to the circle section,
+     the behavior like in `rotate_extrude()`
+- `r`     - circle radius, default=`1`
+- `angle` - drawed angle in degrees, default=`360`
+- `piece`
+  - `true`  - like a pie, like `rotate_extrude()` in OpenSCAD, default
+  - `false` - connect the ends of the circle,
+            - generate an extra edge if count of segments is too small
+  - `0`     - curve only, no extra edges if "circle is only a line"
+
+Specialized function:
+- `parameter_slices_circle_x()`
+  - use the [extra special variables](extend.md#special-variables-)
+    by default if slices is not set
 
 #### `parameter_mirror_vector_2d (v, v_std)` [^][contents]
 [parameter_mirror_vector_2d]: #parameter_mirror_vector_2d-v-v_std-

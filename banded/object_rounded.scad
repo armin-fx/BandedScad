@@ -79,13 +79,13 @@ module edge_ring_rounded (r_ring, r, angle=90, angle_ring=360, outer, slices, ex
 	R_ring  = parameter_circle_r(r_ring, d_ring);
 	angles_ring = parameter_angle(angle_ring, 360);
 	fn      =                 get_slices_circle_current_x(R);
-	fn_ring = slices==undef ? get_slices_circle_current_x(R_ring) : slices;
+	fn_ring = slices==undef ? get_slices_circle_current_x(R_ring,angles_ring[0]) : slices;
 	Outer   = outer!=undef ? outer : 0;
-	R_ring_outer = R_ring * get_circle_factor (fn_ring, Outer);
+	R_ring_outer = R_ring * get_circle_factor (fn_ring, Outer, angles_ring[0]);
 	//
 	if (R>0 && R_ring>0) // TODO no fillet
 	{
-		rotate_extrude_extend (angle=angles_ring, convexity=4, $fn=fn_ring)
+		rotate_extrude_extend (angle=angles_ring, convexity=4, slices=fn_ring)
 		translate_x (R_ring_outer)
 		edge_rounded_plane (R, angle, extra=extra, $fn=fn);
 	}
@@ -148,13 +148,13 @@ module edge_ring_chamfer (r_ring, c, angle=90, angle_ring=360, outer, slices, ex
 {
 	R_ring   = parameter_circle_r(r_ring, d_ring);
 	angles_ring = parameter_angle(angle_ring, 360);
-	fn_ring = slices==undef ? get_slices_circle_current_x(R_ring) : slices;
+	fn_ring = slices==undef ? get_slices_circle_current_x(R_ring,angles_ring[0]) : slices;
 	Outer   = outer!=undef ? outer : 0;
-	R_ring_outer = R_ring * get_circle_factor (fn_ring, Outer);
+	R_ring_outer = R_ring * get_circle_factor (fn_ring, Outer, angles_ring[0]);
 	//
 	if (c>0 && R_ring>0) // TODO no fillet
 	{
-		rotate_extrude_extend (angle=angles_ring, convexity=2, $fn=fn_ring)
+		rotate_extrude_extend (angle=angles_ring, convexity=2, slices=fn_ring)
 		translate_x (R_ring_outer)
 		edge_chamfer_plane (c, angle, extra=extra);
 	}

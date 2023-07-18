@@ -138,17 +138,12 @@ function circle_point_r (r, angle=0) =
 //                    1 - Tangenten auf der Kreislinie
 function circle_curve (r, angle=360, slices, piece=0, outer, align, d) =
 	let(
-		 R     = parameter_circle_r (r,d)
-		,Align = parameter_align (align, [0,0])
+		 R       = parameter_circle_r (r,d)
+		,Align   = parameter_align (align, [0,0])
 		,angles      = parameter_angle (angle, [360,0])
 		,Angle_begin = angles[1]
 		,Angle       = angles[0]
-		,Slices =
-			slices==undef ? get_slices_circle_current  (R,Angle,piece) :
-			slices=="x"   ? get_slices_circle_current_x(R,Angle,piece) :
-			slices<2 ?
-				(piece==true || piece==0) ? 1 : 2
-			:slices
+		,Slices  = parameter_slices_circle (slices, R, Angle, piece)
 		,Outer   = outer!=undef ? outer : 0
 		,r_outer = R * get_circle_factor (Slices, Outer, Angle)
 		,circle_list =
@@ -236,12 +231,7 @@ function superellipse_curve (interval, r, a, n, s, slices, piece=0) =
 		,A = parameter_numlist(2, a, [1,1])
 		,N = parameter_numlist(2, n, [2,2])
 		,S = parameter_numlist(2, s, undef)
-		,Slices =
-			slices==undef ? get_slices_circle_current  (R*max(A),I[1]-I[0],piece) :
-			slices=="x"   ? get_slices_circle_current_x(R*max(A),I[1]-I[0],piece) :
-			slices<2 ?
-				(piece==true || piece==0) ? 1 : 2
-			:slices
+		,Slices = parameter_slices_circle (slices, R*max(A), I[1]-I[0], piece)
 		,e =
 			S==undef ? 2/N
 			:          (-2/ln(2)) * [ln(S[0]),ln(S[1])]

@@ -266,8 +266,7 @@ module cylinder_edges_fillet (h, r1, r2, r_edges=0, type=0, center, r, d, d1, d2
 	R_max    = max(R);
 	H        = get_first_num (h, 1);
 	Types    = parameter_types (type, 0, 2);
-	fn = slices==undef ? get_slices_circle_current_x (R_max) : slices;
-	Outer   = outer!=undef ? outer : 0;
+	Outer    = outer!=undef ? outer : 0;
 	R_outer  = R * get_circle_factor (fn, Outer);
 	a        = atan ( H / (R_outer[0]-R_outer[1]) );
 	angle_bottom = a<0 ? a+180 : a;
@@ -279,11 +278,12 @@ module cylinder_edges_fillet (h, r1, r2, r_edges=0, type=0, center, r, d, d1, d2
 		];
 	angles   = parameter_angle (angle, [360,0]);
 	Align    = parameter_align (align, [0,0,1], center);
+	fn       = parameter_slices_circle_x (slices, R_max, angles[0]);
 	
 	translate ([ Align[0]*R_max, Align[1]*R_max, Align[2]*H/2 - H/2])
 	difference()
 	{
-		cylinder_extend (r1=R[0], r2=R[1], h=H, angle=angles, outer=Outer);
+		cylinder_extend (r1=R[0], r2=R[1], h=H, angle=angles, slices=fn, outer=Outer);
 		//
 		if (R_both[0] > 0)
 		{

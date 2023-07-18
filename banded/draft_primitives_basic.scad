@@ -81,12 +81,7 @@ function cylinder (h, r1, r2, center, r, d, d1, d2, angle=360, slices="x", piece
 		,H_both = center==true ? [-H,H]/2 : [0,H]
 		,angles = parameter_angle (angle, [360,0])
 		,Angle  = angles[0]
-		,Slices = // copy and paste from circle_curve():
-			slices==undef ? get_slices_circle_current  (R_max,Angle,piece) :
-			slices=="x"   ? get_slices_circle_current_x(R_max,Angle,piece) :
-			slices<2 ?
-				(piece==true || piece==0) ? 1 : 2
-			:slices
+		,Slices = parameter_slices_circle (slices, R, Angle, piece)
 		,c1 = circle_curve (r=R[0], angle=angles, slices=Slices, piece=piece, outer=outer, align=align)
 		,c2 = circle_curve (r=R[1], angle=angles, slices=Slices, piece=piece, outer=outer, align=align)
 		,n  = len(c1)

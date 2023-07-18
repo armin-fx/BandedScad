@@ -109,10 +109,16 @@ module sphere_extend (r, d, outer, align)
 //   angle  - gezeichneter Winkel in Grad, Standart=360
 //            als Zahl  = Winkel von 0 bis 'angle' = Öffnungswinkel
 //            als Liste = [Öffnungswinkel, Anfangswinkel]
-module rotate_extrude_extend (angle=360, convexity)
+module rotate_extrude_extend (angle=360, slices, convexity)
 {
 	angles = parameter_angle (angle, 360);
+	Slices =
+		slices==undef ? undef :
+		slices=="x"   ? get_slices_circle_current_x(r_max,angles[0]) :
+		slices<2 ? angles[0]<180 ? 2 : 3
+		:slices;
+	fn = slices==undef ? $fn : get_fn_circle (slices, angles[0]);
 	//
 	rotate ([0,0, angles[1] + (abs(angles[0])>=360 ? 180 : 0) ])
-	rotate_extrude (angle=angles[0], convexity=convexity) children();
+	rotate_extrude (angle=angles[0], convexity=convexity, $fn=fn) children();
 }

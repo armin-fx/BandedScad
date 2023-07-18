@@ -384,6 +384,18 @@ function parameter_angle (angle, angle_std=360) =
 	parameter_angle     (angle_std, [360,0])
 ;
 
+function parameter_slices_circle (slices, r=1, angle=360, piece=true) =
+	slices==undef ? get_slices_circle_current  (r,angle,piece) :
+	slices=="x"   ? get_slices_circle_current_x(r,angle,piece) :
+	slices<2 ?
+		(piece==true || piece==0) ? 1 : 2
+	:slices
+;
+function parameter_slices_circle_x (slices, r=1, angle=360, piece=true) =
+	slices==undef ? get_slices_circle_current_x (r,angle,piece) :
+	parameter_slices_circle (slices, r, angle, piece)
+;
+
 // test and may load default for vector in mirror function
 function parameter_mirror_vector_2d (v, v_std=[1,0]) =
 	(v!=undef && len(v)>=2) ? v : v_std

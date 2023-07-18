@@ -35,6 +35,7 @@
     - [`get_slices_circle_closed_x()`][get_slices_circle_closed_x]
     - [`get_slices_circle()`][get_slices_circle]
     - [`get_slices_circle_x()`][get_slices_circle_x]
+    - [`get_fn_circle()`][get_fn_circle]
   - [Convert values](#convert-values-)
     - [`get_angle_from_percent()`][get_angle_from_percent]
   - [Internal use](#internal-use-)
@@ -119,7 +120,9 @@ Creates a circle with [options of `circle_curve()`](draft_curves.md#circle-)
    - count of segments, without specification it gets the same like `circle()`
    - with `"x"` includes the [extra special variables](extend.md#special-variables-)
      to automatically control the count of segments
-   - if an angle is specified, count of segments is like in `rotate_extrude()`
+   - if an angle is specified, the circle section keeps the count of segments.
+     Elsewise with `$fn` the segment count scale down to the circle section,
+     the behavior like in `rotate_extrude()`
 - `piece`
   - `true`  - like a pie, like `rotate_extrude()` in OpenSCAD
   - `false` - connect the ends of the circle,
@@ -179,8 +182,8 @@ Creates a cube
   - [Extra arguments - align](#extra-arguments-)
   - default = `[1,1,1]` = oriented on the positive side of axis
 
-#### `rotate_extrude_extend (angle, convexity)` [^][contents]
-[rotate_extrude_extend]: #rotate_extrude_extend-angle-convexity-
+#### `rotate_extrude_extend (angle, slices, convexity)` [^][contents]
+[rotate_extrude_extend]: #rotate_extrude_extend-angle-slices-convexity-
 Modifies `rotate_extrude()`.\
 Objects created with `rotate_extrude()` are rotated differently
 as e.g. the object `cylinder()`.
@@ -190,6 +193,13 @@ ___Additional options:___
 - `angle` - drawn angle in degree, default=`360`
   - as number -> angle from `0` to `angle` = opening angle
   - as list   -> range `[opening angle, begin angle]`
+- `slices`
+   - count of segments, optional
+   - with `"x"` includes the [extra special variables](extend.md#special-variables-)
+     to automatically control the count of segments
+   - if an angle is specified, the circle section keeps the count of segments.
+     Elsewise with `$fn` the segment count scale down to the circle section,
+     the behavior like in `rotate_extrude()`
 
 ___Example:___
 ```OpenSCAD
@@ -245,13 +255,13 @@ and the _extra special variables_ `$fn_min`, `$fn_max`, `$fd`, `$fa_enabled`, `$
 #### `get_slices_circle_closed (r, fn, fa, fs)` [^][contents]
 [get_slices_circle_closed]: #get_slices_circle_closed-r-fn-fa-fs-
 Returns the number of fragment on a closed circle
-with the _buildin special variables_.\
+with arguments based on the _buildin special variables_.\
 Original OpenSCAD function.
 
 #### `get_slices_circle_closed_x (r, fn, fa, fs, fn_min, fn_max, fd, fa_enabled, fs_enabled)` [^][contents]
 [get_slices_circle_closed_x]: #get_slices_circle_closed_x-r-fn-fa-fs-fn_min-fn_max-fd-fa_enabled-fs_enabled-
 Returns the number of fragment on a closed circle
-with the _extra special variables_.
+with arguments based on the _extra special variables_.
 
 #### `get_slices_circle (r, angle, piece, fn, fa, fs)` [^][contents]
 [get_slices_circle]: #get_slices_circle-r-angle-piece-fn-fa-fs-
@@ -263,6 +273,15 @@ Based on the behavior of rotate_extrude() in OpenSCAD.
 [get_slices_circle_x]: #get_slices_circle_x-r-angle-piece-fn-fa-fs-fn_min-fn_max-fd-fa_enabled-fs_enabled-
 Returns the number of fragment on a part of a circle
 with the _extra special variables_.
+
+#### `get_fn_circle (slices, angle)` [^][contents]
+[get_fn_circle]: get_fn_circle-slices-angle-
+Returns the number for `$fn` if a fixed number of segments is desired.
+For e.g. rotate_extrude(),
+if an opening angle is specified,
+the number of segments is divided internally.
+This function calculate the value for `$fn`, so the object gets
+the real number of segments.
 
 
 ### Convert values [^][contents]

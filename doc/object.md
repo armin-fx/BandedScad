@@ -329,7 +329,9 @@ It does `rotate_extrude()` with module [`edge_fillet_plane()`][edge_fillet_plane
    - count of segments of the cylinder, optional.
    - Without specification it includes the [extra special variables](extend.md#special-variables-)
      to automatically control the count of segments
-   - if an angle is specified, count of segments is like in `rotate_extrude()`
+   - if an angle is specified, the circle section keeps the count of segments.
+     Elsewise with `$fn` the segment count scale down to the circle section,
+     the behavior like in `rotate_extrude()`
 - `extra`  - set an amount extra overhang, because of z-fighting
   - default = constant `extra`
 
@@ -533,7 +535,9 @@ Based on [`cylinder_extend()`][cylinder_extend], compatible with `cylinder()`
      without specification it gets the same like `circle()`
    - includes the [extra special variables](extend.md#special-variables-)
      to automatically control the count of segments
-   - if an angle is specified, count of segments is like in `rotate_extrude()`
+   - if an angle is specified, the circle section keeps the count of segments.
+     Elsewise with `$fn` the segment count scale down to the circle section,
+     the behavior like in `rotate_extrude()`
 - `outer`
   - value `0`...`1`
     - `0` - edges on real circle line, default like `circle()` in OpenSCAD
