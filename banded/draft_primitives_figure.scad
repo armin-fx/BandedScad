@@ -67,32 +67,59 @@ function wedge (v_min, v_max, v2_min, v2_max) =
 //   angle   - Öffnungswinkel des Torus, Standart=360°. Benötigt Version ab 2019.05
 //   center  - Torus in der Mitte (Z-Achse) zentrieren (bei center=true)
 //   fn_ring - optionale Anzahl der Segmente des Rings
-function torus (r, w, ri, ro, angle=360, center=false, fn_ring, align) =
+function torus (r, w, ri, ro, angle=360, center=false, fn_ring, outer, align) =
 	let (
 		 rx = parameter_ring_2r(r, w, ri, ro)
 		,rm = (rx[1] + rx[0]) / 2
 		,rw = (rx[1] - rx[0]) / 2
-		,max_r = max(rx)
+	)
+	rw<=0   ? undef :
+	rm<=-rw ? undef :
+	let (
+		 max_r = max(rx)
 		,Align = parameter_align (align, [0,0,1], center)
+		,align_v = [ Align[0]*max_r, Align[1]*max_r, Align[2]*rw - rw]
+		,angles = parameter_angle (angle, [360,0])
 		,circle_angle =
-			rw<=0   ? undef :
-			rm<=-rw ? undef :
 			rm>=rw  ? [360,0] :
 			let( alpha=acos(rm/rw) )  [2*(180-alpha), 180+alpha]
 		,fn_Ring =
 			is_num(fn_ring) ? fn_ring
 			: get_slices_circle_current_x (rw, angle=circle_angle[0], piece=false)
+		,fn_Torus     = get_slices_circle_current_x(rm+rw)
+		,slices_Torus = get_slices_circle_current_x(rm+rw, angles[0])
+		,Outer  = outer!=undef ? outer : 0
+		,fudge_torus = get_circle_factor (slices_Torus, Outer, angles[0])
+		,fudge_ring  = get_circle_factor (fn_Ring     , Outer, circle_angle[0])
+		//
+		,c   = circle_curve (r=rw, angle=circle_angle, piece=false, slices=fn_Ring)
+		,c_R = rotate_list (c  , find_first_once_if (c, function(p) p.x> 0) )
+		,c_r = rotate_list (c_R, find_first_once_if (c, function(p) p.x<=0) )
+		,h_i = [for (p=c_r) if (p.x<=0) p]
+		,h_o = [for (p=c_r) if (p.x> 0) p]
+		,s_i = scale_points (h_i, fudge_ring)
+		,s_o = scale_points (h_o, fudge_ring * [fudge_torus, 1])
+		,t_i = translate_points(s_i, [rm            , rw])
+		,t_o = translate_points(s_o, [rm*fudge_torus, rw])
+		,curve = [ each t_i, each t_o]
+		,size = len(curve)
+		,curve_p =
+			[for (i=[size:1:2*size])
+				if (curve[i%size].x>=0) curve[i%size]
+				else let (
+					p = curve[(i-1)%size],
+					o = curve[ i   %size],
+					n = curve[(i+1)%size]
+				)	
+				each [
+					 if (p.x>=0) [0, lerp (p.y,o.y, 0, [p.x,o.x]) ]
+					,if (n.x>=0) [0, lerp (o.y,n.y, 0, [o.x,n.x]) ]
+				]
+			]
 	)
-	circle_angle==undef ? undef :
-	//
-	translate (v=[ Align[0]*max_r, Align[1]*max_r, Align[2]*rw - rw], object=
-	rotate_extrude_extend_points (angle=angle, $fn=get_slices_circle_current_x(rm+rw),
-		list =
-		translate_points(
-			v    = [ rm, rw],
-			list = circle_curve (r=rw, angle=circle_angle, piece=false, slices=fn_Ring)
-		)
-	) )
+	translate (v=align_v, object=
+		rotate_extrude_extend_points (angle=angles, $fn=fn_Torus, list=curve_p)
+	)
 ;
 
 // erzeugt einen quadratischen Ring

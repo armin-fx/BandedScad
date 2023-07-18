@@ -78,8 +78,8 @@ Location of the parameter:
 
 ```
 
-#### `torus (r, w, ri, ro, angle, center, fn_ring, align)` [^][contents]
-[torus]: #torus-r-w-ri-ro-angle-center-fn_ring-align-
+#### `torus (r, w, ri, ro, angle, center, fn_ring, outer, align)` [^][contents]
+[torus]: #torus-r-w-ri-ro-angle-center-fn_ring-outer-align-
 Creates a torus.
 
 Arguments:
@@ -100,6 +100,31 @@ More arguments:
   - Side from origin away that the part should be.
   - [Extra arguments - align](extend.md#extra-arguments-)
   - default = `[0,0,1]` = X-Y-axis centered
+- `outer`
+  - value `0`...`1`
+    - `0` - edges on real circle line, default like `circle()` in OpenSCAD
+    - `1` - tangent on real circle line
+    - any value between, such as `0.5` = middle around inner or outer circle
+  - the problem is described in website
+    <https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/undersized_circular_objects>
+  - The tube circle will split in 2 parts.
+    This has no effect if `outer` is set `0`.
+    If `outer` is set `1`, the edges of the inner circle segment
+    touch on the real surface and even the faces of the outer circle segment.
+    Both circle parts differs a little and on the transition to both
+    the object slightly differs from the real surface.
+
+Example:
+``` OpenSCAD
+include <banded.scad>
+
+r=6; w=8;
+	color ("gold",0.5)
+	       torus (r=r, w=w, $fn=500);
+	color ("grey",0.5)
+//	build( torus (r=r, w=w, outer=0.99, $fn=7) );
+	       torus (r=r, w=w, outer=0.99, $fn=7) ;
+```
 
 #### `ring_square (h, r, w, ri, ro, angle, center, d, di, do, outer, align)` [^][contents]
 [ring_square]: #ring_square-h-r-w-ri-ro-angle-center-d-di-do-outer-align-
