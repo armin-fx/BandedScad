@@ -364,6 +364,7 @@ _The argument names differs:_
 | [`keep_all_values()`][ka]     | `keep_all_letter (txt, letter_list)`         | Keep every letter in a string, which matches in a list of letter. Remove the remainder.
 | [`unique()`][uq]              | `unique_str      (txt, f)`                   | Removes all but the first letter from every consecutive group of equivalent
 | [`keep_unique()`][ku]         | `keep_unique_str (txt, f)`                   | Removes all group of equivalent letter, keep only single letter.
+| [`split`][s]                  | `split_str       (txt, letter)`              | Splits a text at occurrences of a given letter. Creates a list with these substrings. The determined letter will be removed.
 | [`remove_if()`][rmi]          | `remove_if_str  (txt, f)`                    | Run a function at the letter in a string and remove every letter which this function returns `true`.
 | [`replace_if()`][rpi]         | `replace_if_str (txt, f, new)`               | Run a function at the letter in a string and replace every letter wit a string which this function returns `true`.
 | [`partition()`][pa]           | `partition_str (txt, f, 'range_args' )`      | Split a string in two parts. Store the 2 result strings in a list.
@@ -444,6 +445,7 @@ Use list functions directly:
 [ka]:  list.md#keep_all_values-list-value_list-type-
 [uq]:  list.md#unique-list-type-f-
 [ku]:  list.md#keep_unique-list-type-f-
+[s]:   list.md#split-list-value-type-
 [rmi]: list.md#remove_if-list-f-type-
 [rpi]: list.md#replace_if-list-f-new-type-
 [pa]:  list.md#partition-list-f-type-range_args-

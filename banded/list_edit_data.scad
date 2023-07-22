@@ -426,3 +426,31 @@ function extract_value_intern (list, type=0, begin=0, last=-1) =
 	:type[0]==-1 ? let(fn=type[1]) [ for (i=[begin:1:last]) fn(list[i])         ]
 	:                              [ for (i=[begin:1:last]) value(list[i],type) ]
 ;
+
+// Teilt eine Liste an den Vorkommen eines bestimmten Wertes auf
+// Erzeugt eine Liste mit diesen Teillisten
+// Dieser bestimmte Wert wird entfernt
+function split (list, value, type=0) =
+	list==undef ? [] :
+	let( size=len(list) )
+	type==0 ? split_intern_list (list, value,       size-1, size-1)
+	:         split_intern_type (list, value, type, size-1, size-1)
+;
+function split_intern_list (list, value, i=-1, l=-1, result=[]) =
+	i<0 ?
+		l>=0 ? [ [for (j=[0:1:l]) list[j] ], each result ]
+		:      [ []                        , each result ]
+	:
+	list[i]==value
+	? split_intern_list (list, value, i-1, i-1, [ [for (j=[i+1:1:l]) list[j] ], each result ])
+	: split_intern_list (list, value, i-1, l  , result)
+;
+function split_intern_type (list, value, type, i=-1, l=-1, result=[]) =
+	i<0 ?
+		l>=0 ? [ [for (j=[0:1:l]) list[j] ], each result ]
+		:      [ []                        , each result ]
+	:
+	value(list[i],type)==value
+	? split_intern_type (list, value, type, i-1, i-1, [ [for (j=[i+1:1:l]) list[j] ], each result ])
+	: split_intern_type (list, value, type, i-1, l  , result)
+;

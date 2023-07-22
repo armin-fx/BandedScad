@@ -75,6 +75,7 @@ Functions for edit lists
     - [`unique()`][unique]
     - [`keep_unique()`][keep_unique]
     - [`extract_value()`][extract_value]
+    - [`split()`][split]
   - [Get data from list](#get-data-from-list-)
     - [Minimum or maximum value](#minimum-or-maximum-value-)
       - `min_value()`,    `max_value()`
@@ -486,6 +487,12 @@ The elements are compared using operator `==` or with function `f` if given.
 Extract a sequence from a list.\
 Return the data of the given type.
 - [`'range_args'`][range_args] - arguments to set the range of the list, default = full list
+
+#### `split (list, value, type)` [^][contents]
+[split]: #split-list-value-type-
+Splits a list at occurrences of a given value.\
+Creates a list with these sublists.
+The determined value will be removed.
 
 
 Get data from list [^][contents]

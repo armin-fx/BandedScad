@@ -221,6 +221,13 @@ function keep_unique_str (txt, f) =
 	list_to_str ( keep_unique (txt, type=0, f=f) )
 ;
 
+// Teilt Text an den Vorkommen eines bestimmten Buchstaben auf
+// Erzeugt eine Liste mit diesen Teiltexten
+// Dieser bestimmte Buchstabe wird entfernt
+function split_str (txt, letter) =
+	[for (x = split (txt, letter)) list_to_str (x) ]
+;
+
 
 // - Der Inhalt wird mit einer übergebenen Funktion bearbeitet:
 
