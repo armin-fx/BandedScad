@@ -175,13 +175,13 @@ module show_traces_colored (p_lists, closed=false, direction=false, d=0.1, p_fac
 	show_traces (p_lists, true, closed, direction, d, p_factor, auto);
 }
 
-module show_label (txt, h=2.5, a=$vpr, valign="baseline", halign="left", auto=0)
+module show_label (txt, h=3.3, a=$vpr, valign="baseline", halign="left", auto=0)
 {
     color     ("black")
 	%
 	rotate    (a)
 	linear_extrude(0.01)
-	scale     (get_debug_width (h/10, auto))
+	scale     (get_debug_width (h/15, auto))
 	text      (txt, valign=valign, halign=halign);
 }
 
@@ -192,7 +192,7 @@ function get_debug_color (c, i, size, default="orange") =
 		:	c
 	:		color_hsv_to_rgb ([i/size*360,1,1])
 ;
-function get_debug_width (d, auto=0) = d * ( (1-auto) + auto*$vpd/10 );
+function get_debug_width (d, auto=0) = d * ( (1-auto) + auto*$vpd/140 );
 
 // - Teile von Objekte testen:
 

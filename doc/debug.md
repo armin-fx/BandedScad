@@ -203,7 +203,7 @@ _Specialized module:_
 [show_label]: #show_label-txt-h-p-a-valign-halign-
 Show a label with text.
 - `txt` - the text as string
-- `h` - the height of the letter, default = `2.5mm`
+- `h` - the height of the letter, default = `3.3mm`
 - `a` - the angle of the label
   - default = `$vpr`,
     rotates on every preview update that the text always faces the camera
@@ -214,6 +214,8 @@ Show a label with text.
     - `0` = don't change the size
     - `1` = size is always the same size in display
   - default = `0`, don't change the size
+  - In default view (then`$vpd` = 140), the text displays
+    in the same size, when `auto` is set `1` like it is set `0`.
 
 
 ### Test parts of objects [^][contents]
