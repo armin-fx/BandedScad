@@ -177,12 +177,17 @@ module show_traces_colored (p_lists, closed=false, direction=false, d=0.1, p_fac
 
 module show_label (txt, h=3.3, a=$vpr, valign="baseline", halign="left", auto=0)
 {
+	txt_breaks = split_str(txt, "\n");
+	s = get_debug_width (h/15, auto);
+	
     color     ("black")
 	%
 	rotate    (a)
 	linear_extrude(0.01)
-	scale     (get_debug_width (h/15, auto))
-	text      (txt, valign=valign, halign=halign);
+	for (i=[0:1:len(txt_breaks)-1])
+		translate_y (-i * h)
+		scale (s)
+		text  (txt_breaks[i], valign=valign, halign=halign);
 }
 
 function get_debug_color (c, i, size, default="orange") =
