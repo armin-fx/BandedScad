@@ -136,7 +136,7 @@ __Options:__
      to automatically control the count of segments
    - if an angle is specified, the circle section keeps the count of segments.
      Elsewise with `$fn` the segment count scale down to the circle section,
-     the behavior like in `rotate_extrude()`
+     the behavior like in `rotate_extrude()` to keep the desired precision.
 - `piece`
   - `true`  - like a pie, like `rotate_extrude()` in OpenSCAD
   - `false` - connect the ends of the circle,

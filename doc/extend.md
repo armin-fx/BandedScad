@@ -122,7 +122,7 @@ Creates a circle with [options of `circle_curve()`](draft_curves.md#circle-)
      to automatically control the count of segments
    - if an angle is specified, the circle section keeps the count of segments.
      Elsewise with `$fn` the segment count scale down to the circle section,
-     the behavior like in `rotate_extrude()`
+     the behavior like in `rotate_extrude()` to keep the desired precision.
 - `piece`
   - `true`  - like a pie, like `rotate_extrude()` in OpenSCAD
   - `false` - connect the ends of the circle,
@@ -199,7 +199,7 @@ ___Additional options:___
      to automatically control the count of segments
    - if an angle is specified, the circle section keeps the count of segments.
      Elsewise with `$fn` the segment count scale down to the circle section,
-     the behavior like in `rotate_extrude()`
+     the behavior like in `rotate_extrude()` to keep the desired precision.
 
 ___Example:___
 ```OpenSCAD
@@ -277,11 +277,10 @@ with the _extra special variables_.
 #### `get_fn_circle (slices, angle)` [^][contents]
 [get_fn_circle]: get_fn_circle-slices-angle-
 Returns the number for `$fn` if a fixed number of segments is desired.
-For e.g. rotate_extrude(),
-if an opening angle is specified,
-the number of segments is divided internally.
+For e.g. rotate_extrude(), if an opening angle is specified,
+the number of segments is divided internally to keep the desired precision.
 This function calculate the value for `$fn`, so the object gets
-the real number of segments.
+the real number of segments for the opening angle.
 
 
 ### Convert values [^][contents]

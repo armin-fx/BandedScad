@@ -582,7 +582,7 @@ Arguments:
      to automatically control the count of segments
    - if an angle is specified, the circle section keeps the count of segments.
      Elsewise with `$fn` the segment count scale down to the circle section,
-     the behavior like in `rotate_extrude()`
+     the behavior like in `rotate_extrude()` to keep the desired precision.
 - `r`     - circle radius, default=`1`
 - `angle` - drawed angle in degrees, default=`360`
 - `piece`
