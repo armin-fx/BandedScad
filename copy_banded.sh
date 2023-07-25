@@ -9,9 +9,9 @@ if [ -d "$OpenSCAD_lib" ]; then
 	else
 		mkdir -p "$OpenSCAD_lib/banded"
 	fi
-	cp "$folder/banded/"*    "$OpenSCAD_lib/banded"
-	cp "$folder/banded.scad" "$OpenSCAD_lib"
-	cp "$folder/antiquity/"* "$OpenSCAD_lib"
+	cp -r "$folder/banded/"*    "$OpenSCAD_lib/banded"
+	cp    "$folder/banded.scad" "$OpenSCAD_lib"
+	cp    "$folder/antiquity/"* "$OpenSCAD_lib"
 else
 	echo "OpenSCAD libraries folder not found."
 fi

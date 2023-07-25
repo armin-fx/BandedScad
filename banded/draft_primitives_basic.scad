@@ -25,6 +25,9 @@ use <banded/helper.scad>
 use <banded/extend.scad>
 use <banded/list_edit.scad>
 use <banded/math.scad>
+//
+include <banded/constants_data.scad>
+include <banded/font.scad>
 
 
 // - 2D:
@@ -43,6 +46,44 @@ function circle (r, angle=360, slices, piece=0, outer, align, d) =
 		path   = [[for (i=[0:1:len(points)-1]) i ]]
 	)
 	[points, path]
+;
+
+font_data_name   = 0;
+font_data_style  = 1;
+font_data_sizes  = 2;
+font_data_letter = 3;
+//
+font_letter_name   = 0;
+font_letter_size   = 1;
+font_letter_object = 2;
+
+function text (text, font) =
+	text==undef ? undef :
+	let( size = len(text) )
+	size<=0 ? undef :
+	let (
+		Font =
+			font==undef ? font_list[0] :
+			font
+	)
+	text_intern_loop (text, Font, size)
+;
+function text_intern_loop (text, font, size=0, i=0, x=0, result=[]) =
+	i>=size ? result :
+	let(
+		 pos = binary_search (font[font_data_letter], text[i], type=[0])
+		,Pos = (pos<len(font[font_data_letter]) && pos>0) ? pos : 0
+		//
+		,data   = font[font_data_letter][Pos]
+		,object = 
+			 is_function(data[font_letter_object]) ? data[font_letter_object]()
+			:is_list    (data[font_letter_object]) ? data[font_letter_object]
+			:undef
+		,Object = translate_x (object, x)
+		,x_next = data[font_letter_size]
+	)
+	text_intern_loop (text, font, size, i+1, x+x_next
+		, result=append_object( result,Object ) )
 ;
 
 

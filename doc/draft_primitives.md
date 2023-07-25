@@ -59,6 +59,7 @@ Color:
 2D:
 - [`square()`](extend.md#square_extend-size-center-align-)
 - [`circle()`](extend.md#circle_extend-r-angle-slices-piece-outer-align-d-)
+- [`text()`][text] _barely implemented_
 
 3D:
 - [`cube()`](extend.md#square_extend-size-center-align-)
@@ -91,6 +92,29 @@ Create a real object from object in list.\
 The object can be in 2D or 3D.
 It will send to `polygon()` or `polyhedron()` and become the defined color.
 
+#### `text (text, font)` [^][contents]
+[text]: #text-text-font-
+Create a text as 2D object.\
+It can only use fonts created as data object in `*.scad` files.\
+- `text`
+  - String. The text to generate.
+- `font`
+  - font data object of the font that should be used.
+  - __TODO:__ String. The name of the font that should be used.
+- $fn
+  - used for subdividing the curved path segments provided by freetype
+
+Fonts:
+- _Libbard Sans_
+  - It's a clone of the font _Liberation Sans_.
+    This font is not finished yet, it contains all letters
+    `a-z`, `A-Z`, `0-9` and the most symbols, different spacing between
+    different letters is not implemented but planned.
+    Tho goal is to get completely the same behavior like
+    the buildin module 'text()'.
+  - _Liberation_ is licensed by: SIL Open Font License
+
+
 
 ### Edit objects based on OpenSCAD buildin modules [^][contents]
 Argument convention:
@@ -114,7 +138,6 @@ Not yet implemented:
 - `difference()`
 - `intersection()`
 - `minkowski()`
-- `text()`
 - `offset()`
 
 #### `linear_extrude (object, height, center, twist, slices, scale)` [^][contents]
