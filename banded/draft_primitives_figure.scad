@@ -6,6 +6,7 @@
 use <banded/extend_logic.scad>
 use <banded/helper_recondition.scad>
 use <banded/math_vector.scad>
+use <banded/list_edit_info.scad>
 use <banded/draft_curves.scad>
 use <banded/draft_transform.scad>
 use <banded/draft_primitives_basic.scad>
@@ -53,6 +54,44 @@ function wedge (v_min, v_max, v2_min, v2_max) =
 		[7,4,0,3]]  // left
 	)
 	[CubePoints, CubeFaces]
+;
+
+// Erzeugt ein Rechteck um die äußersten Punkte aus einer Liste
+function bounding_square (points) =
+	let (
+		trace = bounding_square_curve (points)
+	)
+	trace==undef ? undef :
+	let(
+		path  = [[for (i=[0:1:len(trace)-1]) i ]]
+	)
+	[trace, path]
+;
+
+// Erzeugt ein Quader um die äußersten Punkte aus einer Liste
+function bounding_cube (points) =
+	(points==undef || len(points)<2) ? undef :
+	let (
+		,bx = bound_value (points, type=[0])
+		,by = bound_value (points, type=[1])
+		,bz = bound_value (points, type=[2])
+	)
+	(bx[0]>=bx[1] || by[0]>=by[1] || bz[0]>=bz[1]) ? undef :
+	let (
+		,x=bx[0], y=by[0], z=bz[0]
+		,X=bx[1], Y=by[1], Z=bz[1]
+		,points =
+			[[x,y,z],[X,y,z],[X,Y,z],[x,Y,z]
+			,[x,y,Z],[X,y,Z],[X,Y,Z],[x,Y,Z]]
+		,path =
+			[[0,1,2,3]  // bottom
+			,[7,6,5,4]  // top
+			,[4,5,1,0]  // front
+			,[6,7,3,2]  // back
+			,[5,6,2,1]  // right
+			,[7,4,0,3]] // left
+	)
+	[points, path]
 ;
 
 // Erzeugt einen Torus

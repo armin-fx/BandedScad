@@ -8,6 +8,7 @@ use <banded/helper.scad>
 use <banded/math_common.scad>
 use <banded/math_number.scad>
 use <banded/math_polygon.scad>
+use <banded/list_edit_info.scad>
 use <banded/draft_transform_basic.scad>
 
 // - Kurven:
@@ -357,6 +358,19 @@ function square_curve (size, center, align) =
 		square_list=[[0,0], [x,0], [x,y], [0,y]]
 	)
 	[for (i=[0:1:len(square_list)-1]) square_list[i] - Size/2 + a ]
+;
+
+// Erzeugt ein Rechteck um die äußersten Punkte aus einer Liste
+// Gibt eine Spur in einer Punktliste zurück
+function bounding_square_curve (points) =
+	(points==undef || len(points)<2) ? undef :
+	let (
+		 x = bound_value (points, type=[0])
+		,y = bound_value (points, type=[1])
+	)
+	(x[0]>=x[1] || y[0]>=y[1]) ? undef :
+	//
+	[[x[0],y[0]], [x[1],y[0]], [x[1],y[1]], [x[0],y[1]]];
 ;
 
 // gibt eine Helix als Punkteliste zurück

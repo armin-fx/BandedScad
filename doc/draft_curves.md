@@ -288,6 +288,12 @@ Rotation is mathematical direction = counter clockwise.
   - [Extra arguments - align](extend.md#extra-arguments-)
   - default = `[1,1]` = oriented on the positive side of axis
 
+#### `bounding_square_curve (points)` [^][contents]
+Create a 2D rectangle around the outermost points from a list.\
+Returns a trace in a point list.
+- `points`
+  - a list with minimum 2 points
+
 
 ### Helix [^][contents]
 [=> Wikipedia - Helix](https://en.wikipedia.org/wiki/Helix)

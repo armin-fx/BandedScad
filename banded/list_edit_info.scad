@@ -16,8 +16,12 @@ use <banded/list_edit_type.scad>
 
 
 // Maximum oder Minimum einer Liste gemäß des Typs
-function min_value (list, type=0) = min (value_list(list, type));
-function max_value (list, type=0) = max (value_list(list, type));
+function min_value   (list, type=0) = min (value_list(list, type));
+function max_value   (list, type=0) = max (value_list(list, type));
+function bound_value (list, type=0) =
+	let( v=value_list(list, type) )
+	[min(v), max(v)]
+;
 
 function min_entry (list, type=0) = type==0 ? min(list) : list[ min_position (list, type) ];
 function max_entry (list, type=0) = type==0 ? max(list) : list[ max_position (list, type) ];

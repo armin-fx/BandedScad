@@ -6,6 +6,7 @@
 use <banded/extend.scad>
 use <banded/helper.scad>
 use <banded/math_vector.scad>
+use <banded/list_edit_info.scad>
 use <banded/draft_curves.scad>
 use <banded/draft_primitives_figure.scad>
 use <banded/operator_transform.scad>
@@ -24,6 +25,22 @@ module wedge (v_min, v_max, v2_min, v2_max)
 	o = wedge (v_min, v_max, v2_min, v2_max);
 	//
 	polyhedron( o[0], o[1] );
+}
+
+// Erzeugt ein Rechteck um die äußersten Punkte aus einer Liste
+module bounding_square (points)
+{
+	trace = bounding_square_curve (points);
+	//
+	if (trace!=undef) polygon (trace);
+}
+
+// Erzeugt ein Quader um die äußersten Punkte aus einer Liste
+module bounding_cube (points)
+{
+	o = bounding_cube (points);
+	//
+	if (points!=undef) polyhedron( o[0], o[1] );
 }
 
 // Erzeugt einen Torus

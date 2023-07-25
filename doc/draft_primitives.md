@@ -67,6 +67,8 @@ Color:
 
 More objects:
 - [`wedge()`](object.md#wedge-v_min-v_max-v2_min-v2_max-)
+- [`bounding_square()`](object.md#bounding_square-points-)
+- [`bounding_cube()`](object.md#bounding_cube-points-)
 - [`torus()`](object.md#torus-r-w-ri-ro-angle-center-fn_ring-align-)
 - [`ring_square()`](object.md#ring_square-h-r-w-ri-ro-angle-center-d-di-do-align-)
 - [`funnel()`](object.md#funnel-h-ri1-ri2-ro1-ro2-w-angle-di1-di2-do1-do2-align-)

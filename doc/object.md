@@ -16,6 +16,8 @@ Configurable objects
 - [Figures](#figures-)
   - [`empty()`][empty]
   - [`wedge()`][wedge]
+  - [`bounding_square()`][bounding_square]
+  - [`bounding_cube()`][bounding_cube]
   - [`torus()`][torus]
   - [`ring_square()`][ring_square]
   - [`funnel()`][funnel]
@@ -77,6 +79,18 @@ Location of the parameter:
    +--> X
 
 ```
+
+#### `bounding_square (points)` [^][contents]
+[bounding_square]: #bounding_square-points-
+Create a 2D rectangle around the outermost points from a list.\
+- `points`
+  - a list with minimum 2 points
+
+#### `bounding_cube (points)` [^][contents]
+[bounding_cube]: #bounding_cube-points-
+Create a 3D cube around the outermost points from a list.\
+- `points`
+  - a list with minimum 2 points
 
 #### `torus (r, w, ri, ro, angle, center, fn_ring, outer, align)` [^][contents]
 [torus]: #torus-r-w-ri-ro-angle-center-fn_ring-outer-align-

@@ -78,7 +78,7 @@ Functions for edit lists
     - [`split()`][split]
   - [Get data from list](#get-data-from-list-)
     - [Minimum or maximum value](#minimum-or-maximum-value-)
-      - `min_value()`,    `max_value()`
+      - `min_value()`,    `max_value()`, `bound_value()`
       - `min_entry()`,    `max_entry()`
       - `min_position()`, `max_position()`
     - [`count()`][count]
@@ -504,6 +504,7 @@ Get data from list [^][contents]
 |-----------------------------|-------------
 | `min_value    (list, type)` | get the minimum value from a list with specified `type`
 | `max_value    (list, type)` | get the maximum value from a list with specified `type`
+| `bound_value  (list, type)` | get the maximum and maximum value from a list with specified `type`. Returns a list `[min, max]`
 | `min_entry    (list, type)` | get the element from a list which has the minimum value with specified `type`
 | `max_entry    (list, type)` | get the element from a list which has the maximum value with specified `type`
 | `min_position (list, type)` | get the position of minimum value in a list
