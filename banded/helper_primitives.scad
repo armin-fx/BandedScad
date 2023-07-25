@@ -318,6 +318,7 @@ function append_object (object, object2, to_trace=false) =
 		,o2 = unify_object (object2, to_trace)
 	)
 	o2==undef ? o1 :
+	o1==undef ? o2 :
 	to_trace!=true ?
 		let(
 			,p1_size = len(o1[0]),
@@ -326,10 +327,10 @@ function append_object (object, object2, to_trace=false) =
 				[ each o1[1], each add_all_each_with (o2[1], p1_size) ]
 			]
 		)
-		copy_object_properties (object, oa)
+		copy_object_properties (o1, oa)
 	:
 		let(
 			,oa = [ [ each o1[0], each o2[0] ] ]
 		)
-		copy_object_properties (object, oa)
+		copy_object_properties (o1, oa)
 ;
