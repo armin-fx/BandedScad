@@ -109,6 +109,12 @@ function color_name (name, alpha) =
 	:          concat (c, a)
 ;
 
+function prepare_color_name (list) =
+	is_sorted (list, type=[1])
+	?	list
+	:	sort (list, type=[1])
+;
+
 // convert a rgb color list to a hex value string
 function color_list_to_hex (rgb, alpha) =
 	rgb[2]==undef ? undef :
@@ -208,7 +214,7 @@ function color_brightness (rgb, gamma=1) =
 
 // list of names of color
 // Color names are taken from the World Wide Web consortium's SVG color list
-color_name_list = sort (type=[1], list=[
+color_name_list = prepare_color_name( [
 	[[240,248,255], "aliceblue"],
 	[[250,235,215], "antiquewhite"],
 	[[  0,255,255], "aqua"],
