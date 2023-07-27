@@ -1279,11 +1279,11 @@ font_libbard_letter_9 = function()
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-font_libbard = [
+font_libbard = prepare_font( [
  "Libbard"
 ,"Sans"
 ,[10, [-4, 11] ]
-,sort (type=[0], list=[
+,[
 	 ["" ,10.17256 , font_libbard_letter_unknown]
 	,[" ", 3.76836 , []] // space
 	,["!", 3.76836,  font_libbard_letter_exclamation]
@@ -1381,6 +1381,6 @@ font_libbard = [
 	,["|", 3.52334 , font_libbard_letter_vertical_bar]
 	,["}", 4.529981, font_libbard_letter_braces_closing]
 	,["~", 7.920803, font_libbard_letter_tilde]
-	])
-];
+	]
+] );
 
