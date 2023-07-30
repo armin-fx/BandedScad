@@ -207,9 +207,11 @@ function includes_intern_f_type (list1, list2, f, type=0, first1=0, last1=-1, fi
 function is_sorted (list, f=undef, type=0, begin, last, count, range) =
 	list==undef ? true :
 	let (Range = parameter_range_safe (list, begin, last, count, range))
-	is_sorted_intern (list, f, type, Range[0], Range[1])
+	is_sorted_intern_1c (list, f, type, Range[0], Range[1])
 ;
-function is_sorted_intern (list, f=undef, type=0, begin=0, last=-1) =
+// list generation with for loop:
+// same speed if is sorted or is unsorted
+function is_sorted_intern_1a (list, f=undef, type=0, begin=0, last=-1) =
 	f==undef ?
 		 type   == 0                   ? [for(i=[begin:1:last-1]) if (list[i+1]             < list[i]            ) 0] == []
 		:type[0]>= 0                   ? [for(i=[begin:1:last-1]) if (list[i+1][type[0]]    < list[i][type[0]]   ) 0] == []
@@ -220,6 +222,81 @@ function is_sorted_intern (list, f=undef, type=0, begin=0, last=-1) =
 		:type[0]>= 0                   ? [for(i=[begin:1:last-1]) if (f( list[i+1][type[0]]   , list[i][type[0]]   )) 0] == []
 		:type[0]==-1 ? let( fn=type[1] ) [for(i=[begin:1:last-1]) if (f( fn(list[i+1])        , fn(list[i])        )) 0] == []
 		:                                [for(i=[begin:1:last-1]) if (f( value(list[i+1],type), value(list[i],type))) 0] == []
+;
+// list generation with for loop:
+// this will split the range if it make sense in same parts,
+// little slower if is sorted and faster if is unsorted on big lists
+function is_sorted_intern_1b (list, f=undef, type=0, begin=0, last=-1) =
+	last-begin>200 ?
+		let( middle = begin + floor((last-begin)/2) )
+			is_sorted_intern_1b (list, f, type, begin, middle)
+		?	is_sorted_intern_1b (list, f, type, middle, last)
+		:	false
+	:
+	f==undef ?
+		 type   == 0                   ? [for(i=[begin:1:last-1]) if (list[i+1]             < list[i]            ) 0] == []
+		:type[0]>= 0                   ? [for(i=[begin:1:last-1]) if (list[i+1][type[0]]    < list[i][type[0]]   ) 0] == []
+		:type[0]==-1 ? let( fn=type[1] ) [for(i=[begin:1:last-1]) if (fn(list[i+1])         < fn(list[i])        ) 0] == []
+		:                                [for(i=[begin:1:last-1]) if (value(list[i+1],type) < value(list[i],type)) 0] == []
+	:
+		 type   == 0                   ? [for(i=[begin:1:last-1]) if (f( list[i+1]            , list[i]            )) 0] == []
+		:type[0]>= 0                   ? [for(i=[begin:1:last-1]) if (f( list[i+1][type[0]]   , list[i][type[0]]   )) 0] == []
+		:type[0]==-1 ? let( fn=type[1] ) [for(i=[begin:1:last-1]) if (f( fn(list[i+1])        , fn(list[i])        )) 0] == []
+		:                                [for(i=[begin:1:last-1]) if (f( value(list[i+1],type), value(list[i],type))) 0] == []
+;
+// list generation with for loop:
+// this will split the range in same parts,
+// but shorter on first parts to break erlier on unsorted data,
+// little slower if is sorted and faster if is unsorted on big lists
+function is_sorted_intern_1c (list, f=undef, type=0, begin=0, last=-1, nested=1) =
+//	echo(nested, last-begin, begin)
+	last-begin > 50*nested ?
+		let( middle = begin + floor((last-begin)/(2+4/nested)) )
+			is_sorted_intern_1c (list, f, type, begin , middle, 1+nested)
+		?	is_sorted_intern_1c (list, f, type, middle, last  , 2+nested*nested)
+		:	false
+	:
+	f==undef ?
+		 type   == 0                   ? [for(i=[begin:1:last-1]) if (list[i+1]             < list[i]            ) 0] == []
+		:type[0]>= 0                   ? [for(i=[begin:1:last-1]) if (list[i+1][type[0]]    < list[i][type[0]]   ) 0] == []
+		:type[0]==-1 ? let( fn=type[1] ) [for(i=[begin:1:last-1]) if (fn(list[i+1])         < fn(list[i])        ) 0] == []
+		:                                [for(i=[begin:1:last-1]) if (value(list[i+1],type) < value(list[i],type)) 0] == []
+	:
+		 type   == 0                   ? [for(i=[begin:1:last-1]) if (f( list[i+1]            , list[i]            )) 0] == []
+		:type[0]>= 0                   ? [for(i=[begin:1:last-1]) if (f( list[i+1][type[0]]   , list[i][type[0]]   )) 0] == []
+		:type[0]==-1 ? let( fn=type[1] ) [for(i=[begin:1:last-1]) if (f( fn(list[i+1])        , fn(list[i])        )) 0] == []
+		:                                [for(i=[begin:1:last-1]) if (f( value(list[i+1],type), value(list[i],type))) 0] == []
+;
+// new for loop:
+// twice as slow if is sorted, but much faster if is unsorted
+function is_sorted_intern_2 (list, f=undef, type=0, begin=0, last=-1) =
+	f==undef ?
+		 type   == 0                   ? [for(i=begin; i==last || ((i<last) && !(list[i+1]             < list[i]            ) ); i=i+1) if(i==last) 0 ] != []
+		:type[0]>= 0                   ? [for(i=begin; i==last || ((i<last) && !(list[i+1][type[0]]    < list[i][type[0]]   ) ); i=i+1) if(i==last) 0 ] != []
+		:type[0]==-1 ? let( fn=type[1] ) [for(i=begin; i==last || ((i<last) && !(fn(list[i+1])         < fn(list[i])        ) ); i=i+1) if(i==last) 0 ] != []
+		:                                [for(i=begin; i==last || ((i<last) && !(value(list[i+1],type) < value(list[i],type)) ); i=i+1) if(i==last) 0 ] != []
+	:
+		 type   == 0                   ? [for(i=begin; i==last || ((i<last) && !f( list[i+1]            , list[i]            ) ); i=i+1) if(i==last) 0 ] != []
+		:type[0]>= 0                   ? [for(i=begin; i==last || ((i<last) && !f( list[i+1][type[0]]   , list[i][type[0]]   ) ); i=i+1) if(i==last) 0 ] != []
+		:type[0]==-1 ? let( fn=type[1] ) [for(i=begin; i==last || ((i<last) && !f( fn(list[i+1])        , fn(list[i])        ) ); i=i+1) if(i==last) 0 ] != []
+		:                                [for(i=begin; i==last || ((i<last) && !f( value(list[i+1],type), value(list[i],type)) ); i=i+1) if(i==last) 0 ] != []
+;
+// recursive function:
+// same speed like new foor loop
+function is_sorted_intern_3 (list, f=undef, type=0, begin=0, last=-1) =
+	begin>=last ? true :
+	(
+	f==undef ?
+		 type   == 0                   ? (list[begin+1]             < list[begin]            )
+		:type[0]>= 0                   ? (list[begin+1][type[0]]    < list[begin][type[0]]   )
+		:type[0]==-1 ? let( fn=type[1] ) (fn(list[begin+1])         < fn(list[begin])        )
+		:                                (value(list[begin+1],type) < value(list[begin],type))
+	:
+		 type   == 0                   ? f(list[begin+1]            , list[begin]            )
+		:type[0]>= 0                   ? f(list[begin+1][type[0]]   , list[begin][type[0]]   )
+		:type[0]==-1 ? let( fn=type[1] ) f(fn(list[begin+1])        , fn(list[begin])        )
+		:                                f(value(list[begin+1],type), value(list[begin],type))
+	) ? false : is_sorted_intern_3 (list, f, type, begin+1, last)
 ;
 
 // Testet, ob eine Liste in 2 Bereiche aufgeteilt ist.
