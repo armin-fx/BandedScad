@@ -26,3 +26,10 @@ function prepare_font (font) =
 		:undef
 	]
 ;
+
+function get_font_letter_object (letter) =
+			 is_function(letter) ? letter()
+			:is_list    (letter) ? letter
+			:undef
+;
+

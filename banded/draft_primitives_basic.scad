@@ -75,10 +75,7 @@ function text_intern_loop (text, font, size=0, i=0, x=0, result=[]) =
 		,Pos = (pos<len(font[font_data_letter]) && pos>0) ? pos : 0
 		//
 		,data   = font[font_data_letter][Pos]
-		,object = 
-			 is_function(data[font_letter_object]) ? data[font_letter_object]()
-			:is_list    (data[font_letter_object]) ? data[font_letter_object]
-			:undef
+		,object = get_font_letter_object (data[font_letter_object])
 		,Object = translate_x (object, x)
 		,x_next = data[font_letter_size]
 	)
