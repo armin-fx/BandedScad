@@ -334,3 +334,30 @@ function append_object (object, object2, to_trace=false) =
 		)
 		copy_object_properties (o1, oa)
 ;
+
+// append a list with objects without any data transformation
+function append_object_list (objects, to_trace=false) =
+	let ( size=len(objects) )
+	 size==0 ? []
+	:size==1 ? objects[0]
+	:size==2 ?
+		append_object (objects[0], objects[1], to_trace)
+	:size==3 ?
+		append_object (
+			  objects[0]
+			, append_object (objects[1], objects[2], to_trace)
+			, to_trace )
+	:size==4 ?
+		append_object (
+			  append_object (objects[0], objects[1], to_trace)
+			, append_object (objects[2], objects[3], to_trace)
+			, to_trace )
+	:
+		let ( mid=floor(size/2) )
+		append_object_list (
+			[ append_object_list ([for (i=[0  :1:mid -1]) objects[i]], to_trace)
+			, append_object_list ([for (i=[mid:1:size-1]) objects[i]], to_trace)
+			]
+			, to_trace )
+;
+
