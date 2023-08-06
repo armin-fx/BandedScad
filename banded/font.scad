@@ -33,3 +33,22 @@ function get_font_letter_object (letter) =
 			:undef
 ;
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+function bezier_curve_t_2 (p, t=0.5) =
+	let (
+		 T = 1-t
+		,P=p[1], a=p[0], c=p[2]
+		,b =
+			(P - a*T*T - c*t*t)
+			/ (2*t*T)
+	)
+	bezier_curve ([a,b,c])
+;
+function bezier_curve_line_2 (p, closed=false) =
+	let( s=len(p))
+	! closed
+	? [ for (i=[0:2:floor(s-3)]) each bezier_curve_t_2 ([p[i],p[i+1],p[ i+2   ]]) ]
+	: [ for (i=[0:2:floor(s-2)]) each bezier_curve_t_2 ([p[i],p[i+1],p[(i+2)%s]]) ]
+;
+
