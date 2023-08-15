@@ -65,21 +65,31 @@ function text (text, font) =
 		Font =
 			font==undef ? font_list[0] :
 			font
+		//
+		// found in OpenSCAD source file 'FreetypeRenderer.cc'
+		//
+		// The curved segments of most fonts are relatively short, so
+		// by using a fraction of the number of full circle segments
+		// the resolution will be better matching the detail level of
+		// other objects.
+		,segments = get_slices_circle_current (Font[font_data_size][0])
+		,fn       = max(3, floor(segments/8)+2)
 	)
-	text_intern_loop (text, Font, size)
+	text_intern_loop (text, Font, size, $fn=fn)
 ;
-function text_intern_loop (text, font, size=0, i=0, x=0, result=[]) =
+function text_intern_loop (text, font, size=0, i=0, x=0, prev="", result=[]) =
 	i>=size ? result :
 	let(
-		 pos = binary_search (font[font_data_letter], text[i], type=[0])
+		 pos = binary_search (font[font_data_letter], text[i], type=[font_letter_name])
 		,Pos = (pos<len(font[font_data_letter]) && pos>0) ? pos : 0
 		//
 		,data   = font[font_data_letter][Pos]
 		,object = get_font_letter_object (data[font_letter_object])
 		,Object = translate_x (object, x)
-		,x_next = data[font_letter_size]
+		,x_next = data[font_letter_size] // TODO
 	)
 	text_intern_loop (text, font, size, i+1, x+x_next
+		, prev=data[font_letter_name]
 		, result=append_object( result,Object ) )
 ;
 
