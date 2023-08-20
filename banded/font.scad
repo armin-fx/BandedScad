@@ -7,11 +7,27 @@
 // is to create or clone owns.
 //
 
-include <banded/fonts/font_libbard.scad>
+// include <banded/fonts/font_libbard.scad>
+include <banded/fonts/libbard.scad>
 
 
 font_list = [
-	font_libbard
+	 font_libbard_sans_regular
+	,font_libbard_sans_bold
+	,font_libbard_sans_italic
+	,font_libbard_sans_bold_italic
+	,font_libbard_serif_regular
+	,font_libbard_serif_bold
+	,font_libbard_serif_italic
+	,font_libbard_serif_bold_italic
+	,font_libbard_sans_narrow_regular
+	,font_libbard_sans_narrow_bold
+	,font_libbard_sans_narrow_italic
+	,font_libbard_sans_narrow_bold_italic
+	,font_libbard_mono_regular
+	,font_libbard_mono_bold
+	,font_libbard_mono_italic
+	,font_libbard_mono_bold_italic
 ];
 
 function prepare_font (font) =
@@ -31,6 +47,49 @@ function get_font_letter_object (letter) =
 			 is_function(letter) ? letter()
 			:is_list    (letter) ? letter
 			:undef
+;
+
+function get_font_by_name (txt) =
+	let (
+		 list = split_str (txt, ":")
+		,size = len(list)
+		,name_= to_lower_str ( remove_all_letter(list[0], " \t\n\r") )
+		 // replace "Liberation" to "Libbard" for compatibility reason
+		,name =
+			mismatch (name_, "liberation")[0] == 10
+			? replace_str (name_, "libbard", begin=0, count=10)
+			: name_
+		,style=
+			size<2 ? undef : // <- no style
+			let (
+				s = [for (i=[1:1:size-1]) if (sequence_positions (list[i], "style=")!=[])
+					to_lower_str(strip_str( split_str(list[i],"=")[1] )) ]
+			)
+			s!=[] ? s[0] : // <- style as string
+			//
+			// style as list of style combinations:
+			[for (i=[1:1:size-1]) to_lower_str(strip_str(list[i])) ]
+		//
+		,s = len(font_list)
+		,name_list =
+			let (l = [for (i=[0:1:s-1]) if (name=="" || name==to_lower_str(remove_all_letter(font_list[i][font_data_name]," \t\n\r"))) i])
+			l==[] ?  [for (i=[0:1:s-1]) if (   "libbardsans"==to_lower_str(remove_all_letter(font_list[i][font_data_name]," \t\n\r"))) i]
+			: l
+		,style_list =
+			is_string(style)
+			? [for (i=name_list) if (style==to_lower_str(strip_str(font_list[i][font_data_style]))) i]
+			: value_list(type=[0], list=
+			  reverse(
+			  sort( type=[1], list=
+			  reverse(
+				[for (i=name_list)
+					let( s = to_lower_str(font_list[i][font_data_style]) )
+					[i, len([for (e=style) if (sequence_positions(s,e)!=[]) 0])] ]
+				))))
+	)
+	style_list==[] && name_list==[] ? font_list[0] :
+	style_list==[]                  ? font_list[name_list[0]]
+	:                                 font_list[style_list[0]]
 ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

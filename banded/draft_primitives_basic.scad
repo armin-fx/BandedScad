@@ -63,8 +63,10 @@ function text (text, font) =
 	size<=0 ? undef :
 	let (
 		Font =
-			font==undef ? font_list[0] :
-			font
+			font==undef     ? font_list[0] :
+			is_list(font)   ? font :
+			is_string(font) ? get_font_by_name (font)
+			:                 font_list[0]
 		//
 		// found in OpenSCAD source file 'FreetypeRenderer.cc'
 		//
