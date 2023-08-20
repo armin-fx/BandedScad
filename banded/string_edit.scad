@@ -221,6 +221,19 @@ function keep_unique_str (txt, f) =
 	list_to_str ( keep_unique (txt, type=0, f=f) )
 ;
 
+// Entfernt bestimmte Zeichen am Anfang und am Ende des Strings
+function strip_str (txt, sequence=" \t\n\r", side=0) =
+	list_to_str ( strip (txt, sequence, side=side) )
+;
+// Entfernt bestimmte Zeichen am Anfang des Strings
+function lstrip_str (txt, sequence=" \t\n\r") =
+	list_to_str ( lstrip (txt, sequence) )
+;
+// Entfernt bestimmte Zeichen am Ende des Strings
+function rstrip_str (txt, sequence=" \t\n\r") =
+	list_to_str ( rstrip (txt, sequence) )
+;
+
 // Teilt Text an den Vorkommen eines bestimmten Buchstaben auf
 // Erzeugt eine Liste mit diesen Teiltexten
 // Dieser bestimmte Buchstabe wird entfernt

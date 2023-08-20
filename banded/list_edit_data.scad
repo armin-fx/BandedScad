@@ -406,6 +406,24 @@ function keep_unique_intern (list, type=0, f, size=0, last_v, i=1, last_pos=0, r
 		:	keep_unique_intern (list, type, f, size, v     , i+1, i, result)
 ;
 
+// Entfernt bestimmte Werte aus 'value_list' am Anfang und am Ende der Liste
+function strip (list, value_list, side=0, type=0) =
+	let (
+		 f =
+			 type   == 0                   ? function(e) [for (v=value_list) if (v==e            ) 0] == []
+			:type[0]>= 0                   ? function(e) [for (v=value_list) if (v==e[type[0]]   ) 0] == []
+			:type[0]==-1 ? let( fn=type[1] ) function(e) [for (v=value_list) if (v==fn(e)        ) 0] == []
+			:                                function(e) [for (v=value_list) if (v==value(e,type)) 0] == []
+		,begin = side>0 ? 0           : find_first_once_if (list, f=f)
+		,last  = side<0 ? len(list)-1 : find_last_once_if  (list, f=f)
+	)
+	[for (i=[begin:1:last]) list[i]]
+;
+// Entfernt bestimmte Werte aus 'value_list' am Anfang der Liste
+function lstrip (list, value_list, type=0) = strip (list, value_list, side=-1, type=type);
+// Entfernt bestimmte Werte aus 'value_list' am Ende der Liste
+function rstrip (list, value_list, type=0) = strip (list, value_list, side=+1, type=type);
+
 // Extrahiert die Daten aus einem Bereich
 function extract_value (list, type, begin, last, count, range) =
 	let(

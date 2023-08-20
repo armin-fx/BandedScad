@@ -74,6 +74,7 @@ Functions for edit lists
     - [`keep_all_values()`][keep_all_values]
     - [`unique()`][unique]
     - [`keep_unique()`][keep_unique]
+    - [`strip()`][strip]
     - [`extract_value()`][extract_value]
     - [`split()`][split]
   - [Get data from list](#get-data-from-list-)
@@ -481,6 +482,22 @@ The elements are compared using operator `==` or with function `f` if given.
 - `f`
   - function literal with two arguments
   - returns `true` or `false`
+
+#### `strip (list, value_list, side, type)` [^][contents]
+[strip]: #strip-list-value_list-side-type-
+Remove all elements where matching with a list of values
+from the beginning and the end of a list.
+- `value_list` - a list with values to remove
+- `side` - defines the side of the list where the elements were removed
+  -  `0` - default, both sides
+  - `-1` - left side = beginning of the list
+  -  `1` - right side = end of the list
+
+_Specialized Functions:_
+- `lstrip (list, value_list, type)`
+  - Remove elements only from the begin of the list (left side)
+- `rstrip (list, value_list, type)`
+  - Remove elements only from the end of the list (right side)
 
 #### `extract_value (list, type, 'range_args')` [^][contents]
 [extract_value]: #extract_value-list-type-range_args-

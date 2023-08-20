@@ -364,6 +364,9 @@ _The argument names differs:_
 | [`keep_all_values()`][ka]     | `keep_all_letter (txt, letter_list)`         | Keep every letter in a string, which matches in a list of letter. Remove the remainder.
 | [`unique()`][uq]              | `unique_str      (txt, f)`                   | Removes all but the first letter from every consecutive group of equivalent
 | [`keep_unique()`][ku]         | `keep_unique_str (txt, f)`                   | Removes all group of equivalent letter, keep only single letter.
+| [`strip()`][si]               | `strip_str  (txt, letter_list, side)`        | Remove whitespace and characters from the beginning and the end of a string by default. With `letter_list` can defined, which letters will removed. `side` defines the side of the string where the letter will removed (-1 = left side; 0 = both sides, default; 1 = right side).
+| [`lstrip()`][si]              | `lstrip_str (txt, letter_list)`              | Remove whitespace and characters from the beginning of a string by default. With `letter_list` can defined, which letters will removed.
+| [`rstrip()`][si]              | `rstrip_str (txt, letter_list)`              | Remove whitespace and characters from the end of a string by default. With `letter_list` can defined, which letters will removed.
 | [`split`][s]                  | `split_str       (txt, letter)`              | Splits a text at occurrences of a given letter. Creates a list with these substrings. The determined letter will be removed.
 | [`remove_if()`][rmi]          | `remove_if_str  (txt, f)`                    | Run a function at the letter in a string and remove every letter which this function returns `true`.
 | [`replace_if()`][rpi]         | `replace_if_str (txt, f, new)`               | Run a function at the letter in a string and replace every letter wit a string which this function returns `true`.
@@ -445,6 +448,7 @@ Use list functions directly:
 [ka]:  list.md#keep_all_values-list-value_list-type-
 [uq]:  list.md#unique-list-type-f-
 [ku]:  list.md#keep_unique-list-type-f-
+[si]:  list.md#strip-list-value_list-side-type-
 [s]:   list.md#split-list-value-type-
 [rmi]: list.md#remove_if-list-f-type-
 [rpi]: list.md#replace_if-list-f-new-type-
