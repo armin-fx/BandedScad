@@ -100,19 +100,29 @@ It can only use fonts created as data object in `*.scad` files.\
   - String. The text to generate.
 - `font`
   - font data object of the font that should be used.
-  - __TODO:__ String. The name of the font that should be used.
+  - String. The name of the font that should be used.\
+    Fonts are specified by their logical font name;
+    in addition a style parameter can be added to select
+    a specific font style like "__bold__" or "_italic_", such as:\
+    `font="Liberation Sans:style=Bold Italic"`
 - $fn
   - used for subdividing the curved path segments provided by freetype
 
 Fonts:
-- _Libbard Sans_
-  - It's a clone of the font _Liberation Sans_.
+- _Libbard_ family: _Libbard Mono_, _Libbard Sans_, and _Libbard Serif_
+  - It's a clone of the font family _Liberation_.\
     This font is not finished yet, it contains all letters
-    `a-z`, `A-Z`, `0-9` and the most symbols, different spacing between
+    `0x20` (Space) to `0xFF`, different spacing between
     different letters is not implemented but planned.
     Tho goal is to get completely the same behavior like
     the buildin module 'text()'.
   - _Liberation_ is licensed by: SIL Open Font License
+  - _Libbard Sans_ style _Regular_ is the default font.
+    It's already included.
+  - All other fonts are predefined, but must included at first line when used.
+    Elsewise an message will shown with include details.
+  - You can write the name "Liberation", this will be renamed to "Libbard"
+    for compatibility reason with buildin module `text()`
 
 
 

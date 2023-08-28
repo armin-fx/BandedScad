@@ -26,7 +26,7 @@ use <banded/extend.scad>
 use <banded/list_edit.scad>
 use <banded/math.scad>
 //
-include <banded/constants_data.scad>
+include <banded/font_definition.scad>
 include <banded/font.scad>
 
 
@@ -48,15 +48,6 @@ function circle (r, angle=360, slices, piece=0, outer, align, d) =
 	[points, path]
 ;
 
-font_data_name   = 0;
-font_data_style  = 1;
-font_data_sizes  = 2;
-font_data_letter = 3;
-//
-font_letter_name   = 0;
-font_letter_size   = 1;
-font_letter_object = 2;
-
 function text (text, font) =
 	text==undef ? undef :
 	let( size = len(text) )
@@ -64,7 +55,7 @@ function text (text, font) =
 	let (
 		Font =
 			font==undef     ? font_list[0] :
-			is_list(font)   ? font :
+			is_list(font)   ? prepare_font(font) :
 			is_string(font) ? get_font_by_name (font)
 			:                 font_list[0]
 		//
@@ -77,6 +68,20 @@ function text (text, font) =
 		,segments = get_slices_circle_current (Font[font_data_size][0])
 		,fn       = max(3, floor(segments/8)+2)
 	)
+	Font[font_data_letter]==undef ?
+		echo( str( "\n",
+		"Please include font \"", Font[font_data_name], "\", style \"", Font[font_data_style], "\"\n",
+		"The font files must included at first.\n\n",
+		"You can include the font with the specific style with:\n",
+		"    include <", font_folder, Font[font_data_file][font_file_data], ">\n\n",
+		"You can include the font \"", Font[font_data_name], "\" with all styles with:\n",
+		"    include <", font_folder, Font[font_data_file][font_file_styles], ">\n\n",
+		"You can include the complete font family \"", Font[font_data_family], "\" with:\n",
+		"    include <", font_folder, Font[font_data_file][font_file_family], ">\n"
+		))
+		assert (Font[font_data_letter]!=undef, "font not loaded")
+		undef
+	:
 	text_intern_loop (text, Font, size, $fn=fn)
 ;
 function text_intern_loop (text, font, size=0, i=0, x=0, prev="", result=[]) =

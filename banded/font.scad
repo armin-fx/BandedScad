@@ -7,38 +7,79 @@
 // is to create or clone owns.
 //
 
-// include <banded/fonts/font_libbard.scad>
-include <banded/fonts/libbard.scad>
+include <banded/font_definition.scad>
+
+// include <banded/fonts/libbard.scad>
+include <banded/fonts/libbard_sans_regular.scad>
 
 
-font_list = [
-	 font_libbard_sans_regular
-	,font_libbard_sans_bold
-	,font_libbard_sans_italic
-	,font_libbard_sans_bold_italic
-	,font_libbard_serif_regular
-	,font_libbard_serif_bold
-	,font_libbard_serif_italic
-	,font_libbard_serif_bold_italic
-	,font_libbard_sans_narrow_regular
-	,font_libbard_sans_narrow_bold
-	,font_libbard_sans_narrow_italic
-	,font_libbard_sans_narrow_bold_italic
-	,font_libbard_mono_regular
-	,font_libbard_mono_bold
-	,font_libbard_mono_italic
-	,font_libbard_mono_bold_italic
-];
+font_list = let( list=[
+	 !is_undef(font_libbard_sans_regular)     ? font_libbard_sans_regular :
+		["Libbard", "Libbard Sans", "Regular"    , [10, [-4, 11] ], undef,
+		["libbard_sans_regular.scad","libbard_sans.scad","libbard.scad"] ]
+	,!is_undef(font_libbard_sans_bold)        ? font_libbard_sans_bold :
+		["Libbard", "Libbard Sans", "Bold"       , [10, [-4, 11] ], undef,
+		["libbard_sans_bold.scad","libbard_sans.scad","libbard.scad"] ]
+	,!is_undef(font_libbard_sans_italic)      ? font_libbard_sans_italic :
+		["Libbard", "Libbard Sans", "Italic"     , [10, [-4, 11] ], undef,
+		["libbard_sans_italic.scad","libbard_sans.scad","libbard.scad"] ]
+	,!is_undef(font_libbard_sans_bold_italic) ? font_libbard_sans_bold_italic :
+		["Libbard", "Libbard Sans", "Bold Italic", [10, [-4, 11] ], undef,
+		["libbard_sans_bold_italic.scad","libbard_sans.scad","libbard.scad"] ]
+	//
+	,!is_undef(font_libbard_serif_regular)     ? font_libbard_serif_regular :
+		["Libbard", "Libbard Serif", "Regular"    , [10, [-4, 11] ], undef,
+		["libbard_serif_regular.scad","libbard_serif.scad","libbard.scad"] ]
+	,!is_undef(font_libbard_serif_bold)        ? font_libbard_serif_bold :
+		["Libbard", "Libbard Serif", "Bold"       , [10, [-4, 11] ], undef,
+		["libbard_serif_bold.scad","libbard_serif.scad","libbard.scad"] ]
+	,!is_undef(font_libbard_serif_italic)      ? font_libbard_serif_italic :
+		["Libbard", "Libbard Serif", "Italic"     , [10, [-4, 11] ], undef,
+		["libbard_serif_italic.scad","libbard_serif.scad","libbard.scad"] ]
+	,!is_undef(font_libbard_serif_bold_italic) ? font_libbard_serif_bold_italic :
+		["Libbard", "Libbard Serif", "Bold Italic", [10, [-4, 11] ], undef,
+		["libbard_serif_bold_italic.scad","libbard_serif.scad","libbard.scad"] ]
+	//
+	,!is_undef(font_libbard_sans_narrow_regular)     ? font_libbard_sans_narrow_regular :
+		["Libbard", "Libbard Sans Narrow", "Regular"    , [10, [-4, 11] ], undef,
+		["libbard_sans_narrow_regular.scad","libbard_sans_narrow.scad","libbard.scad"] ]
+	,!is_undef(font_libbard_sans_narrow_bold)        ? font_libbard_sans_narrow_bold :
+		["Libbard", "Libbard Sans Narrow", "Bold"       , [10, [-4, 11] ], undef,
+		["libbard_sans_narrow_bold.scad","libbard_sans_narrow.scad","libbard.scad"] ]
+	,!is_undef(font_libbard_sans_narrow_italic)      ? font_libbard_sans_narrow_italic :
+		["Libbard", "Libbard Sans Narrow", "Italic"     , [10, [-4, 11] ], undef,
+		["libbard_sans_narrow_italic.scad","libbard_sans_narrow.scad","libbard.scad"] ]
+	,!is_undef(font_libbard_sans_narrow_bold_italic) ? font_libbard_sans_narrow_bold_italic :
+		["Libbard", "Libbard Sans Narrow", "Bold Italic", [10, [-4, 11] ], undef,
+		["libbard_sans_narrow_bold_italic.scad","libbard_sans_narrow.scad","libbard.scad"] ]
+	//
+	,!is_undef(font_libbard_mono_regular)     ? font_libbard_mono_regular :
+		["Libbard", "Libbard Mono", "Regular"    , [10, [-4, 11] ], undef,
+		["libbard_mono_regular.scad","libbard_mono.scad","libbard.scad"] ]
+	,!is_undef(font_libbard_mono_bold)        ? font_libbard_mono_bold :
+		["Libbard", "Libbard Mono", "Bold"       , [10, [-4, 11] ], undef,
+		["libbard_mono_bold.scad","libbard_mono.scad","libbard.scad"] ]
+	,!is_undef(font_libbard_mono_italic)      ? font_libbard_mono_italic :
+		["Libbard", "Libbard Mono", "Italic"     , [10, [-4, 11] ], undef,
+		["libbard_mono_italic.scad","libbard_mono.scad","libbard.scad"] ]
+	,!is_undef(font_libbard_mono_bold_italic) ? font_libbard_mono_bold_italic :
+		["Libbard", "Libbard Mono", "Bold Italic", [10, [-4, 11] ], undef,
+		["libbard_mono_bold_italic.scad","libbard_mono.scad","libbard.scad"] ]
+]) [for (font=list) prepare_font (font)];
 
 function prepare_font (font) =
-	[ for (i=[0:1:max (3 , len(font)-1 )])
-		 i==font_data_name   ? font[font_data_name]
+	font[font_data_prepared]==true ? font :
+	[ for (i=[0:1:max (6 , len(font)-1 )])
+		 i==font_data_family ? font[font_data_family]
+		:i==font_data_name   ? font[font_data_name]
 		:i==font_data_style  ? font[font_data_style]
 		:i==font_data_size   ? font[font_data_size]
 		:i==font_data_letter ?
 			is_sorted (font[font_data_letter], type=[font_letter_name])
 			?	font[font_data_letter]
 			:	sort (font[font_data_letter], type=[font_letter_name])
+		:i==font_data_file   ? font[font_data_file]
+		:i==font_data_prepared ? true
 		:undef
 	]
 ;
