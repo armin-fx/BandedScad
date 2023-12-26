@@ -23,21 +23,46 @@ use <banded/draft_transform_basic.scad>
 //       es werden nur die Punkte bis p[n] genommen
 //       ohne Angabe von n wird der Grad anhand der Größe des Arrays genommen
 //
-function bezier_point (t, p, n) =
-	 (!is_list(p)) ? undef
-	:(n==undef) ?
-		(len(p)<1) ? undef
-		:bezier_point_intern (t, p, len(p)-1, len(p)-1)
+function bezier_point (t, p, n) = bezier_point_de_casteljau (t, p, n);
+//
+function bezier_point_bernstein (t, p, n) =
+	(p==undef) ? undef :
+	let (
+		size = len(p)
+	)
+	(n==undef) ?
+		(size<1) ? undef :
+		bezier_point_bernstein_intern (t, p, size-1, size-1)
 	:
-		 (n <0)       ? undef
-		:(len(p)<n+1) ? undef
-		:bezier_point_intern (t, p, n, n)
+		(n     <0) ? undef :
+		(size-1<n) ? undef :
+		bezier_point_bernstein_intern (t, p, n, n)
 ;
-function bezier_point_intern (t, p, n, j) =
+function bezier_point_bernstein_intern (t, p, n, j) =
 	 (j <0) ? undef
-	:(j==0) ? p[0] * (pow((1-t), n))
-	:         p[j] * (pow((1-t), n-j) * pow(t, j) * binomial_coefficient(n, j))
-	          + bezier_point_intern(t, p, n, j-1) 
+	:(j==0) ? p[0] * ((1-t)^ n   )
+	:         p[j] * ((1-t)^(n-j)) * t^j * binomial_coefficient(n, j)
+	          + bezier_point_bernstein_intern(t, p, n, j-1)
+;
+//
+function bezier_point_de_casteljau (t, p, n) =
+	(p==undef) ? undef :
+	let (
+		size = len(p)
+	)
+	(n==undef) ?
+		(size<1) ? undef :
+		bezier_point_de_casteljau_intern (t, p, size-1)
+	:
+		(n     <0) ? undef :
+		(size-1<n) ? undef :
+		bezier_point_de_casteljau_intern (t, p, n)
+;
+function bezier_point_de_casteljau_intern (t, p, n) =
+	n<=0 ? p[0] :
+	bezier_point_de_casteljau_intern (t
+		, [for (i=[0:1:n-1]) p[i]*(t) + p[i+1]*(1-t) ]
+		, n-1 )
 ;
 
 // gibt ein Array mit den Punkten einer Bezierkurve aus

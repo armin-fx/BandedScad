@@ -57,6 +57,13 @@ __Options:__
   - only the points up to `p[n]` are taken
   - if `n` is not specified, the degree is taken based on the size of the list
 
+__Versions:__
+- `bezier_point_bernstein()`
+  - get point with _Bernstein polynomial form_
+- `bezier_point_de_casteljau()`
+  - get point with _De Casteljau's algorithm_
+  - default with `bezier_point()`
+
 #### `bezier_curve (p, n, slices)` [^][contents]
 Return a list with the points of a Bézier curve
 
