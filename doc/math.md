@@ -26,22 +26,22 @@ Math functions
 
 - [More math functions](#more-math-functions-)
   - [Test and restrict](#test-and-restrict-)
-    - [`constrain()`][constrain]
-    - [`constrain_range()`][constrain_range]
-    - [`is_constrain()`][is_constrain]
-    - [`is_nearly()`][is_nearly]
-    - [`quantize()`][quantize]
-    - [`lerp()`][lerp]
-    - [`inv_lerp()`][inv_lerp]
+    - [`constrain()`](#constrain-)
+    - [`constrain_range()`](#constrain_range-)
+    - [`is_constrain()`](#is_constrain-)
+    - [`is_nearly()`](#is_nearly-)
+    - [`quantize()`](#quantize-)
+    - [`lerp()`](#lerp-)
+    - [`inv_lerp()`](#inv_lerp-)
   - [Even or odd](#even-or-odd-)
-    - [`is_odd()`, `is_even()`][is_odd]
-    - [`positiv_if_xxx()`][positiv_if]
+    - [`is_odd()`, `is_even()`](#is_odd-is_even-)
+    - [`positiv_if_xxx()`](#positiv_if_xxx-)
   - [Various math functions](#various-math-functions-)
     - [`sqr()`][sqr]
     - [`mod()`][mod]
     - [`sign_plus()`][sign_plus]
-    - [`xor()`][xor]
-    - [`normal_distribution()`][normal_distribution]
+    - [`xor()`](#xor-)
+    - [`normal_distribution()`](#normal_distribution-)
   - [More trigonometric functions](#more-trigonometric-functions-)
     - [Trigonometric](#trigonometric-)
       - `sec()`
@@ -79,15 +79,15 @@ Math functions
    - [`gcd()`][gcd]
    - [`lcm()`][lcm]
 - [Formula functions](#formula-functions-)
-  - [`get_radius_from()`][get_radius_from]
-  - [`get_circle_from_points()`][get_circle_from_points]
-  - [`get_sphere_from_points()`][get_sphere_from_points]
-  - [`get_hypersphere_from_points()`][get_hypersphere_from_points]
-  - [`get_parabola_from_points()`][get_parabola_from_points]
-  - [`get_parabola_from_midpoint()`][get_parabola_from_midpoint]
-  - [`get_parabola_zero()`][get_parabola_zero]
-  - [`get_parabola_zero_from_points()`][get_parabola_zero]
-  - [`get_parabola_zero_from_midpoint()`][get_parabola_zero]
+  - [`get_radius_from()`](#get_radius_from-)
+  - [`get_circle_from_points()`](#get_circle_from_points-)
+  - [`get_sphere_from_points()`](#get_sphere_from_points-)
+  - [`get_hypersphere_from_points()`](#get_hypersphere_from_points-)
+  - [`get_parabola_from_points()`](#get_parabola_from_points-)
+  - [`get_parabola_from_midpoint()`](#get_parabola_from_midpoint-)
+  - [`get_parabola_zero()`](#get_parabola_zero-)
+  - [`get_parabola_zero_from_points()`](#get_parabola_zero-)
+  - [`get_parabola_zero_from_midpoint()`](#get_parabola_zero-)
 
 
 More math functions [^][contents]
@@ -95,57 +95,69 @@ More math functions [^][contents]
 
 ### Test and restrict [^][contents]
 
-#### `constrain (value, a, b)` [^][contents]
-[constrain]: #constrain-value-a-b-
-Limits a number to a range.\
+#### constrain [^][contents]
+Limits a number to a range.
+```OpenSCAD
+constrain (value, a, b)
+```
 `a` must be lower (or equal) then `b`
 - `value` - The number to restrict.
 - `a`     - The lower end of the range.
 - `b`     - The upper end of the range.
 
-Returns:
+_Returns:_
 - `value` - If number is between `a` and `b`
 - `a`     - If number is lower than `a`
 - `b`     - If number is higher than `b`
 
-#### `constrain_range (value, a, b)` [^][contents]
-[constrain_range]: #constrain_range-value-a-b-
+#### constrain_range [^][contents]
 Limits a number to a range between `a` and `b`.
+```OpenSCAD
+constrain_range (value, a, b)
+```
 - `value`  - The number to restrict.
 - `a`, `b` - The range limits, unsorted
 
-Returns:
+_Returns:_
 - `value`    - If number is between `a` and `b`
 - `a` or `b` - If number exceeds `a` or `b`
 
-#### `is_constrain (value, a, b)` [^][contents]
-[is_constrain]: #is_constrain-value-a-b-
+#### is_constrain [^][contents]
 Test a number and return `true` if this is in a limit (inclusive `a` and `b`).
+```OpenSCAD
+is_constrain (value, a, b)
+```
 - `value` - The number to test.
 - `a`     - The lower end of the range.
 - `b`     - The upper end of the range.
 
-___Other functions:___
+_Other functions:_
 - `is_constrain_left  (value, a, b)` - test the number in between `a` and `b`, but _without_ `b`
 - `is_constrain_right (value, a, b)` - test the number in between `a` and `b`, but _without_ `a`
 - `is_constrain_inner (value, a, b)` - test the number in between `a` and `b`, but _without_ `a` and _without_ `b`
 
-#### `is_nearly (a, b, deviation)` [^][contents]
-[is_nearly]: #is_nearly-a-b-deviation-
-Compares two values or two lists of values to see if they approximately match
+#### is_nearly [^][contents]
+Compares two values or two lists of values to see if they approximately match.
+```OpenSCAD
+is_nearly (a, b, deviation)
+```
 - `a`, `b`  - Values or lists to compare
 - deviation - Maximum deviation of the values, default = `1e-14`, calculation deviation
 
-#### `quantize (value, raster, offset)` [^][contents]
-[quantize]: #quantize-value-raster-offset-
+#### quantize [^][contents]
 Quantizes a value within a grid.\
 Default = round to an integer
+```OpenSCAD
+quantize (value, raster, offset)
+```
 - `value`  - Numeric value
 - `raster` - Distance between the grid
 - `offset` - Shift from the origin
 
-#### `lerp (a, b, t, range)` [^][contents]
-[lerp]: #lerp-a-b-t-range-
+#### lerp [^][contents]
+```OpenSCAD
+lerp (a, b, t, range)
+```
 Computes the linear interpolation between `a` and `b`,\
 if the parameter `t` is inside `[0, 1]` (the linear extrapolation otherwise)
 - `a`, `b` - value or list with values
@@ -156,7 +168,7 @@ if the parameter `t` is inside `[0, 1]` (the linear extrapolation otherwise)
   - can set to another range,
     so value `t` interpolate in this range between `a` and `b`
 
-Example:
+_Example:_
 ```OpenSCAD
 include <banded.scad>
 
@@ -166,8 +178,10 @@ echo( lerp (1,   5, 0.8) ); // 4.2
 echo( lerp (10, 30, 2, [1,3]) ); // 20
 ```
 
-#### `inv_lerp (a, b, t, range)` [^][contents]
-[inv_lerp]: #inv_lerp-a-b-t-range-
+#### inv_lerp [^][contents]
+```OpenSCAD
+inv_lerp (a, b, t, range)
+```
 Computes the reverse linear interpolation between `a` and `b`,\
 get the fraction between `a` and `b` on which `v` resides.
 - `a`, `b` - value or list with values
@@ -178,7 +192,7 @@ get the fraction between `a` and `b` on which `v` resides.
   - can set to another range,
     so the return value is in this range if `v` is between `a` and `b`
 
-Example:
+_Example:_
 ```OpenSCAD
 include <banded.scad>
 
@@ -191,22 +205,20 @@ echo( inv_lerp (10, 30, 20, [1,3]) ); // 2
 
 ### Even or odd [^][contents]
 
-#### `is_odd (n)`, `is_even (n)` [^][contents]
-[is_odd]: #is_odd-n-is_even-n-
+#### is_odd, is_even [^][contents]
 Returns `true` if
-- `n` is odd value with `is_odd()`
-- `n` is even value with `is_even()`
+- `n` is odd value with `is_odd (n)`
+- `n` is even value with `is_even (n)`
 
-#### `positiv_if_xxx (n)` [^][contents]
-[positiv_if]: #positiv_if_xxx-n-
+#### positiv_if_xxx [^][contents]
 Returns `1` or `-1` if the condition of `n` fits
 
-| function            | return `1`   | return `-1`
-|---------------------|--------------|-------------
-| `positiv_if_odd()`  | `n` is odd   | `n` is even
-| `positiv_if_even()` | `n` is even  | `n` is odd
-| `negativ_if_odd()`  | `n` is even  | `n` is odd
-| `negativ_if_even()` | `n` is odd   | `n` is even
+| function             | return `1`   | return `-1`
+|----------------------|--------------|-------------
+| `positiv_if_odd (n)` | `n` is odd   | `n` is even
+| `positiv_if_even(n)` | `n` is even  | `n` is odd
+| `negativ_if_odd (n)` | `n` is even  | `n` is odd
+| `negativ_if_even(n)` | `n` is odd   | `n` is even
 
 
 ### Various math functions [^][contents]
@@ -226,18 +238,22 @@ The remainder would have the same sign as the divisor `n`.
 Mathematical positive signum function.\
 Returns `-1` if `x<0` and `1` if `x>=0`
 
-#### `xor (bool, bool2)` [^][contents]
-[xor]: #xor-bool-bool2-
-return a boolean value of operation xor
+#### xor [^][contents]
+Return a boolean value of operation xor with 2 boolean values
+```OpenSCAD
+xor (bool, bool2)
+```
 - `bool`, `bool2` - boolean value
 
 _Additional functions with more then 2 arguments:_
 - `xor_3 (bool, bool2, bool3)`
 - `xor_4 (bool, bool2, bool3, bool4)`
 
-#### `normal_distribution (x, mean, sigma)` [^][contents]
-[normal_distribution]: #normal_distribution-x-mean-sigma-
+#### normal_distribution [^][contents]
 Calculate the Gauss normal distribution
+```OpenSCAD
+normal_distribution (x, mean, sigma)
+```
 - `x`     - numeric value
 - `mean`  - mean value, standard = `0`
 - `sigma` - value standard deviation, standard = `1`
@@ -366,60 +382,86 @@ Calculate the least common multiple of two integers `a` and `b`\
 Formula functions [^][contents]
 -------------------------------
 
-#### `get_radius_from (chord, sagitta, angle)` [^][contents]
-[get_radius_from]: #get_radius_from-chord-sagitta-angle-
-Calculate the radius from a circle.\
+#### get_radius_from [^][contents]
+Calculate the radius from a circle.
+```OpenSCAD
+get_radius_from (chord, sagitta, angle)
+```
 It requires 2 parameters each from these 3:
 - `chord`    - length of chord
 - `saggitta` - segment height
 - `angle`    - central angle from the center of the circle
 
-#### `get_circle_from_points (p1, p2, p3)` [^][contents]
-[get_circle_from_points]: #get_circle_from_points-p1-p2-p3-
+#### get_circle_from_points [^][contents]
 Calculate the parameter of a circle from 3 points.\
 Return the result as a list `[center of the circle, radius]`.\
-The points can be only in 2D or 3D space.
+The points can be in 2D or 3D space.
+
+_Parameters:_
+```OpenSCAD
+get_circle_from_points (p1, p2, p3)
+```
+- `p1`, `p2`, `p3` - 3 points on a circle line
 
 _Specialized functions:_
 - `get_circle_from_points_2d (p1, p2, p3)` - all points must be in 2D space
 - `get_circle_from_points_3d (p1, p2, p3)` - all points must be in 3D space
 
-#### `get_sphere_from_points (p1, p2, p3, p4)` [^][contents]
-[get_sphere_from_points]: #get_sphere_from_points-p1-p2-p3-p4-
+#### get_sphere_from_points [^][contents]
 Calculate the parameter of a sphere from 4 points.\
 Return the result as a list `[center of the sphere, radius]`.\
 The points can be only in 3D space.
 
-#### `get_hypersphere_from_points (p)` [^][contents]
-[get_hypersphere_from_points]: #get_hypersphere_from_points-p-
+```OpenSCAD
+get_sphere_from_points (p1, p2, p3, p4)
+```
+- `p1`, `p2`, `p3`, `p4` - 4 points on a sphere surface
+
+#### get_hypersphere_from_points [^][contents]
 Calculate the parameter of a n-sphere (hypersphere) from n+1 points in a list.\
 Return the result as a list `[center of the n-sphere, radius]`.\
 The points must be in n dimensions.
 
-#### `get_parabola_from_points (p1, p2, p3)` [^][contents]
-[get_parabola_from_points]: #get_parabola_from_points-p1-p2-p3-
+```OpenSCAD
+get_hypersphere_from_points (p)
+```
+- `p` - a list with points on the hypersphere surface
+
+#### get_parabola_from_points [^][contents]
 Calculates the parameter of a parabola from 3 points.\
 Parabola from type: `y = Ax² + Bx + C`\
 Return the result as a list `[C,B,A]`.\
 The result can directly used in function [`polynomial()`](draft_curves.md#polynomial-function-).
+
+```OpenSCAD
+get_parabola_from_points (p1, p2, p3)
+```
 - `p1, p2, p3` - arbitrary points on the parabola in 2D plane
 
-#### `get_parabola_from_midpoint (p1, p2, ym)` [^][contents]
-[get_parabola_from_midpoint]: #get_parabola_from_midpoint-p1-p2-ym-
+#### get_parabola_from_midpoint [^][contents]
 Calculates the parameter of a parabola from 3 points.\
-Specialized version of [`get_parabola_from_points()`][get_parabola_from_points].
+Specialized version of [`get_parabola_from_points()`](#get_parabola_from_points-).
 Needs 2 outer points and the height of the midpoint.
 The distance in X-axis between the 3 points is the same.\
 Parabola from type: `y = Ax² + Bx + C`\
 Return the result as a list `[C,B,A]`.\
 The result can directly used in function [`polynomial()`](draft_curves.md#polynomial-function-).
+
+```OpenSCAD
+get_parabola_from_midpoint (p1, p2, ym)
+```
 - `p1, p2` - the both outer points on the parabola in 2D plane
 - `ym`     - the height on Y-axis on the half way on X-axis between the outer points `p1` and `p2`
 
-#### `get_parabola_zero (P, chosen)` [^][contents]
+#### get_parabola_zero [^][contents]
 [get_parabola_zero]: #get_parabola_zero-p-chosen-
 Returns the roots of a parabola.\
 Parabola from type: `y = Ax² + Bx + C`
+
+_Parameters:_
+```OpenSCAD
+get_parabola_zero (P, chosen)
+```
 - `P`    - parameter of a parabola as list `[C,B,A]`
 - `chosen`
   - controls the return value of this function
@@ -429,6 +471,6 @@ Parabola from type: `y = Ax² + Bx + C`
 
 _Specialized functions:_
 - `get_parabola_zero_from_points (p1, p2, p3, chosen)`
-  - with parameter from function [`get_parabola_from_points()`][get_parabola_from_points]
+  - with parameter from function [`get_parabola_from_points()`](#get_parabola_from_points-)
 - `get_parabola_zero_from_midpoint (p1, p2, ym, chosen)`
-  - with parameter from function [`get_parabola_from_midpoint()`][get_parabola_from_midpoint]
+  - with parameter from function [`get_parabola_from_midpoint()`](#get_parabola_from_midpoint-)

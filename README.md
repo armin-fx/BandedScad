@@ -32,7 +32,7 @@ Main functionality:
   - Create and edit buildin [primitives from OpenSCAD with functions][primitives]
     as data in a list.\
     _(not finished yet)_
-  - [Working with multmatrix][multmatrix]
+  - [Generate matrices for multmatrix][multmatrix]
   - [Convert colors][color]
 - [Editing lists][list]
   - Most functions base on the STL from C++
