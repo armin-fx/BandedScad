@@ -37,10 +37,11 @@ function identity_matrix (n) =
 function determinant (m) =
 	let (size=len(m))
 	(size>3) ?
-		let (j=0)
+		let (j=size-1)
 		summation([ for (i=[0:size-1])
 			if (m[i][j]!=0)
-				m[i][j] * positiv_if_even(i+j)
+				m[i][j]
+				* ((i+j)%2==0 ? 1 : -1) // positiv_if_even(i+j)
 				* determinant( matrix_minor(m, i, j) )
 		])
 	:(size==3) ? det_3x3(m)
@@ -60,33 +61,71 @@ function det_3x3 (m) =
 function det_3x3_2 (m) = cross(m[0], m[1]) * m[2];
 
 // Aus der Matritze eine Zeile ausschneiden
-function matrix_cut_row    (m, i) =
-	let (size=len(m)) concat(
-	(i  <=0)    ? [] : [ for (I=[0   :1:min(i-1, size-1)])           m[I] ],
-	(i+1>=size) ? [] : [ for (I=[max(0, min(i+1, size-1)):1:size-1]) m[I] ]
-);
+function matrix_cut_row (m, i) =
+	let (s=len(m))
+	[
+	each (i  <=0) ? [] : [ for (I=[0   :1:min(i-1, s-1)])        m[I] ],
+	each (i+1>=s) ? [] : [ for (I=[max(0, min(i+1, s-1)):1:s-1]) m[I] ]
+	]
+;
 // Aus der Matritze eine Spalte ausschneiden
-function matrix_cut_column (m, j) = [ for (I=[0:1:len(m)-1]) matrix_cut_row(m[I],j) ];
+function matrix_cut_column (m, j) =
+	// [ for (l=m) matrix_cut_row(l,j) ]
+	//
+	let (
+	z = len(m[0]),
+	r_begin = (j  <=0) ? [] : [0   :1:min(j-1, z-1)],
+	r_last  = (j+1>=z) ? [] : [max(0, min(j+1, z-1)):1:z-1]
+	)
+	[ for (l=m) [
+	each (j  <=0) ? [] : [ for (J=r_begin) l[J] ],
+	each (j+1>=z) ? [] : [ for (J=r_last ) l[J] ]
+	] ]
+;
 // Aus der Matritze eine Zeile und eine Spalte ausschneiden = Untermatrix
-function matrix_minor      (m, i, j) = matrix_cut_column(matrix_cut_row(m, i), j);
+function matrix_minor (m, i, j) =
+	// matrix_cut_column(matrix_cut_row(m, i), j)
+	//
+	let (
+	s = len(m),
+	m_row =
+		[
+		each (i  <=0) ? [] : [ for (I=[0   :1:min(i-1, s-1)])        m[I] ],
+		each (i+1>=s) ? [] : [ for (I=[max(0, min(i+1, s-1)):1:s-1]) m[I] ]
+		],
+	z = len(m[0]),
+	r_begin = (j  <=0) ? [] : [0   :1:min(j-1, z-1)],
+	r_last  = (j+1>=z) ? [] : [max(0, min(j+1, z-1)):1:z-1],
+	m_col =
+		[ for (l=m_row) [
+		each (j  <=0) ? [] : [ for (J=r_begin) l[J] ],
+		each (j+1>=z) ? [] : [ for (J=r_last ) l[J] ]
+		] ]
+	)
+	m_col
+;
 
 // In die Matritze m eine Zeile x in Position i einfügen
 function matrix_insert_row    (m, x, i) =
-	let (size=len(m)) concat(
-	(i<=0)    ? [] : [ for (I=[0   :1:min(i-1, size-1)])         m[I] ],
-	[x],
-	(i>=size) ? [] : [ for (I=[max(0, min(i, size-1)):1:size-1]) m[I] ]
-);
+	let (size=len(m))
+	[
+	each (i<=0)    ? [] : [ for (I=[0   :1:min(i-1, size-1)])         m[I] ],
+	x,
+	each (i>=size) ? [] : [ for (I=[max(0, min(i, size-1)):1:size-1]) m[I] ]
+	]
+;
 // In die Matritze m eine Spalte x in Position j einfügen
 function matrix_insert_column (m, x, j) = [ for (I=[0:1:len(m)-1]) matrix_insert_row(m[I],x[I],j) ];
 
 // In die Matritze m eine Zeile x in Position i ersetzen
 function matrix_replace_row    (m, x, i) =
-	let (size=len(m)) concat(
-	(i<=0)           ? [] : [ for (I=[0   :1:min(i-1, size-1)])           m[I] ],
-	(i>=size||(i<0)) ? [] : [x],
-	(i+1>=size)      ? [] : [ for (I=[max(0, min(i+1, size-1)):1:size-1]) m[I] ]
-);
+	let (size=len(m))
+	[
+	each (i<=0)           ? [] : [ for (I=[0   :1:min(i-1, size-1)])           m[I] ],
+	each (i>=size||(i<0)) ? [] : [x],
+	each (i+1>=size)      ? [] : [ for (I=[max(0, min(i+1, size-1)):1:size-1]) m[I] ]
+	]
+;
 // In die Matritze m eine Spalte x in Position j ersetzen
 function matrix_replace_column (m, x, j) = [ for (I=[0:1:len(m)-1]) matrix_replace_row(m[I],x[I],j) ];
 
@@ -94,12 +133,15 @@ function matrix_replace_column (m, x, j) = [ for (I=[0:1:len(m)-1]) matrix_repla
 function concat_matrix (m, a) =
 	(m==undef || m[0][0]==undef) ? undef :
 	(a==undef || a[0][0]==undef) ? m     :
-	[ for (i=[0:1:len(m)-1]) concat (m[i],a[i]) ]
+	[ for (i=[0:1:len(m)-1]) [each m[i], each a[i]] ]
 ;
 
 
 // Matrix transponieren
-function transpose (m) = [ for (i=[0:1:len(m[0])-1]) [ for(j=[0:1:len(m)-1]) m[j][i] ] ];
+function transpose (m) =
+	let( size=len(m))
+	[ for (i=[0:1:len(m[0])-1]) [ for(j=[0:1:size-1]) m[j][i] ] ]
+;
 
 // Matrix invertieren
 function inverse (m) =
@@ -111,9 +153,11 @@ function inverse (m) =
 	!if_complete_main_diagonal(m2) ? undef : // matrix is not invertible
 	let (
 		m3 = back_substitution (m2),
+		s  = len(m3),
+		z  = len(m3[0]),
 		m4 = // remove identity matrix
-			[ for (i=[0      :1:len(m3)-1])
-			[ for (j=[len(m3):1:len(m3[0])-1])
+			[ for (i=[0:1:s-1])
+			[ for (j=[s:1:z-1])
 				m3[i][j]
 			] ]
 	)
@@ -128,58 +172,60 @@ function inverse (m) =
 // clean - true  - Einheitsmatrix Teil entfernen, nur das Ergebnis
 //       - false - Standart, Einheitsmatrix Teil drin lassen
 function gauss_jordan_elimination (m, a, clean=false) =
+	!is_num(m[0][0]) ? undef :
+	let( s = len(m) )
+	s<=1        ? undef :
+	s>len(m[0]) ? undef :
 	let(
-		m1 = // append second list to first
-			!is_list(m) || !is_list(m[0]) || !is_num(m[0][0]) ? undef :
-			!is_list(a) ? m :
-			is_list(a) && is_num(a[0]) && len(m)<=len(a) ?
-				[ for (i=[0:1:len(m)-1]) concat(m[i],[a[i]]) ] :
-			//	concat_matrix (m,transpose([a])) :
-			is_list(a) && is_list(a[0]) && is_num(m[0][0]) && len(m)==len(a) ?
+		m1 = // append second list 'a' to first 'm'
+			a==undef || !is_list(a) ? m :
+			is_num(a[0]) && s<=len(a) ?
+				// concat_matrix (m,transpose([a])) :
+				[ for (i=[0:1:s-1]) [each m[i], a[i]] ] :
+			s==len(a) ?
 				concat_matrix (m,a) :
 			m
-		,m2 = // last check and calculation
-			m1==undef         ? undef :
-			len(m1)<=1        ? undef :
-			len(m1)>len(m[0]) ? undef :
+		,m2 = // calculation
 			back_substitution( reduced_row_echelon_form (m1) )
 		,m3 = // maybe cut identity matrix part
 			clean!=true ? m2 :
-			m2==undef   ? undef :
-			[ for (i=[0      :1:len(m2)-1])
-			[ for (j=[len(m2):1:len(m2[0])-1])
+			let( z = len(m2[0]) )
+			[ for (i=[0:1:s-1])
+			[ for (j=[s:1:z-1])
 				m2[i][j]
 			] ]
 	)
 	m3
 ;
-function reduced_row_echelon_form(m, i=0) =
-	i>=len(m) ? m :
+function reduced_row_echelon_form (m, i=0) =
+	let (s = len(m))
+	i>=s ? m :
 	let (
 		p = get_first_nonzero (m, column=i, begin=i),
 		//p = get_biggest_nonzero (m, column=i, begin=i),
 		n = (p==i) ? m :
-			matrix_replace_row(m, m[i]+m[p] ,i ),
+			matrix_replace_row (m, m[i]+m[p] ,i ),
 		ni= (n[i][i]!=0) ? n[i]/n[i][i] : undef,
 		c = (ni==undef) ? n :
-			concat(
-			[ for (j=[0:1:i-1]) n[j] ],
-			[ ni ],
-			[ for (j=[i+1:1:len(m)-1]) (n[j][i]!=0) ? n[j]/n[j][i]-ni : n[j] ]
-			)
+			[
+			each [ for (j=[0:1:i-1]) n[j] ],
+			ni,
+			each [ for (j=[i+1:1:s-1]) (n[j][i]!=0) ? n[j]/n[j][i]-ni : n[j] ]
+			]
 	)
 	reduced_row_echelon_form(c, i+1)
 ;
-function back_substitution(m, i=0) =
-	i>=len(m) ? m :
+function back_substitution (m, i=0) =
+	let (s = len(m))
+	i>=s ? m :
 	let (
-		p = len(m)-1 - i,
+		p = s-1 - i,
 		n = m[p][p]==0 ? m :
-			concat (
-			[ for (j=[0:1:p-1]) m[j][p]!=0 ? (m[j] - m[p]*m[j][p]/m[p][p]) : m[j] ],
-			[ m[p] ],
-			[ for (j=[p+1:1:len(m)-1]) m[j] ]
-			)
+			[
+			each [ for (j=[0:1:p-1]) m[j][p]!=0 ? (m[j] - m[p]*m[j][p]/m[p][p]) : m[j] ],
+			m[p],
+			each [ for (j=[p+1:1:s-1]) m[j] ]
+			]
 	)
 	back_substitution(n, i+1)
 ;
@@ -198,7 +244,8 @@ function get_biggest_nonzero (m, column=0, begin=0, i=0, value=0) =
 	:		get_biggest_nonzero (m, column, begin,   i+1, value)
 ;
 function if_complete_main_diagonal (m) =
-	len(m)==0 ? false :
-	min ( [ for (i=[0:1:min(len(m),len(m[0]))-1]) abs(m[i][i]) ] ) != 0
+	let (s = len(m))
+	s==0 ? false :
+	[ for (i=[0:1:min(s,len(m[0]))-1]) if (m[i][i]==0) 0] == []
 ;
 
