@@ -7,6 +7,7 @@ use <banded/extend_logic.scad>
 use <banded/helper.scad>
 use <banded/math_common.scad>
 use <banded/math_number.scad>
+use <banded/math_vector.scad>
 use <banded/math_polygon.scad>
 use <banded/list_edit_info.scad>
 use <banded/draft_transform_basic.scad>
@@ -61,7 +62,7 @@ function bezier_point_de_casteljau (t, p, n) =
 function bezier_point_de_casteljau_intern (t, p, n) =
 	n<=0 ? p[0] :
 	bezier_point_de_casteljau_intern (t
-		, [for (i=[0:1:n-1]) p[i]*(t) + p[i+1]*(1-t) ]
+		, [for (i=[0:1:n-1]) p[i]*(1-t) + p[i+1]*(t) ]
 		, n-1 )
 ;
 
