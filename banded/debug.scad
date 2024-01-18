@@ -75,6 +75,26 @@ module show_points_colored (p_list, d=0.2, auto=0)
 	show_points (p_list, true, d, auto);
 }
 
+module show_points_grid (p_list, c, d=0.2, auto=0)
+{
+	if (p_list!=undef)
+	{
+		size_i = len(p_list);
+		for (i=[0:1:size_i-1])
+		{
+			size_j = len(p_list[i]);
+			for (j=[0:1:size_j-1])
+			{
+				show_point (p_list[i][j], get_debug_color(c,i+j,size_i+size_j-1), d, auto);
+			}
+		}
+	}
+}
+module show_points_grid_colored (p_list, d=0.2, auto=0)
+{
+	show_points_grid (p_list, true, d, auto);
+}
+
 module show_line (l, c, direction=false, d=0.1, auto=0)
 {
 	if (l!=undef)
