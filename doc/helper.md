@@ -76,6 +76,7 @@ Helper functions
   - [`benchmark_empty()`][benchmark_empty]
 
 [range_args]: list.md#range-arguments-
+[special_x]:  extend.md#special-variables-
 
 
 Native helper functions [^][contents]
@@ -578,7 +579,7 @@ Arguments:
 - `slices`
    - count of segments, optional
    - without specification it gets the same like module `circle()`
-   - with `"x"` includes the [extra special variables](extend.md#special-variables-)
+   - with `"x"` includes the [extra special variables][special_x]
      to automatically control the count of segments
    - if an angle is specified, the circle section keeps the count of segments.
      Elsewise with `$fn` the segment count scale down to the circle section,
@@ -593,7 +594,7 @@ Arguments:
 
 Specialized function:
 - `parameter_slices_circle_x()`
-  - use the [extra special variables](extend.md#special-variables-)
+  - use the [extra special variables][special_x]
     by default if slices is not set
 
 #### `parameter_mirror_vector_2d (v, v_std)` [^][contents]

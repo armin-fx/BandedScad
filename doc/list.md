@@ -147,7 +147,7 @@ Most functions base on the STL from C++
   - [see entry - Different type of data][type]
 - `value` - nothing to say, value used for
 
-#### Range arguments [^][contents]
+#### Range arguments: [^][contents]
 [range_args]: #range-arguments-
 Contain a set of arguments which defines a range in a list.
 Choose which you need.
@@ -354,7 +354,7 @@ Run `base[ link[ position ] ]` with every item in `index`.\
 Remove all `index` from list `base`.\
 Keep all positions in the list which are not listed in `index`.
 
-Example:
+_Example:_
 ```OpenSCAD
 include <banded.scad>
 
@@ -515,7 +515,7 @@ The determined value will be removed.
 Get data from list [^][contents]
 --------------------------------
 
-#### Minimum or maximum value [^][contents]
+#### Minimum or maximum value: [^][contents]
 
 | function                    | description
 |-----------------------------|-------------
@@ -688,7 +688,7 @@ The elements are compared using operator `<` or with function `f` if given.
   - function literal with two arguments
   - returns `true` or `false`
 
-Example:
+_Example:_
 ```OpenSCAD
 include <banded.scad>
 
@@ -734,7 +734,7 @@ The second part contains all elements which function `f()` returns `false`.
   - returns `true` or `false`
 - [`'range_args'`][range_args] - arguments to set the range of the list, default = full list
 
-Example:
+_Example:_
 ```OpenSCAD
 include <banded.scad>
 
@@ -857,7 +857,7 @@ The elements are compared using operator `<` or with function `f` if given.
   - 'range_args1' = `begin1`, `last1`, `count1`, `range1` for `list1`
   - 'range_args2' = `begin2`, `last2`, `count2`, `range2` for `list2`
 
-Example:
+_Example:_
 ```OpenSCAD
 include <banded.scad>
 
@@ -889,7 +889,7 @@ If the range is empty, the function returns `true`.
   - returns `true` or `false`
 - [`'range_args'`][range_args] - arguments to set the range of the list, default = full list
 
-Example:
+_Example:_
 ```OpenSCAD
 include <banded.scad>
 

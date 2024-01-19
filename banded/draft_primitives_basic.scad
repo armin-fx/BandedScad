@@ -71,7 +71,7 @@ function text (text, font) =
 	Font[font_data_letter]==undef ?
 		echo( str( "\n",
 		"Please include font \"", Font[font_data_name], "\", style \"", Font[font_data_style], "\"\n",
-		"The font files must included at first.\n\n",
+		"The font files must included at first, before \"include <banded.scad>\".\n\n",
 		"You can include the font with the specific style with:\n",
 		"    include <", font_folder, Font[font_data_file][font_file_data], ">\n\n",
 		"You can include the font \"", Font[font_data_name], "\" with all styles with:\n",

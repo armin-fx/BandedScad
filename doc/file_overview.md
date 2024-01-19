@@ -44,6 +44,8 @@ Overview of scad files
 ` `| . . . +--> [`banded/helper_native.scad`](helper.md#native-helper-functions- "Contains various helper functions")\
 ` `| . . . +--> [`banded/helper_recondition.scad`](helper.md#helper.md#recondition-arguments-of-functions- "Recondition arguments of functions and modules")\
 ` `| . . . +--> `banded/helper_primitives.scad`\
+` `| . . . | . . . . +--> `banded/helper_primitives_path.scad`\
+` `| . . . | . . . . +--> `banded/helper_primitives_trace.scad`\
 ` `|\
 ` `+--> [`banded/benchmark.scad`](helper.md#benchmark-function- "Benchmark for functions to measure speed")\
 ` `|\
@@ -51,6 +53,7 @@ Overview of scad files
 ` `| . . . +--> [`banded/extend_logic.scad`](extend.md#functions-)\
 ` `| . . . | . . . . +--> [`banded/extend_logic_helper.scad`](extend.md#convert-values- "Helper functions: convert values, and for internal use")\
 ` `| . . . | . . . . +--> [`banded/extend_logic_circle.scad`](extend.md#get-fragments-of-a-circle- "Get fragments of a circle")\
+` `| . . . | . . . . +--> `banded/extend_linear_extrude.scad`\
 ` `| . . . +--> [`banded/extend_object.scad`](extend.md#defined-modules-)\
 ` `|\
 ` `+--> `banded/draft.scad`\
@@ -69,10 +72,14 @@ Overview of scad files
 ` `| . . . . . . . . +--> `banded/draft_primitives_transform.scad`\
 ` `| . . . . . . . . +--> `banded/draft_primitives_operator.scad`\
 ` `|\
+` `+--> [`banded/font.scad`](draft_primitives.md#text-)\
+` `| . . . +--> `banded/font_definition.scad`\
+` `| . . . +--> `banded/font/*.scad`\
+` `|\
 ` `+--> [`banded/object.scad`](object.md "Configurable objects")\
 ` `| . . . +--> [`banded/object_figure.scad`](object.md#figures- "Modules to create configurable objects")\
-` `| . . . +--> `banded/object_circle.scad`\
-` `| . . . +--> [`banded/object_rounded.scad`](object.md#rounded-edges- "Figures with rounded edges")\
+` `| . . . +--> [`banded/object_figure_rounded.scad`](object.md#figures-with-rounded-edges- "Configurable objects with rounded edges")\
+` `| . . . +--> [`banded/object_rounded.scad`](object.md#rounded-edges- "Figures to create rounded edges")\
 ` `|\
 ` `+--> [`banded/operator.scad`](operator.md "Transform and edit objects")\
 ` `| . . . +--> [`banded/operator_edit.scad`](operator.md#edit-and-test-objects- "Various operator to edit and test objects")\

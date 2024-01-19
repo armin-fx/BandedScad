@@ -12,21 +12,21 @@ Debug
 [contents]: #contents "Contents"
 - [Debug modules](#debug-modules-)
   - [Echo in console](#echo-in-console-)
-    - [`echo_line()`](#echo_line-)
-    - [`echo_list`](#echo_list-)
-  - [Make points and lines visible](#make-points-visible-)
-    - [`show_point()`](#show_point-)
-    - [`show_points()`](#show_points-)
-    - [`show_points_grid()`](#show_points_grid-)
-    - [`show_line()`](#show_line-)
-    - [`show_lines()`](#show_lines-)
-    - [`show_trace()`](#show_trace-)
-    - [`show_traces()`](#show_traces-)
-    - [`show_vector()`](#show_vector-)
-    - [`show_label()`](#show_label-)
+    - [`echo_line()`][echo_line]
+    - [`echo_list`][echo_list]
+  - [Make points and lines visible](#make-points-and-lines-visible-)
+    - [`show_point()`][show_point]
+    - [`show_points()`][show_points]
+    - [`show_points_grid()`][show_points_grid]
+    - [`show_line()`][show_line]
+    - [`show_lines()`][show_lines]
+    - [`show_trace()`][show_trace]
+    - [`show_traces()`][show_traces]
+    - [`show_vector()`][show_vector]
+    - [`show_label()`][show_label]
   - [Test parts of objects](#test-parts-of-objects-)
-    - [`object_slice()`](#object_slice-)
-    - [`object_pane()`](#object_pane-)
+    - [`object_slice()`][object_slice]
+    - [`object_pane()`][object_pane]
 
 
 Debug modules [^][contents]
@@ -38,6 +38,7 @@ Objects to make parts of objects and points in variables seeable.
 ### Echo in console [^][contents]
 
 #### echo_line [^][contents]
+[echo_line]: #echo_line-
 Echo a horizontal line into the console.\
 As module or as function to generate the text for `echo()`.
 ```OpenSCAD
@@ -52,6 +53,7 @@ _Specialized modules with fixed character:_
 - `echo_wall (length)`      - Echo a fat line, character = `#`
 
 #### echo_list [^][contents]
+[echo_list]: #echo_list-
 Echo every entry from a list into the console.\
 Every entry will start in a new line.
 As module or as function to generate the text for `echo()`.
@@ -72,6 +74,7 @@ in preview mode (F5) and are hidden in render mode (F6).
 The default color of these objects is "orange".
 
 #### show_point [^][contents]
+[show_point]: #show_point-
 Module to create a visible point.
 ```OpenSCAD
 show_point (p, c, d, auto)
@@ -86,6 +89,7 @@ show_point (p, c, d, auto)
   - default = `0`, don't change the size
 
 #### show_points [^][contents]
+[show_points]: #show_points-
 Module to create visible points.
 ```OpenSCAD
 show_points (p_list, c, d, auto)
@@ -105,6 +109,7 @@ _Specialized module:_
   - every point get an other color by default
 
 #### show_points_grid [^][contents]
+[show_points_grid]: #show_points_grid-
 Module to create visible points in a grid.\
 A grid is defined by a list with lists which contains points.
 ```OpenSCAD
@@ -125,6 +130,7 @@ _Specialized module:_
   - every point get an other color by default
 
 #### show_line [^][contents]
+[show_line]: #show_line-
 Module to create a visible line.
 ```OpenSCAD
 show_line (l, c, direction, d, auto)
@@ -141,6 +147,7 @@ show_line (l, c, direction, d, auto)
   - default = `0`, don't change the size
 
 #### show_lines [^][contents]
+[show_lines]: #show_lines-
 Module to create visible lines in a list.
 ```OpenSCAD
 show_lines (l_list, c, direction, d, auto)
@@ -162,6 +169,7 @@ _Specialized module:_
   - every line get an other color by default
 
 #### show_vector [^][contents]
+[show_vector]: #show_vector-
 Module to create a visible line to show a vector.
 ```OpenSCAD
 show_vector (v, p, c, direction, d, auto)
@@ -179,6 +187,7 @@ show_vector (v, p, c, direction, d, auto)
   - default = `0`, don't change the size
 
 #### show_trace [^][contents]
+[show_trace]: #show_trace-
 Module to create a visible trace.\
 Create a line between the points.
 If the same point is twice in order, then it will create a visible point at this position.
@@ -209,6 +218,7 @@ _Specialized module:_
  - every line of the trace get an other color by default
 
 #### show_traces [^][contents]
+[show_traces]: #show_traces-
 Module to create visible traces.\
 Create a line between the points of ervery trace.
 If the same point is twice in order, then it will create a visible point at this position.
@@ -239,6 +249,7 @@ _Specialized module:_
   - every trace get an other color by default
 
 #### show_label [^][contents]
+[show_label]: #show_label-
 Show a label with text.
 ```OpenSCAD
 show_label (txt, h, a, valign, halign, auto)
@@ -262,6 +273,7 @@ show_label (txt, h, a, valign, halign, auto)
 ### Test parts of objects [^][contents]
 
 #### object_slice [^][contents]
+[object_slice]: #object_slice-
 Cuts a slice out of an object.\
 Useful for testing hidden details of an object.
 ```OpenSCAD
@@ -281,6 +293,7 @@ object_slice (axis, position, thickness, limit)
   - default = `1000`
 
 #### object_pane [^][contents]
+[object_pane]: #object_pane-
 Create a small pane in X-Y-plane of an object at given height.
 ```OpenSCAD
 object_pane (position, thickness, limit)

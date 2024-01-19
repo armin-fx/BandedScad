@@ -365,8 +365,8 @@ Edit and test objects [^][contents]
 
 ### Compose operations [^][contents]
 
-#### `combine ()` [^][contents]
-[combine]: #combine--
+#### combine [^][contents]
+[combine]: #combine-
 Put parts together to a main object.\
 This is helpful, if more than one operator is needet to do this.
 You can create a hole to the main object and put a part on this.
@@ -375,12 +375,12 @@ cut all parts outside of.
 Every place on this operator has his own operator.
 You can "jump over" a place with the defined module `empty()`.
 
-___sequence of operator:___
+_Sequence of operator:_
 ```OpenSCAD
 combine() { main_object(); adding_part(); cutting_part(); common_hull(); }
 ```
 
-___example:___
+_Example:_
 ```OpenSCAD
 include <banded.scad>
 $fn=24;
@@ -394,10 +394,13 @@ combine()
 }
 ```
 
-#### `xor (d)` [^][contents]
-[xor]: #xor-d-
+#### xor [^][contents]
+[xor]: #xor-
 Create the exclusive or with objects.\
-Experimental, works until 8 objects and make sometimes errors.
+Experimental, works with up to 8 objects and make sometimes errors.
+```OpenSCAD
+xor (d, skirt)
+```
 - `d`     - dimension of the objects, default = `3` - 3D object
 - `skirt` - optional, create a little skirt around the object to prevent errors
   - default = constant `epsilon`
@@ -405,12 +408,16 @@ Experimental, works until 8 objects and make sometimes errors.
 
 ### 2D to 3D extrusion [^][contents]
 
-#### `extrude_line (line, rotational, convexity, extra_h)` [^][contents]
-[extrude_line]: #extrude_line-line-rotational-convexity-extra_h-
+#### extrude_line [^][contents]
+[extrude_line]: #extrude_line-
 Extrudes and rotates the 2D object along the line.\
 The object will rotate around the arrow direction of the line
 till the stretched surface from X-axis of the 2D-object and the line
 will touch the point of `rotational`.
+
+```OpenSCAD
+extrude_line (line, rotational, convexity, extra_h)
+```
 - `line` - list with 2 points `[from, to]`
 - `rotational` - a vector, standard = X-axis
 - `extra_h`
@@ -420,14 +427,17 @@ will touch the point of `rotational`.
   - Integer. The convexity parameter specifies the maximum number
     of front sides (or back sides) a ray intersecting the object might penetrate.
 
-#### `plain_trace_extrude (trace, range, closed, convexity, limit)` [^][contents]
-[plain_trace_extrude]: #plain_trace_extrude-trace-range-closed-convexity-limit-
+#### plain_trace_extrude [^][contents]
+[plain_trace_extrude]: #plain_trace_extrude-
 This will extrude an 2D-object in the X-Y plane along a 2D-trace
 (keeping only the right half, X >= 0).
 Note that the object started on the X-Y plane but is tilted up
 (rotated +90 degrees around the X-axis) to extrude,
 then the new Y-axis is the direction which will set in the direction of the line.
 
+```OpenSCAD
+plain_trace_extrude (trace, range, closed, convexity, limit)
+```
 - `trace` - 2D point list, which compose the line
 - `range` - index range of the trace used to extrude
   - You can use a part of the line `[first_point, last_point]`
@@ -455,17 +465,20 @@ _Specialized modules:_
   - This will connect both ends to a closed trace.
   - like `plain_trace_extrude()` with `closed` set to `true`
 
-#### `helix_extrude (angle, rotations, pitch, height, r, opposite, orientation, slices, convexity, scope, step)` [^][contents]
-[helix_extrude]: #helix_extrude-angle-rotations-pitch-height-r-opposite-orientation-slices-convexity-scope-step-
+#### helix_extrude [^][contents]
+[helix_extrude]: #helix_extrude-
 Creates a helix with a 2D-polygon similar rotate_extrude.\
 This will generate every segment with operation `hull()` on the 2D-polygon ends.
 It makes sometimes trouble when you want to render the object.
-Then it is maybe better to use the function
-[`helix_extrude_points()`](draft_primitives.md#helix_extrude_points-angle-rotations-pitch-height-r-opposite-slices-).
+If you can it is maybe better to use the _function_
+[`helix_extrude()`](draft_primitives.md#helix_extrude-).
 
 modified from Gael Lafond, <https://www.thingiverse.com/thing:2200395>\
 License: CC0 1.0 Universal
 
+```OpenSCAD
+helix_extrude (angle, rotations, pitch, height, r, opposite, orientation, slices, convexity, scope, step)
+```
 - `angle`     - angle of helix in degrees - default: `360`
 - `rotations` - rotations of helix, can be used instead `angle`
 - `height`    - height of helix - default: 0 like `rotate_extrude()`

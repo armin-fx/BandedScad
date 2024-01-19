@@ -230,7 +230,7 @@ see [`skew_points()`][skew_points]
 
 ### Transformation with preset defaults [^][contents]
 
-#### Transformation function backwards [^][contents]
+#### Transformation function backwards: [^][contents]
 Contains functions that define known functions with operation backwards.\
 Option `backwards` is removed and internally set to `true`.
 Name convention: 'base operation' + '_backwards' + 'additional operations'\
@@ -242,12 +242,12 @@ Name convention: 'base operation' + '_backwards' + 'additional operations'\
 | [`rotate_to_vector_points()`][rotate_to_vector_points]       | `rotate_backwards_to_vector_points (list, v, a)`
 | [`rotate_to_vector_at_points()`][rotate_to_vector_at_points] | `rotate_backwards_to_vector_at_points (list, v, p, a)`
 
-#### Transformation at a fixed axis [^][contents]
+#### Transformation at a fixed axis: [^][contents]
 Contains functions that define known functions on a fixed axis.\
 Name convention: 'function operation name' + '_axis'\
 Axis = x, y or z. later named as '?'
 
-##### Basic transformation at fixed axis [^][contents]
+##### Basic transformation at fixed axis: [^][contents]
 | Base function                            | with fixed axis                        | description
 |------------------------------------------|----------------------------------------|-------------
 | [`translate_points()`][translate_points] | `translate_?_points (list, l)`         | `l` - length to translate
@@ -258,7 +258,7 @@ Axis = x, y or z. later named as '?'
 | [`scale_points()`][scale_points]         | `scale_?_points (list, f)`             | `f` - scale factor as numeric value
 | [`resize_points()`][resize_points]       | `resize_?_points (list, l)`            | `l` - new size of axis
 
-##### More at fixed axis [^][contents]
+##### More at fixed axis: [^][contents]
 | Base function                                          | with fixed axis                             | description
 |--------------------------------------------------------|---------------------------------------------|-------------
 | [`rotate_backwards_points()`][rotate_backwards_points] | `rotate_backwards_?_points (list, a)`       | `a` - angle

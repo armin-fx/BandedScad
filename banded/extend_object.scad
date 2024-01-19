@@ -114,7 +114,8 @@ module rotate_extrude_extend (angle=360, slices, convexity)
 	angles = parameter_angle (angle, 360);
 	Slices =
 		slices==undef ? undef :
-		slices=="x"   ? get_slices_circle_current_x(r_max,angles[0]) :
+		slices=="x"   ? undef :
+	//	slices=="x"   ? get_slices_circle_current_x(r_max,angles[0]) :
 		slices<2 ? angles[0]<180 ? 2 : 3
 		:slices;
 	fn = slices==undef ? $fn : get_fn_circle (slices, angles[0]);

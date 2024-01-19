@@ -5,7 +5,7 @@ Configurable objects
 `banded/object.scad`\
 ` `| \
 ` `+--> `banded/object_figure.scad`\
-` `+--> `banded/object_circle.scad`\
+` `+--> `banded/object_figure_rounded.scad`\
 ` `+--> `banded/object_rounded.scad`
 
 [<-- file overview](file_overview.md)\
@@ -38,21 +38,29 @@ Configurable objects
     - [`wedge_fillet()`][wedge_fillet]
     - [`square_fillet()`][square_fillet]
 
-[cylinder_extend]: extend.md#cylinder_extend-
-
+[align]:     extend.md#extra-arguments-
+[special_x]: extend.md#special-variables-
+[cylinder_extend]:     extend.md#cylinder_extend-
+[plain_trace_extrude]: operator.md#plain_trace_extrude-
 
 Figures [^][contents]
 ---------------------
 Modules to create configurable objects
 
-#### `empty ()` [^][contents]
-[empty]: #empty--
+#### empty [^][contents]
+[empty]: #empty-
 Module which create nothing.\
 Useful if an operator needs an object.
+```OpenSCAD
+empty ()
+```
 
-#### `wedge (v_min, v_max, v2_min, v2_max)` [^][contents]
-[wedge]: #wedge-v_min-v_max-v2_min-v2_max-
+#### wedge [^][contents]
+[wedge]: #wedge-
 Creates a wedge with the parameter form FreeCAD's wedge.
+```OpenSCAD
+wedge (v_min, v_max, v2_min, v2_max)
+```
 - `v_min`  = `[Xmin, Ymin, Zmin]`
 - `v_max`  = `[Xmax, Ymax, Zmax]`
 - `v2_min` = `[X2min, Z2min]`
@@ -80,21 +88,30 @@ Location of the parameter:
 
 ```
 
-#### `bounding_square (points)` [^][contents]
-[bounding_square]: #bounding_square-points-
+#### bounding_square [^][contents]
+[bounding_square]: #bounding_square-
 Create a 2D rectangle around the outermost points from a list.\
+```OpenSCAD
+bounding_square (points)
+```
 - `points`
   - a list with minimum 2 points
 
-#### `bounding_cube (points)` [^][contents]
-[bounding_cube]: #bounding_cube-points-
+#### bounding_cube [^][contents]
+[bounding_cube]: #bounding_cube-
 Create a 3D cube around the outermost points from a list.\
+```OpenSCAD
+bounding_cube (points)
+```
 - `points`
   - a list with minimum 2 points
 
-#### `torus (r, w, ri, ro, angle, center, fn_ring, outer, align)` [^][contents]
-[torus]: #torus-r-w-ri-ro-angle-center-fn_ring-outer-align-
+#### torus [^][contents]
+[torus]: #torus-
 Creates a torus.
+```OpenSCAD
+torus (r, w, ri, ro, angle, center, fn_ring, outer, align)
+```
 
 Arguments:
 - `r`  - mean radius
@@ -112,7 +129,7 @@ More arguments:
 - `fn_ring` - optional number of segments of the ring
 - `align`
   - Side from origin away that the part should be.
-  - [Extra arguments - align](extend.md#extra-arguments-)
+  - [Extra arguments - align][align]
   - default = `[0,0,1]` = X-Y-axis centered
 - `outer`
   - value `0`...`1`
@@ -140,9 +157,12 @@ r=6; w=8;
 	       torus (r=r, w=w, outer=0.99, $fn=7) ;
 ```
 
-#### `ring_square (h, r, w, ri, ro, angle, center, d, di, do, outer, align)` [^][contents]
-[ring_square]: #ring_square-h-r-w-ri-ro-angle-center-d-di-do-outer-align-
+#### ring_square [^][contents]
+[ring_square]: #ring_square-
 Creates a square ring.
+```OpenSCAD
+ring_square (h, r, w, ri, ro, angle, center, d, di, do, outer, align)
+```
 - `h`        - height
 - `r`        - mean radius, middle line of the ring
 - `ri`, `di` - inner radius, inner diameter
@@ -153,7 +173,7 @@ Creates a square ring.
   - as list   = `[opening angle, start angle]`
 - `align`
   - Side from origin away that the part should be.
-  - [Extra arguments - align](extend.md#extra-arguments-)
+  - [Extra arguments - align][align]
   - default = `[0,0,1]` = X-Y-axis centered
 - `outer`
   - value `0`...`1`
@@ -168,9 +188,12 @@ ___Must specify:___
 - `h`
 - exactly 2 specifications of `r` or `ri` or `ro` or `w`
 
-#### `funnel (h, ri1, ri2, ro1, ro2, w, angle, di1, di2, do1, do2, align)` [^][contents]
-[funnel]: #funnel-h-ri1-ri2-ro1-ro2-w-angle-di1-di2-do1-do2-align-
+#### funnel [^][contents]
+[funnel]: #funnel-
 Creates a funnel.
+```OpenSCAD
+funnel (h, ri1, ri2, ro1, ro2, w, angle, di1, di2, do1, do2, align)
+```
 - `h`          - height
 - `ri1`, `ri2` - inner radius bottom, top
 - `ro1`, `ro2` - outer radius bottom, top
@@ -180,7 +203,7 @@ Creates a funnel.
   - requires OpenSCAD version 2019.05 or above
 - `align`
   - Side from origin away that the part should be.
-  - [Extra arguments - align](extend.md#extra-arguments-)
+  - [Extra arguments - align][align]
   - default = `[0,0,1]` = X-Y-axis centered
 - `outer`
   - value `0`...`1`
@@ -207,7 +230,7 @@ ring_square (h=0.5, w=1, ri=7);
 Rounded edges [^][contents]
 ---------------------------
 
-#### Repeating options [^][contents]
+##### Repeating options: [^][contents]
 
 - `type`
   - specify, which chamfer type should be used for the edge
@@ -283,7 +306,7 @@ for example on a cube:
 | `corner_bottom` | `[0,   1,   2,   3]`
 | `corner_top`    | `[4,   5,   6,   7]`
 
-#### Module name convention [^][contents]
+##### Module name convention: [^][contents]
 On modules with the name `_fillet` on the end you can
 specify the type of the chamfer.\
 But these modules have specialized derivation modules
@@ -296,11 +319,14 @@ with only one chamfer type.
 
 ### Cutting or adding parts for edges [^][contents]
 
-#### `edge_fillet (h, r, angle, type, center, extra)` [^][contents]
-[edge_fillet]: #edge_fillet-h-r-angle-type-center-extra-
+#### edge_fillet [^][contents]
+[edge_fillet]: #edge_fillet-
 Creates a fillet edge, used for cutting or adding to edges.\
 Optionally rounded or chamfered.
 It does `linear_extrude()` with module [`edge_fillet_plane()`][edge_fillet_plane].
+```OpenSCAD
+edge_fillet (h, r, angle, type, center, extra)
+```
 - `h`     - heigth of the edge
 - `r`     - parameter of the chamfer
 - `angle` - angle of the edge in degree
@@ -319,11 +345,14 @@ ___Specialized modules with no argument `type`___
   - `d` - diameter of the rounded edge, optional parameter
 - `edge_chamfer()` - creates a chamfered edges
 
-#### `edge_ring_fillet (r_ring, r, angle, angle_ring, type, outer, slices, extra)` [^][contents]
-[edge_ring_fillet]: #edge_ring_fillet-r_ring-r-angle-angle_ring-type-outer-slices-extra-
+#### edge_ring_fillet [^][contents]
+[edge_ring_fillet]: #edge_ring_fillet-
 Creates a chamfered edge for a cylinder for cutting or gluing.\
 Optionally rounded or chamfered.
 It does `rotate_extrude()` with module [`edge_fillet_plane()`][edge_fillet_plane].
+```OpenSCAD
+edge_ring_fillet (r_ring, r, angle, angle_ring, type, outer, slices, extra)
+```
 - `r_ring`     - radius of the cylinder on the edge
 - `angle_ring` - angle of the cylinder in degree, default=`360`
 - `r`     - parameter of the chamfer
@@ -341,7 +370,7 @@ It does `rotate_extrude()` with module [`edge_fillet_plane()`][edge_fillet_plane
     - any value between, such as `0.5` = middle around inner or outer circle
 - `slices`
    - count of segments of the cylinder, optional.
-   - Without specification it includes the [extra special variables](extend.md#special-variables-)
+   - Without specification it includes the [extra special variables][special_x]
      to automatically control the count of segments
    - if an angle is specified, the circle section keeps the count of segments.
      Elsewise with `$fn` the segment count scale down to the circle section,
@@ -355,7 +384,7 @@ ___Specialized modules with no argument `type`___
   - `d_ring` - diameter of the cylinder, optional parameter
 - `edge_ring_chamfer()` - creates a chamfered edge
 
-Example:
+___Example:___
 ```OpenSCAD
 include <banded.scad>
 
@@ -383,12 +412,15 @@ difference()
 }
 ```
 
-#### `edge_trace_fillet (trace, r, angle, type, closed, extra)` [^][contents]
-[edge_trace_fillet]: #edge_trace_fillet-trace-r-angle-type-closed-extra-
+#### edge_trace_fillet [^][contents]
+[edge_trace_fillet]: #edge_trace_fillet-
 Creates a chamfered edge along a 2D trace for cutting or gluing.\
 Optionally rounded or chamfered.
-It does [`plane_trace_extrude()`](operator.md#plain_trace_extrude-trace-range-closed-convexity-limit-)
+It does [`plane_trace_extrude()`][plain_trace_extrude]
 with module [`edge_fillet_plane()`][edge_fillet_plane].
+```OpenSCAD
+edge_trace_fillet (trace, r, angle, type, closed, extra)
+```
 - `trace` - 2D point list, which compose the line from the edge
 - `r`     - parameter of the chamfer
 - `angle` - angle of the edge in degree
@@ -410,7 +442,7 @@ ___Specialized modules with no argument `type`___
   - `d`      - diameter of the rounded edge, optional parameter
 - `edge_trace_chamfer()` - creates a chamfered edge
 
-Example:
+___Example:___
 ```OpenSCAD
 include <banded.scad>
 
@@ -427,9 +459,12 @@ difference()
 }
 ```
 
-#### `edge_fillet_plane (r, angle, type, extra)` [^][contents]
-[edge_fillet_plane]: #edge_fillet_plane-r-angle-type-extra-
+#### edge_fillet_plane [^][contents]
+[edge_fillet_plane]: #edge_fillet_plane-
 Creates a profile of a chamfered edge as a 2D object.
+```OpenSCAD
+edge_fillet_plane (r, angle, type, extra)
+```
 - `r`     - parameter of the chamfer
 - `angle` - angle of the edge in degree
   - opening angle between `0...180`
@@ -447,10 +482,13 @@ ___Specialized modules with no argument `type`___
   - `d` - diameter of the rounded edge, optional parameter
 - `edge_chamfer_plane()` - creates a chamfered edges
 
-#### `edge_fillet_to (line, point1, point2, r, type, extra, extra_h, directed)` [^][contents]
-[edge_fillet_to]: #edge_fillet_to-line-point1-point2-r-type-extra-extra_h-directed-
+#### edge_fillet_to [^][contents]
+[edge_fillet_to]: #edge_fillet_to-
 Creates a chamfered edge from the data
-'line of the edge' and 2 vertices of the adjacent faces.
+_line of the edge_ and _2 vertices_ of the adjacent faces.
+```OpenSCAD
+edge_fillet_to (line, point1, point2, r, type, extra, extra_h, directed)
+```
 - `line`   - 2 point list, line defined from first point to second point
 - `point1` - first point, begin of the edge
 - `point2` - second point, end of the edge
@@ -480,20 +518,26 @@ ___Specialized modules with no argument `type`___
 
 ### Figures with rounded edges [^][contents]
 
-#### `cube_rounded_full (size, r, center, d)` [^][contents]
-[cube_rounded_full]: #cube_rounded_full-size-r-center-d-
+#### cube_rounded_full [^][contents]
+[cube_rounded_full]: #cube_rounded_full-
 Cube with rounded edges, all edges with the same radius/diameter.\
 Based on `cube()`\
 _needs a rework_
 
+```OpenSCAD
+cube_rounded_full (size, r, center, d)
+```
 - `size`   - size of the cube like `cube()`
 - `r`, `d` - radius,diameter of the rounded edges
 - `center` - center the cube if set `true`
 
-#### `cube_fillet (size, r, type, edges_xxx, corner_xxx, type_xxx, center, align)` [^][contents]
-[cube_fillet]: #cube_fillet-size-r-type-edges_xxx-corner_xxx-type_xxx-center-align-
+#### cube_fillet [^][contents]
+[cube_fillet]: #cube_fillet-
 Cube with rounded edges, every edge can be configured.\
 Based on `cube()`
+```OpenSCAD
+cube_fillet (size, r, type, edges_xxx, corner_xxx, type_xxx, center, align)
+```
 - `size` - size of cube like in `cube()`
 - `r`    - parameter of the chamfer
 - `type` - specify, which chamfer type should be used for all edges
@@ -511,26 +555,32 @@ Based on `cube()`
 - `center` - center the cube if set `true`
 - `align`
   - Side from origin away that the part should be.
-  - [Extra arguments - align](extend.md#extra-arguments-)
+  - [Extra arguments - align][align]
   - default = `[1,1,1]` = oriented on the positive side of axis
 
 ___Specialized modules with no arguments `type` and `type_xxx`___
 - `cube_rounded()` - cube only with rounded edges
 - `cube_chamfer()` - cube only with chamfered edges
 
-#### `cylinder_rounded (h, r, center, d)` [^][contents]
-[cylinder_rounded]: #cylinder_rounded-h-r-center-d-
+#### cylinder_rounded [^][contents]
+[cylinder_rounded]: #cylinder_rounded-
 Cylinder with rounded edges on bottom and top,
 all edges with the same radius like the cylinder radius.\
 Based on `cylinder()`
+```OpenSCAD
+cylinder_rounded (h, r, center, d)
+```
 - `h`      - height of cylinder inclusive rounded edges
 - `r`, `d` - radius or diameter of the cylinder
 - `center` - center the cylinder if set `true`
 
-#### `cylinder_edges_fillet (h, r1, r2, r_edges, type, center, r, d, d1, d2, angle, slices, outer, align)` [^][contents]
-[cylinder_edges_fillet]: #cylinder_edges_fillet-h-r1-r2-r_edges-type-center-r-d-d1-d2-angle-slices-outer-align-
+#### cylinder_edges_fillet [^][contents]
+[cylinder_edges_fillet]: #cylinder_edges_fillet-
 Cylinder with chamfered edges on bottom and top.\
 Based on [`cylinder_extend()`][cylinder_extend], compatible with `cylinder()`
+```OpenSCAD
+cylinder_edges_fillet (h, r1, r2, r_edges, type, center, r, d, d1, d2, angle, slices, outer, align)
+```
 - `r_edges` - radius of both edges
   - as number: set the same radius for both edges
   - as list:   set the edge radius individually - `[bottom_radius, top_radius]`
@@ -547,7 +597,7 @@ Based on [`cylinder_extend()`][cylinder_extend], compatible with `cylinder()`
 - `slices`
    - count of segments of the cylinder,
      without specification it gets the same like `circle()`
-   - includes the [extra special variables](extend.md#special-variables-)
+   - includes the [extra special variables][special_x]
      to automatically control the count of segments
    - if an angle is specified, the circle section keeps the count of segments.
      Elsewise with `$fn` the segment count scale down to the circle section,
@@ -561,14 +611,14 @@ Based on [`cylinder_extend()`][cylinder_extend], compatible with `cylinder()`
     <https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/undersized_circular_objects>
 - `align`
   - Side from origin away that the part should be.
-  - [Extra arguments - align](extend.md#extra-arguments-)
+  - [Extra arguments - align][align]
   - default = `[0,0,1]` = X-Y-axis centered
 
 ___Specialized modules with no arguments `type` and `type_xxx`___
 - `cylinder_edges_rounded()` - cylinder only with rounded edges
 - `cylinder_edges_chamfer()` - cylinder only with chamfered edges
 
-Example:
+___Example:___
 ```OpenSCAD
 include <banded.scad>
 $fn=24;
@@ -579,11 +629,14 @@ cylinder_edges_fillet (
 );
 ```
 
-#### `wedge_fillet (v_min, v_max, v2_min, v2_max, r, type, edges_xx, corner_xxx, type_xxx)` [^][contents]
-[wedge_fillet]: #wedge_fillet-v_min-v_max-v2_min-v2_max-r-type-edges_xx-corner_xxx-type_xxx-
+#### wedge_fillet [^][contents]
+[wedge_fillet]: #wedge_fillet-
 Creates a wedge with the parameter form FreeCAD's wedge
 with rounded edges, every edge can be configured.\
 Based on [`wedge()`][wedge]
+```OpenSCAD
+wedge_fillet (v_min, v_max, v2_min, v2_max, r, type, edges_xx, corner_xxx, type_xxx)
+```
 - `v_min`  = `[Xmin, Ymin, Zmin]`
 - `v_max`  = `[Xmax, Ymax, Zmax]`
 - `v2_min` = `[X2min, Z2min]`
@@ -604,10 +657,13 @@ ___Specialized modules with no arguments `type` and `type_xxx`___
 - `wedge_rounded()` - wedge only with rounded edges
 - `wedge_chamfer()` - wedge only with chamfered edges
 
-#### `square_fillet (size, r, type, center, align)` [^][contents]
-[square_fillet]: #square_fillet-size-r-type-center-align-
+#### square_fillet [^][contents]
+[square_fillet]: #square_fillet-
 Square with rounded edges, every edge can be configured.\
 Based on `square()` from OpenSCAD
+```OpenSCAD
+square_fillet (size, r, type, center, align)
+```
 - `size` - size of square like in `square()`
 - `r` - radius of the edges
   - as number: set the same radius for all 4 edges
@@ -631,7 +687,7 @@ Based on `square()` from OpenSCAD
 - `center` - center the square if set `true`
 - `align`
   - Side from origin away that the part should be.
-  - [Extra arguments - align](extend.md#extra-arguments-)
+  - [Extra arguments - align][align]
   - default = `[1,1]` = oriented on the positive side of axis
 
 ___Specialized modules with no arguments `type`___

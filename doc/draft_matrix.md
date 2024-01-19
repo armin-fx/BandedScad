@@ -275,7 +275,7 @@ see [`matrix_skew()`][matrix_skew]
 
 ### Generate matrix with preset defaults [^][contents]
 
-#### Transform backwards [^][contents]
+#### Transform backwards: [^][contents]
 Contains functions that define known functions with operation backwards.\
 Option `backwards` is removed and internally set to `true`.\
 Name convention: 'base operation' + '_backwards' + 'additional operations'
@@ -287,12 +287,12 @@ Name convention: 'base operation' + '_backwards' + 'additional operations'
 | [`matrix_rotate_to_vector()`][matrix_rotate_to_vector]       | `matrix_rotate_backwards_to_vector (v, a, short)`
 | [`matrix_rotate_to_vector_at()`][matrix_rotate_to_vector_at] | `matrix_rotate_backwards_to_vector_at (v, p, a)`
 
-#### Transform on a fixed axis [^][contents]
+#### Transform on a fixed axis: [^][contents]
 Contains functions that define known functions on a fixed axis.\
 Name convention: 'function operation name' + '_axis'\
 Axis = x, y or z. later named as '?'
 
-##### Basic at fixed axis [^][contents]
+##### Basic at fixed axis: [^][contents]
 | Base function                              | with fixed axis                  | description
 |--------------------------------------------|----------------------------------|-------------
 | [`matrix_translate()`][matrix_translate]   | `matrix_translate_?  (l, d)`     | `l` - length to translate        <br> `d` - dimension
@@ -306,7 +306,7 @@ Axis = x, y or z. later named as '?'
 | [`matrix_projection()`][matrix_projection] | `matrix_projection_? (d, short)` | `d` - dimension
 | .                                          | `matrix_projection_z (d, short)` | only in 3 dimension
 
-##### More matrix at fixed axis [^][contents]
+##### More matrix at fixed axis: [^][contents]
 | Base function                            | with fixed axis                           | description
 |------------------------------------------|-------------------------------------------|-------------
 | `matrix_rotate_backwards()`              | `matrix_rotate_backwards_? (a, short)`    | `a` - angle <br> only in 3 dimension

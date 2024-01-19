@@ -25,6 +25,8 @@ Draft objects as data list - Primitives
   - [Edit objects](#edit-objects-)
     - [`helix_extrude()`][helix_extrude]
 
+[special_x]: extend.md#special-variables-
+
 
 Primitives [^][contents]
 ------------------------
@@ -36,7 +38,7 @@ this is implemented in module `build()`.
 This functions to generate and transform objects have the same behavior
 like OpenSCAD modules.
 
-#### List convention [^][contents]
+#### List convention: [^][contents]
 Default:
 - as points-path-list\
   `[  points,              [path, path2, ...], color ]`
@@ -57,22 +59,22 @@ Color:
 ### Functions to generate objects [^][contents]
 
 2D:
-- [`square()`](extend.md#square_extend-size-center-align-)
-- [`circle()`](extend.md#circle_extend-r-angle-slices-piece-outer-align-d-)
-- [`text()`][text] _barely implemented_
+- [`square()`](extend.md#square_extend-)
+- [`circle()`](extend.md#circle_extend-)
+- [`text()`][text] _not fully implemented_
 
 3D:
-- [`cube()`](extend.md#square_extend-size-center-align-)
-- [`cylinder()`](extend.md#cylinder_extend-h-r1-r2-center-r-d-d1-d2-angle-slices-piece-outer-align-)
-- [`sphere()`](extend.md#sphere_extend-r-d-align-)
+- [`cube()`](extend.md#square_extend-)
+- [`cylinder()`](extend.md#cylinder_extend-)
+- [`sphere()`](extend.md#sphere_extend-)
 
 More objects:
-- [`wedge()`](object.md#wedge-v_min-v_max-v2_min-v2_max-)
-- [`bounding_square()`](object.md#bounding_square-points-)
-- [`bounding_cube()`](object.md#bounding_cube-points-)
-- [`torus()`](object.md#torus-r-w-ri-ro-angle-center-fn_ring-align-)
-- [`ring_square()`](object.md#ring_square-h-r-w-ri-ro-angle-center-d-di-do-align-)
-- [`funnel()`](object.md#funnel-h-ri1-ri2-ro1-ro2-w-angle-di1-di2-do1-do2-align-)
+- [`wedge()`](object.md#wedge-)
+- [`bounding_square()`](object.md#bounding_square-)
+- [`bounding_cube()`](object.md#bounding_cube-)
+- [`torus()`](object.md#torus-)
+- [`ring_square()`](object.md#ring_square-)
+- [`funnel()`](object.md#funnel-)
 
 Example:
 ```OpenSCAD
@@ -86,16 +88,22 @@ build(a);
 build(c);
 ```
 
-#### `build (object, convexity)` [^][contents]
-[build]: #build-object-convexity-
+#### build [^][contents]
+[build]: #build-
 Create a real object from object in list.\
 The object can be in 2D or 3D.
 It will send to `polygon()` or `polyhedron()` and become the defined color.
+```OpenSCAD
+build (object, convexity)
+```
 
-#### `text (text, font)` [^][contents]
-[text]: #text-text-font-
+#### text [^][contents]
+[text]: #text-
 Create a text as 2D object.\
-It can only use fonts created as data object in `*.scad` files.\
+It can only use fonts created as data object in `*.scad` files.
+```OpenSCAD
+text (text, font)
+```
 - `text`
   - String. The text to generate.
 - `font`
@@ -105,11 +113,11 @@ It can only use fonts created as data object in `*.scad` files.\
     in addition a style parameter can be added to select
     a specific font style like "__bold__" or "_italic_", such as:\
     `font="Liberation Sans:style=Bold Italic"`
-- $fn
+- `$fn`
   - used for subdividing the curved path segments provided by freetype
 
 Fonts:
-- _Libbard_ family: _Libbard Mono_, _Libbard Sans_, and _Libbard Serif_
+- _Libbard_ family: _Libbard Sans_, _Libbard Serif_, _Libbard Sans Narrow_, and _Libbard Mono_
   - It's a clone of the font family _Liberation_.\
     This font is not finished yet, it contains all letters
     `0x20` (Space) to `0xFF`, different spacing between
@@ -119,11 +127,43 @@ Fonts:
   - _Liberation_ is licensed by: SIL Open Font License
   - _Libbard Sans_ style _Regular_ is the default font.
     It's already included.
-  - All other fonts are predefined, but must included at first line when used.
-    Elsewise an message will shown with include details.
+  - All other fonts are predefined, but must included at first when used,
+    before `include <banded.scad>`.
+    Elsewise a message will shown with include details.
   - You can write the name "Liberation", this will be renamed to "Libbard"
     for compatibility reason with buildin module `text()`
-
+  - The font files are divided into families.\
+    You can load the whole _Libbard_ family with:
+    ```OpenSCAD
+    include <banded/fonts/libbard.scad>
+    ```
+    You can load a specific font name, which contains all styles:
+    | name                | file
+    |---------------------|------
+    | Libbard Sans        | `banded/fonts/libbard_sans.scad`
+    | Libbard Serif       | `banded/fonts/libbard_serif.scad`
+    | Libbard Sans Narrow | `banded/fonts/libbard_sans_narrow.scad`
+    | Libbard Mono        | `banded/fonts/libbard_mono.scad`
+    
+    You can even load a specific font name with a specific style:
+    | name                | style       | font data object                       | file in folder `banded/fonts/`
+    |---------------------|-------------|----------------------------------------|--------------------------------
+    | Libbard Sans        | Regular     | `font_libbard_sans_regular`            | `libbard_sans_regular.scad`
+    | .                   | Bold        | `font_libbard_sans_bold`               | `libbard_sans_bold.scad`
+    | .                   | Italic      | `font_libbard_sans_italic`             | `libbard_sans_italic.scad`
+    | .                   | Bold Italic | `font_libbard_sans_bold_italic`        | `libbard_sans_bold_italic.scad`
+    | Libbard Serif       | Regular     | `font_libbard_serif_regular`           | `libbard_serif_regular.scad`
+    | .                   | Bold        | `font_libbard_serif_bold`              | `libbard_serif_bold.scad`
+    | .                   | Italic      | `font_libbard_serif_italic`            | `libbard_serif_italic.scad`
+    | .                   | Bold Italic | `font_libbard_serif_bold_italic`       | `libbard_serif_bold_italic.scad`
+    | Libbard Sans Narrow | Regular     | `font_libbard_sans_narrow_regular`     | `libbard_sans_narrow_regular.scad`
+    | .                   | Bold        | `font_libbard_sans_narrow_bold`        | `libbard_sans_narrow_bold.scad`
+    | .                   | Italic      | `font_libbard_sans_narrow_italic`      | `libbard_sans_narrow_italic.scad`
+    | .                   | Bold Italic | `font_libbard_sans_narrow_bold_italic` | `libbard_sans_narrow_bold_italic.scad`
+    | Libbard Mono        | Regular     | `font_libbard_mono_regular`            | `libbard_mono_regular.scad`
+    | .                   | Bold        | `font_libbard_mono_bold`               | `libbard_mono_bold.scad`
+    | .                   | Italic      | `font_libbard_mono_italic`             | `libbard_mono_italic.scad`
+    | .                   | Bold Italic | `font_libbard_mono_bold_italic`        | `libbard_mono_bold_italic.scad`
 
 
 ### Edit objects based on OpenSCAD buildin modules [^][contents]
@@ -140,8 +180,8 @@ Implemented functions:
 - `multmatrix(object, m)`
 - `color     (object, c, alpha)`
 - `hull      (object)`
-- `linear_extrude (object, height, center, twist, slices, scale)`
-- `rotate_extrude (object, angle, slices)`
+- [`linear_extrude (object, height, center, twist, slices, scale)`][linear_extrude]
+- [`rotate_extrude (object, angle, slices)`][rotate_extrude]
 
 Not yet implemented:
 - `union()`
@@ -150,31 +190,39 @@ Not yet implemented:
 - `minkowski()`
 - `offset()`
 
-#### `linear_extrude (object, height, center, twist, slices, scale)` [^][contents]
-[linear_extrude]: #linear_extrude-object-height-center-twist-slices-scale-
+#### linear_extrude [^][contents]
+[linear_extrude]: #linear_extrude-
 Extrudes a 2D object in a list to a 3D solid object.\
-Uses the same arguments like buildin module `linear_extrude()` in OpenSCAD.
+Uses the same arguments like buildin module `linear_extrude()` in OpenSCAD.\
+Returns a list with object data.
+```OpenSCAD
+linear_extrude (object, height, center, twist, slices, scale)
+```
 - `object` - 2D data object or a trace as point list
 - `slices`
    - count of segments, optional, without specification it will set automatically
 
-#### `rotate_extrude (object, angle, slices)` [^][contents]
-[rotate_extrude]: #rotate_extrude-object-angle-slices-
+#### rotate_extrude [^][contents]
+[rotate_extrude]: #rotate_extrude-
 Rotational extrudes a 2D hull as trace in a point list
 around the Z axis to a 3D solid object.\
-Uses the same arguments like `rotate_extrude()` in OpenSCAD.
+Uses the same arguments like `rotate_extrude()` in OpenSCAD.\
+Returns a list with object data.
+```OpenSCAD
+rotate_extrude (object, angle, slices)
+```
 - `object` - 2D data object or a trace as point list
 - `angle` - drawn angle in degree, default=`360`
   - as number -> angle from `0` to `angle` = opening angle
   - as list   -> range `[opening angle, begin angle]`
 - `slices`
    - count of segments, optional, without specification it will set automatically
-   - with `"x"` includes the [extra special variables](extend.md#special-variables-)
+   - with `"x"` includes the [extra special variables][special_x]
      to automatically control the count of segments
 
 _Modified version:_
 - `rotate_extrude_extend (object, angle, slices)`
-  - see [`rotate_extrude_extend()`](extend.md#rotate_extrude_extend-angle-convexity-)
+  - see [`rotate_extrude_extend()`](extend.md#rotate_extrude_extend-)
   - Objects created with `rotate_extrude()` are rotated differently
     as e.g. the object `cylinder()`.
     With `rotate_extrude_extend()` these objects can be connected correctly.
@@ -202,9 +250,13 @@ Implemented, but needs rework:
 - `mirror_repeat      (object, v, v2, v3)`
 - `mirror_repeat_copy (object, v, v2, v3)`
 
-#### `helix_extrude (object, angle, rotations, pitch, height, r, opposite, orientation, slices)` [^][contents]
-[helix_extrude]: #helix_extrude-object-angle-rotations-pitch-height-r-opposite-orientation-slices-
-Creates a helix with a 2D hull as trace similar rotate_extrude.
+#### helix_extrude [^][contents]
+[helix_extrude]: #helix_extrude-
+Creates a helix with a 2D hull as trace similar rotate_extrude.\
+Returns a list with object data.
+```OpenSCAD
+helix_extrude (object, angle, rotations, pitch, height, r, opposite, orientation, slices)
+```
 - `angle`     - angle of helix in degrees - default: `360`
 - `rotations` - rotations of helix, can be used instead `angle`
 - `height`    - height of helix - default: 0 like `rotate_extrude()`

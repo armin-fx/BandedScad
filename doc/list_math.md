@@ -90,7 +90,7 @@ Returns a list with the result.
 
 ### Integrated in Openscad [^][contents]
 
-#### Addition / Subtraction [^][contents]
+#### Addition / Subtraction: [^][contents]
 `[1,2,3] + [0,4,2]` -> `[1,6,5]`\
 `[6,7,8] - [1,2,3]` -> `[5,5,5]`
 

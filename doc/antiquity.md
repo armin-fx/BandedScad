@@ -28,7 +28,7 @@ and don't disturb on newer versions if you have forgotten to remove them.
 They are not needed for the library.\
 These are in the folder `antiquity`.
 
-#### For OpenSCAD version 2015.03 [^][contents]
+#### For OpenSCAD version 2015.03: [^][contents]
 Emulated functions:
 - `is_undef()`
 - `is_bool()`
@@ -45,7 +45,7 @@ include <compatibility_v2015.scad>
 include <compatibility_v2015_assert.scad>
 ```
 
-#### For OpenSCAD version 2019.05 [^][contents]
+#### For OpenSCAD version 2019.05: [^][contents]
 Emulated functions:
 - `is_function()`
   - returns always `false` in older OpenSCAD versions

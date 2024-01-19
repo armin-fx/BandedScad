@@ -203,7 +203,7 @@ Convert and test letter in strings [^][contents]
 Functions like in programming language C in file `ctype.h`.
 But based on the naming scheme from OpenSCAD.
 
-Arguments:
+##### Repeating arguments:
 - `txt`
   - a string, uses only one character
 - `pos`

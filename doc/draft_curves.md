@@ -26,6 +26,10 @@ Draft objects as data list - Curves
   - [Hilbert curve](#hilbert-curve-)
   - [Dragon curve](#dragon-curve-)
 
+[align]:     extend.md#extra-arguments-
+[special_x]: extend.md#special-variables-
+
+
 
 Curves [^][contents]
 --------------------
@@ -139,7 +143,7 @@ __Options:__
 - `slices`
    - count of segments, optional
    - without specification it gets the same like module `circle()`
-   - with `"x"` includes the [extra special variables](extend.md#special-variables-)
+   - with `"x"` includes the [extra special variables][special_x]
      to automatically control the count of segments
    - if an angle is specified, the circle section keeps the count of segments.
      Elsewise with `$fn` the segment count scale down to the circle section,
@@ -158,7 +162,7 @@ __Options:__
       <https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/undersized_circular_objects>
 - `align`
   - Side from origin away that the part should be.
-  - [Extra arguments - align](extend.md#extra-arguments-)
+  - [Extra arguments - align][align]
   - default = `[0,0]` = centered
 
 
@@ -292,7 +296,7 @@ Options are like module `square()` from OpenSCAD.
 Rotation is mathematical direction = counter clockwise.
 - `align`
   - Side from origin away that the part should be.
-  - [Extra arguments - align](extend.md#extra-arguments-)
+  - [Extra arguments - align][align]
   - default = `[1,1]` = oriented on the positive side of axis
 
 #### `bounding_square_curve (points)` [^][contents]

@@ -44,7 +44,7 @@ Matrix operations [^][contents]
 ### Buildin matrix operations in OpenSCAD [^][contents]
 [matrix_buildin]: #buildin-matrix-operations-in-openscad-
 
-#### Matrix addition and subtraction [^][contents]
+#### Matrix addition and subtraction: [^][contents]
 [matrix_add]: #matrix-addition-and-subtraction-
 ```OpenSCAD
 a = [ [2,3],[3,4] ];
@@ -54,7 +54,7 @@ echo( a + b ); // addition,       result [ [3,4],[5,6] ]
 echo( a - b ); // subtraction,    result [ [1,2],[1,2] ]
 ```
 
-#### Matrix multiplication [^][contents]
+#### Matrix multiplication: [^][contents]
 [matrix_mul]: #matrix-multiplication-
 ```OpenSCAD
 a = [ [2,3],[3,4] ];

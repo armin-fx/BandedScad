@@ -8,6 +8,7 @@
 ` `+--> `banded/extend_logic.scad`\
 ` `| . . . . +--> `banded/extend_logic_helper.scad`\
 ` `| . . . . +--> `banded/extend_logic_circle.scad`\
+` `| . . . . +--> `banded/extend_logic_linear_extrude.scad`\
 ` `+--> `banded/extend_object.scad`
 
 [<-- file overview](file_overview.md)\
@@ -19,12 +20,12 @@
 - [Defined modules](#defined-modules-)
   - [Extra arguments](#extra-arguments-)
   - [Modules controlled with extra special variables](#modules-controlled-with-extra-special-variables-)
-    - [`circle_extend()`][circle_x]
-    - [`cylinder_extend()`][cylinder_x]
-    - [`sphere_extend()`][sphere_x]
+    - [`circle_extend()`][circle_extend]
+    - [`cylinder_extend()`][cylinder_extend]
+    - [`sphere_extend()`][sphere_extend]
   - [Modules with extra arguments only ](#modules-with-extra-arguments-only-)
-    - [`square_extend()`][square]
-    - [`cube_extend()`][cube]
+    - [`square_extend()`][square_extend]
+    - [`cube_extend()`][cube_extend]
     - [`rotate_extrude_extend()`][rotate_extrude_extend]
 - [Functions](#functions-)
   - [Get fragments of a circle](#get-fragments-of-a-circle-)
@@ -45,6 +46,9 @@
     - [`sf_safe()`][sf_safe]
     - [`sf_constrain_minmax()`][sf_constrain_minmax]
 
+[align]:     #extra-arguments-
+[special_x]: #special-variables-
+[circle_curve]: draft_curves.md#circle-
 [circle]:   https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Using_the_2D_Subsystem#circle
 [cylinder]: https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Primitive_Solids#cylinder
 [sphere]:   https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Primitive_Solids#sphere
@@ -87,12 +91,12 @@ with extra special variables, some modules have extra arguments
 
 | buildin                  | extended
 |--------------------------|----------
-| [`circle()`][circle]     | [`circle_extend()`][circle_x]
-| [`cylinder()`][cylinder] | [`cylinder_extend()`][cylinder_x]
-| [`sphere()`][sphere]     | [`sphere_extend()`][sphere_x]
+| [`circle()`][circle]     | [`circle_extend()`][circle_extend]
+| [`cylinder()`][cylinder] | [`cylinder_extend()`][cylinder_extend]
+| [`sphere()`][sphere]     | [`sphere_extend()`][sphere_extend]
 
 
-### Extra arguments [^][contents]
+##### Extra arguments: [^][contents]
 - `align`
   - Side from origin away that the part should be.
     It will set as a vector.
@@ -107,9 +111,12 @@ with extra special variables, some modules have extra arguments
 
 ### Modules controlled with extra special variables [^][contents]
 
-#### `circle_extend (r, angle, slices, piece, outer, align, d)` [^][contents]
-[circle_x]: #circle_extend-r-angle-slices-piece-outer-align-d-
-Creates a circle with [options of `circle_curve()`](draft_curves.md#circle-)
+#### circle_extend [^][contents]
+[circle_extend]: #circle_extend-
+Creates a circle with [options of `circle_curve()`][circle_curve]
+```OpenSCAD
+circle_extend (r, angle, slices, piece, outer, align, d)
+```
 - `r, d`
   - radius or diameter of circle
 - `angle`
@@ -118,7 +125,7 @@ Creates a circle with [options of `circle_curve()`](draft_curves.md#circle-)
     - as list   -> range `[opening angle, begin angle]`
 - `slices`
    - count of segments, without specification it gets the same like `circle()`
-   - with `"x"` includes the [extra special variables](extend.md#special-variables-)
+   - with `"x"` includes the [extra special variables][special_x]
      to automatically control the count of segments
    - if an angle is specified, the circle section keeps the count of segments.
      Elsewise with `$fn` the segment count scale down to the circle section,
@@ -137,23 +144,29 @@ Creates a circle with [options of `circle_curve()`](draft_curves.md#circle-)
     <https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/undersized_circular_objects>
 - `align`
   - Side from origin away that the part should be.
-  - [Extra arguments - align](extend.md#extra-arguments-)
+  - [Extra arguments - align][align]
   - default = `[0,0]` = centered
 
-#### `cylinder_extend (h, r1, r2, center, r, d, d1, d2, angle, slices, piece, outer, align)` [^][contents]
-[cylinder_x]: #cylinder_extend-h-r1-r2-center-r-d-d1-d2-angle-slices-piece-outer-align-
-Creates a cylinder with ground circle [options of `circle_curve()`](draft_curves.md#circle-)
+#### cylinder_extend [^][contents]
+[cylinder_extend]: #cylinder_extend-
+Creates a cylinder with ground circle [options of `circle_curve()`][circle_curve]
+```OpenSCAD
+cylinder_extend (h, r1, r2, center, r, d, d1, d2, angle, slices, piece, outer, align)
+```
 - `align`
   - Side from origin away that the part should be.
-  - [Extra arguments - align](#extra-arguments-)
+  - [Extra arguments - align][align]
   - default = `[0,0,1]` = X-Y-axis centered
 
-#### `sphere_extend (r, d, outer, align)` [^][contents]
-[sphere_x]: #sphere_extend-r-d-align-
+#### sphere_extend [^][contents]
+[sphere_extend]: #sphere_extend-
 Creates a sphere at moment only control with extra special variables.
+```OpenSCAD
+sphere_extend (r, d, outer, align)
+```
 - `align`
   - Side from origin away that the part should be.
-  - [Extra arguments - align](#extra-arguments-)
+  - [Extra arguments - align][align]
   - default = `[0,0,0]` = centered
 - `outer`
   - value `0`...`1`
@@ -166,42 +179,49 @@ Creates a sphere at moment only control with extra special variables.
 
 ### Modules with extra arguments only [^][contents]
 
-#### `square_extend (size, center, align)` [^][contents]
-[square]: #square_extend-size-center-align-
-Creates a square
+#### square_extend [^][contents]
+[square_extend]: #square_extend-
+Creates a square with extra arguments.
+```OpenSCAD
+square_extend (size, center, align)
+```
 - `align`
   - Side from origin away that the part should be.
-  - [Extra arguments - align](#extra-arguments-)
+  - [Extra arguments - align][align]
   - default = `[1,1]` = oriented on the positive side of axis
 
-#### `cube_extend (size, center, align)` [^][contents]
-[cube]: #cube_extend-size-center-align-
-Creates a cube
+#### cube_extend [^][contents]
+[cube_extend]: #cube_extend-
+Creates a cube with extra arguments.
+```OpenSCAD
+cube_extend (size, center, align)
+```
 - `align`
   - Side from origin away that the part should be.
-  - [Extra arguments - align](#extra-arguments-)
+  - [Extra arguments - align][align]
   - default = `[1,1,1]` = oriented on the positive side of axis
 
-#### `rotate_extrude_extend (angle, slices, convexity)` [^][contents]
-[rotate_extrude_extend]: #rotate_extrude_extend-angle-slices-convexity-
+#### rotate_extrude_extend [^][contents]
+[rotate_extrude_extend]: #rotate_extrude_extend-
 Modifies `rotate_extrude()`.\
 Objects created with `rotate_extrude()` are rotated differently
 as e.g. the object `cylinder()`.
 With `rotate_extrude_extend()` these objects can be connected correctly.
 
-___Additional options:___
+_Additional options:_
+```OpenSCAD
+rotate_extrude_extend (angle, slices, convexity)
+```
 - `angle` - drawn angle in degree, default=`360`
   - as number -> angle from `0` to `angle` = opening angle
   - as list   -> range `[opening angle, begin angle]`
 - `slices`
    - count of segments, optional
-   - with `"x"` includes the [extra special variables](extend.md#special-variables-)
-     to automatically control the count of segments
    - if an angle is specified, the circle section keeps the count of segments.
      Elsewise with `$fn` the segment count scale down to the circle section,
      the behavior like in `rotate_extrude()` to keep the desired precision.
 
-___Example:___
+_Example:_
 ```OpenSCAD
 include <banded.scad>
 $fn=7;
@@ -222,11 +242,10 @@ Functions [^][contents]
 - function name _with_ ending `_x` return a value with control of the extra special variables
 
 #### Recurring arguments: [^][contents]
-
 Values:
 - `r`     - radius of a circle
 - `angle` - opening angle of a part of a circle in degrees
-- `piece` - control the look of the part of a circle [-> see options of `circle_curve()`](draft_curves.md#circle-)
+- `piece` - control the look of the part of a circle [-> see options of `circle_curve()`][circle_curve]
 
 Control the fragment count of a circle (buildin):
 - `fn` - like `$fn`, fixed number of fragments
