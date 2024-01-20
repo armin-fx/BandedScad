@@ -10,6 +10,8 @@ Vector operations
 [<-- file overview](file_overview.md)\
 [<-- table of contents](contents.md)
 
+[<-- Math functions](math.md)
+
 ### Contents
 [contents]: #contents "Up to Contents"
 - [Matrix operations ->](math_matrix.md)

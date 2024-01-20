@@ -11,6 +11,7 @@ Math functions
 ` `+--> `banded/math_vector.scad`\
 ` `+--> `banded/math_matrix.scad`\
 ` `+--> `banded/math_polygon.scad`\
+` `+--> `banded/math_function.scad`\
 ` `| \
 ` `+--> `banded/complex.scad`
 
@@ -23,6 +24,7 @@ Math functions
 - [Vector operations ->](math_vector.md)
 - [Matrix operations ->](math_matrix.md)
 - [Polygon operations ->](math_polygon.md)
+- [Math with functions ->](math_function.md)
 - [Math on lists ->](list_math.md)
 
 - [Common math functions](#common-math-functions-)

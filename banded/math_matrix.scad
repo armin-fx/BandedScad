@@ -13,7 +13,7 @@
 //
 
 use <banded/math_common.scad>
-use <banded/list_algorithmus.scad>
+use <banded/list_algorithm.scad>
 
 // Gibt die Einheitsmatrix zurück in der Dimension n*n
 function identity_matrix (n) =

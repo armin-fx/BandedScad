@@ -10,6 +10,8 @@ Polygon operations
 [<-- file overview](file_overview.md)\
 [<-- table of contents](contents.md)
 
+[<-- Math functions](math.md)
+
 ### Contents
 [contents]: #contents "Up to Contents"
 - [Vector operations ->](math_vector.md)

@@ -49,7 +49,7 @@ Main functionality:
   - Functions for [vector][vector] and [matrices][matrix]
   - Functions for [polygons and lines][polygon]
   - Calculate with [complex numbers][complex]
-- [Algorithmus with function literals][function]
+  - [Algorithm with function literals][function]
 - [Helper functions][helper]
 - [Benchmark functions for speed][benchmark]
 
@@ -73,7 +73,6 @@ Separate stuff:
 [list_math_each]: doc/list_math.md#math-operation-on_each-list-element-
 [mean]:           doc/list_mean.md
 [string]:      doc/string.md
-[function]:    doc/function.md
 [helper]:      doc/helper.md
 [benchmark]:   doc/helper.md#benchmark-function-
 [math]:        doc/math.md
@@ -81,6 +80,7 @@ Separate stuff:
 [vector]:      doc/math_vector.md
 [matrix]:      doc/math_matrix.md
 [polygon]:     doc/math_polygon.md
+[function]:    doc/math_function.md
 [complex]:     doc/math_complex.md
 [operator]:    doc/operator.md
 [object]:      doc/object.md

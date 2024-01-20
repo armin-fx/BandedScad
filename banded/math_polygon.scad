@@ -5,7 +5,7 @@
 //
 
 use <banded/helper_native.scad>
-use <banded/list_algorithmus.scad>
+use <banded/list_algorithm.scad>
 use <banded/list_edit_item.scad>
 use <banded/math_common.scad>
 use <banded/math_vector.scad>

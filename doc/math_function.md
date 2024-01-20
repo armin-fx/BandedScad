@@ -1,17 +1,20 @@
-Functions
-=========
+Math with Functions
+===================
 
 ### defined in file
-`banded/function.scad`\
+`banded/math.scad`\
 ` `| \
-` `+--> `banded/function_algorithmus.scad`
+` `+--> ...\
+` `+--> `banded/math_function.scad`
 
 [<-- file overview](file_overview.md)\
 [<-- table of contents](contents.md)
 
+[<-- Math functions](math.md)
+
 ### Contents
 [contents]: #contents "Up to Contents"
-- [Algorithmus with function literals](#algorithmus-with-function-literals-)
+- [Algorithm with function literals](#algorithm-with-function-literals-)
   - [`summation_fn()`][summation_fn]
   - [`summation_auto_fn()`][summation_auto_fn]
   - [`product_fn()`][product_fn]
@@ -30,7 +33,7 @@ Functions
   - [`zero_euler_tschebyschow()`][zero_euler_tschebyschow]
 
 
-Algorithmus with function literals [^][contents]
+Algorithm with function literals [^][contents]
 ----------------------------------------
 This functions needs a function literal.
 This needs 1 or 2 arguments depending on the function.

@@ -16,10 +16,8 @@ Overview of scad files
 ` `| . . . +--> [`banded/math_vector.scad`](math_vector.md "Vector operations")\
 ` `| . . . +--> [`banded/math_matrix.scad`](math_matrix.md "Matrix operations")\
 ` `| . . . +--> [`banded/math_polygon.scad`](math_polygon.md "Polygones and lines operations")\
+` `| . . . +--> [`banded/math_function.scad`](math_function.md "Algorithm with function literals")\
 ` `| . . . +--> [`banded/complex.scad`](math_complex.md "Working with complex numbers")\
-` `|\
-` `+--> `banded/function.scad`\
-` `| . . . +--> [`banded/function_algorithmus.scad`](function.md "Algorithmus with function literals")\
 ` `|\
 ` `+--> `banded/list.scad`\
 ` `| . . . +--> [`banded/list_edit.scad`](list.md "Editing lists")\
@@ -30,7 +28,7 @@ Overview of scad files
 ` `| . . . | . . . . +--> [`banded/list_edit_predicate.scad`](list.md#edit-list-use-function-literal-on-data- "Edit list, use function literal on data")\
 ` `| . . . | . . . . +--> [`banded/list_edit_test.scad`](list.md##test-entries-of-lists- "Test entries of lists")\
 ` `| . . . | . . . . +--> [`banded/list_edit_pair.scad`](list.md#pair-functions- "Pair functions - key-value-pair")\
-` `| . . . +--> [`banded/list_algorithmus.scad`](list_math.md#algorithm-on-lists- "Algorithm on lists")\
+` `| . . . +--> [`banded/list_algorithm.scad`](list_math.md#algorithm-on-lists- "Algorithm on lists")\
 ` `| . . . +--> [`banded/list_math.scad`](list.md#math-operation-on_each-list-element- "Math operation on each list element")\
 ` `| . . . +--> [`banded/list_mean.scad`](list_mean.md "Calculating mean")\
 ` `|\

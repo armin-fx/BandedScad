@@ -7,6 +7,8 @@ Calculating with complex numbers
 [<-- file overview](file_overview.md)\
 [<-- table of contents](contents.md)
 
+[<-- Math functions](math.md)
+
 ### Contents
 [contents]: #contents "Up to Contents"
 - [Convention](#convention-)

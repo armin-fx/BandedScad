@@ -1,7 +1,7 @@
 // Copyright (c) 2020 Armin Frenzel
 // License: LGPL-2.1-or-later
 
-use <banded/list_algorithmus.scad>
+use <banded/list_algorithm.scad>
 use <banded/list_math.scad>
 use <banded/math_common.scad>
 
