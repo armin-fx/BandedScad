@@ -47,6 +47,7 @@ Main functionality:
 - [Math functions][math]
   - [Various common math functions][math_common]
   - Functions for [vector][vector] and [matrices][matrix]
+  - Functions for [polygons and lines][polygon]
   - Calculate with [complex numbers][complex]
 - [Algorithmus with function literals][function]
 - [Helper functions][helper]
@@ -79,6 +80,7 @@ Separate stuff:
 [math_common]: doc/math.md#various-math-functions-
 [vector]:      doc/math_vector.md
 [matrix]:      doc/math_matrix.md
+[polygon]:     doc/math_polygon.md
 [complex]:     doc/math_complex.md
 [operator]:    doc/operator.md
 [object]:      doc/object.md

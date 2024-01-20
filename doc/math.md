@@ -22,9 +22,10 @@ Math functions
 - [Complex numbers ->](math_complex.md)
 - [Vector operations ->](math_vector.md)
 - [Matrix operations ->](math_matrix.md)
+- [Polygon operations ->](math_polygon.md)
 - [Math on lists ->](list_math.md)
 
-- [More math functions](#more-math-functions-)
+- [Common math functions](#common-math-functions-)
   - [Test and restrict](#test-and-restrict-)
     - [`constrain()`][constrain]
     - [`constrain_range()`][constrain_range]
@@ -42,7 +43,7 @@ Math functions
     - [`sign_plus()`][sign_plus]
     - [`xor()`][xor]
     - [`normal_distribution()`][normal_distribution]
-  - [More trigonometric functions](#more-trigonometric-functions-)
+  - [Trigonometric functions](#trigonometric-functions-)
     - [Trigonometric](#trigonometric-)
       - `sec()`
       - `csc()`
@@ -92,10 +93,12 @@ Math functions
 [polynomial]: draft_curves.md#polynomial-function-
 
 
-More math functions [^][contents]
+Common math functions [^][contents]
 ---------------------------------
 
 ### Test and restrict [^][contents]
+
+Defined in file: `banded/math_common.scad`
 
 #### constrain [^][contents]
 [constrain]: #constrain-
@@ -272,7 +275,7 @@ normal_distribution (x, mean, sigma)
 - `sigma` - value standard deviation, standard = `1`
 
 
-### More trigonometric functions [^][contents]
+### Trigonometric functions [^][contents]
 
 #### Trigonometric: [^][contents]
 [=> Wikipedia - Trigonometric functions](https://en.wikipedia.org/wiki/Trigonometric_functions)
@@ -343,6 +346,8 @@ Trigonometric integral\
 Number functions [^][contents]
 ------------------------------
 
+Defined in file: `banded/math_number.scad`
+
 #### `factorial (n)` [^][contents]
 [factorial]: #factorial-n-
 Calculate the factorial of a positive integer `n`, denoted by n!\
@@ -394,6 +399,8 @@ Calculate the least common multiple of two integers `a` and `b`\
 
 Formula functions [^][contents]
 -------------------------------
+
+Defined in file: `banded/math_formula.scad`
 
 #### get_radius_from [^][contents]
 [get_radius_from]: #get_radius_from-
