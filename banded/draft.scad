@@ -5,6 +5,7 @@
 //
 
 include <banded/draft_curves.scad>
+include <banded/draft_surface.scad>
 include <banded/draft_transform.scad>
 include <banded/draft_matrix.scad>
 //

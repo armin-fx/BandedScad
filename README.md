@@ -27,6 +27,8 @@ Main functionality:
 - Draft objects in data lists
   - [Create curves][curves] into a point list with functions.
     These can load with `polygon()`
+  - [Create surfaces][surface] as data list with functions.
+    These can load with `polyhedron()`
   - [Transform objects in a point list][transform] with affine transformations.
     Like transformation operator in OpenSCAD for object modules.
   - Create and edit buildin [primitives from OpenSCAD with functions][primitives]
@@ -60,6 +62,7 @@ Separate stuff:
 [extend]:      doc/extend.md
 [draft]:       doc/draft.md
 [curves]:      doc/draft_curves.md
+[surface]:     doc/draft_surface.md
 [transform]:   doc/draft_transform.md
 [multmatrix]:  doc/draft_matrix.md
 [primitives]:  doc/draft_primitives.md

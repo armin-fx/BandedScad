@@ -73,9 +73,12 @@ function quantize (value, raster=1, offset=0.5) =
 
 // Linear interpolation
 function lerp (a, b, t, range) =
+	range==undef ?
+	  a * (1-t)
+	+ b * t
+	:
 	let(
 		R =
-			range==undef  ? [0,1] :
 			is_num(range) ? [0, range] :
 			range,
 		T = (t-R[0]) / (R[1]-R[0])

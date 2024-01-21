@@ -13,7 +13,9 @@ Draft objects as data list - Curves
 
 ### Contents
 [contents]: #contents "Up to Contents"
-- [Creates curves in a point list](#curves-)
+- [Creates surfaces ->](draft_surface.md)
+
+- [Creates curves](#curves-)
   - [Bezier curve](#bezier-curve-)
   - [Circle](#circle-)
   - [Superellipse](#superellipse-)
@@ -30,16 +32,17 @@ Draft objects as data list - Curves
 [special_x]: extend.md#special-variables-
 
 
-
 Curves [^][contents]
 --------------------
-Creates curves in a point list
+Creates curves in a point list as trace.
 
 There is a name convention of functions from curves:
-- Name of curve type with ending `_point` - creates a point of the curve at given position.\
-  such as `circle_point()`
-- Name of curve type with ending `_curve` - creates a curve with given parameters.\
-  such as `circle_curve()`
+- Name of curve type with ending `_point`
+  - Creates a point of the curve at given position.
+  - Such as `circle_point()`
+- Name of curve type with ending `_curve`
+  - Creates a curve with given parameters.
+  - Such as `circle_curve()`
 
 
 ### Bezier curve [^][contents]
@@ -49,7 +52,7 @@ Generates a Bézier curve.\
 #### `bezier_point (t, p, n)` [^][contents]
 Returns a point of a Bézier curve of the n'th degree depending on the parameters.
 
-__Options:__
+_Options:_
 - `t`
   - a numeric value between `0`...`1`
 - `p`
@@ -57,11 +60,11 @@ __Options:__
   - `p0` - first point of the curve, `pn` - last point of the curve
   - The array cannot contain fewer than `n+1` elements
 - `n`
-  - Specify of the degree of the Bézier curve
+  - Specify the degree of the Bézier curve
   - only the points up to `p[n]` are taken
   - if `n` is not specified, the degree is taken based on the size of the list
 
-__Versions:__
+_Versions:_
 - `bezier_point_bernstein()`
   - get point with _Bernstein polynomial form_
 - `bezier_point_de_casteljau()`
@@ -71,7 +74,7 @@ __Versions:__
 #### `bezier_curve (p, n, slices)` [^][contents]
 Return a list with the points of a Bézier curve
 
-__Options:__
+_Options:_
 - `t`
   - a numeric value between `0`...`1`
 - `p`
@@ -79,7 +82,7 @@ __Options:__
   - `p0` - first point of the curve, `pn` - last point of the curve
   - The array cannot contain fewer than `n+1` elements
 - `n`
-  - Specify of the degree of the Bézier curve
+  - Specify the degree of the Bézier curve
   - only the points up to `p[n]` are taken
   - if `n` is not specified, the degree is taken based on the size of the list
 - `slices`
@@ -124,7 +127,7 @@ Generates a circle.
 Returns a 2d point of a circle with center at origin.\
 Turns at mathematical direction of rotation = counter clockwise.
 
-__Options:__
+_Options:_
 - `r, d`
   - radius or diameter of circle
 - `angle`
@@ -133,7 +136,7 @@ __Options:__
 #### `circle_curve (r, angle, slices, piece, outer, align, d)` [^][contents]
 Return a 2d point list of a circle.
 
-__Options:__
+_Options:_
 - `r, d`
   - radius or diameter of circle
 - `angle`
@@ -184,7 +187,7 @@ polygon (
 #### `superellipse_point (t, r, a, n, s)` [^][contents]
 Return a point from a superellipse curve
 
-__Options:__
+_Options:_
 - `t`
   - position of the point from `0`...`360`
 - `r`
@@ -207,7 +210,7 @@ __Options:__
 #### `superellipse_curve (interval, r, a, n, s, slices, piece)` [^][contents]
 Return a list with the points of a superellipse
 
-__Additional options:__
+_Additional options:_
 - `interval`
   - interval limit of `t`. `[begin, end]`
 - `slices`
@@ -228,7 +231,7 @@ Generates a Superformula curve.\
 #### `superformula_point (t, a, m, n)` [^][contents]
 Return a point from a superformula curve
 
-__Options:__
+_Options:_
 - `t`
   - position of the point (angle) from `0`...`360`
 - `a`
@@ -248,7 +251,7 @@ __Options:__
 #### `superformula_curve (interval, a, m, n, slices, piece)` [^][contents]
 Return a list with the points of a superformula
 
-__Additional options:__
+_Additional options:_
 - `interval`
   - interval limit of `t`. `[begin, end]`
 - `slices`
@@ -269,7 +272,7 @@ __Additional options:__
 #### `polynomial (x, a, n)` [^][contents]
 Return a numeric value from the polynomial function
 
-__Options:__
+_Options:_
 - `x`
   - variable
 - `a`
@@ -281,7 +284,7 @@ __Options:__
 #### `polynomial_curve (interval, a, n, slices)` [^][contents]
 Returns a list with the points of a polynomial interval
 
-__Additional options:__
+_Additional options:_
 - `interval`
   - Interval limit from `x`. `[begin, end]`
 - `slices`
@@ -312,7 +315,7 @@ Returns a trace in a point list.
 #### `helix_curve (r, rotations, pitch, height, opposite, slices, angle)` [^][contents]
 Return a helix as point list.
 
-__Options:__
+_Options:_
 - `r`
   - radius as number oder as list with numbers `[r1, r2]`
   - `r1` = bottom radius, `r2` = top radius
@@ -333,7 +336,7 @@ __Options:__
   - If not specified, the number of points from `$fn`, `$fa`, `$fs` are taken
   - With `"x"` includes the extra special variables to automatically control the count of segments
 
-__Required options:__
+_Required options:_
 - radius `r`
 - only 2 arguments each: `pitch`, `rotations` or `height`
 
@@ -347,7 +350,7 @@ Fractal curves [^][contents]
 Generates a Koch curve on a line defined in `trace`.\
 [=> Wikipedia - Koch snowflake](https://en.wikipedia.org/wiki/Koch_snowflake)
 
-__Options:__
+_Options:_
 - `trace`
   - a point list
 - `iteration`
@@ -357,7 +360,7 @@ __Options:__
   - `true`  - for a closed trace = the end point is connected with the begin point
   - `false` - default, a line with open ends
 
-__Example:__
+_Example:_
 ```OpenSCAD
 include <banded.scad>
 
@@ -382,14 +385,14 @@ polygon (
 Generates a trace of a Hilbert curve.\
 [=> Wikipedia - Hilbert curve](https://en.wikipedia.org/wiki/Hilbert_curve)
 
-__Options:__
+_Options:_
 - `r`
   - the radius of the square which is filled with the hilbert curve
 - `iteration`
   - defines the nested iteration of the curve
   - default = 1 = one step
 
-__Example:__
+_Example:_
 ```OpenSCAD
 include <banded.scad>
 
@@ -407,14 +410,14 @@ show_trace (
 Generates a trace of a Dragon curve.\
 [=> Wikipedia - Dragon curve](https://en.wikipedia.org/wiki/Dragon_curve)
 
-__Options:__
+_Options:_
 - `trace`
   - a point list with the initial line
 - `iteration`
   - defines the nested iteration of the curve
   - default = 1 = one step
 
-__Example:__
+_Example:_
 ```OpenSCAD
 include <banded.scad>
 

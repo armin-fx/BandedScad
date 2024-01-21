@@ -8,6 +8,7 @@ Draft objects as data list - Primitives
 ` `| . . . . +--> `banded/draft_primitives_basic.scad`\
 ` `| . . . . +--> `banded/draft_primitives_figure.scad`\
 ` `| . . . . +--> `banded/draft_primitives_transform.scad`\
+` `| . . . . +--> `banded/draft_primitives_operator.scad`\
 ` `. . .
 
 [<-- file overview](file_overview.md)\
@@ -19,7 +20,7 @@ Draft objects as data list - Primitives
   - [List convention](#list-convention-)
   - [Generate objects](#functions-to-generate-objects-)
     - Buildin OpenSCAD primitives
-    - More primitives
+    - More configurable primitives
     - Create object with [`build()`][build]
   - [Edit objects based on OpenSCAD buildin modules](#edit-objects-based-on-openscad-buildin-modules-)
   - [Edit objects](#edit-objects-)

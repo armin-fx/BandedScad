@@ -10,7 +10,9 @@ use <banded/math_number.scad>
 use <banded/math_vector.scad>
 use <banded/math_polygon.scad>
 use <banded/list_edit_info.scad>
+use <banded/list_edit_item.scad>
 use <banded/draft_transform_basic.scad>
+
 
 // - Kurven:
 

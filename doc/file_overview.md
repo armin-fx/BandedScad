@@ -56,6 +56,7 @@ Overview of scad files
 ` `|\
 ` `+--> `banded/draft.scad`\
 ` `| . . . +--> [`banded/draft_curves.scad`](draft_curves.md "Creates curves in a point list")\
+` `| . . . +--> [`banded/draft_surface.scad`](draft_surface.md "Creates surfaces as data list")\
 ` `| . . . +--> [`banded/draft_matrix.scad`](draft_matrix.md "Generate matrices for affine transformation")\
 ` `| . . . | . . . . +--> [`banded/draft_matrix_basic.scad`](draft_matrix.md#basic-multmatrix-functions- "Generate matrix like OpenSCAD buildin affine transformation")\
 ` `| . . . | . . . . +--> [`banded/draft_matrix_common.scad`](draft_matrix.md#more-multmatrix-functions- "Generate matrix for more affine transformations")\
