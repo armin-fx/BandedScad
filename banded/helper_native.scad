@@ -71,6 +71,31 @@ function get_position_insert_safe (list, position) =
 function last_position (list)          =       len(list) - 1;
 function last_value    (list, index=0) = list[ len(list) - 1 - index ];
 
+// Wie 'get_position()'.
+// Angabe der Größe der Liste, an statt der Liste selber.
+function get_index (size, position) =
+	position>=0 ? position : size+position
+;
+function get_index_safe (size, position) =
+	// constrain (get_index (size, position), 0, size-1)
+	//
+	position>=0 ?
+		(position>size-1) ? size-1 : position
+	: // position<0
+		(size+position<0) ? 0      : size+position
+;
+function get_index_insert (size, position) =
+	position>=0 ? position : size+position+1
+;
+function get_index_insert_safe (size, position) =
+	// constrain (get_index_insert (size, position), 0, size)
+	//
+	position>=0 ?
+		(position>size)     ? size : position
+	: // position<0
+		(size+position+1<0) ? 0    : size+position+1
+;
+
 // testet eine numerische Variable auf eine gültige Zahl (Not A Number)
 function is_nan (value) = value!=value;
 // testet eine numerische Variable auf unendlich

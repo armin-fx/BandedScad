@@ -12,7 +12,7 @@
 // Version number
 // Number format: year 4 digit - month 2 digit - day 2 digit
 //
-function version_banded() = 20240121;
+function version_banded() = 20240128;
 
 version_banded = version_banded();
 
@@ -21,13 +21,11 @@ include <banded/math.scad>
 include <banded/list.scad>
 include <banded/string.scad>
 include <banded/helper.scad>
+include <banded/benchmark.scad>
 include <banded/extend.scad>
 include <banded/draft.scad>
 include <banded/object.scad>
 include <banded/operator.scad>
-//
 include <banded/debug.scad>
 //
 include <banded/other.scad>
-//
-include <banded/benchmark.scad>

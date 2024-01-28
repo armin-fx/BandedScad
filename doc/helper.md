@@ -30,10 +30,10 @@ Helper functions
     - [`diff_axis_list()`][diff_axis_list]
     - [`range()`][range]
   - [Get position on lists](#get-position-on-lists-)
-    - [`get_position()`][get_position]
-    - [`get_position_safe()`][get_position_safe]
-    - [`get_position_insert()`][get_position_insert]
-    - [`get_position_insert_safe()`][get_position_insert_safe]
+    - [`get_position()`, `get_index()`][get_position]
+    - [`get_position_safe()`, `get_index_safe()`][get_position_safe]
+    - [`get_position_insert()`, `get_index_insert()`][get_position_insert]
+    - [`get_position_insert_safe()`, `get_index_insert_safe()`][get_position_insert_safe]
     - [`last_value()`][last_value]
   - [Data consistency](#data-consistency-)
     - [`is_good_list()`][is_good_list]
@@ -156,8 +156,8 @@ Converts a range specification to a list.\
 
 ### Get position on lists [^][contents]
 
-#### `get_position (list, position)` [^][contents]
-[get_position]: #get_position-list-position-
+#### `get_position`, `get_index` [^][contents]
+[get_position]: #get_position-get_index-
 Returns the real position within a list.\
 Coding like in python:
 - positive index = list from the beginning
@@ -171,15 +171,25 @@ Coding like in python:
 -4 -3 -2 -1
 ```
 
-#### `get_position_safe (list, position)` [^][contents]
-[get_position_safe]: #get_position_safe-list-position-
+_Arguments:_
+```OpenSCAD
+get_position (list, position)
+get_index    (size, position)
+```
+Both functions returns the same result, but with different arguments.
+- `position` - the position in a list
+- `list`     - pass a list directly for calculation
+- `size`     - pass the size of a list for calculation
+
+#### `get_position_safe`, `get_index_safe` [^][contents]
+[get_position_safe]: #get_position_safe-get_index_safe-
 Returns the real position within a list.\
 Same like [`get_position()`][get_position], but constrain the position to
 the first or last element if the value exceed the real size of the list.
 Returns `-1` on an empty list.
 
-#### `get_position_insert (list, position)` [^][contents]
-[get_position_insert]: #get_position_insert-list-position-
+#### `get_position_insert`, `get_index_insert` [^][contents]
+[get_position_insert]: #get_position_insert-get_index_insert-
 Returns the real position within a list.\
 Coding makes sense for insertion positions:
 - positive index = list from the beginning
@@ -195,15 +205,28 @@ Coding makes sense for insertion positions:
   -5  -4  -3  -2  -1
 ```
 
-#### `get_position_insert_safe (list, position)` [^][contents]
-[get_position_insert_safe]: #get_position_insert_safe-list-position-
+_Arguments:_
+```OpenSCAD
+get_position_insert (list, position)
+get_index_insert    (size, position)
+```
+Both functions returns the same result, but with different arguments.
+- `position` - the insertion position in a list
+- `list`     - pass a list directly for calculation
+- `size`     - pass the size of a list for calculation
+
+#### `get_position_insert_safe`, `get_index_insert_safe` [^][contents]
+[get_position_insert_safe]: #get_position_insert_safe-get_index_insert_safe-
 Returns the real position within a list.\
 Same like [`get_position_insert()`][get_position_insert], but constrain the position to
 the first or 1 element after the last element if the value exceed the real size of the list.
 
-#### `last_value (list, index)` [^][contents]
-[last_value]: #last_value-list-index-
-Return the last element from a list.
+#### `last_value` [^][contents]
+[last_value]: #last_value-
+Return the last element from a list.\
+```OpenSCAD
+last_value (list, index)
+```
 - `index` - optional position backwards from the last element position
   - default = 0, last element
 
@@ -213,7 +236,7 @@ Return the last element from a list.
 #### `is_good_list (list, begin, end)` [^][contents]
 [is_good_list]: #is_good_list-list-begin-end-
 
-___Specialized function with fixed list size:___
+_Specialized function with fixed list size:_
 - `is_good_1d (list)` - test a list with 1 element
 - `is_good_2d (list)` - test a list with 2 elements
 - `is_good_3d (list)` - test a list with 3 elements
@@ -222,7 +245,7 @@ ___Specialized function with fixed list size:___
 #### `is_num_list (list, begin, end)` [^][contents]
 [is_num_list]: #is_good_list-list-begin-end-
 
-___Specialized function with fixed list size:___
+_Specialized function with fixed list size:_
 - `is_num_1d (list)` - test a list with 1 element
 - `is_num_2d (list)` - test a list with 2 elements
 - `is_num_3d (list)` - test a list with 3 elements
@@ -249,7 +272,7 @@ Else it returns `undef`.
 It tests up to 10 arguments and starts with `a0`.
 - `size` - lenght the list must have, greater then `0`
 
-___Specialized function with fixed list size:___
+_Specialized function with fixed list size:_
 - `get_first_good_1d (a0, ... , a9)` - test lists with 1 element
 - `get_first_good_2d (a0, ... , a9)` - test lists with 2 elements
 - `get_first_good_3d (a0, ... , a9)` - test lists with 3 elements
@@ -269,7 +292,7 @@ Else it returns `undef`.
 It tests up to 10 arguments and starts with `a0`.
 - `size` - size the list must have, greater then `0`
 
-___Specialized function with fixed list lenght:___
+_Specialized function with fixed list lenght:_
 - `get_first_num_1d (a0, ... , a9)` - test lists with 1 element
 - `get_first_num_2d (a0, ... , a9)` - test lists with 2 elements
 - `get_first_num_3d (a0, ... , a9)` - test lists with 3 elements
