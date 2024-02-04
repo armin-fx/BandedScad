@@ -61,16 +61,17 @@ nan = 0 / 0;
 function x (d=3) = axis (0,d);
 function y (d=3) = axis (1,d);
 function z (d=3) = axis (2,d);
-function origin (d=3) =
-	d==3 ? [0,0,0] :
-	d==2 ? [0,0] :
-	d==4 ? [0,0,0,0] :
-	[for (i=[0:1:d]) 0]
+function origin (d=3, v=0) =
+	d==3 ? [v,v,v] :
+	d==2 ? [v,v] :
+	d==4 ? [v,v,v,v] :
+	[for (i=[0:1:d]) v]
 ;
 
 // predefined 3D axis vector constants
 X=x(); Y=y(); Z=z();
 O=origin();
+A=origin(v=1);
 
 // returns a vector with axis n
 // n - number of axis (X=0, Y=1, Z=2)
@@ -145,10 +146,11 @@ function test_message_constants_str() = str (
 	//
 	inf == 1e200 * 1e200 ? "" : "WARNING: Constant 'inf' has changed. Chuck Norris counted 2 times to infinity.\n",
 	nan != nan           ? "" : "WARNING: Constant 'nan' has changed.\n",
-	X == x()      ? "" : "WARNING: Constant 'X' has changed.\n",
-	Y == y()      ? "" : "WARNING: Constant 'Y' has changed.\n",
-	Z == z()      ? "" : "WARNING: Constant 'Z' has changed.\n",
-	O == origin() ? "" : "WARNING: Constant 'O' has changed.\n",
+	X == x()         ? "" : "WARNING: Constant 'X' has changed.\n",
+	Y == y()         ? "" : "WARNING: Constant 'Y' has changed.\n",
+	Z == z()         ? "" : "WARNING: Constant 'Z' has changed.\n",
+	O == origin()    ? "" : "WARNING: Constant 'O' has changed.\n",
+	A == origin(v=1) ? "" : "WARNING: Constant 'A' has changed.\n",
 	"")
 ;
 

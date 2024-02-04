@@ -122,6 +122,7 @@ ___`delta_std`:___
 | `Y`      | `[0,1,0]` | Y-axis as 3D vector
 | `Z`      | `[0,0,1]` | Z-axis as 3D vector
 | `O`      | `[0,0,0]` | origin as 3D vector
+| `A`      | `[1,1,1]` | all axis set as 3D vector
 
 
 ### Functions [^][contents]
@@ -136,15 +137,16 @@ Returns a vector with axis n.
 
 `axis (1)` returns `[0,1,0]`
 
-___Spezialized functions with fixed axis `n`:___
+_Spezialized functions with fixed axis `n`:_
 - `x (d)` - X-axis
 - `y (d)` - Y-axis
 - `z (d)` - Z-axis
 
-#### `origin (d)` [^][contents]
-[origin]: #origin-d-
+#### `origin (d, v)` [^][contents]
+[origin]: #origin-d-v-
 Returns a zero vector. Point = origin.
 - `d` - count of dimensions
   - `2` = 2D plane, returns `[0,0]`
   - `3` = 3D room, returns `[0,0,0]`, default
+- `v` - value of zero, default = `0`
 
