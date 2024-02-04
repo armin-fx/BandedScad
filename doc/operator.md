@@ -41,8 +41,17 @@ Transform and edit objects
   - [`place_copy()`][place_copy]
   - [`place_copy_line()`][place_copy_line]
 - [Edit and test objects](#edit-and-test-objects-)
-  - [Compose operations](#compose-operations-)
+  - [Combine operator](#combine-operator-)
     - [`combine()`][combine]
+      - `part_main()`
+      - `part_add()`
+      - `part_cut()`
+      - `part_cut_all()`
+      - `part_selfcut()`
+      - `part_selfcut_all()`
+      - `part_limit()`
+    - [`combine_fixed()`][combine_fixed]
+  - [Compose operations](#compose-operations-)
     - [`xor()`][xor]
   - [2D to 3D extrusion](#2d-to-3d-extrusion-)
     - [`extrude_line()`][extrude_line]
@@ -363,12 +372,125 @@ along a fixed axis at given distances.\
 Edit and test objects [^][contents]
 -----------------------------------
 
-### Compose operations [^][contents]
+### Combine operator [^][contents]
 
 #### combine [^][contents]
 [combine]: #combine-
-Put parts together to a main object.\
-This is helpful, if more than one operator is needet to do this.
+This will add or remove parts from a main object.\
+Inside a combine block you can define multiple parts
+to add or remove in any order.
+Add a predicate like `part_main()` (for a main object),
+`part_add()` or `part_cut()` to each block.
+
+_Example:_
+```OpenSCAD
+include <banded.scad>
+
+$fn=24;
+combine()
+{
+	part_main()
+		cube([5,5,2], center=true);
+	part_add()
+		cylinder(d=3, h=4, center=true);
+	part_cut()
+		cylinder(d=4, h=3, center=true);
+}
+```
+
+You can put these parts into a module, they will selected in the right order.
+This is useful to edit a main object with additional parts.
+The parts will always edit the main object, defined by `part_main()`.
+But you can define elements, they can additional edit the additional parts.
+
+_Defined part elements:_
+- `part_main()`
+  - defines the main object to edit
+  - all operations will done on this object
+- `part_add()`
+  - add an object
+- `part_cut()`
+  - remove a part from the main object
+  - do nothing with all added objects
+- `part_cut_all()`
+  - remove a part from the main object
+  - remove from all other parts, except from the own part, defined in the same module
+- `part_selfcut()`
+  - remove a part from the main object
+  - remove from the own part, defined in the same module
+  - do nothing with all other parts
+  - this is useful e.g.
+    if a hole must bored through the main object _and_ the added part
+- `part_selfcut_all()`
+  - remove a part from the main object
+  - remove from all added parts, inclusive the own part
+- `part_limit()`
+  - defines a common hull for the main object,
+    all parts they exceed this object will be removed
+  - if you use this element, you _must_ set parameter `combine (limit=true)`
+
+_Example:_
+```OpenSCAD
+include <banded.scad>
+
+$fn=24;
+combine()
+{
+	part_main()
+		cube([11,5,4], center=true);
+	
+	translate_x( 3) tube_element();
+	translate_x(-3) tube_element();
+}
+
+module tube_element ()
+{
+	part_add()
+		translate_z(1)
+		cylinder (d=3, h=5);
+	
+	part_cut()
+		cylinder (d=4, h=5);
+	
+	part_selfcut()
+		translate_z(-3)
+		cylinder (d=2, h=10);
+}
+```
+
+_Arguments:_
+```OpenSCAD
+combine (limit, type, select)
+```
+- `limit`
+  - if set `true`, combine uses the element `part_limit()`
+    to define a common hull for the main object
+  - default = `false`, ignore `part_limit()`
+  - this is necessary to prevent errors, mostly `part_limit()` is not used
+- `type`
+  - you can select one part element, only this parts will shows
+  - e.g. for debug reason
+  - the types are defined in constants:
+    - `combine_type_undef` - default, normal working, no selecting
+    - `combine_type_main`  - only main part
+    - `combine_type_add`   - only added parts
+    - `combine_type_cut`   - only removed parts
+    - `combine_type_cut_all`
+    - `combine_type_selfcut`
+    - `combine_type_selfcut_all`
+    - `combine_type_limit` - only common hull parts
+- `select`
+  - you can select a number of children in the combine block,
+    then only these are used
+  - as number: this children position is used
+  - as list: only the children in the list are used
+  - a negative number will count from the last children backwards,
+    e.g. `-1` = last children
+
+#### combine_fixed [^][contents]
+[combine_fixed]: #combine_fixed-
+Put parts together to a main object in a fixed order.\
+This is helpful, if more than one operator is needed to do this.
 You can create a hole to the main object and put a part on this.
 Maybe you can define a common hull for the complete object and
 cut all parts outside of.
@@ -393,6 +515,9 @@ combine()
 	cylinder   (h=6, d =d_inner, center=true);
 }
 ```
+
+
+### Compose operations [^][contents]
 
 #### xor [^][contents]
 [xor]: #xor-

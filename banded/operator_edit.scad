@@ -15,13 +15,137 @@ use <banded/draft_transform_basic.scad>
 use <banded/operator_transform.scad>
 
 
-// - Objekte kombinieren:
+// - Objekte verbinden:
+
+combine_type_undef  = -1;
+combine_type_main   = 0;
+combine_type_add    = 1;
+combine_type_cut    = 2;
+combine_type_limit  = 3;
+combine_type_selfcut     = 4;
+combine_type_selfcut_all = 5;
+combine_type_cut_all     = 6;
+
+$combine_type=combine_type_undef;
 
 // Setzt ein Objekt mit anderen Objekten zusammen
 //
+module combine (limit=false, type=combine_type_undef, select=undef)
+{
+	list =
+		select==undef  ? [0:1:$children-1] :
+		is_num(select) ? let (s=get_index($children,select))    (s<$children && s>=0) ? [s] : [] :
+		[ for (e=select) let (s=get_index($children,e     )) if (s<$children && s>=0)    s  ]
+	;
+	
+	// select one part type for testing
+	if (type!=combine_type_undef)
+	{
+		union() {
+			$combine_type = type;
+			children(list);
+		}
+	}
+	// combine all parts
+	else union()
+	{
+		difference()
+		{
+			intersection()
+			{
+				// main part
+				union() {
+					$combine_type = combine_type_main;
+					children(list);
+				}
+				// limit part
+				if (limit==true) union() {
+					$combine_type = combine_type_limit;
+					children(list);
+				}
+			}
+			// cut part
+			union() {
+				$combine_type = combine_type_cut;
+				children(list);
+			}
+		}
+		// add part
+		for (i=list)
+		{
+			difference ()
+			{
+				union() {
+					$combine_type = combine_type_add;
+					children(i);
+				}
+				// handle self cut part
+				union() {
+					$combine_type = combine_type_selfcut;
+					children(i);
+				}
+				union() {
+					$combine_type = combine_type_selfcut_all;
+					children(list);
+				}
+				union() {
+					other = [ for (e=list) if (e!=i) e ];
+					$combine_type = combine_type_cut_all;
+					children(other);
+				}
+			}
+		}
+	}
+}
+
+module part_main ()
+{
+	always = $parent_modules==1 || $combine_type==combine_type_undef;
+	if (always || $combine_type==combine_type_main)
+	{
+		children();
+	}
+}
+
+module part_add ()
+{
+	always = $parent_modules==1 || $combine_type==combine_type_undef;
+	if (always || $combine_type==combine_type_add)
+	{
+		children();
+	}
+}
+
+module part_cut (self=false, all=false)
+{
+	always = $parent_modules==1;
+	if (always
+		|| $combine_type==combine_type_cut
+		|| (self==true  && all==false && $combine_type==combine_type_selfcut)
+		|| (self==false && all==true  && $combine_type==combine_type_cut_all)
+		|| (self==true  && all==true  && $combine_type==combine_type_selfcut_all) )
+	{
+		children();
+	}
+}
+module part_selfcut (all =false) { part_cut (self=true, all=all ) children(); }
+module part_cut_all (self=false) { part_cut (self=self, all=true) children(); }
+module part_selfcut_all ()       { part_cut (self=true, all=true) children(); }
+
+module part_limit ()
+{
+	always = $parent_modules==1;
+	if (always || $combine_type==combine_type_limit)
+	{
+		children();
+	}
+}
+
+// Setzt ein Objekt mit anderen Objekten zusammen mit fester Reihenfolge
+//
 // Reihenfolge: Hauptobjekt(); zugefuegtes_Objekt(); abzuschneidendes_Objekt(); gemeinsames_Objekt();
 //
-module combine ()
+module combine_fixed ()
 {
 	if ($children==0);
 	if ($children==1)
@@ -57,6 +181,9 @@ module combine ()
 			children(3);
 		}
 }
+
+
+// - Objekte kombinieren:
 
 // Experimentell,
 // funktioniert bis 8 Objekte, manchmal treten Probleme auf
