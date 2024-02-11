@@ -535,12 +535,16 @@ xor (d, skirt)
 #### minkowski_difference [^][contents]
 [minkowski_difference]: #minkowski_difference-
 Removes shapes from a base shape surface.\
-Takes a 3D base shape and one or more 3D diff shapes,
+Takes a base shape and one or more diff shapes,
 carves out the diff shapes from the surface of the base shape,
 in a way complementary to how `minkowski()` unions shapes to the surface of its base shape.
 ```OpenSCAD
-minkowski_difference (convexity)
+minkowski_difference (d, convexity)
 ```
+- `d`
+  - dimension of the objects
+    - `3` - 3D object, default
+    - `2` - 2D object
 - `convexity`
   - Integer. The convexity parameter specifies the maximum number
     of front sides (or back sides) a ray intersecting the object might penetrate.

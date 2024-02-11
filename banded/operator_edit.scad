@@ -240,13 +240,13 @@ module xor_2 (d=3, skirt=epsilon)
 	}
 }
 
-module minkowski_difference (convexity)
+module minkowski_difference (d=3, convexity)
 {
 	if ($children==1) children();
 	if ($children>1)
 	difference()
 	{
-		bounding_box() children(0);
+		bounding_box(d=d) children(0);
 		//
 		minkowski(convexity=convexity)
 		{
@@ -254,8 +254,9 @@ module minkowski_difference (convexity)
 			{
 				minkowski()
 				{
-					bounding_box() children(0);
-					cube(center=true);
+					bounding_box(d=d) children(0);
+					if (d==3) cube(center=true);
+					if (d==2) square(center=true);
 				}
 				//
 				children(0);
