@@ -317,7 +317,7 @@ function linear_extrude (object, height, center, twist, slices, scale) =
 	)
 	Object==undef ? undef :
 	let(
-		,H     = height!=undef ? height : 100
+		 H     = height!=undef ? height : 100
 		,Twist = twist !=undef ? twist  : 0
 		,Scale = parameter_scale (scale, 2)
 		,Center = center==true
@@ -387,7 +387,7 @@ function hull (object) =
 		hull_points (list)
 	:
 	let (
-		h = 
+		h =
 			 is_num(object[0][0][0]) ? // object with one point list
 				let(list=object[0])
 				hull_points (list)

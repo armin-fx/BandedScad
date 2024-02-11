@@ -129,7 +129,7 @@ function remove_expendable_points_path (points, face) =
 // returns only all path in a list
 function connect_polygon_holes_paths (points, paths) =
 	let (
-		,children  =         list_polygon_holes_next_paths (points, paths)
+		 children  =         list_polygon_holes_next_paths (points, paths)
 		,orient    = [for (e=list_polygon_holes_parent_paths(points, paths)) len(e)]
 		,t_rotated = unify_polygon_rotation_paths (points, paths, orient)
 		,linked    =

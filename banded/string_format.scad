@@ -19,7 +19,7 @@ function add_padding_str (txt="", pre="", size=1, padding=" ", align=1) =
 	:
 	
 	let (
-		 l_pad   = size - l,
+		 l_pad   = size - l
 		,l_pad_l = floor( (align+1)/2 * l_pad )
 		,l_pad_r = l_pad - l_pad_l
 	)
@@ -32,7 +32,7 @@ function add_padding_str (txt="", pre="", size=1, padding=" ", align=1) =
 function int_to_str_format (x, sign=""
 	, size=1, padding=" ", align=1) =
 	let (
-		,s_num  = int_to_str (x<0 ? -x : x)
+		 s_num  = int_to_str (x<0 ? -x : x)
 		,s_sign = x<0 ? "-" : sign
 	)
 	add_padding_str (s_num, pre=s_sign, size=size, padding=padding, align=align)

@@ -257,7 +257,7 @@ function float_to_str_exp (x, digits=16, compress=true, sign="", point=false, up
 		: str ("0.", fill_str(digits-1, "0"), upper ? "E+0" : "e+0")
 	:
 	let (
-		,exp     = get_10(x)
+		 exp     = get_10(x)
 		,exp_10  = 10^exp
 		,digits_10 = 10^digits
 		,x_digits  = round (x/exp_10 * digits_10 / 10)

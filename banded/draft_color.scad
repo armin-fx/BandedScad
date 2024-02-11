@@ -4,6 +4,7 @@
 
 use <banded/string.scad>
 use <banded/list_edit_data.scad>
+use <banded/list_edit_test.scad>
 
 
 // get color as rgb or rgba list

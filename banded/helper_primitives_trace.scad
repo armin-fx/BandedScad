@@ -331,11 +331,11 @@ function xor_remove_double (string) =
 	let (
 	//	 s = sort (string, type=[1])
 	//	,r = keep_unique (s)
-		,p = partition (string, f=function(e) e[0]==true && len(e[1])==2 )
+		 p = partition (string, f=function(e) e[0]==true && len(e[1])==2 )
 	)
 	p[0]==[] ? string :
 	let(
-		,fp = function(e)
+		 fp = function(e)
 			e[1][0]<=e[1][1]
 			?	[e[0],[e[1][0],e[1][1]]]
 			:	[e[0],[e[1][1],e[1][0]]] 
@@ -394,7 +394,7 @@ function xor_put_together_next (string, result=[]
 		:	xor_put_together_next (string, result, glue_point, is_reverse, append, reverse=false)
 	:
 	let (
-		,is_reverse_n = string[pos][0]
+		 is_reverse_n = string[pos][0]
 		,str_n        = string[pos][1]
 		,str_a        = remove (str_n, begin=0)
 		//
@@ -435,7 +435,7 @@ function get_next_trace_position (string, append, is_reverse) =
 // Vorbereitung zum Aufteilen in Dreiecke
 function connect_polygon_holes_traces (traces) =
 	let (
-		,children  =         list_polygon_holes_next_traces (traces)
+		 children  =         list_polygon_holes_next_traces (traces)
 		,orient    = [for (e=list_polygon_holes_parent_traces(traces)) len(e)]
 		,t_rotated = unify_polygon_rotation_traces (traces, orient)
 		,linked    =

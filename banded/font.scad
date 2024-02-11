@@ -7,6 +7,10 @@
 // is to create or clone owns.
 //
 
+use <banded/helper_primitives.scad>
+use <banded/draft_curves.scad>
+use <banded/list_edit_test.scad>
+
 include <banded/font_definition.scad>
 
 // include <banded/fonts/libbard.scad>

@@ -12,7 +12,7 @@ use <banded/draft_curves.scad>
 
 function bezier_surface_point (t, p) =
 	let (
-		,bezier = [ for (b=p) bezier_point (t[1], b) ]
+		 bezier = [ for (b=p) bezier_point (t[1], b) ]
 		,point  =             bezier_point (t[0], bezier)
 	)
 	point

@@ -5,6 +5,7 @@
 //
 
 use <banded/list_edit.scad>
+use <banded/list_math.scad>
 
 include <banded/helper_primitives_path.scad>
 include <banded/helper_primitives_trace.scad>
@@ -321,7 +322,7 @@ function append_object (object, object2, to_trace=false) =
 	o1==undef ? o2 :
 	to_trace!=true ?
 		let(
-			,p1_size = len(o1[0]),
+			 p1_size = len(o1[0])
 			,oa = [
 				[ each o1[0], each o2[0] ],
 				[ each o1[1], each add_all_each_with (o2[1], p1_size) ]
@@ -330,7 +331,7 @@ function append_object (object, object2, to_trace=false) =
 		copy_object_properties (o1, oa)
 	:
 		let(
-			,oa = [ [ each o1[0], each o2[0] ] ]
+			oa = [ [ each o1[0], each o2[0] ] ]
 		)
 		copy_object_properties (o1, oa)
 ;

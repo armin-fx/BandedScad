@@ -72,13 +72,13 @@ function bounding_square (points) =
 function bounding_cube (points) =
 	(points==undef || len(points)<2) ? undef :
 	let (
-		,bx = bound_value (points, type=[0])
+		 bx = bound_value (points, type=[0])
 		,by = bound_value (points, type=[1])
 		,bz = bound_value (points, type=[2])
 	)
 	(bx[0]>=bx[1] || by[0]>=by[1] || bz[0]>=bz[1]) ? undef :
 	let (
-		,x=bx[0], y=by[0], z=bz[0]
+		 x=bx[0], y=by[0], z=bz[0]
 		,X=bx[1], Y=by[1], Z=bz[1]
 		,points =
 			[[x,y,z],[X,y,z],[X,Y,z],[x,Y,z]
