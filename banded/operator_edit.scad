@@ -13,6 +13,7 @@ use <banded/math_vector.scad>
 use <banded/draft_transform_common.scad>
 use <banded/draft_transform_basic.scad>
 use <banded/operator_transform.scad>
+use <banded/other.scad>
 
 
 // - Objekte verbinden:
@@ -183,7 +184,7 @@ module combine_fixed ()
 }
 
 
-// - Objekte kombinieren:
+// - Objekte verändern:
 
 // Experimentell,
 // funktioniert bis 8 Objekte, manchmal treten Probleme auf
@@ -232,10 +233,35 @@ module xor_2 (d=3, skirt=epsilon)
 		if ($children>1)
 		minkowski()
 		{
-			intersection_for (i = [0 :1: $children-1])
+			intersection_for (i = [0:1:$children-1])
 			children(i);
 			if      (d==3) sphere(skirt);
 			else if (d==2) circle(skirt);
+		}
+	}
+}
+
+module minkowski_difference (convexity)
+{
+	if ($children==1) children();
+	if ($children>1)
+	difference()
+	{
+		bounding_box() children(0);
+		//
+		minkowski(convexity=convexity)
+		{
+			difference()
+			{
+				minkowski()
+				{
+					bounding_box() children(0);
+					cube(center=true);
+				}
+				//
+				children(0);
+			}
+			for (i=[1:1:$children-1]) children(i);
 		}
 	}
 }

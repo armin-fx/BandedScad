@@ -7,43 +7,46 @@
 
 // from https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Commented_Example_Projects
 //
+// license: Creative Commons Attribution-ShareAlike License
+//          https://creativecommons.org/licenses/by-sa/4.0/
+//
 // Rather kludgy module for determining bounding box from intersecting projections
 module bounding_box (convexity=5, height=1000)
 {
 	intersection()
 	{
 		translate([0,0,0])
-		linear_extrude(height = height, center = true, convexity = convexity, twist = 0) 
+		linear_extrude(height = height, center = true, convexity = convexity, twist = 0)
 		projection(cut=false) intersection()
 		{
-			rotate([0,90,0]) 
-			linear_extrude(height = height, center = true, convexity = convexity, twist = 0) 
-			projection(cut=false) 
-			rotate([0,-90,0]) 
+			rotate([0,90,0])
+			linear_extrude(height = height, center = true, convexity = convexity, twist = 0)
+			projection(cut=false)
+			rotate([0,-90,0])
 			children();
 
-			rotate([90,0,0]) 
-			linear_extrude(height = height, center = true, convexity = convexity, twist = 0) 
-			projection(cut=false) 
-			rotate([-90,0,0]) 
+			rotate([90,0,0])
+			linear_extrude(height = height, center = true, convexity = convexity, twist = 0)
+			projection(cut=false)
+			rotate([-90,0,0])
 			children();
 		}
-		rotate([90,0,0]) 
-		linear_extrude(height = height, center = true, convexity = convexity, twist = 0) 
-		projection(cut=false) 
+		rotate([90,0,0])
+		linear_extrude(height = height, center = true, convexity = convexity, twist = 0)
+		projection(cut=false)
 		rotate([-90,0,0])
 		intersection()
 		{
-			rotate([0,90,0]) 
-			linear_extrude(height = height, center = true, convexity = convexity, twist = 0) 
-			projection(cut=false) 
-			rotate([0,-90,0]) 
+			rotate([0,90,0])
+			linear_extrude(height = height, center = true, convexity = convexity, twist = 0)
+			projection(cut=false)
+			rotate([0,-90,0])
 			children();
 
-			rotate([0,0,0]) 
-			linear_extrude(height = height, center = true, convexity = convexity, twist = 0) 
-			projection(cut=false) 
-			rotate([0,0,0]) 
+			rotate([0,0,0])
+			linear_extrude(height = height, center = true, convexity = convexity, twist = 0)
+			projection(cut=false)
+			rotate([0,0,0])
 			children();
 		}
 	}

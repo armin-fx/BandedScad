@@ -51,8 +51,9 @@ Transform and edit objects
       - `part_selfcut_all()`
       - `part_limit()`
     - [`combine_fixed()`][combine_fixed]
-  - [Compose operations](#compose-operations-)
+  - [Modifying operations](#modifying-operations-)
     - [`xor()`][xor]
+    - [`minkowski_difference()`][minkowski_difference]
   - [2D to 3D extrusion](#2d-to-3d-extrusion-)
     - [`extrude_line()`][extrude_line]
     - [`plain_trace_extrude()`][plain_trace_extrude]
@@ -66,7 +67,7 @@ and keep the same behavior and option names.
 
 ### Transformation modules [^][contents]
 
-#### `rotate_new` (a, v, backwards)` [^][contents]
+#### `rotate_new (a, v, backwards)` [^][contents]
 [rotate_new]: #rotate_new-a-v-backwards-
 Rotate object with additional options.
 Works like `rotate()`.\
@@ -517,7 +518,7 @@ combine()
 ```
 
 
-### Compose operations [^][contents]
+### Modifying operations [^][contents]
 
 #### xor [^][contents]
 [xor]: #xor-
@@ -529,6 +530,19 @@ xor (d, skirt)
 - `d`     - dimension of the objects, default = `3` - 3D object
 - `skirt` - optional, create a little skirt around the object to prevent errors
   - default = constant `epsilon`
+
+#### minkowski_difference [^][contents]
+[minkowski_difference]: #minkowski_difference-
+Removes shapes from a base shape surface.\
+Takes a 3D base shape and one or more 3D diff shapes,
+carves out the diff shapes from the surface of the base shape,
+in a way complementary to how `minkowski()` unions shapes to the surface of its base shape.
+```OpenSCAD
+minkowski_difference (convexity)
+```
+- `convexity`
+  - Integer. The convexity parameter specifies the maximum number
+    of front sides (or back sides) a ray intersecting the object might penetrate.
 
 
 ### 2D to 3D extrusion [^][contents]
