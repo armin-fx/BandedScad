@@ -11,7 +11,7 @@
 //          https://creativecommons.org/licenses/by-sa/4.0/
 //
 // Rather kludgy module for determining bounding box from intersecting projections
-module bounding_box (convexity=5, height=1000)
+module bounding_box_example (convexity=5, height=1000)
 {
 	intersection()
 	{

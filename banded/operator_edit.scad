@@ -13,7 +13,6 @@ use <banded/math_vector.scad>
 use <banded/draft_transform_common.scad>
 use <banded/draft_transform_basic.scad>
 use <banded/operator_transform.scad>
-use <banded/other.scad>
 
 
 // - Objekte verbinden:
@@ -262,6 +261,53 @@ module minkowski_difference (convexity)
 				children(0);
 			}
 			for (i=[1:1:$children-1]) children(i);
+		}
+	}
+}
+
+module bounding_box (d=3, height=1000)
+{
+	if (d==3) bounding_box_3d_intern (height=height) hull() children();
+	if (d==2) bounding_box_2d_intern (height=height) hull() children();
+}
+module bounding_box_2d_intern (height=1000)
+{
+	render()
+	intersection()
+	{
+		projection(cut=false) rotate([0,90,0]) linear_extrude(height=height, center=true) children();
+		projection(cut=false) rotate([90,0,0]) linear_extrude(height=height, center=true) children();
+	}
+}
+module bounding_box_3d_intern (height=1000)
+{
+	module projection_z (side, rotation=[0,0,0])
+	{
+			projection (cut=false)
+			rotate (rotation)
+			rotate (side)
+			linear_extrude (height=height, center=true)
+			projection (cut=false)
+			rotate (-side)
+			children();
+	}
+	
+	render()
+	intersection()
+	{
+		linear_extrude (height=height, center=true)
+		intersection()
+		{
+			projection_z (side=[0,90,0]) children();
+			projection_z (side=[90,0,0]) children();
+		}
+		
+		rotate ([90,0,0])
+		linear_extrude (height=height, center=true)
+		intersection()
+		{
+			projection_z (side=[0,90,0], rotation=[-90,0,0]) children();
+			projection_z (side=[0,0,0] , rotation=[-90,0,0]) children();
 		}
 	}
 }

@@ -54,6 +54,7 @@ Transform and edit objects
   - [Modifying operations](#modifying-operations-)
     - [`xor()`][xor]
     - [`minkowski_difference()`][minkowski_difference]
+    - [`bounding_box()`][bounding_box]
   - [2D to 3D extrusion](#2d-to-3d-extrusion-)
     - [`extrude_line()`][extrude_line]
     - [`plain_trace_extrude()`][plain_trace_extrude]
@@ -543,6 +544,20 @@ minkowski_difference (convexity)
 - `convexity`
   - Integer. The convexity parameter specifies the maximum number
     of front sides (or back sides) a ray intersecting the object might penetrate.
+
+#### bounding_box [^][contents]
+[bounding_box]: #bounding_box-
+Create the smallest bounding box of an object.
+```OpenSCAD
+bounding_box (d, height)
+```
+- `d`
+  - dimension of the objects
+    - `3` - 3D object, default
+    - `2` - 2D object
+- `height`
+  - for internal use, any size greater then the biggest lenght of the object
+  - default = `1000`
 
 
 ### 2D to 3D extrusion [^][contents]
