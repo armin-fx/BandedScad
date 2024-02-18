@@ -6,7 +6,7 @@
 use <banded/constants_helper.scad>
 
 include <banded/constants_user.scad>
-include <banded/constants_data.scad>
+include <banded/constants_technical.scad>
 
 
 // - Mathematische Konstanten:

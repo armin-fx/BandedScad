@@ -20,6 +20,7 @@ What it does [^][contents]
 Main functionality:
 - [More control of the level of detail for a mesh][extend],
     extend the control of number of facets used to generate an arc
+- [Useful constants][constants]
 - [Configurable object modules][object]
   - [Figures][figures] (torus, wedge, funnel, ... )
   - [Rounded and chamfered edges][edges]
@@ -60,6 +61,7 @@ Separate stuff:
   to use some new buildin functions from OpenSCAD in older OpenSCAD version
 
 [extend]:      doc/extend.md
+[constants]:   doc/constants.md
 [draft]:       doc/draft.md
 [curves]:      doc/draft_curves.md
 [surface]:     doc/draft_surface.md
@@ -119,7 +121,7 @@ You can include the whole library with
 ```OpenSCAD
 include <banded.scad>
 ```
-  
+
 You can load a specify libraries with
 ```OpenSCAD
 include <banded/ *** .scad>

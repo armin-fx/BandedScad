@@ -5,6 +5,7 @@ Constants
 `banded/constants.scad`\
 ` `| \
 ` `+--> `banded/constants_user.scad`\
+` `+--> `banded/constants_technical.scad`\
 ` `+--> `banded/constants_helper.scad`
 
 [<-- file overview](file_overview.md)\
@@ -17,11 +18,13 @@ Constants
   - [Mathematical constants](#mathematical-constants-)
   - [Convert units of measure](#convert-units-of-measure-)
   - [Natural constants](#natural-constants-)
-  - [Customizable constants](#customizable-constants-)
   - [Auxiliary constants](#auxiliary-constants-)
   - [Functions](#functions-)
     - [`axis()`][axis]
     - [`origin()`][origin]
+  - [Customizable constants](#customizable-constants-)
+  - [Technical constants](#technical-constants-)
+    - [Paper size](#paper-size-)
 
 
 Defined constants [^][contents]
@@ -82,36 +85,6 @@ in console if constants has changed.
 | `caesium_frequency` | 9192631770      | 1/s   | Frequency of the radiation of the cesium atom
 
 
-### Customizable constants [^][contents]
-These constants can be adjusted to the needs.
-
-| constant            | default number
-|---------------------|----------------
-| `extra`             | 0.02
-| `epsilon`           | 0.000075
-| `deviation`         | 1e-14
-| `deviation_sqr`     | 7.45058e-9
-| `delta_std`         | 0.001
-
-___`extra`:___
-- Number to add or subtract if clipping objects need to be slightly larger
-  due to prevent Z-fighting.
-
-___`epsilon`:___
-- Smallest number to add or subtract, so you can't see it on the object.
-- E.g. if 2 objects share a corner and therefore generate errors.
-
-___`deviation`:___
-- Smallest number that occurs when calculations are inaccurate.
-
-___`deviation_sqr`:___
-- Smallest number that occurs when calculations with squared numbers are inaccurate.
-
-___`delta_std`:___
-- Step amount for calculation of approximate values.
-- Used in functions `integrate()` and `derivation()`.
-
-
 ### Auxiliary constants [^][contents]
 
 | constant | value     | description
@@ -149,4 +122,64 @@ Returns a zero vector. Point = origin.
   - `2` = 2D plane, returns `[0,0]`
   - `3` = 3D room, returns `[0,0,0]`, default
 - `v` - value of zero, default = `0`
+
+
+### Customizable constants [^][contents]
+These constants can be adjusted to the needs.\
+Defined in file: `banded/constants_user.scad`
+
+| constant            | default number
+|---------------------|----------------
+| `extra`             | 0.02
+| `epsilon`           | 0.000075
+| `deviation`         | 1e-14
+| `deviation_sqr`     | 7.45058e-9
+| `delta_std`         | 0.001
+
+___`extra`:___
+- Number to add or subtract if clipping objects need to be slightly larger
+  due to prevent Z-fighting.
+
+___`epsilon`:___
+- Smallest number to add or subtract, so you can't see it on the object.
+- E.g. if 2 objects share a corner and therefore generate errors.
+
+___`deviation`:___
+- Smallest number that occurs when calculations are inaccurate.
+
+___`deviation_sqr`:___
+- Smallest number that occurs when calculations with squared numbers are inaccurate.
+
+___`delta_std`:___
+- Step amount for calculation of approximate values.
+- Used in functions `integrate()` and `derivation()`.
+
+
+### Technical constants [^][contents]
+Contains constants and functions for standard sizes and measures.
+Defined in file: `banded/constants_technical.scad`
+
+#### Paper size: [^][contents]
+Defines paper size in ISO 216.\
+ISO 216 is an international standard for paper sizes.
+The standard defines the __"A"__, __"B"__ and __"C"__ series of paper sizes,
+including __A4__, the most commonly available paper size worldwide.
+
+_Function:_\
+__`iso_216 (serie, number)`__
+- Returns the paper size as list: `[smallest size, biggest size]`
+- Arguments:
+  - `serie`  - format `"A"`, `"B"` or `"C"`
+  - `number` - size as numeric value `0`...`10`
+- Example for paper size __A4__:
+  - `iso_216 ("A",4)`
+
+_Defined Constants_:
+| size | A series formats | B series formats | C series formats
+|------|------------------|------------------|------------------
+|  0   | `ISO_A0`         | `ISO_B0`         | `ISO_C0`
+|  1   | `ISO_A1`         | `ISO_B1`         | `ISO_C1`
+| ...  | ...              | ...              | ...
+|  9   | `ISO_A9`         | `ISO_B9`         | `ISO_C9`
+| 10   | `ISO_A10`        | `ISO_B10`        | `ISO_C10`
 

@@ -7,6 +7,7 @@ Overview of scad files
 ` `|\
 ` `+--> [`banded/constants.scad`](constants.md "Define some constants")\
 ` `| . . . +--> [`banded/constants_user.scad`](constants.md#customizable-constants- "Customizable constants")\
+` `| . . . +--> [`banded/constants_technical.scad`](constants.md#technical-constants- "Technical constants")\
 ` `| . . . +--> `banded/constants_helper.scad`\
 ` `|\
 ` `+--> [`banded/math.scad`](math.md "Math functions")\
