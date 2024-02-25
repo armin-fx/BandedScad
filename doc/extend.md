@@ -28,6 +28,8 @@
     - [`cube_extend()`][cube_extend]
     - [`rotate_extrude_extend()`][rotate_extrude_extend]
 - [Functions](#functions-)
+  - [Convert values](#convert-values-)
+    - [`get_angle_from_percent()`][get_angle_from_percent]
   - [Get fragments of a circle](#get-fragments-of-a-circle-)
     - [Recurring arguments](#recurring-arguments-)
     - [`get_slices_circle_current()`][get_slices_circle_current]
@@ -37,8 +39,6 @@
     - [`get_slices_circle()`][get_slices_circle]
     - [`get_slices_circle_x()`][get_slices_circle_x]
     - [`get_fn_circle()`][get_fn_circle]
-  - [Convert values](#convert-values-)
-    - [`get_angle_from_percent()`][get_angle_from_percent]
   - [Internal use](#internal-use-)
     - [`is_sf_activated()`][is_sf_activated]
     - [`is_sf_enabled()`][is_sf_enabled]
@@ -57,18 +57,18 @@
 Special variables [^][contents]
 -------------------------------
 
-The buildin special variables in OpenSCAD `$fa`, `$fs` and `$fn` special variables
-control the number of facets used to generate an arc.
-This library contains extra special variables and functions to control the level of detail
+The _buildin special variables_ in OpenSCAD `$fa`, `$fs` and `$fn`
+control the number of facets to generate an arc.
+This library contains _extra special variables_ and _functions_ to control the level of detail
 and defines modules to extend the buildin objects like `circle()` and `cylinder()`.
 
-| variable | description
-|----------|-------------
-| `$fa`    | Minimum angle (in degrees) of each fragment
-| `$fs`    | Minimum circumferential length of each fragment
-| `$fn`    | Fixed number of fragments in 360 degrees. Values of 3 or more override `$fa` and `$fs`.
+| buildin variable | description
+|------------------|-------------
+| `$fa`            | Minimum angle (in degrees) of each fragment
+| `$fs`            | Minimum circumferential length of each fragment
+| `$fn`            | Fixed number of fragments in 360 degrees. Values of 3 or more override `$fa` and `$fs`.
 
-By default all extra special variables are set off to keep compatibility with
+By default all _extra special variables_ are set off to keep compatibility with
 original functionality from OpenSCAD.
 If `$fn` is defined, this value will be used and the other variables are ignored,
 and a full circle is rendered using this number of fragments.
@@ -83,11 +83,19 @@ Variables can set off with `0`.
 | `$fs_enabled` | `$fs` can be switch off when set with `false`
 | `$fn_safe`    | If all special variables are off, this number of fragments will be used. default = `12`
 
+If you want define the maximum deviation from the model in percent,
+you can do this with the _buildin special variable_ `$fa`.
+The angle for a fragment is equivalent to distance of deviation in percent.\
+You can convert this with function [`get_angle_from_percent()`][get_angle_from_percent]:
+```OpenSCAD
+$fa = get_angle_from_percent (2); // 2% deviation
+```
+
 
 Defined modules [^][contents]
 -----------------------------
-Keep compatibility with buildin modules in OpenSCAD with same arguments and can controlled
-with extra special variables, some modules have extra arguments
+Keep compatibility with _buildin modules_ in OpenSCAD with same arguments and can controlled
+with _extra special variables_, some modules have extra arguments
 
 | buildin                  | extended
 |--------------------------|----------
@@ -235,6 +243,15 @@ cylinder (r=2, h=1);
 Functions [^][contents]
 -----------------------
 
+### Convert values [^][contents]
+
+#### `get_angle_from_percent (value)` [^][contents]
+[get_angle_from_percent]: #get_angle_from_percent-value-
+Get the minimum angle for a fragment from maximum distance of deviation
+in percent to set value in special variable `$fa`.
+Angle for a fragment is equivalent to distance of deviation in percent.
+
+
 ### Get fragments of a circle [^][contents]
 
 #### Function name convention: [^][contents]
@@ -300,15 +317,6 @@ For e.g. rotate_extrude(), if an opening angle is specified,
 the number of segments is divided internally to keep the desired precision.
 This function calculate the value for `$fn`, so the object gets
 the real number of segments for the opening angle.
-
-
-### Convert values [^][contents]
-
-#### `get_angle_from_percent (value)` [^][contents]
-[get_angle_from_percent]: #get_angle_from_percent-value-
-Get the minimum angle for a fragment from maximum distance of deviation
-in percent to set value in special variable `$fa`.
-Angle for a fragment is equivalent to distance of deviation in percent.
 
 
 ### Internal use [^][contents]
