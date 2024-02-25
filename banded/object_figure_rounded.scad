@@ -116,9 +116,9 @@ module cube_rounded_full (size, r, center=false, d)
 //   corner_bottom - alle 4 Ecken am Boden
 //   corner_top    - alle 4 Ecken oben
 module cube_fillet (size, r, type=0
-                   , edges_bottom=[1,1,1,1],   edges_top=[1,1,1,1],   edges_side=[1,1,1,1]
-                   ,corner_bottom=[1,1,1,1],  corner_top=[1,1,1,1]
-                   ,  type_bottom=[-1,-1,-1,-1],type_top=[-1,-1,-1,-1],type_side=[-1,-1,-1,-1]
+                   , edges_bottom,   edges_top,   edges_side
+                   ,corner_bottom,  corner_top
+                   ,  type_bottom=-1, type_top=-1, type_side=-1
                    ,center=false, align)
 {
 	Size = parameter_size_3d (size);
@@ -210,11 +210,11 @@ module cube_fillet (size, r, type=0
 // Quader mit abgerundeten Kanten
 // Argumente wie bei cube_fillet()
 //   r, d  - Radius,Durchmesser der Kanten
-module cube_rounded (size, r, edges_bottom=[1,1,1,1],  edges_top=[1,1,1,1], edges_side=[1,1,1,1],
-                             corner_bottom=[1,1,1,1], corner_top=[1,1,1,1],
+module cube_rounded (size, r, edges_bottom,  edges_top, edges_side,
+                             corner_bottom, corner_top,
                      center=false, align, d)
 {
-	cube_fillet (size=size, r=parameter_circle_r(r, d, 0), type=1,
+	cube_fillet (size=size, r=parameter_circle_r(r, d, undef), type=1,
 		 edges_bottom= edges_bottom,  edges_top= edges_top, edges_side=edges_side,
 		corner_bottom=corner_bottom, corner_top=corner_top,
 		center=center, align=align
@@ -223,11 +223,11 @@ module cube_rounded (size, r, edges_bottom=[1,1,1,1],  edges_top=[1,1,1,1], edge
 // Quader mit abgeschrägten Kanten
 // Argumente wie bei cube_rounded()
 //   c  - Breite der Schräge
-module cube_chamfer (size, c, edges_bottom=[1,1,1,1],  edges_top=[1,1,1,1], edges_side=[1,1,1,1],
-                             corner_bottom=[1,1,1,1], corner_top=[1,1,1,1],
+module cube_chamfer (size, r, edges_bottom,  edges_top, edges_side,
+                             corner_bottom, corner_top,
                      center=false, align)
 {
-	cube_fillet (size=size, r=c, type=2,
+	cube_fillet (size=size, r=r, type=2,
 		 edges_bottom= edges_bottom,  edges_top= edges_top, edges_side=edges_side,
 		corner_bottom=corner_bottom, corner_top=corner_top,
 		center=center, align=align
@@ -317,9 +317,9 @@ module cylinder_edges_chamfer (h, r1, r2, r_edges=0, center, r, d, d1, d2, angle
 // Kantenargumente wie bei cube_fillet()
 module wedge_fillet (v_min, v_max, v2_min, v2_max
                     , r, type=0
-                    , edges_bottom=[1,1,1,1],   edges_top=[1,1,1,1],   edges_side=[1,1,1,1]
-                    ,corner_bottom=[1,1,1,1],  corner_top=[1,1,1,1]
-                    ,  type_bottom=[-1,-1,-1,-1],type_top=[-1,-1,-1,-1],type_side=[-1,-1,-1,-1] )
+                    , edges_bottom,   edges_top,   edges_side
+                    ,corner_bottom,  corner_top
+                    ,  type_bottom=-1, type_top=-1, type_side=-1 )
 {
 	Type_bottom = parameter_types (type_bottom, type);
 	Type_top    = parameter_types (type_top   , type);
@@ -378,8 +378,8 @@ module wedge_fillet (v_min, v_max, v2_min, v2_max
 }
 // Keil mit abgerundeten Kanten
 module wedge_rounded (v_min, v_max, v2_min, v2_max, r,
-                      edges_bottom=[1,1,1,1],  edges_top=[1,1,1,1], edges_side=[1,1,1,1],
-                     corner_bottom=[1,1,1,1], corner_top=[1,1,1,1],
+                      edges_bottom,  edges_top, edges_side,
+                     corner_bottom, corner_top,
                      d)
 {
 	wedge_fillet (v_min, v_max, v2_min, v2_max,
@@ -389,13 +389,13 @@ module wedge_rounded (v_min, v_max, v2_min, v2_max, r,
 	);
 }
 // Keil mit abgeschrägten Kanten
-module wedge_chamfer (v_min, v_max, v2_min, v2_max, c,
-                      edges_bottom=[1,1,1,1],  edges_top=[1,1,1,1], edges_side=[1,1,1,1],
-                     corner_bottom=[1,1,1,1], corner_top=[1,1,1,1],
+module wedge_chamfer (v_min, v_max, v2_min, v2_max, r,
+                      edges_bottom,  edges_top, edges_side,
+                     corner_bottom, corner_top,
                      )
 {
 	wedge_fillet (v_min, v_max, v2_min, v2_max,
-		r=c, type=2,
+		r=r, type=2,
 		 edges_bottom= edges_bottom,  edges_top= edges_top, edges_side=edges_side,
 		corner_bottom=corner_bottom, corner_top=corner_top
 	);

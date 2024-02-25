@@ -634,16 +634,19 @@ Test 3D vector `v` and may load default for vector in mirror function.
   - default vector if `v` not correct,
     default = `[1,0,0]` like OpenSCAD's default
 
-#### `parameter_edges_radius (edge_list, r)` [^][contents]
-[parameter_edges_radius]: #parameter_edges_radius-edge_list-r-
+#### `parameter_edges_radius (edge_list, r, n)` [^][contents]
+[parameter_edges_radius]: #parameter_edges_radius-edge_list-r-n-
 Evaluates the `edges_xxx` parameters from the module `cube_fillet()`.\
 Returns a 4 element list
 
 Arguments:
-- `r`         - parameter for the edge, radius or width
-- `edge_list` - 4-element selection list of the respective edges,
+- `r`
+  - parameter for the edge, radius or width
+- `edge_list`
+  - 4-element selection list of the respective edges,
   - is multiplied by `r` if specified
   - as a number, all edges are set to this value
+  - if `r` is set and `edge_list` is undefined, all edges are set to `r`
   - otherwise the value is set to `0` = unchamfered edge
 - `n` - a different number of elements than the default 4 can be specified here
 
@@ -655,7 +658,7 @@ Arguments:
 - `r`    - parameter for the edge, radius or width
 - `edge`
   - is multiplied by `r` if specified
-  - as a number, all edges are set to this value
+  - as a number, the edge is set to this value
   - otherwise the value is set to `0` = unchamfered edge
 
 #### `parameter_types (type_list, type, n)` [^][contents]

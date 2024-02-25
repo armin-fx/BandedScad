@@ -24,6 +24,7 @@ Configurable objects
 - [Rounded edges](#rounded-edges-)
   - [Repeating options](#repeating-options-)
   - [Module name convention](#module-name-convention-)
+  - [Module characteristic](#module-characteristic-)
   - [Cutting or adding parts for edges](#cutting-or-adding-parts-for-edges-)
     - [`edge_fillet()`][edge_fillet]
     - [`edge_ring_fillet()`][edge_ring_fillet]
@@ -184,7 +185,7 @@ ring_square (h, r, w, ri, ro, angle, center, d, di, do, outer, align)
   - the problem is described in website
     <https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/undersized_circular_objects>
 
-___Must specify:___
+_Must specify:_
 - `h`
 - exactly 2 specifications of `r` or `ri` or `ro` or `w`
 
@@ -230,7 +231,7 @@ ring_square (h=0.5, w=1, ri=7);
 Rounded edges [^][contents]
 ---------------------------
 
-##### Repeating options: [^][contents]
+#### Repeating options: [^][contents]
 
 - `type`
   - specify, which chamfer type should be used for the edge
@@ -257,7 +258,7 @@ Rounded edges [^][contents]
     - `0` = not chamfered
     - `1` = chamfered
     - other number = radius or width will be increased by this number
-  - if set a value instead a list,
+  - if set a numeric value instead a list,
     all described edges get the same value
   - there will be more options on some modules,
     where `xxx` specify the name of a group of edges.\
@@ -306,7 +307,7 @@ for example on a cube:
 | `corner_bottom` | `[0,   1,   2,   3]`
 | `corner_top`    | `[4,   5,   6,   7]`
 
-##### Module name convention: [^][contents]
+#### Module name convention: [^][contents]
 On modules with the name `_fillet` on the end you can
 specify the type of the chamfer.\
 But these modules have specialized derivation modules
@@ -315,6 +316,18 @@ with only one chamfer type.
 - `xxx_fillet`  - edges can specified with option `type`
 - `xxx_rounded` - with rounded edges
 - `xxx_chamfer` - with chamfered edges
+
+#### Module characteristic: [^][contents]
+List of characteristic behavior of modules with fillet edges:
+- The base module is shown by default, the edges must extra set
+  - The type of the edge is set by default to _no fillet edge_.
+  - If the edge type is set, all edges have the size `0`, means they are unset.
+  - If only parameter `r` is set, all (not defined) edges will set to this size.
+  - You can define every edge size specially with the parameter `edge_xxx`
+    without specify `r`.
+  - If `r` is set, this value will multiplied with every specified edge size,
+    so you can activate every specific edge with `1` and deactivate with `0`,
+    all so activated edges so gets the size `r`.
 
 
 ### Cutting or adding parts for edges [^][contents]
@@ -340,7 +353,7 @@ edge_fillet (h, r, angle, type, center, extra)
 - `extra`  - set an amount extra overhang, because of z-fighting
   - default = constant `extra`
 
-___Specialized modules with no argument `type`___
+_Specialized modules with no argument `type`:_
 - `edge_rounded()` - creates a rounded edges
   - `d` - diameter of the rounded edge, optional parameter
 - `edge_chamfer()` - creates a chamfered edges
@@ -378,13 +391,13 @@ edge_ring_fillet (r_ring, r, angle, angle_ring, type, outer, slices, extra)
 - `extra`  - set an amount extra overhang, because of z-fighting
   - default = constant `extra`
 
-___Specialized modules with no argument `type`___
+_Specialized modules with no argument `type`:_
 - `edge_ring_rounded()` - creates a rounded edge
   - `d`      - diameter of the rounded edge, optional parameter
   - `d_ring` - diameter of the cylinder, optional parameter
 - `edge_ring_chamfer()` - creates a chamfered edge
 
-___Example:___
+_Example:_
 ```OpenSCAD
 include <banded.scad>
 
@@ -437,12 +450,12 @@ edge_trace_fillet (trace, r, angle, type, closed, extra)
 - `extra`  - set an amount extra overhang, because of z-fighting
   - default = constant `extra`
 
-___Specialized modules with no argument `type`___
+_Specialized modules with no argument `type`:_
 - `edge_trace_rounded()` - creates a rounded edge
   - `d`      - diameter of the rounded edge, optional parameter
 - `edge_trace_chamfer()` - creates a chamfered edge
 
-___Example:___
+_Example:_
 ```OpenSCAD
 include <banded.scad>
 
@@ -477,7 +490,7 @@ edge_fillet_plane (r, angle, type, extra)
 - `extra`  - set an amount extra overhang, because of z-fighting
   - default = constant `extra`
 
-___Specialized modules with no argument `type`___
+_Specialized modules with no argument `type`:_
 - `edge_rounded_plane()` - creates a rounded edges
   - `d` - diameter of the rounded edge, optional parameter
 - `edge_chamfer_plane()` - creates a chamfered edges
@@ -511,7 +524,7 @@ edge_fillet_to (line, point1, point2, r, type, extra, extra_h, directed)
   - `false`, line is considered as undirected\
     Flip the chamfered edge to the side with an angle < 180°
 
-___Specialized modules with no argument `type`___
+_Specialized modules with no argument `type`:_
 - `edge_rounded_to()` - creates a rounded edges
 - `edge_chamfer_to()` - creates a chamfered edges
 
@@ -534,7 +547,7 @@ cube_rounded_full (size, r, center, d)
 #### cube_fillet [^][contents]
 [cube_fillet]: #cube_fillet-
 Cube with rounded edges, every edge can be configured.\
-Based on `cube()`
+Based on `cube()`.
 ```OpenSCAD
 cube_fillet (size, r, type, edges_xxx, corner_xxx, type_xxx, center, align)
 ```
@@ -543,10 +556,8 @@ cube_fillet (size, r, type, edges_xxx, corner_xxx, type_xxx, center, align)
 - `type` - specify, which chamfer type should be used for all edges
 - `edges_bottom`, `edges_top`, `edges_side`
   - a list set the 4 edges on bottom, top, side
-  - default = `1` on every edge
 - `corner_bottom`, `corner_top`
   - a list set the 4 corners on bottom, top
-  - default = `1` on every corner
   - TODO Not implemented yet
 - `type_bottom`, `type_top`, `type_side`
   - a list with specification of the chamfer types of the edges
@@ -558,7 +569,7 @@ cube_fillet (size, r, type, edges_xxx, corner_xxx, type_xxx, center, align)
   - [Extra arguments - align][align]
   - default = `[1,1,1]` = oriented on the positive side of axis
 
-___Specialized modules with no arguments `type` and `type_xxx`___
+_Specialized modules with no arguments `type` and `type_xxx`:_
 - `cube_rounded()` - cube only with rounded edges
 - `cube_chamfer()` - cube only with chamfered edges
 
@@ -614,11 +625,11 @@ cylinder_edges_fillet (h, r1, r2, r_edges, type, center, r, d, d1, d2, angle, sl
   - [Extra arguments - align][align]
   - default = `[0,0,1]` = X-Y-axis centered
 
-___Specialized modules with no arguments `type` and `type_xxx`___
+_Specialized modules with no arguments `type` and `type_xxx`:_
 - `cylinder_edges_rounded()` - cylinder only with rounded edges
 - `cylinder_edges_chamfer()` - cylinder only with chamfered edges
 
-___Example:___
+_Example:_
 ```OpenSCAD
 include <banded.scad>
 $fn=24;
@@ -643,17 +654,15 @@ wedge_fillet (v_min, v_max, v2_min, v2_max, r, type, edges_xx, corner_xxx, type_
 - `v2_max` = `[X2max, Z2max]`
 - `edges_bottom`, `edges_top`, `edges_side`
   - a list set the 4 edges on bottom, top, side
-  - default = `1` on every edge
 - `corner_bottom`, `corner_top`
   - a list set the 4 corners on bottom, top
-  - default = `1` on every corner
   - TODO Not implemented yet
 - `type_bottom`, `type_top`, `type_side`
   - a list with specification of the chamfer types of the edges
     on the bottom, top, side
   - default = `-1` - use the entry from `type`
 
-___Specialized modules with no arguments `type` and `type_xxx`___
+_Specialized modules with no arguments `type` and `type_xxx`_
 - `wedge_rounded()` - wedge only with rounded edges
 - `wedge_chamfer()` - wedge only with chamfered edges
 
@@ -690,7 +699,7 @@ square_fillet (size, r, type, center, align)
   - [Extra arguments - align][align]
   - default = `[1,1]` = oriented on the positive side of axis
 
-___Specialized modules with no arguments `type`___
+_Specialized modules with no arguments `type`:_
 - `square_rounded()` - square only with rounded edges
 - `square_chamfer()` - square only with chamfered edges
 
