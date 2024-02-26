@@ -75,17 +75,17 @@ module cube_rounded_full (size, r, center=false, d)
 // Quader mit gefasten Kanten, wahlweise abgerundet oder angeschrägt
 // Argumente:
 //   size          - Größe des Quaders wie bei cube()
-//   r             - Radius der Kanten oder Breite der Schräge
-//   type          - allgemein, welcher Fasentyp für alle Kanten verwendet werden sollen
-//                   0 = keine Fase (Standart)
-//                   1 = Rundung
-//                   2 = Schräge
-//   edges_xxx     - Angabe, welche Kanten gefast sein sollen
-//                   0  = nicht gefast
-//                   1  = gefast
-//                   andere Zahl = Radius oder Breite wird um diese Zahl vergrößert
+//   type          - Fasentyp für alle Kanten als Liste
+//                 - Bei Angabe des Fasentyps direkt werden alle Kanten auf diesen Fasentyp gesetzt
+//                 - mögliche Werte:
+//                   - 0 = keine Fase (Standart)
+//                   - 1 = Rundung
+//                   - 2 = Schräge
+//                 - Die Liste enthält 12 Elemente. Die Positionen konfigurieren jeweils eine Kante:
+//                   [ 4 Kanten am Boden (bottom), 4 Kanten oben (top), 4 Kanten an der Seite (around)]
+//                 - Positionen der Kanten auf dem Würfel (Ansicht von oben)
 //                   [x0(->x1), x1(->y1), y1(->y0), y0(->x0)]  -> bottom, top
-//                   [x0      , x1      , y1      , y0      ]  -> side
+//                   [x0      , x1      , y1      , y0      ]  -> around
 //                             y
 //                      y0     |     y1
 //                       +-----|-----+
@@ -95,43 +95,42 @@ module cube_rounded_full (size, r, center=false, d)
 //                       +-----|-----+
 //                      x0     |     x1
 //
-//   edges_bottom  - alle 4 Kanten am Boden
-//   edges_top     - alle 4 Kanten oben
-//   edges_side    - alle 4 Kanten an der Seite (vertikal)
-//
-//   type_xxx      - spezielle Angabe des Fasentyp der jeweiligen Kante
-//                   Liste wie bei edges_xxx ([x,x,x,x])
-//                   Werte wie bei type (0...1...2)
-//                   -1 = Angabe von type nehmen (Standart)
-//   type_bottom   - alle 4 Kanten am Boden
-//   type_top      - alle 4 Kanten oben
-//   type_side     - alle 4 Kanten an der Seite (vertikal)
-//
+//   edges         - Radius der Kanten oder Breite der Schräge der jeweiligen Kante als Liste
+//                 - Wird ein Zahlwert direkt angegeben, wird dieser für alle Kanten genommen
+//                 - mögliche Werte:
+//                   0        = nicht gefast
+//                   größer 0 = Radius oder Breite der Fase
+//                 - Die Liste enthält 12 Elemente. Positionen wie bei Parameter 'type'
 //   center        - wenn true, Quader wird zum Koordinatenursprung zentriert, Standart=false
+//   align         - Ausrichtung des Quaders
+//
 // TODO Noch nicht implementiert:
-//   corner_xxx    - Angabe, welche Ecken gefast sein sollen
+//   corner        - Angabe, welche Ecken gefast sein sollen als Liste
+//                 - Wird ein Wert direkt angegeben, wird dieser für alle Ecken genommen
+//                 - mögliche Werte:
 //                   0  = nicht gefast
 //                   1  = gefast
+//                 - Die Liste enthält 8 Elemente. Die Positionen konfigurieren jeweils eine Ecke:
+//                   [ 4 Ecken am Boden (bottom), 4 Ecken oben (top)]
+//                 - Positionen der Ecken auf dem Würfel (Ansicht von oben)
 //                   [x0, x1, y1, y0]  -> bottom, top
-//   corner_bottom - alle 4 Ecken am Boden
-//   corner_top    - alle 4 Ecken oben
-module cube_fillet (size, r, type=0
-                   , edges_bottom,   edges_top,   edges_side
-                   ,corner_bottom,  corner_top
-                   ,  type_bottom=-1, type_top=-1, type_side=-1
-                   ,center=false, align)
+module cube_fillet (size, type, edges, corner, center, align)
 {
 	Size = parameter_size_3d (size);
 	//
 	Align = parameter_align   (align, [1,1,1], center);
 	//
-	Type_bottom = parameter_types (type_bottom, type);
-	Type_top    = parameter_types (type_top   , type);
-	Type_side   = parameter_types (type_side  , type);
+	Types       = parameter_types_cube (type);
+	Type_bottom = [for (i=[0: 3]) Types[i] ];
+	Type_top    = [for (i=[4: 7]) Types[i] ];
+	Type_side   = [for (i=[8:11]) Types[i] ];
 	//
-	r_bottom = parameter_edges_radius (edges_bottom, r);
-	r_top    = parameter_edges_radius (edges_top   , r);
-	r_side   = parameter_edges_radius (edges_side  , r);
+	Edges    = parameter_edges_cube (edges);
+	r_bottom = [for (i=[0: 3]) Edges[i] ];
+	r_top    = [for (i=[4: 7]) Edges[i] ];
+	r_side   = [for (i=[8:11]) Edges[i] ];
+	//
+	Corner = parameter_corner_cube (corner);
 	
 	module trans_side   ()  {                                  translate_z(-extra) children(); }
 	module trans_bottom ()  { rotate_y(90)rotate_z(90)         translate_z(-extra) children(); }
@@ -176,31 +175,31 @@ module cube_fillet (size, r, type=0
 		// TODO verschiedene Ecken testen
 		union()
 		{ // Ecken am Boden
-			if (corner_bottom[0]==1) trans_0() corner_fillet_cube(
+			if (Corner[0]==1) trans_0() corner_fillet_cube(
 				r    =[    r_bottom[0],    r_bottom[3],    r_side[0] ],
 				types=[ Type_bottom[0], Type_bottom[3], Type_side[0] ]);
-			if (corner_bottom[1]==1) trans_1() corner_fillet_cube(
+			if (Corner[1]==1) trans_1() corner_fillet_cube(
 				r    =[    r_bottom[1],    r_bottom[0],    r_side[1] ],
 				types=[ Type_bottom[1], Type_bottom[0], Type_side[1] ]);
-			if (corner_bottom[2]==1) trans_2() corner_fillet_cube(
+			if (Corner[2]==1) trans_2() corner_fillet_cube(
 				r    =[    r_bottom[2],    r_bottom[1],    r_side[2] ],
 				types=[ Type_bottom[2], Type_bottom[1], Type_side[2] ]);
-			if (corner_bottom[3]==1) trans_3() corner_fillet_cube(
+			if (Corner[3]==1) trans_3() corner_fillet_cube(
 				r    =[    r_bottom[3],    r_bottom[2],    r_side[3] ],
 				types=[ Type_bottom[3], Type_bottom[2], Type_side[3] ]);
 		}
 		trans_up() union()
 		{ // Ecke am Dach
-			if (corner_top[0]==1) trans_0() corner_fillet_cube(
+			if (Corner[4]==1) trans_0() corner_fillet_cube(
 				r    =[    r_top[0],    r_top[3],    r_side[0] ],
 				types=[ Type_top[0], Type_top[3], Type_side[0] ]);
-			if (corner_top[1]==1) trans_1() corner_fillet_cube(
+			if (Corner[5]==1) trans_1() corner_fillet_cube(
 				r    =[    r_top[1],    r_top[0],    r_side[1] ],
 				types=[ Type_top[1], Type_top[0], Type_side[1] ]);
-			if (corner_top[2]==1) trans_2() corner_fillet_cube(
+			if (Corner[6]==1) trans_2() corner_fillet_cube(
 				r    =[    r_top[2],    r_top[1],    r_side[2] ],
 				types=[ Type_top[2], Type_top[1], Type_side[2] ]);
-			if (corner_top[3]==1) trans_3() corner_fillet_cube(
+			if (Corner[7]==1) trans_3() corner_fillet_cube(
 				r    =[    r_top[3],    r_top[2],    r_side[3] ],
 				types=[ Type_top[3], Type_top[2], Type_side[3] ]);
 		}
@@ -209,29 +208,15 @@ module cube_fillet (size, r, type=0
 
 // Quader mit abgerundeten Kanten
 // Argumente wie bei cube_fillet()
-//   r, d  - Radius,Durchmesser der Kanten
-module cube_rounded (size, r, edges_bottom,  edges_top, edges_side,
-                             corner_bottom, corner_top,
-                     center=false, align, d)
+module cube_rounded (size, edges, corner, center, align)
 {
-	cube_fillet (size=size, r=parameter_circle_r(r, d, undef), type=1,
-		 edges_bottom= edges_bottom,  edges_top= edges_top, edges_side=edges_side,
-		corner_bottom=corner_bottom, corner_top=corner_top,
-		center=center, align=align
-	);
+	cube_fillet (size, 1, edges, corner, center, align);
 }
 // Quader mit abgeschrägten Kanten
 // Argumente wie bei cube_rounded()
-//   c  - Breite der Schräge
-module cube_chamfer (size, r, edges_bottom,  edges_top, edges_side,
-                             corner_bottom, corner_top,
-                     center=false, align)
+module cube_chamfer (size, edges, corner, center, align)
 {
-	cube_fillet (size=size, r=r, type=2,
-		 edges_bottom= edges_bottom,  edges_top= edges_top, edges_side=edges_side,
-		corner_bottom=corner_bottom, corner_top=corner_top,
-		center=center, align=align
-	);
+	cube_fillet (size, 2, edges, corner, center, align);
 }
 
 
@@ -260,7 +245,7 @@ module cylinder_rounded (h=3, r, center=false, d)
 
 // Zylinder mit gefasten Kanten, wahlweise abgerundet oder angeschrägt
 // fehlt noch: outer, piece
-module cylinder_edges_fillet (h, r1, r2, r_edges=0, type=0, center, r, d, d1, d2, angle=360, slices, outer, align)
+module cylinder_edges_fillet (h, r1, r2, type, edges, center, r, d, d1, d2, angle, slices, outer, align)
 {
 	angles   = parameter_angle (angle, [360,0]);
 	Outer    = outer!=undef ? outer : 0;
@@ -273,7 +258,7 @@ module cylinder_edges_fillet (h, r1, r2, r_edges=0, type=0, center, r, d, d1, d2
 	a        = atan ( H / (R_outer[0]-R_outer[1]) );
 	angle_bottom = a<0 ? a+180 : a;
 	angle_edges  = [angle_bottom, 180-angle_bottom];
-	R_edges  = parameter_numlist (2, r_edges, [0,0], true);
+	R_edges  = parameter_numlist (2, edges, [0,0], true);
 	R_both   = [for (i=[0:1])
 		Types[i]==1 ? min (  R[i]*tan(angle_edges[i]/2), R_edges[i])
 		:             min (2*R[i]*sin(angle_edges[i]/2), R_edges[i])
@@ -299,14 +284,14 @@ module cylinder_edges_fillet (h, r1, r2, r_edges=0, type=0, center, r, d, d1, d2
 	}
 }
 // Zylinder mit abgerundeten Kanten
-module cylinder_edges_rounded (h, r1, r2, r_edges=0, center, r, d, d1, d2, angle=360, slices, outer, align)
+module cylinder_edges_rounded (h, r1, r2, edges, center, r, d, d1, d2, angle, slices, outer, align)
 {
-	cylinder_edges_fillet (h, r1, r2, r_edges, 1, center, r, d, d1, d2, angle, slices, outer, align);
+	cylinder_edges_fillet (h, r1, r2, 1, edges, center, r, d, d1, d2, angle, slices, outer, align);
 }
 // Zylinder mit abgeschrägten Kanten
-module cylinder_edges_chamfer (h, r1, r2, r_edges=0, center, r, d, d1, d2, angle=360, slices, outer, align)
+module cylinder_edges_chamfer (h, r1, r2, edges, center, r, d, d1, d2, angle, slices, outer, align)
 {
-	cylinder_edges_fillet (h, r1, r2, r_edges, 2, center, r, d, d1, d2, angle, slices, outer, align);
+	cylinder_edges_fillet (h, r1, r2, 2, edges, center, r, d, d1, d2, angle, slices, outer, align);
 }
 
 // Erzeugt einen Keil mit den Parametern von FreeCAD mit gefasten Kanten
@@ -315,19 +300,19 @@ module cylinder_edges_chamfer (h, r1, r2, r_edges=0, center, r, d, d1, d2, angle
 // v2_min = [X2min, Z2min]
 // v2_max = [X2max, Z2max]
 // Kantenargumente wie bei cube_fillet()
-module wedge_fillet (v_min, v_max, v2_min, v2_max
-                    , r, type=0
-                    , edges_bottom,   edges_top,   edges_side
-                    ,corner_bottom,  corner_top
-                    ,  type_bottom=-1, type_top=-1, type_side=-1 )
+module wedge_fillet (v_min, v_max, v2_min, v2_max, type, edges, corner)
 {
-	Type_bottom = parameter_types (type_bottom, type);
-	Type_top    = parameter_types (type_top   , type);
-	Type_side   = parameter_types (type_side  , type);
+	Types       = parameter_types_cube (type);
+	Type_bottom = [for (i=[0: 3]) Types[i] ];
+	Type_top    = [for (i=[4: 7]) Types[i] ];
+	Type_side   = [for (i=[8:11]) Types[i] ];
 	//
-	r_bottom = parameter_edges_radius (edges_bottom, r);
-	r_top    = parameter_edges_radius (edges_top   , r);
-	r_side   = parameter_edges_radius (edges_side  , r);
+	Edges    = parameter_edges_cube (edges);
+	r_bottom = [for (i=[0: 3]) Edges[i] ];
+	r_top    = [for (i=[4: 7]) Edges[i] ];
+	r_side   = [for (i=[8:11]) Edges[i] ];
+	//
+	Corner = parameter_corner_cube (corner); // TODO Not implemented
 	//
 	Vmin  = v_min;
 	Vmax  = v_max;
@@ -377,55 +362,41 @@ module wedge_fillet (v_min, v_max, v2_min, v2_max
 	}
 }
 // Keil mit abgerundeten Kanten
-module wedge_rounded (v_min, v_max, v2_min, v2_max, r,
-                      edges_bottom,  edges_top, edges_side,
-                     corner_bottom, corner_top,
-                     d)
+module wedge_rounded (v_min, v_max, v2_min, v2_max, edges, corner)
 {
-	wedge_fillet (v_min, v_max, v2_min, v2_max,
-		r=parameter_circle_r(r, d), type=1,
-		 edges_bottom= edges_bottom,  edges_top= edges_top, edges_side=edges_side,
-		corner_bottom=corner_bottom, corner_top=corner_top
-	);
+	wedge_fillet (v_min, v_max, v2_min, v2_max, 1, edges, corner);
 }
 // Keil mit abgeschrägten Kanten
-module wedge_chamfer (v_min, v_max, v2_min, v2_max, r,
-                      edges_bottom,  edges_top, edges_side,
-                     corner_bottom, corner_top,
-                     )
+module wedge_chamfer (v_min, v_max, v2_min, v2_max, edges, corner)
 {
-	wedge_fillet (v_min, v_max, v2_min, v2_max,
-		r=r, type=2,
-		 edges_bottom= edges_bottom,  edges_top= edges_top, edges_side=edges_side,
-		corner_bottom=corner_bottom, corner_top=corner_top
-	);
+	wedge_fillet (v_min, v_max, v2_min, v2_max, 2, edges, corner);
 }
 
 
 // - 2D:
 
 // Rechteck mit abgerundeten Ecken
-// - type - Typ der Ecke als Zahl für alle Ecken
-//        - oder als Liste für jede einzelne Ecke
-//   r    - Radius der Kanten oder Breite der Schräge
-//        - als Zahl für alle Ecken
-//        - als Liste für jede einzelne Ecke
-//          [p0, p1, p2, p3]
-//                    y
-//             p3     |     p2
-//              +-----|-----+
-//              |     |     |
-//          ----------+--------->x
-//              |     |     |
-//              +-----|-----+
-//             p0     |     p1
+// - type  - Typ der Ecke als Zahl für alle Ecken
+//         - oder als Liste für jede einzelne Ecke
+//   edges - Radius der Kanten oder Breite der Schräge
+//         - als Zahl für alle Ecken
+//         - als Liste für jede einzelne Ecke
+//           [p0, p1, p2, p3]
+//                     y
+//              p3     |     p2
+//               +-----|-----+
+//               |     |     |
+//           ----------+--------->x
+//               |     |     |
+//               +-----|-----+
+//              p0     |     p1
 //
-module square_fillet (size, r, type, center, align)
+module square_fillet (size, type, edges, center, align)
 {
 	Size    = parameter_size_2d(size);
 	Align   = parameter_align (align, [1,1], center);
 	Types   = parameter_types (type);
-	R_edges = parameter_edges_radius (r);
+	R_edges = parameter_edges_radius (edges);
 	square_list = square_curve (Size, center=true);
 	
 	translate ([for (i=[0:1:len(Size)-1]) Align[i]*Size[i]/2 ])
@@ -439,12 +410,158 @@ module square_fillet (size, r, type, center, align)
 	}
 }
 // abgerundete Ecken
-module square_rounded (size, r, center, align)
+module square_rounded (size, edges, center, align)
 {
-	square_fillet (size, r, 1, center, align);
+	square_fillet (size, edges, 1, center, align);
 }
 // abgeschrägte Ecken
-module square_chamfer (size, r, center, align)
+module square_chamfer (size, edges, center, align)
 {
-	square_fillet (size, r, 2, center, align);
+	square_fillet (size, edges, 2, center, align);
 }
+
+
+// - Parameter konfigurieren:
+
+// Stellt den Parameter 'edges' vom Module cube_fillet() ein.
+//
+// 3 Gruppen von Kanten, die den Quader jeweils vollständig umfassen:
+// - bottom, top, around
+// - left, right, forward
+// - front, back, sideways
+// In den 3 Gruppen werden alle Kanten jeweils 3 mal definiert werden,
+// daher gibt es eine Priorität, die höhere überschreibt die niedrige.
+// Einzelne Kanten können mit 'undef' als nicht definiert gesetzt werden.
+// Reihenfolge, weiter links liegende überschreibt weiter rechts liegende:
+// - bottom, top, around,  left, right, forward,  front, back, sideways
+//
+// Argumente:
+// - 'bottom'   - 4 Kanten um das Rechteck am Boden    - 1. Kante = vorne,       links herum von oben gesehen
+// - 'top'      - 4 Kanten um das Rechteck am Dach     - 1. Kante = vorne,       links herum von oben gesehen
+// - 'around'   - 4 Kanten vertikal vom Boden zum Dach - 1. Kante = vorne links, links herum von oben gesehen
+// - 'left'     - 4 Kanten um das Rechteck linke Seite      - 1. Kante = links unten,  links herum von links gesehen
+// - 'right'    - 4 Kanten um das Rechteck rechte Seite     - 1. Kante = rechts unten, links herum von links gesehen
+// - 'forward'  - 4 Kanten horizontal von links nach rechts - 1. Kante = vorne unten,  links herum von links gesehen
+// - 'front'    - 4 Kanten um das Rechteck vordere Seite    - 1. Kante = vorne unten,  links herum von vorne gesehen
+// - 'back'     - 4 Kanten um das Rechteck hintere Seite    - 1. Kante = hinten unten, links herum von vorne gesehen
+// - 'sideways' - 4 Kanten horizontal von vorne nach hinten - 1. Kante = rechts unten, links herum von vorne gesehen
+// - 'r'        - optionaler Parameter
+//                Alle Kanten werden mit diesen Wert multipliziert, wenn angegeben.
+// - 'default'  - Wert, der genommen wird, für Kanten die nicht gesetzt wurden
+//              - Standart = 0, Kante nicht abgerundet
+// Rückgabe:
+// - 12 Element Liste:
+//   - die ersten 4 Elemente entsprechen:        'bottom' - alle 4 Kanten am Boden
+//   - die nachfolgenden 4 Elemente entsprechen: 'top'    - alle 4 Kanten oben
+//   - die letzten 4 Elemente entsprechen:       'around' - alle vertikalen Kanten an der Seite
+//
+function configure_edges (bottom,top,around, left,right,forward, front,back,sideways, r, default=0) =
+	let (
+		 Bottom = configure_edges_prepare (bottom)
+		,Top    = configure_edges_prepare (top)
+		,Around = configure_edges_prepare (around)
+		,Left    = configure_edges_prepare (left)
+		,Right   = configure_edges_prepare (right)
+		,Forward = configure_edges_prepare (forward)
+		,Front    = configure_edges_prepare (front)
+		,Back     = configure_edges_prepare (back)
+		,Sideways = configure_edges_prepare (sideways)
+		//
+		,edges_bottom = configure_edges_priority
+			( Bottom
+			, [ Forward[0], Right   [0], Forward[3], Left    [0] ]
+			, [ Front  [0], Sideways[0], Back   [0], Sideways[3] ]
+			)
+		,edges_top = configure_edges_priority
+			( Top
+			, [ Forward[1], Right   [2], Forward[2], Left    [2] ]
+			, [ Front  [2], Sideways[1], Back   [2], Sideways[2] ]
+			)
+		,edges_around = configure_edges_priority
+			( Around
+			, [ Left [1], Right[1], Right[3], Left[3] ]
+			, [ Front[3], Front[1], Back [1], Back[3] ]
+			)
+	)
+	[ each configure_edges_radius (edges_bottom, r, default)
+	, each configure_edges_radius (edges_top   , r, default)
+	, each configure_edges_radius (edges_around, r, default)
+	]
+;
+function configure_edges_prepare (edges, n=4) =
+	 is_num (edges) ? [for (i=[0:1:n-1]) edges   ]
+	:is_list(edges) ? [for (i=[0:1:n-1]) edges[i]]
+	:                 [for (i=[0:1:n-1]) undef  ]
+;
+function configure_edges_priority (edges1, edges2, edges3, n=4) =
+	[ for (i=[0:1:n-1])
+		edges1[i]!=undef ? edges1[i] :
+		edges2[i]!=undef ? edges2[i] :
+		edges3[i]!=undef ? edges3[i] :
+		undef
+	]
+;
+function configure_edges_radius (edges, r, default=0) =
+	(r==undef) || !is_num(r) ?
+		[ for (i=[0:1:len(edges)-1]) edges[i]==undef ? default : edges[i] ]
+	:	[ for (i=[0:1:len(edges)-1]) edges[i]==undef ? default : edges[i] ] * r
+;
+
+// Stellt den Parameter 'edges' vom Module cube_fillet() ein.
+//
+// Argumente wie bei 'configure_edges()', nur ohne r
+function configure_types (bottom,top,around, left,right,forward, front,back,sideways, default=0) =
+	configure_edges (bottom,top,around, left,right,forward, front,back,sideways, undef, default)
+;
+
+// Stellt den Parameter 'corner' vom Module cube_fillet() ein.
+//
+// 3 Gruppen von Ecken, die den Quader jeweils vollständig umfassen:
+// - bottom, top
+// - left, right
+// - front, back
+// In den 3 Gruppen werden alle Ecken jeweils 3 mal definiert werden,
+// daher gibt es eine Priorität, die höhere überschreibt die niedrige.
+// Einzelne Ecken können mit 'undef' als nicht definiert gesetzt werden.
+// Reihenfolge, weiter links liegende überschreibt weiter rechts liegende:
+// - bottom, top,  left, right,  front, back
+//
+// Argumente:
+// - 'bottom'   - 4 Ecken um das Rechteck am Boden      - 1. Ecken = vorne links,  links herum von oben gesehen
+// - 'top'      - 4 Ecken um das Rechteck am Dach       - 1. Ecken = vorne links,  links herum von oben gesehen
+// - 'left'     - 4 Ecken um das Rechteck linke Seite   - 1. Ecken = vorne unten,  links herum von links gesehen
+// - 'right'    - 4 Ecken um das Rechteck rechte Seite  - 1. Ecken = vorne unten,  links herum von links gesehen
+// - 'front'    - 4 Ecken um das Rechteck vordere Seite - 1. Ecken = rechts unten, links herum von vorne gesehen
+// - 'back'     - 4 Ecken um das Rechteck hintere Seite - 1. Ecken = rechts unten, links herum von vorne gesehen
+// - 'default'  - Wert, der genommen wird, für Ecken die nicht gesetzt wurden
+//              - Standart = 0, Ecken nicht abgerundet
+// Rückgabe:
+// - 8 Element Liste:
+//   - die ersten 4 Elemente entsprechen:  'bottom' - alle 4 Ecken am Boden
+//   - die letzten 4 Elemente entsprechen: 'top'    - alle 4 Ecken oben
+//
+function configure_corner (bottom,top, left,right, front,back, default=0) =
+	let (
+		 Bottom = configure_edges_prepare (bottom)
+		,Top    = configure_edges_prepare (top)
+		,Left    = configure_edges_prepare (left)
+		,Right   = configure_edges_prepare (right)
+		,Front    = configure_edges_prepare (front)
+		,Back     = configure_edges_prepare (back)
+		//
+		,edges_bottom = configure_edges_priority
+			( Bottom
+			, [ Left [0], Right[0], Right[3], Left[3] ]
+			, [ Front[3], Front[0], Back [0], Back[3] ]
+			)
+		,edges_top = configure_edges_priority
+			( Top
+			, [ Left [1], Right[1], Right[2], Left[2] ]
+			, [ Front[2], Front[1], Back [1], Back[2] ]
+			)
+	)
+	[ each configure_edges_radius (edges_bottom, undef, default)
+	, each configure_edges_radius (edges_top   , undef, default)
+	]
+;
+

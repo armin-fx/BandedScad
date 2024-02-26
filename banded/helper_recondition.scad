@@ -408,6 +408,18 @@ function parameter_mirror_vector_3d (v, v_std=[1,0,0]) =
 	:v_std
 ;
 
+// Stellen die Parameter für die Kanten und Ecken vom Module cube_fillet() ein.
+function parameter_edges_cube (edges) =
+	parameter_edges_radius (edges, undef, 12)
+;
+function parameter_types_cube (types) =
+	parameter_types (types, undef, 12)
+;
+function parameter_corner_cube (corner) =
+	parameter_edges_radius (corner, undef, 8)
+;
+
+
 // Wertet die Parameter edges_xxx vom Module cube_fillet() aus,
 // gibt eine 4 elementige Liste zurück
 // Argumente:
