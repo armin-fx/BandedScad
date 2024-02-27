@@ -91,6 +91,7 @@ Separate stuff:
 [object]:      doc/object.md
 [edges]:       doc/object.md#rounded-edges-
 [figures]:     doc/object.md#figures-
+[version]:     doc/version.md
 [antiquity]:   doc/antiquity.md
 
 

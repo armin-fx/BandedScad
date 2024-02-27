@@ -53,6 +53,7 @@ Table of contents
   - [Transform operator for affine transformations](operator.md#transform-operator-)
   - [Place objects in specific position](operator.md#place-objects-)
 - [Debug modules](debug.md)
+- [Manage versioning](version.md)
 - [Compatibility files](antiquity.md)
 
 [<-- file overview](file_overview.md)

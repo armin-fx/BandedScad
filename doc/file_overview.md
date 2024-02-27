@@ -89,6 +89,8 @@ Overview of scad files
 ` `|\
 ` `+--> [`banded/debug.scad`](debug.md "Debug modules - make parts and points seeable")\
 ` `|\
+` `+--> [`banded/version.scad`](version.md "Functions and modules to manage versioning")\
+` `|\
 ` `+--> `banded/other.scad`
 
 [`antiquity/*`](antiquity.md)\

@@ -9,13 +9,8 @@
 
 /* [bibliothek BandedScad] */
 
-// Version number
-// Number format: year 4 digit - month 2 digit - day 2 digit
+include <banded/version.scad>
 //
-function version_banded() = 20240227;
-
-version_banded = version_banded();
-
 include <banded/constants.scad>
 include <banded/math.scad>
 include <banded/list.scad>
