@@ -22,6 +22,7 @@ Draft objects as data list - Curves
   - [Superformula](#superformula-)
   - [Polynomial function](#polynomial-function-)
   - [Square](#square-)
+  - [Triangle](#triangle-)
   - [Helix](#helix-)
 - [Creates fractal curves](#fractal-curves-)
   - [Koch curve](#koch-curve-)
@@ -307,6 +308,25 @@ Create a 2D rectangle around the outermost points from a list.\
 Returns a trace in a point list.
 - `points`
   - a list with minimum 2 points
+
+
+### Triangle [^][contents]
+
+#### `triangle_curve (size, center, align, side)` [^][contents]
+Return a triangle, a half square as point list.
+Options are like module `square_curve()`
+Rotation is mathematical direction = counter clockwise.
+- `side`
+  - sets the remaining side of the triangle.
+    - 0 = keep the bottom left triangle, default
+    - 1 = keep the bottom right triangle
+    - 2 = keep the top right triangle
+    - 3 = keep the top left triangle
+- `align`
+  - Side from origin away that the part should be.
+  - [Extra arguments - align][align]
+  - default = `[1,1]` = oriented on the positive side of axis
+    like `square_extend()`
 
 
 ### Helix [^][contents]

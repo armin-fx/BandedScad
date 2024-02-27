@@ -12,8 +12,19 @@ use <banded/draft_primitives_figure.scad>
 use <banded/operator_transform.scad>
 
 
-// leeres Modul
-module empty () {}
+// - 2D:
+
+// Erzeugt ein Dreieck, ein halbiertes Rechteck
+// Parameter wie bei square_extend()
+// Mit 'side' wird die übrigbleibende Seite des Dreiecks festgelegt
+module triangle (size, center, align, side)
+{
+	polygon (
+		triangle_curve (size, center, align, side) );
+}
+
+
+// - 3D:
 
 // Erzeugt einen Keil mit den Parametern von FreeCAD
 // v_min  = [Xmin, Ymin, Zmin]
@@ -25,22 +36,6 @@ module wedge (v_min, v_max, v2_min, v2_max)
 	o = wedge (v_min, v_max, v2_min, v2_max);
 	//
 	polyhedron( o[0], o[1] );
-}
-
-// Erzeugt ein Rechteck um die äußersten Punkte aus einer Liste
-module bounding_square (points)
-{
-	trace = bounding_square_curve (points);
-	//
-	if (trace!=undef) polygon (trace);
-}
-
-// Erzeugt ein Quader um die äußersten Punkte aus einer Liste
-module bounding_cube (points)
-{
-	o = bounding_cube (points);
-	//
-	if (points!=undef) polyhedron( o[0], o[1] );
 }
 
 // Erzeugt einen Torus
@@ -188,5 +183,27 @@ module cylinder_bind_basic (r=2, r1=1, r2=1, h=2, h1=1.5, h2=1.5)
 	                  cylinder_extend (r1=r1, r2=r, h=h1);
 	translate_z(h1)   cylinder_extend (r=r,         h=h);
 	translate_z(h1+h) cylinder_extend (r1=r, r2=r2, h=h2);
+}
+
+
+// - Verschiedenes:
+
+// leeres Modul
+module empty () {}
+
+// Erzeugt ein Rechteck um die äußersten Punkte aus einer Liste
+module bounding_square (points)
+{
+	trace = bounding_square_curve (points);
+	//
+	if (trace!=undef) polygon (trace);
+}
+
+// Erzeugt ein Quader um die äußersten Punkte aus einer Liste
+module bounding_cube (points)
+{
+	o = bounding_cube (points);
+	//
+	if (points!=undef) polyhedron( o[0], o[1] );
 }
 

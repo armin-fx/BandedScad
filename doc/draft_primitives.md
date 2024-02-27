@@ -24,6 +24,7 @@ Draft objects as data list - Primitives
     - Create object with [`build()`][build]
   - [Edit objects based on OpenSCAD buildin modules](#edit-objects-based-on-openscad-buildin-modules-)
   - [Edit objects](#edit-objects-)
+    - Defined transform operations
     - [`helix_extrude()`][helix_extrude]
 
 [special_x]: extend.md#special-variables-
@@ -70,12 +71,16 @@ Color:
 - [`sphere()`](extend.md#sphere_extend-)
 
 More objects:
-- [`wedge()`](object.md#wedge-)
-- [`bounding_square()`](object.md#bounding_square-)
-- [`bounding_cube()`](object.md#bounding_cube-)
-- [`torus()`](object.md#torus-)
-- [`ring_square()`](object.md#ring_square-)
-- [`funnel()`](object.md#funnel-)
+- 2D
+  - [`triangle()`](object.md#triangle-)
+- 3D
+  - [`wedge()`](object.md#wedge-)
+  - [`torus()`](object.md#torus-)
+  - [`ring_square()`](object.md#ring_square-)
+  - [`funnel()`](object.md#funnel-)
+- Verschiedenes
+  - [`bounding_square()`](object.md#bounding_square-)
+  - [`bounding_cube()`](object.md#bounding_cube-)
 
 Example:
 ```OpenSCAD
@@ -227,7 +232,7 @@ _Modified version:_
   - Objects created with `rotate_extrude()` are rotated differently
     as e.g. the object `cylinder()`.
     With `rotate_extrude_extend()` these objects can be connected correctly.
-  - `slices` is by default set to `"x"`
+  - `slices` is set by default to `"x"`
 
 ### Edit objects [^][contents]
 
@@ -270,3 +275,4 @@ helix_extrude (object, angle, rotations, pitch, height, r, opposite, orientation
   - if `true`, orientation of Y-axis from the 2D-polygon is set along the surface of the cone.
   - `false` = default, orientation of Y-axis from the 2D-polygon is set to Z-axis
 - `slices`    - count of segments from helix per full rotation
+

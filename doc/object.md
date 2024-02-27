@@ -14,52 +14,77 @@ Configurable objects
 ### Contents
 [contents]: #contents "Up to Contents"
 - [Figures](#figures-)
-  - [`empty()`][empty]
-  - [`wedge()`][wedge]
-  - [`bounding_square()`][bounding_square]
-  - [`bounding_cube()`][bounding_cube]
-  - [`torus()`][torus]
-  - [`ring_square()`][ring_square]
-  - [`funnel()`][funnel]
+  - [2D](#2d-)
+    - [`triangle()`][triangle]
+  - [3D](#3d-)
+    - [`wedge()`][wedge]
+    - [`torus()`][torus]
+    - [`ring_square()`][ring_square]
+    - [`funnel()`][funnel]
+  - [Miscellaneous](#miscellaneous-)
+    - [`empty()`][empty]
+    - [`bounding_square()`][bounding_square]
+    - [`bounding_cube()`][bounding_cube]
 - [Rounded edges](#rounded-edges-)
-  - [Repeating options](#repeating-options-)
-  - [Module name convention](#module-name-convention-)
-  - [Module characteristic](#module-characteristic-)
+  - Description
+    - [Repeating options](#repeating-options-)
+    - [Module name convention](#module-name-convention-)
+    - [Module characteristic](#module-characteristic-)
   - [Cutting or adding parts for edges](#cutting-or-adding-parts-for-edges-)
     - [`edge_fillet()`][edge_fillet]
     - [`edge_ring_fillet()`][edge_ring_fillet]
     - [`edge_trace_fillet()`][edge_trace_fillet]
     - [`edge_fillet_plane()`][edge_fillet_plane]
     - [`edge_fillet_to()`][edge_fillet_to]
-  - [Figures with rounded edges](#figures-with-rounded-edges-)
+- [Figures with fillet edges](#figures-with-fillet-edges-)
+  - [2D](#2d---)
+    - [`square_fillet()`][square_fillet]
+    - [`triangle_fillet()`][triangle_fillet]
+  - [3D](#3d---)
     - [`cube_rounded_full()`][cube_rounded_full]
     - [`cube_fillet()`][cube_fillet]
     - [`cylinder_rounded()`][cylinder_rounded]
     - [`cylinder_edges_fillet()`][cylinder_edges_fillet]
     - [`wedge_fillet()`][wedge_fillet]
-    - [`square_fillet()`][square_fillet]
-  - [Helper functions](#helper-functions-)
-    - [`configure_edges()`][configure_edges]
-    - [`configure_types()`][configure_types]
-    - [`configure_corner()`][configure_corner]
 
 [align]:     extend.md#extra-arguments-
 [special_x]: extend.md#special-variables-
 [cylinder_extend]:     extend.md#cylinder_extend-
+[square_extend]:       extend.md#square_extend-
 [plain_trace_extrude]: operator.md#plain_trace_extrude-
+[configure_types]:  helper.md#configure_types-
+[configure_edges]:  helper.md#configure_edges-
+[configure_corner]: helper.md#configure_corner-
 
 
 Figures [^][contents]
 ---------------------
+
 Modules to create configurable objects
 
-#### empty [^][contents]
-[empty]: #empty-
-Module which create nothing.\
-Useful if an operator needs an object.
+
+### 2D [^][contents]
+
+#### triangle [^][contents]
+[triangle]: #triangle-
+Creates a triangle, a half square
+with arguments from [`square_extend()`][square_extend].
 ```OpenSCAD
-empty ()
+triangle (size, center, align, side)
 ```
+- `side`
+  - sets the remaining side of the triangle.
+    - 0 = keep the bottom left triangle, default
+    - 1 = keep the bottom right triangle
+    - 2 = keep the top right triangle
+    - 3 = keep the top left triangle
+- `align`
+  - Side from origin away that the part should be.
+  - [Extra arguments - align][align]
+  - default = `[1,1]` = oriented on the positive side of axis
+    like `square_extend()`
+
+### 3D [^][contents]
 
 #### wedge [^][contents]
 [wedge]: #wedge-
@@ -93,24 +118,6 @@ Location of the parameter:
    +--> X
 
 ```
-
-#### bounding_square [^][contents]
-[bounding_square]: #bounding_square-
-Create a 2D rectangle around the outermost points from a list.
-```OpenSCAD
-bounding_square (points)
-```
-- `points`
-  - a list with minimum 2 points
-
-#### bounding_cube [^][contents]
-[bounding_cube]: #bounding_cube-
-Create a 3D cube around the outermost points from a list.\
-```OpenSCAD
-bounding_cube (points)
-```
-- `points`
-  - a list with minimum 2 points
 
 #### torus [^][contents]
 [torus]: #torus-
@@ -232,14 +239,40 @@ translate ([0,0,9])
 ring_square (h=0.5, w=1, ri=7);
 ```
 
+### Miscellaneous [^][contents]
+
+#### empty [^][contents]
+[empty]: #empty-
+Module which create nothing.\
+Useful if an operator needs an object.
+```OpenSCAD
+empty ()
+```
+
+#### bounding_square [^][contents]
+[bounding_square]: #bounding_square-
+Create a 2D rectangle around the outermost points from a list.
+```OpenSCAD
+bounding_square (points)
+```
+- `points`
+  - a list with minimum 2 points
+
+#### bounding_cube [^][contents]
+[bounding_cube]: #bounding_cube-
+Create a 3D cube around the outermost points from a list.\
+```OpenSCAD
+bounding_cube (points)
+```
+- `points`
+  - a list with minimum 2 points
+
 
 Rounded edges [^][contents]
 ---------------------------
 
-This section is split in 2 parts:
-- Modules and functions to create different configurable edges to add or
-  remove from objects.
-- Existing modules which are extended with fillet edges.
+Modules and functions to create different configurable edges to add or
+remove from objects.
 
 #### Repeating options: [^][contents]
 
@@ -530,7 +563,90 @@ _Specialized modules with no argument `type`:_
 - `edge_chamfer_to()` - creates a chamfered edges
 
 
-### Figures with rounded edges [^][contents]
+Figures with fillet edges [^][contents]
+----------------------------------------
+
+Existing modules which are extended with fillet edges.
+
+
+### 2D - [^][contents]
+
+#### square_fillet [^][contents]
+[square_fillet]: #square_fillet-
+Square with fillet edges, every edge can be configured.\
+Based on `square()` from OpenSCAD
+```OpenSCAD
+square_fillet (size, edges, type, center, align)
+```
+- `size`  - size of square like in `square()`
+- `edges` - radius of the edges
+  - as number: set the same radius for all 4 edges
+  - as list:   set the edge radius individually - `[p0, p1, p2, p3]`
+    ```
+              Y
+       p3     |     p2
+        +-----|-----+
+        |     |     |
+    ----------+---------> X
+        |     |     |
+        +-----|-----+
+       p0     |     p1
+    ```
+- `type`  - specify, which chamfer type should be used for the edge
+  - `0` = no chamfer (default)
+  - `1` = rounding
+  - `2` = chamfer
+  - as number: set the same type for all 4 edges
+  - as list:   set the edge type individually - `[p0, p1, p2, p3]`
+- `center` - center the square if set `true`
+- `align`
+  - Side from origin away that the part should be.
+  - [Extra arguments - align][align]
+  - default = `[1,1]` = oriented on the positive side of axis
+
+_Specialized modules with no arguments `type`:_
+- `square_rounded()` - square only with rounded edges
+- `square_chamfer()` - square only with chamfered edges
+
+#### triangle_fillet [^][contents]
+[triangle_fillet]: #triangle_fillet-
+Creates a triangle (a half square) with fillet edges
+with arguments from [`square_extend()`][square_extend].
+```OpenSCAD
+triangle_fillet (size, type, edges, center, align, side)
+```
+- `side`
+  - sets the remaining side of the triangle.
+    - 0 = keep the bottom left triangle, default
+    - 1 = keep the bottom right triangle
+    - 2 = keep the top right triangle
+    - 3 = keep the top left triangle
+- `center` - center the triangle if set `true`
+- `align`
+  - Side from origin away that the part should be.
+  - [Extra arguments - align][align]
+  - default = `[1,1]` = oriented on the positive side of axis
+    like `square_extend()`
+- `type`  - specify, which chamfer type should be used for the edge
+  - `0` = no chamfer (default)
+  - `1` = rounding
+  - `2` = chamfer
+  - as number: set the same type for all 3 edges
+  - as list:   set the edge type individually
+    - Here the first position in the list points to the completely
+      remaining corner of the imaginary rectangle.
+      The other positions run counterclockwise.
+- `edges` - radius of the edges
+  - as number: set the same radius for all 3 edges
+  - as list:   set the edge radius individually
+    - positions in list like argument `type`
+
+_Specialized modules with no arguments `type`:_
+- `triangle_rounded()` - triangle only with rounded edges
+- `triangle_chamfer()` - triangle only with chamfered edges
+
+
+### 3D - [^][contents]
 
 #### cube_rounded_full [^][contents]
 [cube_rounded_full]: #cube_rounded_full-
@@ -558,15 +674,15 @@ cube_fillet (size, type, edges, corner, center, align)
 - `type`
   - specify the chamfer type of the 12 edges on bottom, top, side
   - see [Repeating options](#repeating-options-)
-  - see [function `configure_types()`][configure_types]
+  - see function [`configure_types()`][configure_types]
     for more options to load this parameter
 - `edges`
   - set the radius or width of 12 edges on bottom, top, side
-  - see [function `configure_edges()`][configure_edges]
+  - see function [`configure_edges()`][configure_edges]
     for more options to load this parameter
 - `corner`
   - configure the 8 corners on bottom, top
-  - see [function `configure_corner()`][configure_corner]
+  - see function [`configure_corner()`][configure_corner]
     for more options to load this parameter
   - TODO Only implemented for rounded corners
 - `center` - center the cube if set `true`
@@ -674,15 +790,15 @@ wedge_fillet (v_min, v_max, v2_min, v2_max, type, edges, corner)
 - `type`
   - specify the chamfer type of the 12 edges on bottom, top, side
   - see [Repeating options](#repeating-options-)
-  - see [function `configure_types()`][configure_types]
+  - see function [`configure_types()`][configure_types]
     for more options to load this parameter
 - `edges`
   - set the radius or width of 12 edges on bottom, top, side
-  - see [function `configure_edges()`][configure_edges]
+  - see function [`configure_edges()`][configure_edges]
     for more options to load this parameter
 - `corner`
   - configure the 8 corners on bottom, top
-  - see [function `configure_corner()`][configure_corner]
+  - see function [`configure_corner()`][configure_corner]
     for more options to load this parameter
   - TODO Not implemented yet
 
@@ -702,139 +818,4 @@ _Details to the arguments:_
 _Specialized modules with no arguments `type`_
 - `wedge_rounded()` - wedge only with rounded edges
 - `wedge_chamfer()` - wedge only with chamfered edges
-
-#### square_fillet [^][contents]
-[square_fillet]: #square_fillet-
-Square with rounded edges, every edge can be configured.\
-Based on `square()` from OpenSCAD
-```OpenSCAD
-square_fillet (size, edges, type, center, align)
-```
-- `size`  - size of square like in `square()`
-- `edges` - radius of the edges
-  - as number: set the same radius for all 4 edges
-  - as list:   set the edge radius individually - `[p0, p1, p2, p3]`
-    ```
-              Y
-       p3     |     p2
-        +-----|-----+
-        |     |     |
-    ----------+---------> X
-        |     |     |
-        +-----|-----+
-       p0     |     p1
-    ```
-- `type`  - specify, which chamfer type should be used for the edge
-  - `0` = no chamfer (default)
-  - `1` = rounding
-  - `2` = chamfer
-  - as number: set the same type for all 4 edges
-  - as list:   set the edge type individually - `[p0, p1, p2, p3]`
-- `center` - center the square if set `true`
-- `align`
-  - Side from origin away that the part should be.
-  - [Extra arguments - align][align]
-  - default = `[1,1]` = oriented on the positive side of axis
-
-_Specialized modules with no arguments `type`:_
-- `square_rounded()` - square only with rounded edges
-- `square_chamfer()` - square only with chamfered edges
-
-
-### Helper functions [^][contents]
-
-#### configure_edges [^][contents]
-[configure_edges]: #configure_edges-
-Sets the `edges` parameter of the module `cube_fillet()`.
-
-3 groups of edges, each completely encompassing the cuboid:
-- bottom, top, around
-- left, right, forward
-- front, back, sideways
-
-In the 3 groups all edges will be defined 3 times each,
-therefore there is a priority, the higher one overrides the lower one.
-Individual edges can be set as undefined with `undef`.
-
-Order, those further to the left overwrite those further to the right:
-- bottom, top, around, left, right, forward, front, back, sideways
-
-_Arguments:_
-```OpenSCAD
-configure_edges (bottom,top,around, left,right,forward, front,back,sideways, r, default)
-```
-- | edge argument | description                                | first edge   | rotation on cube
-  |---------------|--------------------------------------------|--------------|------------------
-  | `bottom`      | 4 edges around the rectangle on the bottom | front        | left around, seen from above
-  | `top`         | 4 edges around the rectangle on the top    | front        | left around, seen from above
-  | `around`      | 4 edges vertical from bottom the top       | front left   | left around, seen from above
-  | `left`        | 4 edges around the rectangle left side     | bottom left  | left around, seen from the left
-  | `right`       | 4 edges around the rectangle right side    | bottom right | left around, seen from the left
-  | `forward`     | 4 edges horizontal from left to right      | bottom front | left around, seen from the left
-  | `front`       | 4 edges around the rectangle front side    | bottom front | left around, seen from the front
-  | `back`        | 4 edges around the rectangle back side     | bottom back  | left around, seen from the front
-  | `sideways`    | 4 edges horizontal from front to back      | bottom right | left around, seen from the front
-- `r`
-  - optional parameter
-  - All edges are multiplied by this value if specified.
-  - If `r` is set, this value will multiplied with every edge size,
-    so you can activate every specific edge with `1` and deactivate with `0`,
-    all so activated edges so gets the size `r`.
-- `default`
-  - value taken for edges that have not been set
-  - default = `0`, edge not rounded
-
-_Return:_
-- 12 element list:
-  - the first 4 elements correspond to:  `bottom` - all 4 edges at the bottom
-  - the following 4 elements correspond: `top`    - all 4 edges at the top
-  - the last 4 elements correspond to:   `around` - all vertical edges on the side
-
-#### configure_types [^][contents]
-[configure_types]: #configure_types-
-Sets the `type` parameter of the module `cube_fillet()`.
-
-_Arguments:_
-```OpenSCAD
-configure_types (bottom,top,around, left,right,forward, front,back,sideways, default)
-```
-The same like [`configure_edges()`][configure_edges]
-(but without parameter `r`)
-
-#### configure_corner [^][contents]
-[configure_corner]: #configure_corner-
-Sets the `corner` parameter of the module `cube_fillet()`.
-
-3 groups of corner, each completely encompassing the cuboid:
-- bottom, top
-- left, right
-- front, back
-
-In the 3 groups all corner will be defined 3 times each,
-therefore there is a priority, the higher one overrides the lower one.
-Individual corner can be set as undefined with `undef`.
-
-Order, those further to the left overwrite those further to the right:
-- bottom, top, left, right, front, back
-
-_Arguments:_
-```OpenSCAD
-configure_corner (bottom,top, left,right, front,back, default)
-```
-- | edge argument | description                                 | first edge   | rotation on cube
-  |---------------|---------------------------------------------|--------------|------------------
-  | `bottom`      | 4 corner around the rectangle on the bottom | front left   | left around, seen from above
-  | `top`         | 4 corner around the rectangle on the top    | front left   | left around, seen from above
-  | `left`        | 4 corner around the rectangle left side     | bottom front | left around, seen from the left
-  | `right`       | 4 corner around the rectangle right side    | bottom front | left around, seen from the left
-  | `front`       | 4 corner around the rectangle front side    | bottom right | left around, seen from the front
-  | `back`        | 4 corner around the rectangle back side     | bottom right | left around, seen from the front
-- `default`
-  - value taken for corner that have not been set
-  - default = `0`, corner not rounded
-
-_Return:_
-- 8 element list:
-  - the first 4 elements correspond to: `bottom` - all 4 corner at the bottom
-  - the last  4 elements correspond to: `top`    - all 4 corner at the top
 

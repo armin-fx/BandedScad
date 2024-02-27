@@ -380,12 +380,12 @@ function square_curve (size, center, align) =
 	let (
 		Size  = parameter_size_2d(size),
 		Align = parameter_align  (align, [1,1], center),
-		a     = [for (i=[0:1:len(Size)-1]) Align[i]*Size[i]/2 ],
+		a     = [for (i=[0:1:len(Size)-1]) (Align[i]-1)*Size[i]/2 ],
 		x=Size[0],
 		y=Size[1],
 		square_list=[[0,0], [x,0], [x,y], [0,y]]
 	)
-	[for (i=[0:1:len(square_list)-1]) square_list[i] - Size/2 + a ]
+	[for (p=square_list) p+a ]
 ;
 
 // Erzeugt ein Rechteck um die äußersten Punkte aus einer Liste
@@ -399,6 +399,26 @@ function bounding_square_curve (points) =
 	(x[0]>=x[1] || y[0]>=y[1]) ? undef :
 	//
 	[[x[0],y[0]], [x[1],y[0]], [x[1],y[1]], [x[0],y[1]]];
+;
+
+// Erzeugt ein Dreieck, ein halbiertes Rechteck
+// Parameter wie bei square_extend()
+// Mit 'side' wird die übrigbleibende Seite des Dreiecks festgelegt
+function triangle_curve (size, center, align, side) =
+	let (
+		 Size  = parameter_size_2d(size)
+		,Align = parameter_align (align, [1,1], center)
+		,a     = [for (i=[0:1:len(Size)-1]) (Align[i]-1)*Size[i]/2 ]
+		,x=Size[0]
+		,y=Size[1]
+		,triangle_list =
+			side==3 ? [[0,y], [0,0], [x,y]] :
+			side==2 ? [[x,y], [0,y], [x,0]] :
+			side==1 ? [[x,0], [x,y], [0,0]] :
+			          [[0,0], [x,0], [0,y]] // side==0 or undef
+	)
+	//translate_points (triangle_list, a)
+	[for (p=triangle_list) p+a]
 ;
 
 // gibt eine Helix als Punkteliste zurück

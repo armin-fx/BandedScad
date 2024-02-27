@@ -41,7 +41,8 @@ Overview of scad files
 ` `|\
 ` `+--> [`banded/helper.scad`](helper.md "Helper functions")\
 ` `| . . . +--> [`banded/helper_native.scad`](helper.md#native-helper-functions- "Contains various helper functions")\
-` `| . . . +--> [`banded/helper_recondition.scad`](helper.md#helper.md#recondition-arguments-of-functions- "Recondition arguments of functions and modules")\
+` `| . . . +--> [`banded/helper_arguments.scad`](helper.md#helper.md#configure-arguments- "Recondition arguments of functions and modules")\
+` `| . . . +--> [`banded/helper_recondition.scad`](helper.md#helper.md#recondition-arguments-of-functions- "Configure arguments from functions or modules to expand further control options")\
 ` `| . . . +--> `banded/helper_primitives.scad`\
 ` `| . . . | . . . . +--> `banded/helper_primitives_path.scad`\
 ` `| . . . | . . . . +--> `banded/helper_primitives_trace.scad`\
@@ -78,7 +79,7 @@ Overview of scad files
 ` `|\
 ` `+--> [`banded/object.scad`](object.md "Configurable objects")\
 ` `| . . . +--> [`banded/object_figure.scad`](object.md#figures- "Modules to create configurable objects")\
-` `| . . . +--> [`banded/object_figure_rounded.scad`](object.md#figures-with-rounded-edges- "Configurable objects with rounded edges")\
+` `| . . . +--> [`banded/object_figure_rounded.scad`](object.md#figures-with-fillet-edges- "Configurable objects with fillet edges")\
 ` `| . . . +--> [`banded/object_rounded.scad`](object.md#rounded-edges- "Figures to create rounded edges")\
 ` `|\
 ` `+--> [`banded/operator.scad`](operator.md "Transform and edit objects")\

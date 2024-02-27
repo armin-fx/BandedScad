@@ -5,6 +5,7 @@ Helper functions
 `banded/helper.scad`\
 ` `| \
 ` `+--> `banded/helper_native.scad`\
+` `+--> `banded/helper_arguments.scad`\
 ` `+--> `banded/helper_recondition.scad`\
 ` `\
 `banded/benchmark.scad`
@@ -45,6 +46,10 @@ Helper functions
     - [`get_first_num_list()`][get_first_num_list]
     - [`get_first_good_in_list()`][get_first_good_in_list]
     - [`get_first_num_in_list()`][get_first_num_in_list]
+- [Configure arguments](#configure-arguments-)
+  - [`configure_edges()`][configure_edges]
+  - [`configure_types()`][configure_types]
+  - [`configure_corner()`][configure_corner]
 - [Recondition arguments of functions](#recondition-arguments-of-functions-)
   - [`repair_matrix()`][repair_matrix]
   - [`fill_missing_matrix()`][fill_missing_matrix]
@@ -332,8 +337,111 @@ Arguments:
 - `begin` - testing starts from this position on list. Default = `0`, complete list
 
 
+Configure arguments [^][contents]
+---------------------------------
+
+Configure arguments from functions or modules
+to expand further control options
+
+#### configure_edges [^][contents]
+[configure_edges]: #configure_edges-
+Sets the `edges` parameter of the module `cube_fillet()`.
+
+3 groups of edges, each completely encompassing the cuboid:
+- bottom, top, around
+- left, right, forward
+- front, back, sideways
+
+In the 3 groups all edges will be defined 3 times each,
+therefore there is a priority, the higher one overrides the lower one.
+Individual edges can be set as undefined with `undef`.
+
+Order, those further to the left overwrite those further to the right:
+- bottom, top, around, left, right, forward, front, back, sideways
+
+_Arguments:_
+```OpenSCAD
+configure_edges (bottom,top,around, left,right,forward, front,back,sideways, r, default)
+```
+- | edge argument | description                                | first edge   | rotation on cube
+  |---------------|--------------------------------------------|--------------|------------------
+  | `bottom`      | 4 edges around the rectangle on the bottom | front        | left around, seen from above
+  | `top`         | 4 edges around the rectangle on the top    | front        | left around, seen from above
+  | `around`      | 4 edges vertical from bottom the top       | front left   | left around, seen from above
+  | `left`        | 4 edges around the rectangle left side     | bottom left  | left around, seen from the left
+  | `right`       | 4 edges around the rectangle right side    | bottom right | left around, seen from the left
+  | `forward`     | 4 edges horizontal from left to right      | bottom front | left around, seen from the left
+  | `front`       | 4 edges around the rectangle front side    | bottom front | left around, seen from the front
+  | `back`        | 4 edges around the rectangle back side     | bottom back  | left around, seen from the front
+  | `sideways`    | 4 edges horizontal from front to back      | bottom right | left around, seen from the front
+- `r`
+  - optional parameter
+  - All edges are multiplied by this value if specified.
+  - If `r` is set, this value will multiplied with every edge size,
+    so you can activate every specific edge with `1` and deactivate with `0`,
+    all so activated edges so gets the size `r`.
+- `default`
+  - value taken for edges that have not been set
+  - default = `0`, edge not rounded
+
+_Return:_
+- 12 element list:
+  - the first 4 elements correspond to:  `bottom` - all 4 edges at the bottom
+  - the following 4 elements correspond: `top`    - all 4 edges at the top
+  - the last 4 elements correspond to:   `around` - all vertical edges on the side
+
+#### configure_types [^][contents]
+[configure_types]: #configure_types-
+Sets the `type` parameter of the module `cube_fillet()`.
+
+_Arguments:_
+```OpenSCAD
+configure_types (bottom,top,around, left,right,forward, front,back,sideways, default)
+```
+The same like [`configure_edges()`][configure_edges]
+(but without parameter `r`)
+
+#### configure_corner [^][contents]
+[configure_corner]: #configure_corner-
+Sets the `corner` parameter of the module `cube_fillet()`.
+
+3 groups of corner, each completely encompassing the cuboid:
+- bottom, top
+- left, right
+- front, back
+
+In the 3 groups all corner will be defined 3 times each,
+therefore there is a priority, the higher one overrides the lower one.
+Individual corner can be set as undefined with `undef`.
+
+Order, those further to the left overwrite those further to the right:
+- bottom, top, left, right, front, back
+
+_Arguments:_
+```OpenSCAD
+configure_corner (bottom,top, left,right, front,back, default)
+```
+- | edge argument | description                                 | first edge   | rotation on cube
+  |---------------|---------------------------------------------|--------------|------------------
+  | `bottom`      | 4 corner around the rectangle on the bottom | front left   | left around, seen from above
+  | `top`         | 4 corner around the rectangle on the top    | front left   | left around, seen from above
+  | `left`        | 4 corner around the rectangle left side     | bottom front | left around, seen from the left
+  | `right`       | 4 corner around the rectangle right side    | bottom front | left around, seen from the left
+  | `front`       | 4 corner around the rectangle front side    | bottom right | left around, seen from the front
+  | `back`        | 4 corner around the rectangle back side     | bottom right | left around, seen from the front
+- `default`
+  - value taken for corner that have not been set
+  - default = `0`, corner not rounded
+
+_Return:_
+- 8 element list:
+  - the first 4 elements correspond to: `bottom` - all 4 corner at the bottom
+  - the last  4 elements correspond to: `top`    - all 4 corner at the top
+
+
 Recondition arguments of functions [^][contents]
 ------------------------------------------------
+
 Contains functions that evaluate the passed arguments
 from modules and functions.
 

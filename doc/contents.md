@@ -26,6 +26,7 @@ Table of contents
   - [Edit letter in strings like editing lists](string.md#edit-letter-in-strings-)
 - [Helper functions](helper.md)
   - [Various helper](helper.md#native-helper-functions-)
+  - [Configure arguments](helper.md#configure-arguments-)
   - [Argument recondition](helper.md#recondition-arguments-of-functions-)
   - Manage data of primitives in lists
   - [Benchmark for functions](helper.md#benchmark-function-)
@@ -46,6 +47,7 @@ Table of contents
 - [Configurable objects](object.md)
   - [Figures](object.md#figures-)
   - [Rounded edges](object.md#rounded-edges-)
+  - [Figures with fillet edges](object.md#figures-with-fillet-edges-)
 - [Operator to transform and edit objects](operator.md)
   - [Various operator to edit and test objects](operator.md#edit-and-test-objects-)
   - [Transform operator for affine transformations](operator.md#transform-operator-)
