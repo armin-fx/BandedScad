@@ -18,6 +18,7 @@ Configurable objects
     - [`triangle()`][triangle]
   - [3D](#3d-)
     - [`wedge()`][wedge]
+    - [`wedge_freecad()`][wedge_freecad]
     - [`torus()`][torus]
     - [`ring_square()`][ring_square]
     - [`funnel()`][funnel]
@@ -36,7 +37,7 @@ Configurable objects
     - [`edge_trace_fillet()`][edge_trace_fillet]
     - [`edge_fillet_plane()`][edge_fillet_plane]
     - [`edge_fillet_to()`][edge_fillet_to]
-- [Figures with fillet edges](#figures-with-fillet-edges-)
+- [Figures with chamfered edges](#figures-with-chamfered-edges-)
   - [2D](#2d---)
     - [`square_fillet()`][square_fillet]
     - [`triangle_fillet()`][triangle_fillet]
@@ -46,11 +47,13 @@ Configurable objects
     - [`cylinder_rounded()`][cylinder_rounded]
     - [`cylinder_edges_fillet()`][cylinder_edges_fillet]
     - [`wedge_fillet()`][wedge_fillet]
+    - [`wedge_freecad_fillet()`][wedge_freecad_fillet]
 
 [align]:     extend.md#extra-arguments-
 [special_x]: extend.md#special-variables-
 [cylinder_extend]:     extend.md#cylinder_extend-
 [square_extend]:       extend.md#square_extend-
+[cube_extend]:         extend.md#cube_extend-
 [plain_trace_extrude]: operator.md#plain_trace_extrude-
 [configure_types]:  helper.md#configure_types-
 [configure_edges]:  helper.md#configure_edges-
@@ -84,13 +87,57 @@ triangle (size, center, align, side)
   - default = `[1,1]` = oriented on the positive side of axis
     like `square_extend()`
 
+
 ### 3D [^][contents]
 
 #### wedge [^][contents]
 [wedge]: #wedge-
-Creates a wedge with the parameter form FreeCAD's wedge.
+Creates a wedge, a half cube.
+with arguments from [`cube_extend()`][cube_extend].
 ```OpenSCAD
-wedge (v_min, v_max, v2_min, v2_max)
+wedge (size, center, align, side)
+```
+- `side`
+  - sets the remaining side of the wedge.
+    -  0 = keep the bottom and front side, default
+    -  1 = keep the bottom and right side
+    -  2 = keep the bottom and back side
+    -  3 = keep the bottom and left side
+    -  4 = keep the top and front side
+    -  5 = keep the top and right side
+    -  6 = keep the top and back side
+    -  7 = keep the top and left side
+    -  8 = keep the left and front side
+    -  9 = keep the front and right side
+    - 10 = keep the right and back side
+    - 11 = keep the back and left side
+- `align`
+  - Side from origin away that the part should be.
+  - [Extra arguments - align][align]
+  - default = `[1,1,1]` = oriented on the positive side of axis
+    like `cube_extend()`
+
+_Example:_
+```OpenSCAD
+include <banded.scad>
+
+for (i=[0:11])
+translate ([i%4, -floor(i/4)%3] * 8)
+{
+	color("black")
+	translate_y (-2.5) scale(0.2)
+	linear_extrude(1) text(str(i));
+	//
+	wedge ([4,3,2], side=i);
+	%cube ([4,3,2]);
+}
+```
+
+#### wedge_freecad [^][contents]
+[wedge_freecad]: #wedge_freecad-
+Creates a wedge with the parameter from FreeCAD's wedge.
+```OpenSCAD
+wedge_freecad (v_min, v_max, v2_min, v2_max)
 ```
 - `v_min`  = `[Xmin, Ymin, Zmin]`
 - `v_max`  = `[Xmax, Ymax, Zmax]`
@@ -102,11 +149,11 @@ Location of the parameter:
            X2min X2max
              +-----+ Z2max
            / :    /|
-        /    :   / | - - Ymax
+        /    :   / · - - Ymax
  Zmax +---------+  |
       |      + -|- + Z2min
       |    ·    | /
-      |  ·      |- - - - Ymin
+      |  ·      ·- - - - Ymin
       |.        |/
  Zmin +---------+
      Xmin      Xmax
@@ -238,6 +285,7 @@ funnel (h=3, w=1, ri1=3, ri2=7);
 translate ([0,0,9])
 ring_square (h=0.5, w=1, ri=7);
 ```
+
 
 ### Miscellaneous [^][contents]
 
@@ -563,17 +611,17 @@ _Specialized modules with no argument `type`:_
 - `edge_chamfer_to()` - creates a chamfered edges
 
 
-Figures with fillet edges [^][contents]
+Figures with chamfered edges [^][contents]
 ----------------------------------------
 
-Existing modules which are extended with fillet edges.
+Existing modules which are extended with chamfered edges.
 
 
 ### 2D - [^][contents]
 
 #### square_fillet [^][contents]
 [square_fillet]: #square_fillet-
-Square with fillet edges, every edge can be configured.\
+Square with chamfered edges, every edge can be configured.\
 Based on `square()` from OpenSCAD
 ```OpenSCAD
 square_fillet (size, edges, type, center, align)
@@ -610,7 +658,7 @@ _Specialized modules with no arguments `type`:_
 
 #### triangle_fillet [^][contents]
 [triangle_fillet]: #triangle_fillet-
-Creates a triangle (a half square) with fillet edges
+Creates a triangle (a half square) with chamfered edges
 with arguments from [`square_extend()`][square_extend].
 ```OpenSCAD
 triangle_fillet (size, type, edges, center, align, side)
@@ -663,7 +711,7 @@ cube_rounded_full (size, r, center, d)
 
 #### cube_fillet [^][contents]
 [cube_fillet]: #cube_fillet-
-Cube with rounded edges, every edge can be configured.\
+Cube with chamfered edges, every edge can be configured.\
 Based on `cube()`.
 
 _Arguments:_
@@ -777,11 +825,88 @@ cylinder_edges_fillet (
 
 #### wedge_fillet [^][contents]
 [wedge_fillet]: #wedge_fillet-
-Creates a wedge with the parameter form FreeCAD's wedge
-with rounded edges, every edge can be configured.\
+Creates a wedge, a half cube
+with chamfered edges, every edge can be configured.\
 Based on [`wedge()`][wedge]
 ```OpenSCAD
-wedge_fillet (v_min, v_max, v2_min, v2_max, type, edges, corner)
+wedge_fillet (size, center, align, side, type, edges, corner)
+```
+- `type`
+  - specify the chamfer type of the 9 edges
+  - see [Repeating options](#repeating-options-)
+- `edges`
+  - set the radius or width of the 9 edges
+- `corner`
+  - configure the 6 corners on bottom, top
+  - TODO Not implemented yet
+
+_Details to the arguments:_
+- `type` and `edges` are defined as a 9 element list.\
+  The locations in the list of an specific edge is defined by
+  distinctive positions in the wedge.
+  These are not fixed defined by X, Y or Z axis, but by the structure of the wedge.
+  Turn the wedge in your mind to striking points to find the right locations.
+  
+  The list is partitioned in 3 parts, each part correspond 3 edges at one side.
+  - `0`,`1`,`2`
+    - the 3 lines from first triangle to second triangle,
+      begins with the line from the remaining side,
+      the line with the right angle on both faces
+  - `3`,`4`,`5`
+    - the 3 lines around first triangle,
+      begins from the corner with the right angle
+  - `6`,`7`,`8`
+    - the 3 lines around second triangle,
+      begins from the corner with the right angle
+  
+  _Striking points:_
+  - The line where the two rectangular surfaces are at right angles.
+    This means the first line.
+  - The both triangles.
+    When the first triangle is on the bottom and the second on the top,
+    the rotation of all edges is left around, seen from above.
+    A location of a bottom line on a triangle is the same position
+    on the top line, but shiftet upwards.
+  
+  _Location of the first triangle by parameter_ `side`_:_
+  - `0-3`  - left side, if you see the front rectangle in front
+  - `4-7`  - left side, if you see the front rectangle in front
+  - `8-11` - bottom side
+  
+- `corner` is defined on a cube as a 6 element list:
+  This list is partitioned in 2 parts, each part correspond 3 corner at one triangle side.
+  The rotation of the 3 corner location on each partition is left around, seen from above.
+  First corner begins on the triangle where both lines form a right angle.
+  - the first 3 elements correspond to: All 3 corner at the first triangle (bottom).
+  - the last 3 elements correspond to:  All 3 corner at the second triangle (top).
+
+_Specialized modules with no arguments `type`_
+- `wedge_freecad_rounded()` - wedge only with rounded edges
+- `wedge_freecad_chamfer()` - wedge only with chamfered edges
+
+_Example:_
+```OpenSCAD
+include <banded.scad>
+
+for (i=[0:11])
+translate ([i%4, -floor(i/4)%3] * 8)
+{
+	color("black")
+	translate_y (-2.5)
+	linear_extrude(0.2) scale(0.2) text(str(i));
+	//
+	$fn=48;
+	wedge_rounded ([4,3,3], side=i, edges=[0.2,0,0, 1]);
+}
+```
+
+#### wedge_freecad_fillet [^][contents]
+[wedge_freecad_fillet]: #wedge_freecad_fillet-
+Creates a wedge with the parameter form FreeCAD's wedge
+with chamfered edges, every edge can be configured.\
+Based on [`wedge_freecad()`][wedge_freecad]
+```OpenSCAD
+wedge_freecad_fillet (v_min, v_max, v2_min, v2_max, type, edges, corner)
 ```
 - `v_min`  = `[Xmin, Ymin, Zmin]`
 - `v_max`  = `[Xmax, Ymax, Zmax]`
@@ -810,12 +935,12 @@ _Details to the arguments:_
   - the following 4 elements correspond: All 4 edges at the top.         First edge begins at front.
   - the last 4 elements correspond to:   All vertical edges on the side. First edge begins at front left.
 - `corner` is defined on a cube as a 8 element list:
-  This list is partitioned in 2 parts, each part correspond 4 edges at one side.
-  The rotation of the 4 edges on each partition is left around, seen from above.
+  This list is partitioned in 2 parts, each part correspond 4 corner at one side.
+  The rotation of the 4 corner location on each partition is left around, seen from above.
   - the first 4 elements correspond to: All 4 corner at the bottom. First corner begins at front left.
   - the last 4 elements correspond to:  All 4 corner at the top.    First corner begins at front left.
 
 _Specialized modules with no arguments `type`_
-- `wedge_rounded()` - wedge only with rounded edges
-- `wedge_chamfer()` - wedge only with chamfered edges
+- `wedge_freecad_rounded()` - wedge only with rounded edges
+- `wedge_freecad_chamfer()` - wedge only with chamfered edges
 

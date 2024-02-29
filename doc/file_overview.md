@@ -79,7 +79,7 @@ Overview of scad files
 ` `|\
 ` `+--> [`banded/object.scad`](object.md "Configurable objects")\
 ` `| . . . +--> [`banded/object_figure.scad`](object.md#figures- "Modules to create configurable objects")\
-` `| . . . +--> [`banded/object_figure_rounded.scad`](object.md#figures-with-fillet-edges- "Configurable objects with fillet edges")\
+` `| . . . +--> [`banded/object_figure_rounded.scad`](object.md#figures-with-chamfered-edges- "Configurable objects with chamfered edges")\
 ` `| . . . +--> [`banded/object_rounded.scad`](object.md#rounded-edges- "Figures to create rounded edges")\
 ` `|\
 ` `+--> [`banded/operator.scad`](operator.md "Transform and edit objects")\

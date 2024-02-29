@@ -389,13 +389,78 @@ module cylinder_edges_chamfer (h, r1, r2, edges, center, r, d, d1, d2, angle, sl
 	cylinder_edges_fillet (h, r1, r2, 2, edges, center, r, d, d1, d2, angle, slices, outer, align);
 }
 
+// Creates a wedge, a half cube with fillet edges
+//
+// type and edge order:
+// 0,1,2  - the 3 lines from first triangle to second triangle,
+//          begins with the line from the remaining side,
+//          the line with the right angle on both faces
+// 3,4,5  - the 3 lines around first triangle,
+//          begins from the corner with the right angle
+// 6,7,8  - the 3 lines around second triangle,
+//          begins from the corner with the right angle
+//
+module wedge_fillet (size, center, align, side, type, edges, corner)
+{
+	Types  = parameter_types_cube (type);    // only use the first 9 elements
+	Edges  = parameter_edges_cube (edges);   // only use the first 9 elements
+	Corner = parameter_corner_cube (corner); // TODO Not implemented
+	Side = side==undef ? 0 : (side%12+12)%12;
+	
+	// the data are extract from the object
+	wedge = wedge (size, center, align, Side);
+	
+	// Uses the point list of wedge, which is in a fixed order:
+	// [ <first triangle (e.g. bottom)>, <second triangle (e.g. top)>]
+	lines =
+	[ [wedge[0][0], wedge[0][3]]
+	, [wedge[0][1], wedge[0][4]]
+	, [wedge[0][2], wedge[0][5]]
+	, [wedge[0][0], wedge[0][1]]
+	, [wedge[0][1], wedge[0][2]]
+	, [wedge[0][2], wedge[0][0]]
+	, [wedge[0][4], wedge[0][3]]
+	, [wedge[0][5], wedge[0][4]]
+	, [wedge[0][3], wedge[0][5]]
+	];
+	
+	//render()
+	color("gold")
+	difference()
+	{
+		polyhedron (wedge[0], wedge[1]);
+		
+		edge_fillet_to (lines[0], lines[1][0], lines[2][0], r=Edges[0], type=Types[0], extra_h=2*extra);
+		edge_fillet_to (lines[1], lines[2][0], lines[0][0], r=Edges[1], type=Types[1], extra_h=2*extra);
+		edge_fillet_to (lines[2], lines[0][0], lines[1][0], r=Edges[2], type=Types[2], extra_h=2*extra);
+		//
+		edge_fillet_to (lines[3], lines[4][1], lines[6][0], r=Edges[3], type=Types[3], extra_h=2*extra);
+		edge_fillet_to (lines[4], lines[5][1], lines[7][0], r=Edges[4], type=Types[4], extra_h=2*extra);
+		edge_fillet_to (lines[5], lines[3][1], lines[8][0], r=Edges[5], type=Types[5], extra_h=2*extra);
+		//
+		edge_fillet_to (lines[6], lines[7][0], lines[3][1], r=Edges[6], type=Types[6], extra_h=2*extra);
+		edge_fillet_to (lines[7], lines[8][0], lines[4][1], r=Edges[7], type=Types[7], extra_h=2*extra);
+		edge_fillet_to (lines[8], lines[6][0], lines[5][1], r=Edges[8], type=Types[8], extra_h=2*extra);
+	}
+}
+// abgerundete Kanten
+module wedge_rounded (size, center, align, side, edges, corner)
+{
+	wedge_fillet (size, center, align, side, 1, edges, corner);
+}
+// abgeschrägte Kanten
+module wedge_chamfer (size, center, align, side, edges, corner)
+{
+	wedge_fillet (size, center, align, side, 2, edges, corner);
+}
+
 // Erzeugt einen Keil mit den Parametern von FreeCAD mit gefasten Kanten
 // v_min  = [Xmin, Ymin, Zmin]
 // v_max  = [Xmax, Ymax, Zmax]
 // v2_min = [X2min, Z2min]
 // v2_max = [X2max, Z2max]
 // Kantenargumente wie bei cube_fillet()
-module wedge_fillet (v_min, v_max, v2_min, v2_max, type, edges, corner)
+module wedge_freecad_fillet (v_min, v_max, v2_min, v2_max, type, edges, corner)
 {
 	Types       = parameter_types_cube (type);
 	Type_bottom = [for (i=[0: 3]) Types[i] ];
@@ -430,7 +495,7 @@ module wedge_fillet (v_min, v_max, v2_min, v2_max, type, edges, corner)
 	render()
 	difference()
 	{
-		wedge (v_min, v_max, v2_min, v2_max);
+		wedge_freecad (v_min, v_max, v2_min, v2_max);
 		
 		union()
 		{ // Fase in der Seite (edges_side)
@@ -457,13 +522,13 @@ module wedge_fillet (v_min, v_max, v2_min, v2_max, type, edges, corner)
 	}
 }
 // Keil mit abgerundeten Kanten
-module wedge_rounded (v_min, v_max, v2_min, v2_max, edges, corner)
+module wedge_freecad_rounded (v_min, v_max, v2_min, v2_max, edges, corner)
 {
-	wedge_fillet (v_min, v_max, v2_min, v2_max, 1, edges, corner);
+	wedge_freecad_fillet (v_min, v_max, v2_min, v2_max, 1, edges, corner);
 }
 // Keil mit abgeschrägten Kanten
-module wedge_chamfer (v_min, v_max, v2_min, v2_max, edges, corner)
+module wedge_freecad_chamfer (v_min, v_max, v2_min, v2_max, edges, corner)
 {
-	wedge_fillet (v_min, v_max, v2_min, v2_max, 2, edges, corner);
+	wedge_freecad_fillet (v_min, v_max, v2_min, v2_max, 2, edges, corner);
 }
 

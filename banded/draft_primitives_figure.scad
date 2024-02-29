@@ -21,18 +21,60 @@ function triangle (size, center, align, side) =
 	let (
 		trace = triangle_curve (size, center, align, side)
 	)
-	[ trace, [for (i=[0:1:len(trace)-1]) i] ]
+	[ trace, [[for (i=[0:1:len(trace)-1]) i]] ]
 ;
 
 
 // - 3D:
+
+// Erzeugt einen Keil, einen halbierten Quader
+// Parameter wie bei cube_extend()
+// Mit 'side' wird die übrigbleibende Seite des Keils festgelegt
+function wedge (size, center, align, side) =
+	let(
+		 Size  = parameter_size_3d (size)
+		,Align = parameter_align  (align, [1,1,1], center)
+		,translate_align = [for (i=[0:1:len(Size)-1]) (Align[i]-1)*Size[i]/2 ]
+		,Side = side==undef ? 0 : (side%12+12)%12
+		//
+		,x = Size.x
+		,y = Size.y
+		,z = Size.z
+		//
+		,a = [0,0,0] + translate_align
+		,b = [x,0,0] + translate_align
+		,c = [x,y,0] + translate_align
+		,d = [0,y,0] + translate_align
+		,e = [0,0,z] + translate_align
+		,f = [x,0,z] + translate_align
+		,g = [x,y,z] + translate_align
+		,h = [0,y,z] + translate_align
+		//
+		,path = [[0,1,2],[5,4,3],[0,2,5,3],[1,0,3,4],[2,1,4,5]]
+	)
+	//             /_\   /_\
+	//            0 1 2 3 4 5
+	Side== 0 ? [ [a,d,e,b,c,f], path ] :
+	Side== 1 ? [ [b,a,f,c,d,g], path ] :
+	Side== 2 ? [ [d,h,a,c,g,b], path ] :
+	Side== 3 ? [ [a,e,b,d,h,c], path ] :
+	Side== 4 ? [ [e,a,h,f,b,g], path ] :
+	Side== 5 ? [ [f,b,e,g,c,h], path ] :
+	Side== 6 ? [ [h,e,d,g,f,c], path ] :
+	Side== 7 ? [ [e,f,a,h,g,d], path ] :
+	Side== 8 ? [ [a,b,d,e,f,h], path ] :
+	Side== 9 ? [ [b,c,a,f,g,e], path ] :
+	Side==10 ? [ [c,d,b,g,h,f], path ] :
+	Side==11 ? [ [d,a,c,h,e,g], path ] :
+	undef
+;
 
 // Erzeugt einen Keil mit den Parametern von FreeCAD
 // v_min  = [Xmin, Ymin, Zmin]
 // v_max  = [Xmax, Ymax, Zmax]
 // v2_min = [X2min, Z2min]
 // v2_max = [X2max, Z2max]
-function wedge (v_min, v_max, v2_min, v2_max) =
+function wedge_freecad (v_min, v_max, v2_min, v2_max) =
 	let(
 	Vmin  = v_min,
 	Vmax  = v_max,
@@ -94,7 +136,7 @@ function torus (r, w, ri, ro, angle=360, center=false, fn_ring, outer, align) =
 	let (
 		 max_r = max(rx)
 		,Align = parameter_align (align, [0,0,1], center)
-		,align_v = [ Align[0]*max_r, Align[1]*max_r, Align[2]*rw - rw]
+		,align_v = [ Align.x*max_r, Align.y*max_r, (Align.z-1)*rw]
 		,angles = parameter_angle (angle, [360,0])
 		,circle_angle =
 			rm>=rw  ? [360,0] :
@@ -160,7 +202,7 @@ function ring_square (h=1, r, w, ri, ro, angle=360, center=false, d, di, do, out
 		,rx_o   = [for (i=[0:1]) rx[i] * get_circle_factor (slices, Outer[i], angles[0]) ]
 		,Align = parameter_align (align, [0,0,1], center)
 	)
-	translate (v=[ Align[0]*rx[1], Align[1]*rx[1], Align[2]*h/2 - h/2], object=
+	translate (v=[ Align.x*rx[1], Align.y*rx[1], (Align.z-1)*h/2], object=
 	rotate_extrude_extend_points (
 		angle= angles,
 		list =
@@ -187,7 +229,7 @@ function funnel (h=1, ri1, ri2, ro1, ro2, w, angle=360, di1, di2, do1, do2, oute
 		,r_o    = [for (s=[0:1]) for (i=[0:1]) r[i+2*s] * get_circle_factor (fn, Outer[s], angles[0]) ]
 		,Align = parameter_align (align, [0,0,1])
 	)
-	translate (v=[ Align[0]*max_r, Align[1]*max_r, Align[2]*h/2 - h/2], object=
+	translate (v=[ Align.x*max_r, Align.y*max_r, (Align.z-1)*h/2], object=
 	rotate_extrude_extend_points (angle=angles, $fn=fn,
 		list=[
 			[r_o[0],0], [r_o[2],0],

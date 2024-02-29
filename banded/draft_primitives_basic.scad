@@ -107,7 +107,7 @@ function cube (size, center, align) =
 	let(
 		 Size = parameter_size_3d (size)
 		,Align = parameter_align  (align, [1,1,1], center)
-		,translate_align = [for (i=[0:1:len(Size)-1]) Align[i]*Size[i]/2 ]
+		,translate_align = [for (i=[0:1:len(Size)-1]) (Align[i]-1)*Size[i]/2 ]
 		,x    = Size.x
 		,y    = Size.y
 		,z    = Size.z
@@ -123,7 +123,7 @@ function cube (size, center, align) =
 			,[7,4,0,3]] // left
 	)
 	[
-		translate_points( points, translate_align - Size/2 )
+		translate_points( points, translate_align )
 	    , path
 	]
 ;
@@ -538,11 +538,6 @@ function hull_3d_grub_out_points_next (points, triangles, remainder, last=0) =
 
 // Objekt in Liste direkt in ein Objekt umwandeln
 
-module build_object (object, convexity)
-{
-	echo ("\nDEPRECATED: build_object() will be removed in future releases. Use build() instead.")
-	build (object, convexity);
-}
 module build (object, convexity)
 {
 	o = unify_object (object);

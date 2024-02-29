@@ -26,14 +26,24 @@ module triangle (size, center, align, side)
 
 // - 3D:
 
+// Erzeugt einen Keil, einen halbierten Quader
+// Parameter wie bei cube_extend()
+// Mit 'side' wird die übrigbleibende Seite des Keils festgelegt
+module wedge (size, center, align, side)
+{
+	o = wedge (size, center, align, side);
+	//
+	polyhedron( o[0], o[1] );
+}
+
 // Erzeugt einen Keil mit den Parametern von FreeCAD
 // v_min  = [Xmin, Ymin, Zmin]
 // v_max  = [Xmax, Ymax, Zmax]
 // v2_min = [X2min, Z2min]
 // v2_max = [X2max, Z2max]
-module wedge (v_min, v_max, v2_min, v2_max)
+module wedge_freecad (v_min, v_max, v2_min, v2_max)
 {
-	o = wedge (v_min, v_max, v2_min, v2_max);
+	o = wedge_freecad (v_min, v_max, v2_min, v2_max);
 	//
 	polyhedron( o[0], o[1] );
 }

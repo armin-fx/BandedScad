@@ -75,6 +75,7 @@ More objects:
   - [`triangle()`](object.md#triangle-)
 - 3D
   - [`wedge()`](object.md#wedge-)
+  - [`wedge_freecad()`](object.md#wedge_freecad-)
   - [`torus()`](object.md#torus-)
   - [`ring_square()`](object.md#ring_square-)
   - [`funnel()`](object.md#funnel-)

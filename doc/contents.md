@@ -47,7 +47,7 @@ Table of contents
 - [Configurable objects](object.md)
   - [Figures](object.md#figures-)
   - [Rounded edges](object.md#rounded-edges-)
-  - [Figures with fillet edges](object.md#figures-with-fillet-edges-)
+  - [Figures with chamfered edges](object.md#figures-with-chamfered-edges-)
 - [Operator to transform and edit objects](operator.md)
   - [Various operator to edit and test objects](operator.md#edit-and-test-objects-)
   - [Transform operator for affine transformations](operator.md#transform-operator-)
