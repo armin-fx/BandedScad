@@ -131,20 +131,20 @@ module edge_rounded_plane (r, angle, extra=extra, d)
 // erzeugt eine abgeschrägte Kante zum auschneiden oder ankleben
 // Argumente:
 //   h       Höhe der Kante
-//   c       Breite der Schräge
+//   r       Breite der Schräge
 //   angle   Winkel der Kante, Standart=90° (rechter Winkel)
 //   extra   zusätzlichen Überstand abschneiden, wegen Z-Fighting
-module edge_chamfer (h=1, c, angle=90, center=false, extra=extra)
+module edge_chamfer (h=1, r, angle=90, center=false, extra=extra)
 {
-	if (c>0 && h>0)
+	if (r>0 && h>0)
 		linear_extrude (height=h, center=center, convexity=2)
-		edge_chamfer_plane (c, angle, extra=extra);
+		edge_chamfer_plane (r, angle, extra=extra);
 }
 // erzeugt eine abgeschrägte Kante eines Zylinders zum auschneiden oder ankleben
 // Argumente:
 //   r_ring      Radius der Kante des Zylinders
 //   angle_ring  Winkel des Zylinders, Standart=360°
-module edge_ring_chamfer (r_ring, c, angle=90, angle_ring=360, outer, slices, extra=extra, d_ring)
+module edge_ring_chamfer (r_ring, r, angle=90, angle_ring=360, outer, slices, extra=extra, d_ring)
 {
 	R_ring   = parameter_circle_r(r_ring, d_ring);
 	angles_ring = parameter_angle(angle_ring, 360);
@@ -152,32 +152,32 @@ module edge_ring_chamfer (r_ring, c, angle=90, angle_ring=360, outer, slices, ex
 	Outer   = outer!=undef ? outer : 0;
 	R_ring_outer = R_ring * get_circle_factor (fn_ring, Outer, angles_ring[0]);
 	//
-	if (c>0 && R_ring>0) // TODO no fillet
+	if (r>0 && R_ring>0) // TODO no fillet
 	{
 		rotate_extrude_extend (angle=angles_ring, convexity=2, slices=fn_ring)
 		translate_x (R_ring_outer)
-		edge_chamfer_plane (c, angle, extra=extra);
+		edge_chamfer_plane (r, angle, extra=extra);
 	}
 }
 // erzeugt eine abgeschrägte Kante entlang einer 2D Spur zum auschneiden oder ankleben
-module edge_trace_chamfer (trace, c, angle=90, closed=false, extra=extra, d)
+module edge_trace_chamfer (trace, r, angle=90, closed=false, extra=extra, d)
 {
-	if (c!=undef && c>0) // TODO no fillet
+	if (r!=undef && r>0) // TODO no fillet
 	{
 		plain_trace_extrude (trace, closed=closed, convexity=2)
-		edge_chamfer_plane (c, angle, extra=extra);
+		edge_chamfer_plane (r, angle, extra=extra);
 	}
 }
 // erzeugt einen Umriss einer abgeschrägten Kante als 2D-Objekt
-module edge_chamfer_plane (c, angle=90, extra=extra)
+module edge_chamfer_plane (r, angle=90, extra=extra)
 {
 	angles   = parameter_angle (angle, 90);
 	Angle    = angles[0];
 	rotation = angles[1];
-	t       = c/2 / sin(Angle/2);
+	t       = r/2 / sin(Angle/2);
 	h_extra = extra * cot(Angle/2);
 	//
-	if (c>0 && Angle<180)
+	if (r>0 && Angle<180)
 	rotate_z(rotation)
 	polygon([
 		 [ t,       0]
@@ -215,9 +215,33 @@ module edge_rounded_to (line, point1, point2, r, extra=extra, extra_h=0, directe
 {
 	edge_fillet_to (line, point1, point2, r, type=1, extra=extra, extra_h=extra_h, directed=directed);
 }
-module edge_chamfer_to (line, point1, point2, c, extra=extra, extra_h=0, directed=true)
+module edge_chamfer_to (line, point1, point2, r, extra=extra, extra_h=0, directed=true)
 {
-	edge_fillet_to (line, point1, point2, c, type=2, extra=extra, extra_h=extra_h, directed=directed);
+	edge_fillet_to (line, point1, point2, r, type=2, extra=extra, extra_h=extra_h, directed=directed);
+}
+
+// erzeugt eine gefaste Ecke aus den Daten Eckpunkt und 2 Eckpunkten der angrenzenden Linien
+module edge_fillet_plane_to (origin, point1, point2, r, type, extra=extra, directed=true)
+{
+	angle_line  = rotation_points (origin,point1,point2);
+	angle_begin = rotation_vector ([1,0], point1-origin);
+	
+	if (directed==false ? true : angle_line<180)
+	{
+		translate (origin)
+		edge_fillet_plane (r=r, type=type, extra=extra, angle=
+			[ angle_line<180 ? angle_line  : 360-angle_line
+			, angle_line<180 ? angle_begin : angle_begin+angle_line]
+		);
+	}
+}
+module edge_rounded_plane_to (origin, point1, point2, r, extra=extra, directed=true)
+{
+	edge_fillet_plane_to (origin, point1, point2, r, type=1, extra=extra, directed=directed);
+}
+module edge_chamfer_plane_to (origin, point1, point2, r, extra=extra, directed=true)
+{
+	edge_fillet_plane_to (origin, point1, point2, r, type=2, extra=extra, directed=directed);
 }
 
 

@@ -580,7 +580,8 @@ _Specialized modules with no argument `type`:_
 #### edge_fillet_to [^][contents]
 [edge_fillet_to]: #edge_fillet_to-
 Creates a chamfered edge from the data
-_line of the edge_ and _2 vertices_ of the adjacent faces.
+_line of the edge_ and _2 vertices_ of the adjacent faces.\
+This can directly set on 3D edges.
 ```OpenSCAD
 edge_fillet_to (line, point1, point2, r, type, extra, extra_h, directed)
 ```
@@ -607,8 +608,39 @@ edge_fillet_to (line, point1, point2, r, type, extra, extra_h, directed)
     Flip the chamfered edge to the side with an angle < 180°
 
 _Specialized modules with no argument `type`:_
-- `edge_rounded_to()` - creates a rounded edges
-- `edge_chamfer_to()` - creates a chamfered edges
+- `edge_rounded_to()` - creates a rounded edge
+- `edge_chamfer_to()` - creates a chamfered edge
+
+#### edge_fillet_plane_to [^][contents]
+[edge_fillet_plane_to]: #edge_fillet_plane_to-
+Creates a profile of a chamfered edge as 2D object from data.
+This can directly set on 2D edges.
+It needs the point from the edge and the points of both sides outgoing from edge.
+```OpenSCAD
+edge_fillet_plane_to (origin, point1, point2, r, type, extra, directed)
+```
+- `origin` - point at the edge
+- `point1` - first point, build the line `origin`->`point1`, first side of the edge
+- `point2` - second point, build the line `origin`->`point2`, last side of the edge
+- `r`     - parameter of the chamfer
+- `type`  - specify, which chamfer type should be used for the edge
+  - `0` = no chamfer (default)
+  - `1` = rounding
+  - `2` = chamfer
+- `extra`  - set an amount extra overhang, because of z-fighting
+  - default = constant `extra`
+- `directed`
+  - If the angle around the line from point1 to point2 counter clockwise
+    is greater then 180°, a chamfered edge is impossible to create.
+    This parameter controls the behavior.
+  - `true` = default, line is considered as directed\
+    Create nothing if the angle is greater then 180°.
+  - `false`, line is considered as undirected\
+    Flip the chamfered edge to the side with an angle < 180°
+
+_Specialized modules with no argument `type`:_
+- `edge_rounded_plane_to()` - creates a rounded edge
+- `edge_chamfer_plane_to()` - creates a chamfered edge
 
 
 Figures with chamfered edges [^][contents]

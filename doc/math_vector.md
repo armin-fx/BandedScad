@@ -25,7 +25,9 @@ Vector operations
   - [Defined operations](#defined-operations-)
     - [`unit_vector()`][unit_vector]
     - [`angle_vector()`][angle_vector]
+    - [`angle_points()`][angle_points]
     - [`rotation_vector()`][rotation_vector]
+    - [`rotation_points()`][rotation_points]
     - [`rotation_around_vector()`][rotation_around_vector]
     - [`rotation_around_line()`][rotation_around_line]
     - [`normal_vector()`][normal_vector]
@@ -101,6 +103,13 @@ Return the minimum angle inside 2 vector `v1` and `v2`
 angle_vector (v1, v2)
 ```
 
+#### angle_points [^][contents]
+[angle_points]: #angle_points-
+Return the minimum angle inside 2 lines `origin`->`p1` and `origin`->`p2`
+```OpenSCAD
+angle_points (origin, p1, p2)
+```
+
 #### rotation_vector [^][contents]
 [rotation_vector]: #rotation_vector-
 Return the angle from vector `v1` to `v2` in 2D plane in
@@ -109,6 +118,19 @@ If spatial 3D vector are used, only return the minimum angle inside `v1` and `v2
 The 3D rotation vector can get with cross product `cross()`.
 ```OpenSCAD
 rotation_vector (v1, v2)
+```
+
+_similar functions:_
+- `angle_left_vector  (v1, v2)` - same like `rotation_vector()`
+- `angle_right_vector (v1, v2)` - rotation clockwise
+
+#### rotation_points [^][contents]
+[rotation_points]: #rotation_points-
+Return the angle from line `origin`->`p1` to `origin`->`p2` in 2D plane in
+mathematical direction = counter clockwise\
+If spatial 3D points are used, only return the minimum angle inside both lines.
+```OpenSCAD
+rotation_points (origin, p1, p2)
 ```
 
 #### rotation_around_vector [^][contents]

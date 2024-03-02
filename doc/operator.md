@@ -119,7 +119,7 @@ Rotate object from direction Z axis to direction at vector `v`.
   - `3` - 3D object = default
   - `2` - 2D object (must set in this case)
 
-___way of working in 3D:___
+_way of working in 3D:_
 - procedure 1, `a` as angle:
   - vector `v` will split in
     - inclination angle, rotate around Y axis
@@ -133,7 +133,7 @@ ___way of working in 3D:___
   - make rotation around vector `v`, so that the originally X axis point to
     orientation vector `a`
 
-___way of working in 2D:___
+_way of working in 2D:_
 - rotate the object from direction X axis to vector `v`
 - option `a` will be ignored
 - the dimension number must be specified with `d=2`,

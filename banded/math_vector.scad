@@ -24,10 +24,16 @@ include <banded/constants_user.scad>
 // Vektor normieren auf die Länge 1
 function unit_vector (v) = v / norm(v);
 
-// eingeschlossenen Winkel zweier Vektoren ermitteln
+// kleinsten eingeschlossenen Winkel zweier Vektoren ermitteln
 function angle_vector (v1, v2) =
 	acos( (v1 * v2) / (norm(v1) * norm(v2)) )
 ;
+// kleinsten eingeschlossenen Winkel zwischen Strecke origin->p1 und origin->p2 ermitteln.
+function angle_points (origin, p1, p2) =
+	// angle_vector (p1-origin, p2-origin)
+	acos( ((p1-origin) * (p2-origin)) / (norm(p1-origin) * norm(p2-origin)) )
+;
+
 // Winkel zweier Vektoren in der Ebene ermitteln entsprechend seiner Rotation
 // gerechnet wird mit Linksrotation = gegen den Uhrzeigersinn
 // wie in der Mathematik üblich
@@ -40,6 +46,12 @@ function angle_left_vector (v1, v2) =
 	:	360 - acos( (v1 * v2) / (norm(v1) * norm(v2)) )
 ;
 function angle_right_vector (v1, v2) = 360 - angle_left_vector(v1, v2);
+
+// Den eingeschlossenen Winkel zwischen Strecke origin->p1 und origin->p2 ermitteln.
+// im mathemathischen Drehsinn (gegen den Uhrzeigersinn)
+function rotation_points (origin, p1, p2) =
+	angle_left_vector (p1-origin, p2-origin)
+;
 
 // Return the angle around vector 'v' from points 'p1' to 'p2' in
 // mathematical direction = counter clockwise.
