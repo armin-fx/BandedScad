@@ -25,6 +25,7 @@ Constants
   - [Customizable constants](#customizable-constants-)
   - [Technical constants](#technical-constants-)
     - [Paper size](#paper-size-)
+    - [Envelope size](#envelope-size-)
 
 
 Defined constants [^][contents]
@@ -164,15 +165,20 @@ Defines paper size in ISO 216.\
 ISO 216 is an international standard for paper sizes.
 The standard defines the __"A"__, __"B"__ and __"C"__ series of paper sizes,
 including __A4__, the most commonly available paper size worldwide.
+- [=> Wikipedia - Paper size](https://en.wikipedia.org/wiki/Paper_size)
+- [=> Wikipedia - ISO 216](https://en.wikipedia.org/wiki/ISO_216)
 
 _Function:_\
-__`iso_216 (serie, number)`__
+__`iso_216 (format, serie, number)`__
 - Returns the paper size as list: `[smallest size, biggest size]`
 - Arguments:
-  - `serie`  - format `"A"`, `"B"` or `"C"`
+  - `format` - paper format as string, e.g. `"A4"`
+  
+  or
+  - `serie`  - format serie `"A"`, `"B"` or `"C"`
   - `number` - size as numeric value `0`...`10`
 - Example for paper size __A4__:
-  - `iso_216 ("A",4)`
+  - `iso_216 ("A4")`
 
 _Defined Constants_:
 | size | A series formats | B series formats | C series formats
@@ -182,4 +188,34 @@ _Defined Constants_:
 | ...  | ...              | ...              | ...
 |  9   | `ISO_A9`         | `ISO_B9`         | `ISO_C9`
 | 10   | `ISO_A10`        | `ISO_B10`        | `ISO_C10`
+
+#### Envelope size: [^][contents]
+Defines envelope size in ISO 269.\
+ISO 269 is an international standard for envelope sizes.
+
+[=> Wikipedia - Envelope](https://en.wikipedia.org/wiki/Envelope)
+
+_Function:_\
+__`iso_269 (format)`__
+- Returns the envelope size as list: `[biggest size, smallest size]`
+- Arguments:
+  - `format` - envelope format as string, e.g. `"DL"`
+- Example:
+  - `iso_269 ("DL")`
+
+_Defined Constants_:
+| format | constant
+|--------|----------
+| DL     | `envelope_ISO_DL`
+| C7     | `envelope_ISO_C7`
+| C7/C6  | `envelope_ISO_C7C6`
+| C6     | `envelope_ISO_C6`
+| C6/C5  | `envelope_ISO_C6C5`
+| C5     | `envelope_ISO_C5`
+| C4     | `envelope_ISO_C4`
+| C3     | `envelope_ISO_C3`
+| B6     | `envelope_ISO_B6`
+| B5     | `envelope_ISO_B5`
+| B4     | `envelope_ISO_B4`
+| E4     | `envelope_ISO_E4`
 
