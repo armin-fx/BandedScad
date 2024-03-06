@@ -33,12 +33,14 @@ The color argument is the same like OpenSCAD module `color()`
 get_color (c, alpha, default)
 ```
 - `c`       - color argument
-- `alpha`   - optional alpha value - transparent to opaque: `0...1`, default = `1`.
-- `default` - optional default color if `c` is not set
+- `alpha`   - optional, alpha value - transparent to opaque: `0...1`, default = `1`.
+- `default` - optional, default color if `c` is not set, default = not set
 
 Color arguments:
 - color name as string
-  - The color names are taken from the World Wide Web consortium's SVG color list.
+  - The color names are taken from the
+    World Wide Web consortium's [SVG color list](https://www.w3.org/TR/css-color-3/).
+  - Additional defined colors
 - color as rgb or rgba list
 - `rgb` - as list `[r, g, b]` or `[r, g, b, alpha]`
   - `r` = red:   `0...1`
@@ -59,6 +61,22 @@ Return list `[r, g, b, alpha]`:
 - `g` = green: `0...1`
 - `b` = blue:  `0...1`
 - `alpha` = transparent to opaque: `0...1`, default = `1`
+
+Additional defined colors:
+- metal:
+  - `"aluminium"`
+  - `"brass"`
+  - `"oldbrass"`
+  - `"copper"`
+  - `"iron"`
+  - `"stainless"`
+  - `"steel"`
+  - `"chrome"`
+  - `"zinc"`
+- wood:
+  - `"birch"`
+  - `"oak"`
+  - `"pine"`
 
 #### color_hsv_to_rgb [^][contents]
 [color_hsv_to_rgb]: #color_hsv_to_rgb-

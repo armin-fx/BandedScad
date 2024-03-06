@@ -100,14 +100,15 @@ function color_name (name, alpha) =
 	let(
 		 a = alpha!=undef ? alpha : 1
 		,n = to_lower_str(name)
-		,p = binary_search (color_name_list, n, [1])
+		,p =             binary_search (color_name_svg  , n, [1])
+		,q = p>=0 ? -1 : binary_search (color_name_other, n, [1])
+		,c = p>=0 ? color_name_svg  [p][0] / 255 :
+		     q>=0 ? color_name_other[q][0] / 255 :
+		     undef
 	)
-	p<0 ? undef :
-	let(
-		 c = color_name_list[p][0] / 255
-	)
+	c==undef ? undef :
 	a==1 ? c
-	:          concat (c, a)
+	     : [c[0],c[1],c[2], a]
 ;
 
 function prepare_color_name (list) =
@@ -215,7 +216,7 @@ function color_brightness (rgb, gamma=1) =
 
 // list of names of color
 // Color names are taken from the World Wide Web consortium's SVG color list
-color_name_list = prepare_color_name( [
+color_name_svg = prepare_color_name( [
 	[[240,248,255], "aliceblue"],
 	[[250,235,215], "antiquewhite"],
 	[[  0,255,255], "aqua"],
@@ -365,3 +366,21 @@ color_name_list = prepare_color_name( [
 	[[154,205, 50], "yellowgreen"]
 ]);
 
+// list of names of color
+// other color names
+color_name_other = prepare_color_name( [
+	// metal
+	[[196,196,204], "aluminium"],
+	[[255,220,100], "brass"],
+	[[224,199,127], "oldbrass"],
+	[[230,140, 51], "copper"],
+	[[ 92, 84, 84], "iron"],
+	[[115,110,127], "stainless"],
+	[[166,171,184], "steel"],
+	[[199,196,185], "chrome"],
+	[[186,196,200], "zinc"],
+	// wood
+	[[230,204,153], "birch"],
+	[[166,127,102], "oak"],
+	[[217,179,115], "pine"],
+]);

@@ -646,7 +646,9 @@ The elements are compared using operator ==  or with function `f` if given.
 
 #### `binary_search (list, value, type, f)` [^][contents]
 [binary_search]: #binary_search-list-value-type-f-
-Search a value in a sorted list
+Search a value in a sorted list.\
+Returns the position of the match,
+elsewise returns a negative value if not found.
 - `f`
   - optional
   - function literal with two arguments
