@@ -382,7 +382,7 @@ This will add or remove parts from a main object.\
 Inside a combine block you can define multiple parts
 to add or remove in any order.
 Add a predicate like `part_main()` (for a main object),
-`part_add()` or `part_cut()` to each block.
+`part_add()` or `part_cut()` to each object.
 
 _Example:_
 ```OpenSCAD
@@ -404,6 +404,8 @@ You can put these parts into a module, they will selected in the right order.
 This is useful to edit a main object with additional parts.
 The parts will always edit the main object, defined by `part_main()`.
 But you can define elements, they can additional edit the additional parts.
+You can put sibling parts together into a module or into an `union()` block
+and additional edit these with specialized part predicates.
 
 _Defined part elements:_
 - `part_main()`
@@ -416,16 +418,17 @@ _Defined part elements:_
   - do nothing with all added objects
 - `part_cut_all()`
   - remove a part from the main object
-  - remove from all other parts, except from the own part, defined in the same module
+  - remove from all other parts,
+    except from the own sibling parts, defined in the same module
 - `part_selfcut()`
   - remove a part from the main object
-  - remove from the own part, defined in the same module
+  - remove from the own sibling parts, defined in the same module
   - do nothing with all other parts
   - this is useful e.g.
     if a hole must bored through the main object _and_ the added part
 - `part_selfcut_all()`
   - remove a part from the main object
-  - remove from all added parts, inclusive the own part
+  - remove from all added parts, inclusive the own sibling parts
 - `part_limit()`
   - defines a common hull for the main object,
     all parts they exceed this object will be removed
