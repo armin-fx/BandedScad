@@ -5,6 +5,40 @@
 // um weitere Steuerungsmöglichkeiten zu erweitern
 
 
+// Stellt den Parameter 'angle' ein.
+// Öffnungswinkel eines Halbkreises im mathematischen Drehsinn = entgegen den Uhrzeigersinn
+//
+// Rückgabe:
+// - Liste '[ Öffnungswinkel, Startwinkel ]'
+//
+// Argumente
+// - opening - Öffnungswinkel (Mittelpunktswinkel)
+// - outer   - entgegengesetzter Öffnungswinkel (360° - Mittelpunktswinkel)
+// - begin   - Anfangswinkel des Halbkreises
+// - end     - Endwinkel des Halbkreises
+//
+// Priorität der Argumente:
+// - opening, begin
+// - opening, end
+// - outer, begin
+// - outer, end
+// - begin, end
+// - fehlende Werte mit Standartwert [360, 0] auffüllen
+//
+// TODO prüfen nach negative Winkel
+function configure_angle (opening, begin, end, outer) =
+	 (opening!=undef && begin!=undef) ? [opening  , begin]
+	:(opening!=undef && end  !=undef) ? [opening  , end-opening]
+	:(outer  !=undef && begin!=undef) ? [360-outer, begin]
+	:(outer  !=undef && end  !=undef) ? [360-outer, end-(360-outer)]
+	:(begin  !=undef && end  !=undef) ? [end-begin, begin]
+	:(opening!=undef) ? [opening  , 0]
+	:(outer  !=undef) ? [360-outer, 0]
+	:(begin  !=undef) ? [360, begin]
+	:(end    !=undef) ? [360, end]
+	:[360, 0]
+;
+
 // Stellt den Parameter 'edges' vom Module cube_fillet() ein.
 //
 // 3 Gruppen von Kanten, die den Quader jeweils vollständig umfassen:

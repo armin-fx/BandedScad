@@ -47,6 +47,7 @@ Helper functions
     - [`get_first_good_in_list()`][get_first_good_in_list]
     - [`get_first_num_in_list()`][get_first_num_in_list]
 - [Configure arguments](#configure-arguments-)
+  - [`configure_angle()`][configure_angle]
   - [`configure_edges()`][configure_edges]
   - [`configure_types()`][configure_types]
   - [`configure_corner()`][configure_corner]
@@ -342,6 +343,28 @@ Configure arguments [^][contents]
 
 Configure arguments from functions or modules
 to expand further control options
+
+#### configure_angle [^][contents]
+[configure_angle]: #configure_angle-
+Sets the `angle` parameter for a circle.  
+Returns a list `[ opening angle, begin angle ]`
+
+_Arguments:_
+```OpenSCAD
+configure_angle (opening, begin, end, outer)
+```
+- `opening` - opening angle, central angle
+- `outer`   - opposite opening angle, 360° - central angle
+- `begin`   - begin angle, angle where the circle starts
+- `end`     - end angle
+
+_Ranking of arguments:_
+- `opening`, `begin`
+- `opening`, `end`
+- `outer`, `begin`
+- `outer`, `end`
+- `begin`, `end`
+- fill missing arguments with default `[360, 0]`
 
 #### configure_edges [^][contents]
 [configure_edges]: #configure_edges-
