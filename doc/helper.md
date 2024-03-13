@@ -2,16 +2,16 @@ Helper functions
 ================
 
 ### defined in file
-`banded/helper.scad`\
-` `| \
-` `+--> `banded/helper_native.scad`\
-` `+--> `banded/helper_arguments.scad`\
-` `+--> `banded/helper_recondition.scad`\
-` `\
-`banded/benchmark.scad`
+`banded/helper.scad`  
+` `|  
+` `+--> `banded/helper_native.scad`  
+` `+--> `banded/helper_arguments.scad`  
+` `+--> `banded/helper_recondition.scad`  
+` `  
+`banded/benchmark.scad`  
 
-[<-- file overview](file_overview.md)\
-[<-- table of contents](contents.md)
+[<-- file overview](file_overview.md)  
+[<-- table of contents](contents.md)  
 
 ### Contents
 [contents]: #contents "Up to Contents"
@@ -101,52 +101,76 @@ Returns `true` if the argument is OK
 
 ### Nesting depth of lists [^][contents]
 
-#### `is_list_depth (value, depth)` [^][contents]
-[is_list_depth]: #is_list_depth-value-depth-
+#### is_list_depth [^][contents]
+[is_list_depth]: #is_list_depth-
 Tests a variable to see if it contains a list with a specified nesting depth.
+
+_Arguments:_
+```OpenSCAD
+is_list_depth (value, depth)
+```
 - `depth` - depth of nested lists
   - `1` tests `value` for a simple non-nested list, default
   - if set `0`, `value` is tested to make sure it's not undef and not a list
 
-#### `is_list_depth_num (value, depth)` [^][contents]
-[is_list_depth_num]: #is_list_depth_num-value-depth-
+#### is_list_depth_num [^][contents]
+[is_list_depth_num]: #is_list_depth_num-
 Tests a variable to see if it contains a list with a specified nesting depth,
 and the last list contains numeric values.
+
+_Arguments:_
+```OpenSCAD
+is_list_depth_num (value, depth)
+```
 - `depth` - depth of nested lists
   - `1` tests `value` for a simple non-nested list, default
   - if set `0`, `value` is tested to make sure it's not undef and not a list
 
-#### `get_list_depth (list)` [^][contents]
-[get_list_depth]: #get_list_depth-list-
+#### get_list_depth [^][contents]
+[get_list_depth]: #get_list_depth-
 Returns the nesting depth of a list.
+
+_Arguments:_
+```OpenSCAD
+get_list_depth (list)
+```
 
 
 ### Get data [^][contents]
 
-#### `extract_axis (list, axis)` [^][contents]
-[extract_axis]: #extract_axis-list-axis-
-Extracts a fixed position on every entry in a list.\
+#### extract_axis [^][contents]
+[extract_axis]: #extract_axis-
+Extracts a fixed position on every entry in a list.  
 Returns a list with this values.
-- `axis` - position of element (list or string) on entry in the list
-
 ```
 extract_axis (list=[[x,y,z], [1,2,3], [11,12,13]], axis=1)  =>  [y,2,12]
                        ^        ^          ^                     ^ ^  ^
                      0 1 2    0 1 2     0  1  2
 ```
 
-#### `diff_list (list)` [^][contents]
-[diff_list]: #diff_list-list-
-Returns the largest distance of each value within a list.\
+_Arguments:_
+```OpenSCAD
+extract_axis (list, axis)
+```
+- `axis` - position of element (list or string) on entry in the list
+
+#### diff_list [^][contents]
+[diff_list]: #diff_list-
+Returns the largest distance of each value within a list.  
 Subtract the smallest value in list from the biggest value in list.
 ```
 diff_list ([3, 2, 4, 7])  ==> 7 - 2 = 5
-            ^     ^
+               ^     ^
 ```
 
-#### `diff_axis_list (list)` [^][contents]
-[diff_axis_list]: #diff_axis_list-list-
-Returns the largest distance of each axis in a vector list.\
+_Arguments:_
+```OpenSCAD
+diff_list (list)
+```
+
+#### diff_axis_list [^][contents]
+[diff_axis_list]: #diff_axis_list-
+Returns the largest distance of each axis in a vector list.  
 ```
 diff_axis_list ([ [1,3],[6,9],[4,2] ])
   6 - 1 = 5        ^     ^
@@ -154,17 +178,27 @@ diff_axis_list ([ [1,3],[6,9],[4,2] ])
   ==>  [5,7]
 ```
 
-#### `range (value)` [^][contents]
-[range]: #range-value-
-Converts a range specification to a list.\
+_Arguments:_
+```OpenSCAD
+diff_axis_list (list)
+```
+
+#### range [^][contents]
+[range]: #range-
+Converts a range specification to a list.  
 `[0:3]  ==>  [0,1,2,3]`
+
+_Arguments:_
+```OpenSCAD
+range (value)
+```
 
 
 ### Get position on lists [^][contents]
 
-#### `get_position`, `get_index` [^][contents]
+#### get_position, get_index [^][contents]
 [get_position]: #get_position-get_index-
-Returns the real position within a list.\
+Returns the real position within a list.  
 Coding like in python:
 - positive index = list from the beginning
 - negative index = list from the end
@@ -187,16 +221,16 @@ Both functions returns the same result, but with different arguments.
 - `list`     - pass a list directly for calculation
 - `size`     - pass the size of a list for calculation
 
-#### `get_position_safe`, `get_index_safe` [^][contents]
+#### get_position_safe, get_index_safe [^][contents]
 [get_position_safe]: #get_position_safe-get_index_safe-
-Returns the real position within a list.\
+Returns the real position within a list.  
 Same like [`get_position()`][get_position], but constrain the position to
 the first or last element if the value exceed the real size of the list.
 Returns `-1` on an empty list.
 
-#### `get_position_insert`, `get_index_insert` [^][contents]
+#### get_position_insert, get_index_insert [^][contents]
 [get_position_insert]: #get_position_insert-get_index_insert-
-Returns the real position within a list.\
+Returns the real position within a list.  
 Coding makes sense for insertion positions:
 - positive index = list from the beginning
 - negative index = list at the end after the last element
@@ -221,15 +255,15 @@ Both functions returns the same result, but with different arguments.
 - `list`     - pass a list directly for calculation
 - `size`     - pass the size of a list for calculation
 
-#### `get_position_insert_safe`, `get_index_insert_safe` [^][contents]
+#### get_position_insert_safe, get_index_insert_safe [^][contents]
 [get_position_insert_safe]: #get_position_insert_safe-get_index_insert_safe-
-Returns the real position within a list.\
+Returns the real position within a list.  
 Same like [`get_position_insert()`][get_position_insert], but constrain the position to
 the first or 1 element after the last element if the value exceed the real size of the list.
 
-#### `last_value` [^][contents]
+#### last_value [^][contents]
 [last_value]: #last_value-
-Return the last element from a list.\
+Return the last element from a list.  
 ```OpenSCAD
 last_value (list, index)
 ```
@@ -239,8 +273,17 @@ last_value (list, index)
 
 ### Data consistency [^][contents]
 
-#### `is_good_list (list, begin, end)` [^][contents]
-[is_good_list]: #is_good_list-list-begin-end-
+#### is_good_list [^][contents]
+[is_good_list]: #is_good_list-
+Tests a list if all values in a list are not `undef`.  
+Returns `true` on success.
+
+_Arguments:_
+```OpenSCAD
+is_good_list (list, begin, end)
+```
+- `begin` - test from this element in the list, default = first element
+- `end`   - test until this element in the list, default = last element
 
 _Specialized function with fixed list size:_
 - `is_good_1d (list)` - test a list with 1 element
@@ -248,8 +291,17 @@ _Specialized function with fixed list size:_
 - `is_good_3d (list)` - test a list with 3 elements
 - `is_good_4d (list)` - test a list with 4 elements
 
-#### `is_num_list (list, begin, end)` [^][contents]
-[is_num_list]: #is_good_list-list-begin-end-
+#### is_num_list [^][contents]
+[is_num_list]: #is_good_list-
+Tests a list if all values in a list has a numeric value.  
+Returns `true` on success.
+
+_Arguments:_
+```OpenSCAD
+is_num_list (list, begin, end)
+```
+- `begin` - test from this element in the list, default = first element
+- `end`   - test until this element in the list, default = last element
 
 _Specialized function with fixed list size:_
 - `is_num_1d (list)` - test a list with 1 element
@@ -263,19 +315,29 @@ These functions can be used e.g. if several arguments calculate one
 parameter and these argument have a priority order.
 So it returns the first argument which matches.
 
-#### `get_first_good (a0, ... , a9)` [^][contents]
-[get_first_good]: #get_first_good-a0---a9-
-Return the first argument which is not `undef`.\
+#### get_first_good [^][contents]
+[get_first_good]: #get_first_good-
+Return the first argument which is not `undef`.  
 Else it returns `undef`.
 It tests up to 10 arguments and starts with `a0`.
 
-#### `get_first_good_list (size, a0, ... , a9)` [^][contents]
-[get_first_good_list]: #get_first_good_list-size-a0---a9-
+_Arguments:_
+```OpenSCAD
+get_first_good (a0, ... , a9)
+```
+
+#### get_first_good_list [^][contents]
+[get_first_good_list]: #get_first_good_list-
 Return the first argument which is not `undef`
 and contains a list with a defined lenght
-and all elements of this list are not `undef`.\
+and all elements of this list are not `undef`.  
 Else it returns `undef`.
 It tests up to 10 arguments and starts with `a0`.
+
+_Arguments:_
+```OpenSCAD
+get_first_good_list (size, a0, ... , a9)
+```
 - `size` - lenght the list must have, greater then `0`
 
 _Specialized function with fixed list size:_
@@ -283,19 +345,29 @@ _Specialized function with fixed list size:_
 - `get_first_good_2d (a0, ... , a9)` - test lists with 2 elements
 - `get_first_good_3d (a0, ... , a9)` - test lists with 3 elements
 
-#### `get_first_num (a0, ... , a9)` [^][contents]
-[get_first_num]: #get_first_num-a0---a9-
-Return the first argument which contains a numeric value.\
+#### get_first_num [^][contents]
+[get_first_num]: #get_first_num-
+Return the first argument which contains a numeric value.  
 Else it returns `undef`.
 It tests up to 10 arguments and starts with `a0`.
 
-#### `get_first_num_list (size, a0, ... , a9)` [^][contents]
-[get_first_num_list]: #get_first_num_list-size-a0---a9-
+_Arguments:_
+```OpenSCAD
+get_first_num (a0, ... , a9)
+```
+
+#### get_first_num_list [^][contents]
+[get_first_num_list]: #get_first_num_list-
 Return the first argument which is not `undef`
 and contains a list with a defined lenght
-and all elements of this list contains a numeric value.\
+and all elements of this list contains a numeric value.  
 Else it returns `undef`.
 It tests up to 10 arguments and starts with `a0`.
+
+_Arguments:_
+```OpenSCAD
+get_first_num_list (size, a0, ... , a9)
+```
 - `size` - size the list must have, greater then `0`
 
 _Specialized function with fixed list lenght:_
@@ -303,35 +375,41 @@ _Specialized function with fixed list lenght:_
 - `get_first_num_2d (a0, ... , a9)` - test lists with 2 elements
 - `get_first_num_3d (a0, ... , a9)` - test lists with 3 elements
 
-#### `get_first_good_in_list (list, size, begin)` [^][contents]
-[get_first_good_in_list]: #get_first_good_in_list-list-size-begin-
-Returns the first valid element in the list.\
+#### get_first_good_in_list [^][contents]
+[get_first_good_in_list]: #get_first_good_in_list-
+Returns the first valid element in the list.  
 The first element that satisfies all the conditions is taken.
 
-Ascents:
+_Ascents:_
 - element is not undef
 - element is a list of (at least) size `size` with valid values
 - if `size`==`0` the item is a valid value and not a list
 - _a valid value:_ any data type except `undef`
 
-Arguments:
+_Arguments:_
+```OpenSCAD
+get_first_good_in_list (list, size, begin)
+```
 - `list` - list of items
 - `size` - element must be a list of this size
   - if set `0`, then the item must be a valid value and not a list
 - `begin` - testing starts from this position on list. Default = `0`, complete list
 
-#### `get_first_num_in_list (list, size, begin)` [^][contents]
-[get_first_num_in_list]: #get_first_num_in_list-list-size-begin-
-Returns the first valid element in the list.\
+#### get_first_num_in_list [^][contents]
+[get_first_num_in_list]: #get_first_num_in_list-
+Returns the first valid element in the list.  
 The first element that satisfies all the conditions is taken.
 
-Ascents:
+_Ascents:_
 - element is not undef
 - element is a list of (at least) size `size` with valid values
 - if `size`==`0` the item is a valid value and not a list
 - _a valid value:_ a numeric value
 
-Arguments:
+_Arguments:_
+```OpenSCAD
+get_first_num_in_list (list, size, begin)
+```
 - `list` - list of items
 - `size` - element must be a list of this size
   - if set `0`, then the item must be a valid value and not a list
@@ -468,40 +546,59 @@ Recondition arguments of functions [^][contents]
 Contains functions that evaluate the passed arguments
 from modules and functions.
 
-#### `repair_matrix (m, d)` [^][contents]
-[repair_matrix]: #repair_matrix-m-d-
-Test an repair matrices for affine transformation.\
+#### repair_matrix [^][contents]
+[repair_matrix]: #repair_matrix-
+Test an repair matrices for affine transformation.  
 Fill missing elements with elements from the unity matrix.
+
+_Arguments:_
+```OpenSCAD
+repair_matrix (m, d)
+```
 - `d`
   - dimension of the matrix, d×d matrix
   - if not set, use length of first line from the matrix
     to determine the d×d size of the matrix
 
-#### `fill_missing_matrix (m, c)` [^][contents]
-[fill_missing_matrix]: #fill_missing_matrix-m-c-
-Fill missing elements in matrix `m` with elements from matrix `c`.\
+#### fill_missing_matrix [^][contents]
+[fill_missing_matrix]: #fill_missing_matrix-
+Fill missing elements in matrix `m` with elements from matrix `c`.  
 The size of the matrix is used from `c`.
 An entry in the matrix must be a numeric value.
 
-#### `fill_missing_list (list, c)` [^][contents]
-[fill_missing_list]: #fill_missing_list-list-c-
-Fill missing elements in a list with elements from list `c`.
+_Arguments:_
+```OpenSCAD
+fill_missing_matrix (m, c)
+```
+
+#### fill_missing_list [^][contents]
+[fill_missing_list]: #fill_missing_list-
+Fill missing elements in a list with elements from list `c`.  
 An entry in the list must be a numeric value.
 
-#### `parameter_range (list, 'range_args')` [^][contents]
-[parameter_range]: #parameter_range-list-range_args-
-Test the range of a list in the ['range_args'][range_args].\
+_Arguments:_
+```OpenSCAD
+fill_missing_list (list, c)
+```
+
+#### parameter_range [^][contents]
+[parameter_range]: #parameter_range-
+Test the range of a list in the ['range_args'][range_args].  
 Encoding is as in python (e.g. -1 = last element).
 Returns the real range `[begin, last]` for a list.
 Default is the full range from first to last element in a list.
 
+_Arguments:_
+```OpenSCAD
+parameter_range (list, begin, last, count, range)
+```
 - [`'range_args'`][range_args] - a sets of arguments
   - `begin` - first element from a list
   - `last`  - last element
   - `count` - count of elements
   - `range` - a list with: `[begin, last]`
 
-Priority of the arguments:
+_Priority of the arguments:_
 1. `begin`, `last`
 2. `begin`, `count`
 3. `last`, `count`
@@ -512,34 +609,44 @@ Priority of the arguments:
 8. `[0, -1]` = default, full range
 
 
-#### `parameter_range_safe (list, 'range_args')` [^][contents]
-[parameter_range_safe]: #parameter_range_safe-list-range_args-
-Test the range of a list in the ['range_args'][range_args].\
+#### parameter_range_safe [^][contents]
+[parameter_range_safe]: #parameter_range_safe-
+Test the range of a list in the ['range_args'][range_args].  
 Encoding as in python (e.g. -1 = last element).
 Returns the real range `[begin, last]` for a list.
 Default is full range from first to last element in a list.
 
+_Arguments:_
+```OpenSCAD
+parameter_range_safe (list, begin, last, count, range)
+```
 Same like [`parameter_range()`][parameter_range], but constrain the position to
 the first or last element if the value exceed the real size of the list.
 
-#### `parameter_circle_r (r, d, default)` [^][contents]
-[parameter_circle_r]: #parameter_circle_r-r-d-default-
+#### parameter_circle_r [^][contents]
+[parameter_circle_r]: #parameter_circle_r-
 Returns the radius of a circle.
 
-Arguments:
+_Arguments:_
+```OpenSCAD
+parameter_circle_r (r, d, default)
+```
 - `r` - radius
 - `d` - diameter
 - `default` - optional, default radius = 1
 
-Rules as for OpenSCAD's `circle()`:
+_Rules as for OpenSCAD's_ `circle()`_:_
 - Diameter comes before radius
 - without specification: r=`1`
 
-#### `parameter_cylinder_r (r, r1, r2, d, d1, d2, preset)` [^][contents]
-[parameter_cylinder_r]: #parameter_cylinder_r-r-r1-r2-d-d1-d2-preset-
+#### parameter_cylinder_r [^][contents]
+[parameter_cylinder_r]: #parameter_cylinder_r-
 Returns `[radius_bottom, radius_top]` of a cylinder.
 
-Arguments:
+_Arguments:_
+```OpenSCAD
+parameter_cylinder_r (r, r1, r2, d, d1, d2, preset)
+```
 - `r`  - radius top and bottom
 - `r1` - radius below
 - `r2` - radius at top
@@ -548,29 +655,32 @@ Arguments:
 - `d2` - diameter at top
 - `preset` - optional, use this value if nothing fits
 
-Rules like OpenSCAD's `cylinder()`
+_Rules like OpenSCAD's_ `cylinder()`_:_
 - Diameter comes before radius
 - special information (`r1`, `r2`) takes precedence over general information (`r`)
 - without specification: r=`1`
 
-#### `parameter_cylinder_r_basic (r, r1, r2, preset)` [^][contents]
-[parameter_cylinder_r_basic]: #parameter_cylinder_r_basic-r-r1-r2-preset-
-Returns `[radius_bottom, radius_top]` of a cylinder.\
+#### parameter_cylinder_r_basic [^][contents]
+[parameter_cylinder_r_basic]: #parameter_cylinder_r_basic-
+Returns `[radius_bottom, radius_top]` of a cylinder.  
 Same like [`parameter_cylinder_r()`][parameter_cylinder_r]
 but without argument diameter.
 
-Arguments:
+_Arguments:_
+```OpenSCAD
+parameter_cylinder_r_basic (r, r1, r2, preset)
+```
 - `r`  - radius top and bottom
 - `r1` - radius below
 - `r2` - radius at top
 - `preset` - optional, use this value as radius if nothing fits
 
-Rules like OpenSCAD's `cylinder()`
+_Rules like OpenSCAD's_ `cylinder()`_:_
 - special information (`r1`, `r2`) takes precedence over general information (`r`)
 - without specification: r=`1`
 
-#### `parameter_ring_2r (r, w, r1, r2, d, d1, d2)` [^][contents]
-[parameter_ring_2r]: #parameter_ring_2r-r-w-r1-r2-d-d1-d2-
+#### parameter_ring_2r [^][contents]
+[parameter_ring_2r]: #parameter_ring_2r-
 Returns `[inner radius, outer radius]` of a Ring.
 
 ```
@@ -583,83 +693,126 @@ Returns `[inner radius, outer radius]` of a Ring.
      `-––  ----------+  ----+
 ```
 
-Arguments:
+_Arguments:_
+```OpenSCAD
+parameter_ring_2r (r, w, r1, r2, d, d1, d2)
+```
 - `r`, `d`   - middle radius or middle diameter
 - `r1`, `d1` - inner radius or inner diameter
 - `r2`, `d2` - outside radius or outside diameter
 - `w`        - width of the ring
 
-Must specify:
+_Must specify:_
 - exactly 2 specifications of `r` or `r1` or `r2` or `w`
 
-Rules based on OpenSCAD:
+_Rules based on OpenSCAD:_
 - diameter comes before radius
 - without specification: `r1`=`1`, `r2`=`2`
 
-#### `parameter_ring_2r_basic (r, w, r1, r2)` [^][contents]
-[parameter_ring_2r_basic]: #parameter_ring_2r_basic-r-w-r1-r2-
-Returns `[inner radius, outer radius]` of a ring.
+#### parameter_ring_2r_basic [^][contents]
+[parameter_ring_2r_basic]: #parameter_ring_2r_basic-
+Returns `[inner radius, outer radius]` of a ring.  
 Same like [`parameter_ring_2r()`][parameter_ring_2r]
 but without argument diameter.
 
-Arguments:
+_Arguments:_
+```OpenSCAD
+parameter_ring_2r_basic (r, w, r1, r2)
+```
 - `r`  - middle radius
 - `r1` - inner radius
 - `r2` - outside radius
 - `w`  - width of the ring
 
-Must specify:
+_Must specify:_
 - exactly 2 specifications of `r` or `r1` or `r2` or `w`
 
-Rules based on OpenSCAD:
+_Rules based on OpenSCAD:_
 - without specification: `r1`=`1`, `r2`=`2`
 
-#### `parameter_funnel_r (ri1, ri2, ro1, ro2, w, di1, di2, do1, do2)` [^][contents]
-[parameter_funnel_r]: #parameter_funnel_r-ri1-ri2-ro1-ro2-w-di1-di2-do1-do2-
+#### parameter_funnel_r [^][contents]
+[parameter_funnel_r]: #parameter_funnel_r-
 Returns `[ri1, ri2, ro1, ro2]` of a funnel.
 
-Arguments:
+_Arguments:_
+```OpenSCAD
+parameter_funnel_r (ri1, ri2, ro1, ro2, w, di1, di2, do1, do2)
+```
 - `ri1`, `ri2` - inner radius bottom, top
 - `ro1`, `ro2` - outer radius bottom, top
 - `w`          - width of the wall. Optional
 - `di1`, `di2` - inner diameter bottom, top. Optional
 - `do1`, `do2` - outer diameter bottom, top. Optional
 
-Rules:
+_Rules:_
 - Radius comes before diameter
 - missing radius or diameter is taken from
   the wall parameter and the opposite radius or diameter
 
-#### `parameter_helix_to_rp (rotations, pitch, height)` [^][contents]
-[parameter_helix_to_rp]: #parameter_helix_to_rp-rotations-pitch-height-
+#### parameter_helix_to_rp [^][contents]
+[parameter_helix_to_rp]: #parameter_helix_to_rp-
 Returns `[rotations, pitch]` of a helix
 
-Arguments:
+_Arguments:_
+```OpenSCAD
+parameter_helix_to_rp (rotations, pitch, height)
+```
 - rotations - number of rotations
 - pitch     - pitch difference per revolution
 - height    - height of the helix
 
-Notice:
+_Notice:_
 - exactly 2 specifications of `rotations` or `pitch` or `height` are needed
 - default = `[1, 0]` - 1 full rotation and no pitch
 
-#### `parameter_size_3d (size)` [^][contents]
-[parameter_size_3d]: #parameter_size_3d-size-
-Converts the `size` argument to a triple `[1,2,3]`.\
+#### parameter_size_3d [^][contents]
+[parameter_size_3d]: #parameter_size_3d-
+Converts the `size` argument to a triple `[1,2,3]`.  
 Used for e.g. the argument `size` in `cube()`.
-- `size=3`       becomes `[3,3,3]`
-- `size=[1,2,3]` remains `[1,2,3]`
 
-#### `parameter_size_2d (size)` [^][contents]
-[parameter_size_2d]: #parameter_size_2d-size-
-Converts the `size` argument to a duple `[1,2]`.\
+_Arguments:_
+```OpenSCAD
+parameter_size_3d (size)
+```
+- `size`
+  - numeric value: all axis are set to this size
+  - 3 element list: size on axis `[ X, Y, Z ]`
+  - fill missing values in the list with `0`
+  - if not set, returns default value `[1,1,1]`,
+    behavior like buildin `cube()` in OpenSCAD
+  - e.g.
+    - `size=3`       becomes `[3,3,3]`
+    - `size=[1,2,3]` remains `[1,2,3]`
+    - `size=[2,2]`   becomes `[2,2,0]`
+
+#### parameter_size_2d [^][contents]
+[parameter_size_2d]: #parameter_size_2d-
+Converts the `size` argument to a duple `[1,2]`.  
 Used for e.g. the argument `size` in `square()`.
-- `size=3`     becomes `[3,3]`
-- `size=[1,2]` remains `[1,2]`
 
-#### `parameter_scale (scale, d, preset)` [^][contents]
-[parameter_scale]: parameter_scale-scale-d-preset-
+_Arguments:_
+```OpenSCAD
+parameter_size_2d (size)
+```
+- `size`
+  - numeric value: all axis are set to this size
+  - 2 element list: size on axis `[ X, Y ]`
+  - fill missing values in the list with `0`
+  - if not set, returns default value `[1,1]`,
+    behavior like buildin `square()` in OpenSCAD
+  - e.g.
+    - `size=3`     becomes `[3,3]`
+    - `size=[1,2]` remains `[1,2]`
+    - `size=[2]`   becomes `[2,0]`
+
+#### parameter_scale [^][contents]
+[parameter_scale]: #parameter_scale-
 Evaluate the `scale` argument.
+
+_Arguments:_
+```OpenSCAD
+parameter_scale (scale, d, preset)
+```
 - `d`
   - Dimension of the vector `scale`, default = 3
   - Set the scale vector to full `d` dimensions and fill missing values with `1`.
@@ -667,30 +820,47 @@ Evaluate the `scale` argument.
   - A list with scale values for every axis.
   - A numeric value set in `scale` will set for all axis.
   - e.g.
-    - `size=3`       becomes `[3,3]`
-    - `size=[1,2,2]` remains `[1,2,2]`
-    - `size=[2,2]`   becomes `[2,2,1]`, fill missing value with `1`
+    - `scale=3`       becomes `[3,3]`
+    - `scale=[1,2,2]` remains `[1,2,2]`
+    - `scale=[2,2]`   becomes `[2,2,1]`, fill missing value with `1`
 - `preset`
   - Use this value if scale is not set.
   - A numeric value will set in list for all axis
   - default = 1 for all axis
 
-#### `parameter_align (align, preset, center)` [^][contents]
-[parameter_align]: #parameter_align-align-preset-center-
-Evaluate the `align` argument.\
+#### parameter_align [^][contents]
+[parameter_align]: #parameter_align-
+Evaluate the `align` argument.  
 Used to align an object from its center to its axis.
-Values can be given at the respective axis `-1...0...1`.
-- `1` = alignment of the object to the positive side of the respective axis.
-- `0` = the object is at the center of the respective axis
-- `[0,0,0]` is like `center=true`, default behavior is `center=false` specified in preset.
-- Specification of `align` overrides specification of `center`.
 
-#### `parameter_numlist (dimension, value, preset, fill)` [^][contents]
-[parameter_numlist]: #parameter_numlist-dimension-value-preset-fill-
-Converts the `value` argument to a list of `dimension` elements.\
+_Arguments:_
+```OpenSCAD
+parameter_align (align, preset, center)
+```
+- `center`
+  - Centers the object to origin if set `true`
+  - `false` is the default behavior, depends on the object
+  - Specification of `align` overrides specification of `center`.
+- `align`
+  - A list with an align value on each respective axis
+  - Values can be given at the respective axis `-1...0...1`.
+    - `1`  = alignment of the object to the positive side of the respective axis.
+    - `-1` = alignment of the object to the negative side.
+    - `0`  = the object is at the center of the respective axis
+  - `[0,0,0]` is like `center=true`, default behavior is `center=false` specified in preset.
+- `preset`
+  - Specify the default align of the object if `center` or `align` is not set
+  - The list size defines the dimension of the object
+
+#### parameter_numlist [^][contents]
+[parameter_numlist]: #parameter_numlist-
+Converts the `value` argument to a list of `dimension` elements.  
 If that doesn't work, the default value `preset` is used.
 
-Arguments:
+_Arguments:_
+```OpenSCAD
+parameter_numlist (dimension, value, preset, fill)
+```
 - `dimension` - desired size of the list
 - `value`     - argument being processed
   - as a list
@@ -712,11 +882,14 @@ Arguments:
   - a list
     - fill with the values from the list 'fill' at the appropriate positions
 
-#### `parameter_angle (angle, angle_std)` [^][contents]
-[parameter_angle]: #parameter_angle-angle-angle_std-
+#### parameter_angle [^][contents]
+[parameter_angle]: #parameter_angle-
 Returns the angle parameter as a list `[opening_angle, start_angle]`
 
-Arguments:
+_Arguments:_
+```OpenSCAD
+parameter_angle (angle, angle_std)
+```
 - `angle`
   - as a number
     - use as opening angle specification
@@ -725,11 +898,14 @@ Arguments:
     - `[opening_angle, start_angle]`
 - `angle_std` - default angle if `angle` is not set (default = `[360, 0]`)
 
-#### `parameter_slices_circle (slices, r, angle, piece)` [^][contents]
-[parameter_slices_circle]: #parameter_slices_circle-slices-r-angle-piece-
+#### parameter_slices_circle [^][contents]
+[parameter_slices_circle]: #parameter_slices_circle-
 Evaluate the fragments count of a circle (section)
 
-Arguments:
+_Arguments:_
+```OpenSCAD
+parameter_slices_circle (slices, r, angle, piece)
+```
 - `slices`
    - count of segments, optional
    - without specification it gets the same like module `circle()`
@@ -746,31 +922,44 @@ Arguments:
             - generate an extra edge if count of segments is too small
   - `0`     - curve only, no extra edges if "circle is only a line"
 
-Specialized function:
+_Specialized function:_
 - `parameter_slices_circle_x()`
   - use the [extra special variables][special_x]
     by default if slices is not set
 
-#### `parameter_mirror_vector_2d (v, v_std)` [^][contents]
-[parameter_mirror_vector_2d]: #parameter_mirror_vector_2d-v-v_std-
+#### parameter_mirror_vector_2d [^][contents]
+[parameter_mirror_vector_2d]: #parameter_mirror_vector_2d-
 Test 2D vector `v` and may load default for vector in mirror function.
+
+_Arguments:_
+```OpenSCAD
+parameter_mirror_vector_2d (v, v_std)
+```
 - `v_std`
   - default vector if `v` not correct,
     default = `[1,0]` like OpenSCAD's default
 
-#### `parameter_mirror_vector_3d (v, v_std)` [^][contents]
-[parameter_mirror_vector_3d]: #parameter_mirror_vector_3d-v-v_std-
+#### parameter_mirror_vector_3d [^][contents]
+[parameter_mirror_vector_3d]: #parameter_mirror_vector_3d-
 Test 3D vector `v` and may load default for vector in mirror function.
+
+_Arguments:_
+```OpenSCAD
+parameter_mirror_vector_3d (v, v_std)
+```
 - `v_std`
   - default vector if `v` not correct,
     default = `[1,0,0]` like OpenSCAD's default
 
-#### `parameter_edges_radius (edge_list, r, n)` [^][contents]
-[parameter_edges_radius]: #parameter_edges_radius-edge_list-r-n-
-Evaluates the `edges_xxx` parameters from the module `cube_fillet()`.\
+#### parameter_edges_radius [^][contents]
+[parameter_edges_radius]: #parameter_edges_radius-
+Evaluates the `edges_xxx` parameters from the module `cube_fillet()`.  
 Returns a 4 element list
 
-Arguments:
+_Arguments:_
+```OpenSCAD
+parameter_edges_radius (edge_list, r, n)
+```
 - `r`
   - parameter for the edge, radius or width
 - `edge_list`
@@ -781,34 +970,43 @@ Arguments:
   - otherwise the value is set to `0` = unchamfered edge
 - `n` - a different number of elements than the default 4 can be specified here
 
-#### `parameter_edge_radius (edge, r)` [^][contents]
-[parameter_edge_radius]: #parameter_edge_radius-edge-r-
-Evaluates one edge parameter.
+#### parameter_edge_radius [^][contents]
+[parameter_edge_radius]: #parameter_edge_radius-
+Evaluates one edge parameter.  
 
-Arguments:
+_Arguments:_
+```OpenSCAD
+parameter_edge_radius (edge, r)
+```
 - `r`    - parameter for the edge, radius or width
 - `edge`
   - is multiplied by `r` if specified
   - as a number, the edge is set to this value
   - otherwise the value is set to `0` = unchamfered edge
 
-#### `parameter_types (type_list, type, n)` [^][contents]
-[parameter_types]: #parameter_types-type_list-type-n-
-Evaluates the `type_xxx` parameters from the module `cube_fillet()`.\
+#### parameter_types [^][contents]
+[parameter_types]: #parameter_types-
+Evaluates the `type_xxx` parameters from the module `cube_fillet()`.  
 Returns a 4 element list.
 
-Arguments:
+_Arguments:_
+```OpenSCAD
+parameter_types (type_list, type, n)
+```
 - `type_list` - 4-element list with the type of each edge
   - as a single type = this value is taken for all elements
   - as a list        = erroneous values are replaced with `type`
 - `type` - predefined type of an edge, default = no corner
 - `n`    - a different number of elements than the default 4 can be specified here
 
-#### `parameter_type (type, n)` [^][contents]
-[parameter_type]: #parameter_type-type-n-
-Evaluates one `type` parameter.
+#### parameter_type [^][contents]
+[parameter_type]: #parameter_type-
+Evaluates one `type` parameter.  
 
-Arguments:
+_Arguments:_
+```OpenSCAD
+parameter_type (type, n)
+```
 - `type` - predefined type of an edge, default = `0` = no edge
 - `n`    - a different number of elements than the default 4 can be specified here
 
@@ -816,21 +1014,27 @@ Arguments:
 Benchmark function [^][contents]
 --------------------------------
 
-#### `benchmark (count, fn_test)` [^][contents]
-[benchmark]: #benchmark-count-fn_test-
-Call a function `count` often to measure speed in time.\
+#### benchmark [^][contents]
+[benchmark]: #benchmark-
+Call a function `count` often to measure speed in time.  
 The test function `fn_test()` must defined therefor.
-1. `fn_test()` as function
-   ```OpenSCAD
-   function fn_test() = "do something . . . " ;
-   
-   echo (benchmark(0));
-   ```
-2. since OpenSCAD version 2021.01:\
-   commit a function literal to option `fn_test`
-   ```OpenSCAD
-   echo (benchmark(0, function() "do something . . . " ));
-   ```
+
+_Arguments:_
+```OpenSCAD
+benchmark (count, fn_test)
+```
+- `fn_test`
+  1. since OpenSCAD version 2021.01:  
+     commit a function literal to option `fn_test`
+     ```OpenSCAD
+     echo (benchmark(0, function() "do something . . . " ));
+     ```
+  2. `fn_test()` as function
+     ```OpenSCAD
+     function fn_test() = "do something . . . " ;
+     
+     echo (benchmark(0));
+     ```
 - `count`
   - count of loops
   - value `0` is 1 call, `1` -> 2 calls, and so on
@@ -840,12 +1044,17 @@ If is defined a variable
 benchmark_trial = true;
 ```
 the test function `fn_test()` will only called 1 times
-independently what is set in `count`.\
+independently what is set in `count`.  
 This is useful to test the function before mesure the speed.
 
-#### `benchmark_empty (count)` [^][contents]
-[benchmark_empty]: #benchmark_empty-count-
-Call function [`benchmark()`][benchmark] with an empty function.\
+#### benchmark_empty [^][contents]
+[benchmark_empty]: #benchmark_empty-
+Call function [`benchmark()`][benchmark] with an empty function.  
 Returns always `undef`.
 This is useful do measure the time of the internal benchmark routine.
 This time should subtracted from the measured time of the test function.
+
+_Arguments:_
+```OpenSCAD
+benchmark_empty (count)
+```

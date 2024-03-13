@@ -276,9 +276,13 @@ function parameter_size_3d (size) =
 // aus size=3       wird   [3,3]
 // aus size=[1,2]   bleibt [1,2]
 function parameter_size_2d (size) =
-	 is_num_2d(size) ? size
-	:is_num   (size) ? [size, size]
-	:                  [1,1]
+	(is_list(size) && len(size)>0 && is_num(size[0])) ?
+		(is_num(size[1])) ?
+		 size          // f([1,2])
+		:[size[0], 0]  // f([1])
+	:is_num   (size) ?
+		[size, size]   // f(1)
+	:	[1,1]          // f(undef)
 ;
 
 // wandelt das Argument 'scale' in einen d-Dimensionalen Vektor um
