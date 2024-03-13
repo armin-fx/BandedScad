@@ -5,7 +5,9 @@ use <banded/list_algorithm.scad>
 use <banded/list_math.scad>
 use <banded/math_common.scad>
 
+
 // Ermittelt das Arithmetische Mittel (Durchschnitt) einer Liste
+function mean            (list, weight, normalize=true) = mean_arithmetic (list, weight, normalize);
 function mean_arithmetic (list, weight, normalize=true) =
 	!is_list(weight) ?
 		summation(list)                       / len(list)
@@ -27,10 +29,10 @@ function mean_geometric (list, weight, normalize=true) =
 // ermittelt das Harmonische Mittel einer Liste
 function mean_harmonic (list, weight, normalize=true) =
 	!is_list(weight) ?
-		len(list)              / summation( reciprocal_each(list) )
+		len(list)         / summation( reciprocal_each(list) )
 	:normalize ?
 		summation(weight) / summation( divide_each(weight,list) )
-	:	1                      / summation( divide_each(weight,list) )
+	:	1                 / summation( divide_each(weight,list) )
 ;
 
 // ermittelt das Quadratische Mittel (RMS) einer Liste
@@ -45,17 +47,17 @@ function root_mean_square (list, weight, normalize=true) =
 // ermittelt das Kubische Mittel einer Liste
 function mean_cubic (list, weight, normalize=true) =
 	!is_list(weight) ?
-		pow( summation(                       [for (a=list) a*a*a] )   / len(list)             , 1/3 )
+		pow( summation(                       [for (a=list) a*a*a] )   / len(list)        , 1/3 )
 	:normalize ?
 		pow( summation( multiply_each(weight, [for (a=list) a*a*a] ) ) / summation(weight), 1/3 )
-	:	pow( summation( multiply_each(weight, [for (a=list) a*a*a] ) )                         , 1/3 )
+	:	pow( summation( multiply_each(weight, [for (a=list) a*a*a] ) )                    , 1/3 )
 ;
 
 // Verallgemeinerter Mittelwert oder Hölder-Mittel einer Liste
 function mean_generalized (p, list, weight, normalize=true) =
 	p==0 ? mean_geometric(list, weight, normalize) :
 	!is_list(weight) ?
-		pow( summation( pow_each(list,p) )  / len(list)          , 1/p )
+		pow( summation( pow_each(list,p) )  / len(list)                          , 1/p )
 	:normalize ?
 		pow( summation( multiply_each(unit_summation(weight), pow_each(list,p)) ), 1/p )
 	:	pow( summation( multiply_each(weight                , pow_each(list,p)) ), 1/p )
@@ -104,3 +106,18 @@ function truncate (list, ratio=0.5) =
 function mid_range (list) =
 	(min(list) + max(list)) / 2
 ;
+
+// Errechnet die Varianz, ein Maß für die Streuung einer Wahrscheinlichkeitsdichte um ihren Schwerpunkt.
+function variance (list, mean, biased=false) =
+	let (
+		 size     = len(list)
+		,Mean     = mean!=undef ? mean
+		          : summation(list) / size
+		,variance = summation([ for (v=list) sqr(v-Mean) ])
+	)
+	 biased==true  ? variance * 1 / (size - 1)
+	:biased==false ? variance / size
+//	:biased==undef ? variance
+	:                variance
+;
+
