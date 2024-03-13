@@ -136,6 +136,26 @@ Returns a list with the result.
 | `reciprocal_each (list,numerator=1)` | reciprocate each value `1 / list[n]`. Optional argument `numerator` can set with a value: `numerator / list[n]`
 | `sqr_each (list)`                    | square each value `list[n] ^ 2`
 | `sum_each_next (list)`               | every next value contains the summation of all previous values in list
+| `cot_each (list)`                    | calculate the cotangent on each value in a list.
+| `sec_each (list)`                    | calculate the secant on each value in a list.
+| `csc_each (list)`                    | calculate the cosecant on each value in a list.
+| `exsec_each (list)`                  | calculate the external secant on each value in a list.
+| `excsc_each (list)`                  | calculate the external cosecant on each value in a list.
+| `versin_each   (list)`               | calculate the versed sine on each value in a list.
+| `coversin_each (list)`               | calculate the coversed sine on each value in a list.
+| `vercos_each   (list)`               | calculate the versed cosine on each value in a list.
+| `covercos_each (list)`               | calculate the coversed cosine on each value in a list.
+| `chord_each (list)`                  | Length of the chord between two points on a unit circle separated by that central angle in degree on each value in a list
+| `acot_each (list)`                   | calculate the inverse cotangent on each value in a list.
+| `asec_each (list)`                   | calculate the inverse secant on each value in a list.
+| `acsc_each (list)`                   | calculate the inverse cosecant on each value in a list.
+| `aexsec_each (list)`                 | calculate the inverse external secant on each value in a list.
+| `aexcsc_each (list)`                 | calculate the inverse external cosecant on each value in a list.
+| `aversin_each   (list)`              | calculate the inverse versed sine on each value in a list.
+| `acoversin_each (list)`              | calculate the inverse coversed sine on each value in a list.
+| `avercos_each   (list)`              | calculate the inverse versed cosine on each value in a list.
+| `acovercos_each (list)`              | calculate the inverse coversed cosine on each value in a list.
+| `achord (list)`                      | Return the angle from the length of the chord between two points on a unit circle on each value in a list
 | `sinh_each (list)`                   | calculate the hyperbolic sine on each value in a list.
 | `cosh_each (list)`                   | calculate the hyperbolic cosine on each value.
 | `tanh_each (list)`                   | calculate the hyperbolic tangent on each value.

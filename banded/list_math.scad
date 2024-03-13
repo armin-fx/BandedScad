@@ -35,23 +35,43 @@ function pow_each_with_exponent (base, exponent) = [ for (a=base)     pow (a,exp
 function sin_each   (list) = [for (a=list) sin(a)];
 function cos_each   (list) = [for (a=list) cos(a)];
 function tan_each   (list) = [for (a=list) tan(a)];
-function asin_each  (list) = [for (a=list) asin(a)];
-function acos_each  (list) = [for (a=list) acos(a)];
-function atan_each  (list) = [for (a=list) atan(a)];
+function cot_each   (list) = [for (a=list) cot(a)];
+function sec_each   (list) = [for (a=list) sec(a)];
+function csc_each   (list) = [for (a=list) csc(a)];
+function exsec_each (list) = [for (a=list) exsec(a)];
+function excsc_each (list) = [for (a=list) excsc(a)];
+function versin_each   (list) = [for (a=list) versin  (a)];
+function coversin_each (list) = [for (a=list) coversin(a)];
+function vercos_each   (list) = [for (a=list) vercos  (a)];
+function covercos_each (list) = [for (a=list) covercos(a)];
+function chord_each (list) = [for (a=list) chord(a)];
+function asin_each  (list) = [for (x=list) asin(x)];
+function acos_each  (list) = [for (x=list) acos(x)];
+function atan_each  (list) = [for (x=list) atan(x)];
 function atan2_each (list_y,list_x) =
 	[ for (i=[0:1:min(len(list_y),len(list_x))-1]) atan2 (list_y[i], list_x[i]) ]
 ;
-function atan2_each_with_x (list_y,x) = [ for (a=list_y) atan2 (a,x) ];
-function atan2_each_with_y (y,list_x) = [ for (a=list_x) atan2 (y,a) ];
+function atan2_each_with_x (list_y,x) = [ for (v=list_y) atan2 (v,x) ];
+function atan2_each_with_y (y,list_x) = [ for (v=list_x) atan2 (y,v) ];
+function acot_each  (list) = [for (x=list) acot(x)];
+function asec_each  (list) = [for (x=list) asec(x)];
+function acsc_each  (list) = [for (x=list) acsc(x)];
+function aexsec_each (list) = [for (x=list) aexsec(x)];
+function aexcsc_each (list) = [for (x=list) aexcsc(x)];
+function aversin_each   (list) = [for (x=list) aversin  (x)];
+function acoversin_each (list) = [for (x=list) acoversin(x)];
+function avercos_each   (list) = [for (x=list) avercos  (x)];
+function acovercos_each (list) = [for (x=list) acovercos(x)];
+function achord_each (list) = [for (x=list) achord(x)];
 //
-function sinh_each   (list) = [for (e=list) sinh(e)];
-function cosh_each   (list) = [for (e=list) cosh(e)];
-function tanh_each   (list) = [for (e=list) tanh(e)];
-function coth_each   (list) = [for (e=list) coth(e)];
-function asinh_each  (list) = [for (e=list) asinh(e)];
-function acosh_each  (list) = [for (e=list) acosh(e)];
-function atanh_each  (list) = [for (e=list) atanh(e)];
-function acoth_each  (list) = [for (e=list) acoth(e)];
+function sinh_each  (list) = [for (e=list) sinh(e)];
+function cosh_each  (list) = [for (e=list) cosh(e)];
+function tanh_each  (list) = [for (e=list) tanh(e)];
+function coth_each  (list) = [for (e=list) coth(e)];
+function asinh_each (list) = [for (e=list) asinh(e)];
+function acosh_each (list) = [for (e=list) acosh(e)];
+function atanh_each (list) = [for (e=list) atanh(e)];
+function acoth_each (list) = [for (e=list) acoth(e)];
 //
 function floor_each (list) = [for (a=list) floor(a)];
 function ceil_each  (list) = [for (a=list) ceil(a)];

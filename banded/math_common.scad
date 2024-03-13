@@ -156,15 +156,49 @@ function normal_distribution(x, mean=0, sigma=1) =
 
 // - Trigonometrische Funktion:
 
+// Kotangens
+  function cot (angle) = tan(90 - angle);
+//function cot (angle) = 1 / tan(angle);
 // Sekans
 function sec (angle) = 1 / cos(angle);
 // Kosekans
 function csc (angle) = 1 / sin(angle);
-// Kotangens
-function cot (angle) = tan(90 - angle); // = 1 / tan(angle);
+// Externer Sekans
+function exsec (angle) = (1 / cos(angle)) - 1;
+// Externer Kosekans
+function excsc (angle) = (1 / sin(angle)) - 1;
+// Sinus versus
+function versin   (angle) = 1 - cos(angle);
+// Cosinus versus
+function coversin (angle) = 1 - sin(angle);
+// versed cosine
+function vercos   (angle) = 1 + cos(angle);
+// coversed cosine
+function covercos (angle) = 1 + sin(angle);
+// Sehne
+function chord (angle) = 2 * sin(angle / 2);
+//
 // Arkuskotangens
 function acot (x) = 90 - atan(x);
-//
+// Arkussekans
+function asec (x) = acos(1 / x);
+// Arkuskosekans
+function acsc (x) = asin(1 / x);
+// Arkus extern sekans
+function aexsec (x) = acos(1 / (x + 1));
+// Arkus extern kosekans
+function aexcsc (x) = asin(1 / (x + 1));
+// Arkus sinus versus
+function aversin   (x) = acos(1 - x);
+// Arkus cosinus versus
+function acoversin (x) = asin(1 - x);
+// Arkus versed cosine
+function avercos   (x) = acos(x - 1);
+// Arkus coversed cosine
+function acovercos (x) = asin(x - 1);
+// Winkel aus Sehne
+function achord (x) = 2 * asin(x / 2);
+
 // Hyperbelsinus
 function sinh (x) = (exp(x) - exp(-x)) / 2;
 // Hyperbelkosinus
@@ -191,13 +225,32 @@ function acoth (x) = ln((x + 1) / (x - 1)) / 2;
 function sin_r (x) = sin (x*degree_per_radian);
 function cos_r (x) = cos (x*degree_per_radian);
 function tan_r (x) = tan (x*degree_per_radian);
-function cot_r (x) = cot (x*degree_per_radian);
-//
+function cot_r (x) = tan (90 - x*degree_per_radian);
+function sec_r   (x) =  1 / cos(x*degree_per_radian);
+function csc_r   (x) =  1 / sin(x*degree_per_radian);
+function exsec_r (x) = (1 / cos(x*degree_per_radian)) - 1;
+function excsc_r (x) = (1 / sin(x*degree_per_radian)) - 1;
+function versin_r   (x) = 1 - cos(x*degree_per_radian);
+function coversin_r (x) = 1 - sin(x*degree_per_radian);
+function vercos_r   (x) = 1 + cos(x*degree_per_radian);
+function covercos_r (x) = 1 + sin(x*degree_per_radian);
+function chord_r (x) = 2 * sin(x*degree_per_radian / 2);
+
+// Trigonometrische Umkehrfunktion im Bogenmaß
 function asin_r (x) = asin(x) * radian_per_degree;
 function acos_r (x) = acos(x) * radian_per_degree;
 function atan_r (x) = atan(x) * radian_per_degree;
-function acot_r (x) = acot(x) * radian_per_degree;
 function atan2_r (y,x) = atan2(y,x) * radian_per_degree;
+function acot_r (x) = (90 - atan(x)) * radian_per_degree;
+function asec_r   (x) = acos(1 / x) * radian_per_degree;
+function acsc_r   (x) = asin(1 / x) * radian_per_degree;
+function aexsec_r (x) = acos(1 / (x + 1)) * radian_per_degree;
+function aexcsc_r (x) = asin(1 / (x + 1)) * radian_per_degree;
+function aversin_r   (x) = acos(1 - x) * radian_per_degree;
+function acoversin_r (x) = asin(1 - x) * radian_per_degree;
+function avercos_r   (x) = acos(x - 1) * radian_per_degree;
+function acovercos_r (x) = asin(x - 1) * radian_per_degree;
+function achord_r (x) = 2 * asin(x / 2) * radian_per_degree;
 
 // Kardinalsinus
 function si   (x) = (x==0) ? 1 : sin(x*degree_per_radian) / x;

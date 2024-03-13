@@ -2,21 +2,21 @@ Math functions
 ==============
 
 ### defined in file
-`banded/math.scad`\
-` `| \
-` `+--> `banded/math_common.scad`\
-` `+--> `banded/math_number.scad`\
-` `+--> `banded/math_formula.scad`\
-` `| \
-` `+--> `banded/math_vector.scad`\
-` `+--> `banded/math_matrix.scad`\
-` `+--> `banded/math_polygon.scad`\
-` `+--> `banded/math_function.scad`\
-` `| \
-` `+--> `banded/complex.scad`
+`banded/math.scad`  
+` `|  
+` `+--> `banded/math_common.scad`  
+` `+--> `banded/math_number.scad`  
+` `+--> `banded/math_formula.scad`  
+` `|  
+` `+--> `banded/math_vector.scad`  
+` `+--> `banded/math_matrix.scad`  
+` `+--> `banded/math_polygon.scad`  
+` `+--> `banded/math_function.scad`  
+` `|  
+` `+--> `banded/complex.scad`  
 
-[<-- file overview](file_overview.md)\
-[<-- table of contents](contents.md)
+[<-- file overview](file_overview.md)  
+[<-- table of contents](contents.md)  
 
 ### Contents
 [contents]: #contents "Up to Contents"
@@ -47,10 +47,14 @@ Math functions
     - [`normal_distribution()`][normal_distribution]
   - [Trigonometric functions](#trigonometric-functions-)
     - [Trigonometric](#trigonometric-)
-      - `sec()`
-      - `csc()`
       - `cot()`
+      - `sec()`, `csc()`, `exsec()`, `excsc()`
+      - `versin()`, `coversin()`, `vercos()`, `covercos()`
+      - `chord()`
       - `acot()`
+      - `asec()`, `acsc()`, `aexsec()`, `aexcsc()`
+      - `aversin()`, `acoversin()`, `avercos()`, `acovercos()`
+      - `achord()`
     - [Hyperbolic](#hyperbolic-)
       - `sinh()`
       - `cosh()`
@@ -62,14 +66,14 @@ Math functions
       - `atanh()`
       - `acoth()`
     - [Trigonometric in radians](#trigonometric-in-radians-)
-      - `cos_r()`
-      - `tan_r()`
-      - `cot_r()`
-      - `asin_r()`
-      - `acos_r()`
-      - `atan_r()`
-      - `acot_r()`
-      - `atan2_r()`
+      - `sin_r()`, `cos_r()`, `tan_r()`, `cot_r()`
+      - `sec_r()`, `csc_r()`, `exsec_r()`, `excsc_r()`
+      - `versin_r()`, `coversin_r()`, `vercos_r()`, `covercos_r()`
+      - `chord_r()`
+      - `asin_r()`, `acos_r()`, `atan_r()`, `atan2_r()`, `acot_r()`
+      - `asec_r()`, `acsc_r()`, `aexsec_r()`, `aexcsc_r()`
+      - `aversin_r()`, `acoversin_r()`, `avercos_r()`, `acovercos_r()`
+      - `achord_r()`
     - [`sinc()`][sinc]
     - [`Si()`][si]
 - [Number functions](#number-functions-)
@@ -157,7 +161,7 @@ is_nearly (a, b, deviation)
 
 #### quantize [^][contents]
 [quantize]: #quantize-
-Quantizes a value within a grid.\
+Quantizes a value within a grid.  
 Default = round to an integer
 ```OpenSCAD
 quantize (value, raster, offset)
@@ -196,7 +200,7 @@ echo( lerp (10, 30, 2, [1,3]) ); // 20
 ```OpenSCAD
 inv_lerp (a, b, t, range)
 ```
-Computes the reverse linear interpolation between `a` and `b`,\
+Computes the reverse linear interpolation between `a` and `b`,  
 get the fraction between `a` and `b` on which `v` resides.
 - `a`, `b` - value or list with values
 - `v`      - value
@@ -251,7 +255,7 @@ The remainder would have the same sign as the divisor `n`.
 
 #### `sign_plus (x)` [^][contents]
 [sign_plus]: #sign_plus-x-
-Mathematical positive signum function.\
+Mathematical positive signum function.  
 Returns `-1` if `x<0` and `1` if `x>=0`
 
 #### xor [^][contents]
@@ -280,14 +284,37 @@ normal_distribution (x, mean, sigma)
 ### Trigonometric functions [^][contents]
 
 #### Trigonometric: [^][contents]
-[=> Wikipedia - Trigonometric functions](https://en.wikipedia.org/wiki/Trigonometric_functions)
+[=> Wikipedia - Trigonometric functions](https://en.wikipedia.org/wiki/Trigonometric_functions)  
+[=> Wikipedia - Versine](https://en.wikipedia.org/wiki/Versine)  
+[=> Wikipedia - Exsecant](https://en.wikipedia.org/wiki/Exsecant)  
+[=> Wikipedia - Chord](https://en.wikipedia.org/wiki/Chord_(geometry))  
+![Circle-trig6.svg](https://upload.wikimedia.org/wikipedia/commons/9/9d/Circle-trig6.svg)  
+All of the trigonometric functions of the angle θ (theta) can be constructed
+geometrically in terms of a unit circle centered at O.  
+From Wikipedia, License: CC BY-SA 3.0
 
-| function      | description
-|---------------|-------------
-| `sec (angle)` | Secant of `angle` in degree
-| `csc (angle)` | Cosecant of `angle` in degree
-| `cot (angle)` | Cotangent of `angle` in degree
-| `acot (x)`    | Inverse cotangent of `x`, return angle in degree
+| function           | description
+|--------------------|-------------
+| `cot (angle)`      | Cotangent of `angle` in degree
+| `sec (angle)`      | Secant of `angle` in degree
+| `csc (angle)`      | Cosecant of `angle` in degree
+| `exsec (angle)`    | External secant of `angle` in degree
+| `excsc (angle)`    | External cosecant of `angle` in degree
+| `versin   (angle)` | Versed sine of `angle` in degree
+| `coversin (angle)` | Coversed sine of `angle` in degree
+| `vercos   (angle)` | Versed cosine of `angle` in degree
+| `covercos (angle)` | Coversed cosine of `angle` in degree
+| `chord (angle)`    | Length of the chord between two points on a unit circle separated by that central angle in degree
+| `acot (x)`         | Inverse cotangent of `x`, return angle in degree
+| `asec (x)`         | Inverse secant of `x`, return angle in degree
+| `acsc (x)`         | Inverse cosecant of `x`, return angle in degree
+| `aexsec (x)`       | Inverse external secant of `x`, return angle in degree
+| `aexcsc (x)`       | Inverse external cosecant of `x`, return angle in degree
+| `aversin   (x)`    | Inverse versed sine of `x`, return angle in degree
+| `acoversin (x)`    | Inverse coversed sine of `x`, return angle in degree
+| `avercos   (x)`    | Inverse versed cosine of `x`, return angle in degree
+| `acovercos (x)`    | Inverse coversed cosine of `x`, return angle in degree
+| `achord (x)`       | Return the angle from the length of the chord between two points on a unit circle
 
 #### Hyperbolic: [^][contents]
 [=> Wikipedia - Hyperbolic functions](https://en.wikipedia.org/wiki/Hyperbolic_functions)
@@ -310,25 +337,38 @@ normal_distribution (x, mean, sigma)
 | `acoth (x)` | Inverse hyperbolic cotangent of `x`
 
 #### Trigonometric in radians: [^][contents]
+[=> Wikipedia - Trigonometric functions](https://en.wikipedia.org/wiki/Trigonometric_functions)
 
 These functions needs an angle in radians `0...2*PI`:
 
-| function    | description
-|-------------|-------------
-| `sin_r (x)` | sine of `x`
-| `cos_r (x)` | cosine of `x`
-| `tan_r (x)` | tangent of `x`
-| `cot_r (x)` | cotangent of `x`
+| function         | description
+|------------------|-------------
+| `sin_r (x)`      | sine of `x`
+| `cos_r (x)`      | cosine of `x`
+| `tan_r (x)`      | tangent of `x`
+| `cot_r (x)`      | cotangent of `x`
+| `sec_r (x)`      | secant of `x`
+| `csc_r (x)`      | cosecant of `x`
+| `versin_r   (x)` | Versed sine of `x`
+| `coversin_r (x)` | Coversed sine of `x`
+| `vercos_r   (x)` | Versed cosine of `x`
+| `covercos_r (x)` | Coversed cosine of `x`
 
 These functions return an angle in radians `0...2*PI`:
 
-| function        | description
-|-----------------|-------------
-| `asin_r (x)`    | Inverse sine of `x`
-| `acos_r (x)`    | Inverse cosine of `x`
-| `atan_r (x)`    | Inverse tangent of `x`
-| `acot_r (x)`    | Inverse cotangent of `x`
-| `atan2_r (y,x)` | Inverse tangent. Two-argument version of `atan_r` with Y and X axis.
+| function          | description
+|-------------------|-------------
+| `asin_r (x)`      | Inverse sine of `x`
+| `acos_r (x)`      | Inverse cosine of `x`
+| `atan_r (x)`      | Inverse tangent of `x`
+| `atan2_r (y,x)`   | Inverse tangent. Two-argument version of `atan_r` with Y and X axis.
+| `acot_r (x)`      | Inverse cotangent of `x`
+| `asec_r (x)`      | Inverse secant of `x`
+| `acsc_r (x)`      | Inverse cosecant of `x`
+| `aversin_r   (x)` | Inverse versed sine of `x`
+| `acoversin_r (x)` | Inverse coversed sine of `x`
+| `avercos_r   (x)` | Inverse versed cosine of `x`
+| `acovercos_r (x)` | Inverse coversed cosine of `x`
 
 #### `sinc (x)` [^][contents]
 [sinc]: #sinc-x-
@@ -336,12 +376,12 @@ Sinc function
 
 [=> Wikipedia - Sinc function](https://en.wikipedia.org/wiki/Sinc_function)
 
-`si (x)`   - unnormalized sinc function\
-`sinc (x)` - normalized sinc function
+`si (x)`   - unnormalized sinc function  
+`sinc (x)` - normalized sinc function  
 
 #### `Si (x)` [^][contents]
 [si]: #si-x-
-Trigonometric integral\
+Trigonometric integral  
 [=> Wikipedia - Trigonometric integral](https://en.wikipedia.org/wiki/Trigonometric_integral)
 
 
@@ -352,33 +392,33 @@ Defined in file: `banded/math_number.scad`
 
 #### `factorial (n)` [^][contents]
 [factorial]: #factorial-n-
-Calculate the factorial of a positive integer `n`, denoted by n!\
+Calculate the factorial of a positive integer `n`, denoted by n!  
 [=> Wikipedia - Factorial](https://en.wikipedia.org/wiki/Factorial)
 
 #### `double_factorial (n)` [^][contents]
 [double_factorial]: #double_factorial-n-
-Calculate the double factorial or semifactorial of a number `n`, denoted by n‼\
+Calculate the double factorial or semifactorial of a number `n`, denoted by n‼  
 [=> Wikipedia - Double factorial](https://en.wikipedia.org/wiki/Double_factorial)
 
 #### `multi_factorial (n, k)` [^][contents]
 [multi_factorial]: #multi_factorial-n-k-
-Calculate the multifactorial of a positive integer `n`\
+Calculate the multifactorial of a positive integer `n`  
 [=> Wikipedia - Multifactorials](https://en.wikipedia.org/wiki/Factorial#Multifactorials)
 
 #### `binomial_coefficient (n, k)` [^][contents]
 [binomial_coefficient]: #binomial_coefficient-n-k-
-Calculate the binomial coefficient `n` over `k`\
+Calculate the binomial coefficient `n` over `k`  
 [=> Wikipedia - Binomial coefficient](https://en.wikipedia.org/wiki/Binomial_coefficient)
 
 #### `fibonacci (n)` [^][contents]
 [fibonacci]: #fibonacci-n-
-Calculate the Fibonacci numbers of a number `n`\
+Calculate the Fibonacci numbers of a number `n`  
 [=> Wikipedia - Fibonacci number](https://en.wikipedia.org/wiki/Fibonacci_number)
 
 #### `continued_fraction (a, b)` [^][contents]
 [continued_fraction]: #continued_fraction-a-b-
-Calculate the continued fraction\
-`a0 + b1 / (a1 + b2 / (a2 + (...))))`\
+Calculate the continued fraction  
+`a0 + b1 / (a1 + b2 / (a2 + (...))))`
 
 [=> Wikipedia - Continued fraction](https://en.wikipedia.org/wiki/Continued_fraction)
 
@@ -390,12 +430,12 @@ Calculate the continued fraction\
 
 #### `gcd (a, b)` [^][contents]
 [gcd]: #gcd-a-b-
-Calculate the greatest common divisor of two integers `a` and `b`\
+Calculate the greatest common divisor of two integers `a` and `b`  
 [=> Wikipedia - Greatest common divisor](https://en.wikipedia.org/wiki/Greatest_common_divisor)
 
 #### `lcm (a, b)` [^][contents]
 [lcm]: #lcm-a-b-
-Calculate the least common multiple of two integers `a` and `b`\
+Calculate the least common multiple of two integers `a` and `b`  
 [=> Wikipedia - Least common multiple](https://en.wikipedia.org/wiki/Least_common_multiple)
 
 
@@ -417,8 +457,8 @@ It requires 2 parameters each from these 3:
 
 #### get_circle_from_points [^][contents]
 [get_circle_from_points]: #get_circle_from_points-
-Calculate the parameter of a circle from 3 points.\
-Return the result as a list `[center of the circle, radius]`.\
+Calculate the parameter of a circle from 3 points.  
+Return the result as a list `[center of the circle, radius]`.  
 The points can be in 2D or 3D space.
 
 _Parameters:_
@@ -433,8 +473,8 @@ _Specialized functions:_
 
 #### get_sphere_from_points [^][contents]
 [get_sphere_from_points]: #get_sphere_from_points-
-Calculate the parameter of a sphere from 4 points.\
-Return the result as a list `[center of the sphere, radius]`.\
+Calculate the parameter of a sphere from 4 points.  
+Return the result as a list `[center of the sphere, radius]`.  
 The points can be only in 3D space.
 
 ```OpenSCAD
@@ -444,8 +484,8 @@ get_sphere_from_points (p1, p2, p3, p4)
 
 #### get_hypersphere_from_points [^][contents]
 [get_hypersphere_from_points]: #get_hypersphere_from_points-
-Calculate the parameter of a n-sphere (hypersphere) from n+1 points in a list.\
-Return the result as a list `[center of the n-sphere, radius]`.\
+Calculate the parameter of a n-sphere (hypersphere) from n+1 points in a list.  
+Return the result as a list `[center of the n-sphere, radius]`.  
 The points must be in n dimensions.
 
 ```OpenSCAD
@@ -455,9 +495,9 @@ get_hypersphere_from_points (p)
 
 #### get_parabola_from_points [^][contents]
 [get_parabola_from_points]: #get_parabola_from_points-
-Calculates the parameter of a parabola from 3 points.\
-Parabola from type: `y = Ax² + Bx + C`\
-Return the result as a list `[C,B,A]`.\
+Calculates the parameter of a parabola from 3 points.  
+Parabola from type: `y = Ax² + Bx + C`  
+Return the result as a list `[C,B,A]`.  
 The result can directly used in function [`polynomial()`][polynomial].
 
 ```OpenSCAD
@@ -467,12 +507,12 @@ get_parabola_from_points (p1, p2, p3)
 
 #### get_parabola_from_midpoint [^][contents]
 [get_parabola_from_midpoint]: #get_parabola_from_midpoint-
-Calculates the parameter of a parabola from 3 points.\
+Calculates the parameter of a parabola from 3 points.  
 Specialized version of [`get_parabola_from_points()`][get_parabola_from_points].
 Needs 2 outer points and the height of the midpoint.
-The distance in X-axis between the 3 points is the same.\
-Parabola from type: `y = Ax² + Bx + C`\
-Return the result as a list `[C,B,A]`.\
+The distance in X-axis between the 3 points is the same.  
+Parabola from type: `y = Ax² + Bx + C`  
+Return the result as a list `[C,B,A]`.  
 The result can directly used in function [`polynomial()`][polynomial].
 
 ```OpenSCAD
@@ -483,7 +523,7 @@ get_parabola_from_midpoint (p1, p2, ym)
 
 #### get_parabola_zero [^][contents]
 [get_parabola_zero]: #get_parabola_zero-
-Returns the roots of a parabola.\
+Returns the roots of a parabola.  
 Parabola from type: `y = Ax² + Bx + C`
 
 _Parameters:_
