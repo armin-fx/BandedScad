@@ -3,14 +3,14 @@ Transform and edit objects
 
 ### defined in file
 
-`banded/operator.scad`\
-` `| \
-` `+--> `banded/operator_edit.scad`\
-` `+--> `banded/operator_transform.scad`\
-` `+--> `banded/operator_place.scad`
+`banded/operator.scad`  
+` `|  
+` `+--> `banded/operator_edit.scad`  
+` `+--> `banded/operator_transform.scad`  
+` `+--> `banded/operator_place.scad`  
 
-[<-- file overview](file_overview.md)\
-[<-- table of contents](contents.md)
+[<-- file overview](file_overview.md)  
+[<-- table of contents](contents.md)  
 
 ### Contents
 [contents]: #contents "Contents"
@@ -51,10 +51,15 @@ Transform and edit objects
       - `part_selfcut_all()`
       - `part_limit()`
     - [`combine_fixed()`][combine_fixed]
+    - [`select_object()`][select_object]
   - [Modifying operations](#modifying-operations-)
     - [`xor()`][xor]
     - [`minkowski_difference()`][minkowski_difference]
     - [`bounding_box()`][bounding_box]
+    - [Split object in 2 parts][split_xxx]
+      - `split_top()`
+      - `split_bottom()`
+      - `split_both()`
   - [2D to 3D extrusion](#2d-to-3d-extrusion-)
     - [`extrude_line()`][extrude_line]
     - [`plain_trace_extrude()`][plain_trace_extrude]
@@ -71,7 +76,7 @@ and keep the same behavior and option names.
 #### `rotate_new (a, v, backwards)` [^][contents]
 [rotate_new]: #rotate_new-a-v-backwards-
 Rotate object with additional options.
-Works like `rotate()`.\
+Works like `rotate()`.  
 You can replace buildin `rotate()` with:
 ```OpenSCAD
 module rotate(a,v,backwards=false) { rotate_new(a,v,backwards) children(); }
@@ -185,9 +190,9 @@ and keep original object.
 
 #### `skew (v, t, m, a, d)` [^][contents]
 [skew]: #skew-v-t-m-a-d-
-skew an object.\
-standard 3D = shear X along Z\
-standard 2D = shear X along Y
+skew an object.  
+standard 3D = shear X along Z  
+standard 2D = shear X along Y  
 - `v` - vector, shear parallel to this axis
   - 3D:
     - as vector
@@ -215,7 +220,7 @@ standard 2D = shear X along Y
 
 #### `skew_at (v, t, m, a, p, d)` [^][contents]
 [skew_at]: #skew_at-v-t-m-a-p-d-
-skew an object in a list at position `p`.\
+skew an object in a list at position `p`.  
 see [`skew()`][skew]
 - `p` - origin position at where it skews
 
@@ -223,9 +228,9 @@ see [`skew()`][skew]
 ### Transformation with preset defaults [^][contents]
 
 #### Transformation operator backwards [^][contents]
-Contains modules that define known operations with operation backwards.\
+Contains modules that define known operations with operation backwards.  
 Option `backwards` is removed and internally set to `true`.
-Name convention: 'base operation' + '_backwards' + 'additional operations'\
+Name convention: 'base operation' + '_backwards' + 'additional operations'  
 
 | Base function                                  | operation backwards
 |------------------------------------------------|---------------------
@@ -327,18 +332,18 @@ Modules which place objects in specific position
 [connect]: #connect-point-direction-orientation-
 Move and rotate an object to a specific position.
 
-___3D:___
-The origin from the object will be moved to position `point`.\
-The Z-axis from the object is the arrow direction, it will be rotated into the vector of `direction`.\
+_3D:_  
+The origin from the object will be moved to position `point`.  
+The Z-axis from the object is the arrow direction, it will be rotated into the vector of `direction`.  
 The X-axis is the direction of rotation, it will be rotated around the arrow direction to the point `orientation`.
 
-___2D:___
-The origin from the object will be moved to position `point`.\
+_2D:_  
+The origin from the object will be moved to position `point`.  
 The X-axis from the object is the arrow direction, it will be rotated into the vector of `direction`.
 
 #### `place (points)` [^][contents]
 [place]: #place-points-
-Places the objects successively at the specified `points` in the list.\
+Places the objects successively at the specified `points` in the list.  
 Object 1 set to point 1, object 2 set to point 2, and so on.
 
 #### `place_line (direction, distances)` [^][contents]
@@ -351,13 +356,13 @@ Places the objects successively onto a line at the specified distances in the li
   - distances as a numeric value
     place all objects at this distance
 
-There exist specialized modules which places objects along a fixed axis at the specified distances.\
-`place_? (distances)`\
+There exist specialized modules which places objects along a fixed axis at the specified distances.  
+`place_? (distances)`  
 '?' means the axis. Axis = x, y or z.
 
 #### `place_copy (points)` [^][contents]
 [place_copy]: #place_copy-points-
-Places copies of an object at given `points` in the list.\
+Places copies of an object at given `points` in the list.  
 
 #### `place_copy_line (direction, distances)` [^][contents]
 [place_copy_line]: #place_copy_line-direction-distances-
@@ -366,8 +371,8 @@ Places copies of an objects onto a line at given distances in the list.
 - `distances` - distances as a list
 
 There exist specialized modules which places copies of an object
-along a fixed axis at given distances.\
-`place_copy_? (distances)`\
+along a fixed axis at given distances.  
+`place_copy_? (distances)`  
 '?' means the axis. Axis = x, y or z.
 
 
@@ -378,7 +383,7 @@ Edit and test objects [^][contents]
 
 #### combine [^][contents]
 [combine]: #combine-
-This will add or remove parts from a main object.\
+This will add or remove parts from a main object.  
 Inside a combine block you can define multiple parts
 to add or remove in any order.
 Add a predicate like `part_main()` (for a main object),
@@ -521,13 +526,37 @@ combine()
 }
 ```
 
+#### select_object [^][contents]
+[select_object]: #select_object-
+Chose one object on given position.  
+
+_Arguments:_
+```OpenSCAD
+select_object (i)
+```
+
+_Usage:_
+```OpenSCAD
+// select one object, in this case number 1, the sphere
+i = 1;
+
+select_object (i)
+{
+	cube();     // i==0
+	sphere();   // i==1
+	cylinder(); // i==2
+}
+```
+
 
 ### Modifying operations [^][contents]
 
 #### xor [^][contents]
 [xor]: #xor-
-Create the exclusive or with objects.\
+Create the exclusive or with objects.  
 Experimental, works with up to 8 objects and make sometimes errors.
+
+_Arguments:_
 ```OpenSCAD
 xor (d, skirt)
 ```
@@ -537,10 +566,12 @@ xor (d, skirt)
 
 #### minkowski_difference [^][contents]
 [minkowski_difference]: #minkowski_difference-
-Removes shapes from a base shape surface.\
+Removes shapes from a base shape surface.  
 Takes a base shape and one or more diff shapes,
 carves out the diff shapes from the surface of the base shape,
 in a way complementary to how `minkowski()` unions shapes to the surface of its base shape.
+
+_Arguments:_
 ```OpenSCAD
 minkowski_difference (d, convexity)
 ```
@@ -555,6 +586,8 @@ minkowski_difference (d, convexity)
 #### bounding_box [^][contents]
 [bounding_box]: #bounding_box-
 Create the smallest bounding box of an object.
+
+_Arguments:_
 ```OpenSCAD
 bounding_box (d, height)
 ```
@@ -567,15 +600,76 @@ bounding_box (d, height)
   - default = `1000`
 
 
+#### Split object in 2 parts: [^][contents]
+[split_xxx]: #split-object-in-2-parts-
+This will split a main object on the contour of a split object.  
+There will create 2 objects:
+- The inner part = an intersection of main object and split object
+- The outer part = cut split object from main object
+You can define a gap between both objects.  
+If you define a gap, you must make the split object little bigger
+then the main object, on parts where you won't carve out the gap.
+Another way is to set the balance to `1`, carve the gap only on outer part.
+
+_Operator:_
+- `split_inner (gap, balance)`
+  - Create the inner part
+- `split_outer (gap, balance)`
+  - Create the outer part
+
+_Helper operator:_
+- `split_both  (gap, balance)`
+  - Create the inner part and outer part together
+  - Useful for test reason
+
+_Sequence of operator:_
+```OpenSCAD
+split_xxx() { split_object(); main_object(); }
+```
+
+_Arguments:_
+- gap     = the gap between both parts, default = `0`
+- balance = balance between inner and outer parts `-1 ... 0 ... 1`
+  - ` 0` = carve out both parts half, default
+  - `-1` = carve only inner part
+  - `+1` = carve only outer part
+
+_Example:_
+```OpenSCAD
+gap    = 0.5;
+height = 1;
+
+include <banded.scad>
+
+module main (c)
+{
+	cube ([15,10,height]);
+}
+module split () union()
+{
+	$fn=24;
+	translate([ 0,5,-gap]) cylinder (h=height + 2*gap, d=6);
+	translate([ 5,5,-gap]) cylinder (h=height + 2*gap, d=6);
+	translate([10,5,-gap]) cylinder (h=height + 2*gap, d=6);
+}
+
+%split();
+//
+split_inner (gap=gap) { split(); main(); }
+split_outer (gap=gap) { split(); main(); }
+```
+
+
 ### 2D to 3D extrusion [^][contents]
 
 #### extrude_line [^][contents]
 [extrude_line]: #extrude_line-
-Extrudes and rotates the 2D object along the line.\
+Extrudes and rotates the 2D object along the line.  
 The object will rotate around the arrow direction of the line
 till the stretched surface from X-axis of the 2D-object and the line
 will touch the point of `rotational`.
 
+_Arguments:_
 ```OpenSCAD
 extrude_line (line, rotational, convexity, extra_h)
 ```
@@ -596,6 +690,7 @@ Note that the object started on the X-Y plane but is tilted up
 (rotated +90 degrees around the X-axis) to extrude,
 then the new Y-axis is the direction which will set in the direction of the line.
 
+_Arguments:_
 ```OpenSCAD
 plain_trace_extrude (trace, range, closed, convexity, limit)
 ```
@@ -628,15 +723,16 @@ _Specialized modules:_
 
 #### helix_extrude [^][contents]
 [helix_extrude]: #helix_extrude-
-Creates a helix with a 2D-polygon similar rotate_extrude.\
+Creates a helix with a 2D-polygon similar rotate_extrude.  
 This will generate every segment with operation `hull()` on the 2D-polygon ends.
 It makes sometimes trouble when you want to render the object.
 If you can it is maybe better to use the _function_
 [`helix_extrude()`](draft_primitives.md#helix_extrude-).
 
-modified from Gael Lafond, <https://www.thingiverse.com/thing:2200395>\
+modified from Gael Lafond, <https://www.thingiverse.com/thing:2200395>  
 License: CC0 1.0 Universal
 
+_Arguments:_
 ```OpenSCAD
 helix_extrude (angle, rotations, pitch, height, r, opposite, orientation, slices, convexity, scope, step)
 ```
@@ -656,8 +752,8 @@ helix_extrude (angle, rotations, pitch, height, r, opposite, orientation, slices
   - `0` - only concave polygon (default)
   - `1` - can handle one convex polygon only
   - `2` - can maybe handle more then one convex polygon
-    - This will slice the 2D-polygon in little pieces and hope they are concave.\
-      Experimental with some problems.\
+    - This will slice the 2D-polygon in little pieces and hope they are concave.  
+      Experimental with some problems.  
       It's better to split it in concave helixes with the same parameter
       and make the difference with it.
 

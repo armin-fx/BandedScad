@@ -15,7 +15,7 @@ use <banded/draft_transform_basic.scad>
 use <banded/operator_transform.scad>
 
 
-// - Objekte verbinden:
+// - Objekte kombinieren:
 
 combine_type_undef  = -1;
 combine_type_main   = 0;
@@ -182,6 +182,17 @@ module combine_fixed ()
 		}
 }
 
+// Wählt das i' te Objekt aus
+module select_object (i)
+{
+	if (i!=undef && is_num(i))
+	    if (i>=0) children (i);
+		else      children ($children-i);
+	else if (i!=undef && is_list(i))
+		for (j=i) children (j);
+	else          children ();
+}
+
 
 // - Objekte verändern:
 
@@ -312,6 +323,79 @@ module bounding_box_3d_intern (height=1000)
 		}
 	}
 }
+
+// Objekte aufspalten:
+//
+module split_inner (gap=0, balance=0)
+{
+	d = gap * (1-balance);
+	n = get_slices_circle_current_x (d/2, $fn_min=12);
+	//
+	intersection()
+	{
+		children([1:1:$children-1]);
+		//
+		minkowski_difference(convexity=4)
+		{
+			children(0);
+			//
+			if (d>0)
+		//	sphere (d=d, $fn=12); /*
+			rotate_extrude ($fn=n)
+			difference()
+			{
+				circle(d=d);
+				translate(-[d+extra,d/2+extra])
+				square([d+extra,d+2*extra]);
+			} //*/
+		}
+	}
+}
+//
+module split_outer (gap=0, balance=0)
+{
+	d = gap * (balance+1);
+	n = get_slices_circle_current_x (d/2, $fn_min=12);
+	//
+	difference()
+	{
+		children([1:1:$children-1]);
+		//
+		minkowski(convexity=4)
+		{
+			children(0);
+			//
+			if (d>0)
+		//	sphere (d=d, $fn=12); /*
+			rotate_extrude ($fn=n)
+			difference()
+			{
+				circle(d=d);
+				translate(-[d+extra,d/2+extra])
+				square([d+extra,d+2*extra]);
+			} //*/
+		}
+	}
+}
+//
+module split_both (gap=0, balance=0)
+{
+	split_inner(gap, balance) { children(0); children([1:1:$children-1]); }
+	split_outer(gap, balance) { children(0); children([1:1:$children-1]); }
+}
+//
+/*
+// TODO
+module split_gap (gap=0, balance=0)
+{
+	difference()
+	{
+		children(0);
+		split_outer(gap, balance) { children(0); children([1:1:$children-1]); }
+		split_inner(gap, balance) { children(0); children([1:1:$children-1]); }
+	}
+}
+//*/
 
 
 // - 2D zu 3D extrudieren:
