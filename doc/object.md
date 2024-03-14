@@ -913,13 +913,14 @@ _Details to the arguments:_
   - the last 3 elements correspond to:  All 3 corner at the second triangle (top).
 
 _Specialized modules with no arguments `type`_
-- `wedge_freecad_rounded()` - wedge only with rounded edges
-- `wedge_freecad_chamfer()` - wedge only with chamfered edges
+- `wedge_rounded()` - wedge only with rounded edges
+- `wedge_chamfer()` - wedge only with chamfered edges
 
 _Example:_
 ```OpenSCAD
 include <banded.scad>
 
+// lists wedges with all different sides in a grid
 for (i=[0:11])
 translate ([i%4, -floor(i/4)%3] * 8)
 {
