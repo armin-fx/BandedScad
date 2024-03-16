@@ -1,7 +1,7 @@
 BandedScad
 ==========
 
-BandedScad is an OpenSCAD library.
+BandedScad is an OpenSCAD library.  
 It contains functions and modules to extend the OpenSCAD language.
 It's a playground for experiments.
 
@@ -33,7 +33,7 @@ Main functionality:
   - [Transform objects in a point list][transform] with affine transformations.
     Like transformation operator in OpenSCAD for object modules.
   - Create and edit buildin [primitives from OpenSCAD with functions][primitives]
-    as data in a list.\
+    as data in a list.  
     _(not finished yet)_
   - [Generate matrices for multmatrix][multmatrix]
   - [Convert colors][color]
@@ -138,7 +138,7 @@ include <banded/constants.scad>
 
 ### To consider [^][contents]
 
-This library is designed for OpenSCAD version 2021.01.\
+This library is designed for OpenSCAD version 2021.01.  
 Because of the use of new language features that generates a syntax error
 on older OpenSCAD versions, the bibliothek can only used with
 version 2021.01 or higher.

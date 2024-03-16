@@ -73,13 +73,14 @@ and keep the same behavior and option names.
 
 ### Transformation modules [^][contents]
 
-#### `rotate_new (a, v, backwards)` [^][contents]
-[rotate_new]: #rotate_new-a-v-backwards-
-Rotate object with additional options.
-Works like `rotate()`.  
-You can replace buildin `rotate()` with:
+#### rotate_new [^][contents]
+[rotate_new]: #rotate_new-
+Rotate object with additional options.  
+Works like `rotate()`.
+
+_Arguments:_
 ```OpenSCAD
-module rotate(a,v,backwards=false) { rotate_new(a,v,backwards) children(); }
+rotate_new (a, v, backwards)
 ```
 - `a` - angle parameter
   - as number: angle to rotate in degrees around an axis, defined in vector `v`
@@ -91,16 +92,31 @@ module rotate(a,v,backwards=false) { rotate_new(a,v,backwards) children(); }
   - `false` - default, normal forward rotate
   - `true`  - rotate backwards, undo forward rotate
 
-#### `rotate_backwards (a, v)` [^][contents]
-[rotate_backwards]: #rotate_backwards-a-v-
+_You can replace buildin_ `rotate()` _with:_
+```OpenSCAD
+module rotate(a,v,backwards=false) { rotate_new(a,v,backwards) children(); }
+```
+
+#### rotate_backwards [^][contents]
+[rotate_backwards]: #rotate_backwards-
 Rotate object backwards.
+
+_Arguments:_
+```OpenSCAD
+rotate_backwards (a, v)
+```
 Options like `rotate()`.
 - `a` - angle
 - `v` - vector where rotating around
 
-#### `rotate_at (a, p, v, backwards)` [^][contents]
-[rotate_at]: #rotate_at-a-p-v-backwards-
-Rotate object at position `p`.
+#### rotate_at [^][contents]
+[rotate_at]: #rotate_at-
+Rotate object at specific origin position.
+
+_Arguments:_
+```OpenSCAD
+rotate_at (a, p, v, backwards)
+```
 - `a` - angle
 - `v` - vector where it rotates around
 - `p` - origin position at where it rotates
@@ -108,9 +124,14 @@ Rotate object at position `p`.
   - `false` - standard, normal forward rotate
   - `true`  - rotate backwards, undo forward rotate
 
-#### `rotate_to_vector (v, a, backwards, d)` [^][contents]
-[rotate_to_vector]: #rotate_to_vector-v-a-backwards-d-
-Rotate object from direction Z axis to direction at vector `v`.
+#### rotate_to_vector [^][contents]
+[rotate_to_vector]: #rotate_to_vector-
+Rotate object from direction Z axis to direction as vector.
+
+_Arguments:_
+```OpenSCAD
+rotate_to_vector (v, a, backwards, d)
+```
 - `v` - direction as vector
 - `a`
   - angle in degree
@@ -124,7 +145,7 @@ Rotate object from direction Z axis to direction at vector `v`.
   - `3` - 3D object = default
   - `2` - 2D object (must set in this case)
 
-_way of working in 3D:_
+_Way of working in 3D:_
 - procedure 1, `a` as angle:
   - vector `v` will split in
     - inclination angle, rotate around Y axis
@@ -138,61 +159,96 @@ _way of working in 3D:_
   - make rotation around vector `v`, so that the originally X axis point to
     orientation vector `a`
 
-_way of working in 2D:_
+_Way of working in 2D:_
 - rotate the object from direction X axis to vector `v`
 - option `a` will be ignored
 - the dimension number must be specified with `d=2`,
   since it cannot be determined from the object.
 
-#### `rotate_to_vector_at (v, p, a, backwards)` [^][contents]
-[rotate_to_vector_at]: #rotate_to_vector_at-v-p-a-backwards-
-Rotate object from direction Z axis to direction at vector `v`.
-Rotate origin at vector `v`.
-- `v` - vector where it rotates around
-- `p` - direction as vector
+#### rotate_to_vector_at [^][contents]
+[rotate_to_vector_at]: #rotate_to_vector_at-
+Rotate object from direction Z axis to direction as vector.  
+Rotate at a specific origin position.
+
+_Arguments:_
+```OpenSCAD
+rotate_to_vector_at (v, p, a, backwards)
+```
+- `v` - direction as vector
+- `p` - origin position at where it rotates
 - `a` - angle in degree or rotational orientation vector
 - `backwards`
   - `false` - standard, normal forward rotate
   - `true`  - rotate backwards, undo forward rotate
 
-#### `mirror_at (v, p)` [^][contents]
-[mirror_at]: #mirror_at-v-p-
-Mirror an object along a vector `v` at origin position `p`.
+#### mirror_at [^][contents]
+[mirror_at]: #mirror_at-
+Mirror an object along a vector at specific origin position.
+
+_Arguments:_
+```OpenSCAD
+mirror_at (v, p)
+```
 - `p` - origin position at where it mirrors
 - `v` - mirror along this direction, standard = X axis
 
-#### `mirror_copy (v)` [^][contents]
-[mirror_copy]: #mirror_copy-v-
+#### mirror_copy [^][contents]
+[mirror_copy]: #mirror_copy-
 Mirror an object at origin along a vector `v`
 and keep original object.
+
+_Arguments:_
+```OpenSCAD
+mirror_copy (v)
+```
 - `v` - mirror along this direction, standard = X axis
 
-#### `mirror_copy_at (v, p)` [^][contents]
-[mirror_copy_at]: #mirror_copy_at-v-p-
+#### mirror_copy_at [^][contents]
+[mirror_copy_at]: #mirror_copy_at-
 Mirror an object along a vector `v` at origin position `p` and keep original object.
+
+_Arguments:_
+```OpenSCAD
+mirror_copy_at (v, p)
+```
 - `p` - origin position at where it mirrors
 - `v` - mirror along this direction, standard = X axis
 
-#### `mirror_repeat (v, v2, v3)` [^][contents]
-[mirror_repeat]: #mirror_repeat-v-v2-v3-
+#### mirror_repeat [^][contents]
+[mirror_repeat]: #mirror_repeat-
 Mirror an object at origin up to 3 times along a vector `v`, then `v2`, `v3`.
+
+_Arguments:_
+```OpenSCAD
+mirror_repeat (v, v2, v3)
+```
 - `v`  - mirror along this direction, standard = X axis
 - `v2` - 2. mirror direction, optional
 - `v3` - 3. mirror direction, optional
 
-#### `mirror_repeat_copy (v, v2, v3)` [^][contents]
-[mirror_repeat_copy]: mirror_repeat_copy-v-v2-v3-
+#### mirror_repeat_copy [^][contents]
+[mirror_repeat_copy]: #mirror_repeat_copy-
 Mirror an object at origin up to 3 times along a vector `v`, then `v2`, `v3`
 and keep original object.
+
+_Arguments:_
+```OpenSCAD
+mirror_repeat_copy (v, v2, v3)
+```
 - `v`  - mirror along this direction, standard = X axis
 - `v2` - 2. mirror direction, optional
 - `v3` - 3. mirror direction, optional
 
-#### `skew (v, t, m, a, d)` [^][contents]
-[skew]: #skew-v-t-m-a-d-
-skew an object.  
-standard 3D = shear X along Z  
-standard 2D = shear X along Y  
+#### skew [^][contents]
+[skew]: #skew-
+skew an object.
+- default for 3D = shear X along Z
+- default for 2D = shear X along Y
+
+_Arguments:_
+```OpenSCAD
+skew (v, t, m, a, d)
+```
 - `v` - vector, shear parallel to this axis
   - 3D:
     - as vector
@@ -218,9 +274,14 @@ standard 2D = shear X along Y
     Otherwise use 3D.
     It is not possible to get this information from the object.
 
-#### `skew_at (v, t, m, a, p, d)` [^][contents]
-[skew_at]: #skew_at-v-t-m-a-p-d-
-skew an object in a list at position `p`.  
+#### skew_at [^][contents]
+[skew_at]: #skew_at-
+skew an object in a list at specific origin position.
+
+_Arguments:_
+```OpenSCAD
+skew_at (v, t, m, a, p, d)
+```
 see [`skew()`][skew]
 - `p` - origin position at where it skews
 
@@ -240,8 +301,8 @@ Name convention: 'base operation' + '_backwards' + 'additional operations'
 | [`rotate_to_vector_at()`][rotate_to_vector_at] | `rotate_backwards_to_vector_at (v, p, a)`
 
 #### Transformation at a fixed axis [^][contents]
-Contains modules that define known operations on a fixed axis.\
-Name convention: 'function operation name' + '_axis'\
+Contains modules that define known operations on a fixed axis.  
+Name convention: 'function operation name' + '_axis'  
 Axis = x, y or z. later named as '?'
 
 ##### Basic transformation at fixed axis [^][contents]
@@ -328,9 +389,14 @@ Place objects [^][contents]
 ---------------------------
 Modules which place objects in specific position
 
-#### `connect (point, direction, orientation)` [^][contents]
-[connect]: #connect-point-direction-orientation-
+#### connect [^][contents]
+[connect]: #connect-
 Move and rotate an object to a specific position.
+
+_Arguments:_
+```OpenSCAD
+connect (point, direction, orientation)
+```
 
 _3D:_  
 The origin from the object will be moved to position `point`.  
@@ -341,14 +407,24 @@ _2D:_
 The origin from the object will be moved to position `point`.  
 The X-axis from the object is the arrow direction, it will be rotated into the vector of `direction`.
 
-#### `place (points)` [^][contents]
+#### place [^][contents]
 [place]: #place-points-
 Places the objects successively at the specified `points` in the list.  
 Object 1 set to point 1, object 2 set to point 2, and so on.
 
-#### `place_line (direction, distances)` [^][contents]
+_Arguments:_
+```OpenSCAD
+place (points)
+```
+
+#### place_line [^][contents]
 [place_line]: #place_line-direction-distances-
 Places the objects successively onto a line at the specified distances in the list.
+
+_Arguments:_
+```OpenSCAD
+place_line (direction, distances)
+```
 - `direction` - direction of the line
 - `distances`
   - distances as a list
@@ -356,22 +432,31 @@ Places the objects successively onto a line at the specified distances in the li
   - distances as a numeric value
     place all objects at this distance
 
-There exist specialized modules which places objects along a fixed axis at the specified distances.  
+_There exist specialized modules which places objects along a fixed axis at the specified distances:_  
 `place_? (distances)`  
 '?' means the axis. Axis = x, y or z.
 
-#### `place_copy (points)` [^][contents]
+#### place_copy [^][contents]
 [place_copy]: #place_copy-points-
 Places copies of an object at given `points` in the list.  
 
-#### `place_copy_line (direction, distances)` [^][contents]
+_Arguments:_
+```OpenSCAD
+place_copy (points)
+```
+
+#### place_copy_line [^][contents]
 [place_copy_line]: #place_copy_line-direction-distances-
 Places copies of an objects onto a line at given distances in the list.
+
+_Arguments:_
+```OpenSCAD
+place_copy_line (direction, distances)
+```
 - `direction` - direction of the line
 - `distances` - distances as a list
 
-There exist specialized modules which places copies of an object
-along a fixed axis at given distances.  
+_There exist specialized modules which places copies of an object along a fixed axis at given distances:_  
 `place_copy_? (distances)`  
 '?' means the axis. Axis = x, y or z.
 
@@ -499,7 +584,7 @@ combine (limit, type, select)
 
 #### combine_fixed [^][contents]
 [combine_fixed]: #combine_fixed-
-Put parts together to a main object in a fixed order.\
+Put parts together to a main object in a fixed order.  
 This is helpful, if more than one operator is needed to do this.
 You can create a hole to the main object and put a part on this.
 Maybe you can define a common hull for the complete object and

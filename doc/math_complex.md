@@ -2,10 +2,10 @@ Calculating with complex numbers
 ================================
 
 ### defined in file
-`banded/complex.scad`
+`banded/complex.scad`  
 
-[<-- file overview](file_overview.md)\
-[<-- table of contents](contents.md)
+[<-- file overview](file_overview.md)  
+[<-- table of contents](contents.md)  
 
 [<-- Math functions](math.md)
 
@@ -39,14 +39,14 @@ Convention [^][contents]
 ------------------------
 The complex numbers are set up as a list.
 - As list in cartesian complex plane expressed in the form `z = a + b*i`,
-  where `a` is the real part and `b` is the imaginary part.\
+  where `a` is the real part and `b` is the imaginary part.  
   
   `[real part a, imaginary part b]`
   
 - As list in polar complex plane expressed in form
-  `z = r * e^(i*phi)  = r * ( cos(phi) + i*sin(phi) )`.\
-  `r` = distance from origin and\
-  `phi` = angle around origin in degrees `0...360` from the positive real axis.\
+  `z = r * e^(i*phi)  = r * ( cos(phi) + i*sin(phi) )`.  
+  `r` = distance from origin and  
+  `phi` = angle around origin in degrees `0...360` from the positive real axis.  
   In order to be able to distinguish the polar form from the cartesian form,
   an indefinite value without meaning is appended to the list.
   
@@ -73,8 +73,8 @@ Convert functions [^][contents]
 [c-form]: #get-complex-number-in-cartesian-or-polar-form- "Get complex number in cartesian or polar form"
 
 #### Common function:
-`get_cartesian (c)`\
-`get_polar (c)`
+`get_cartesian (c)`  
+`get_polar (c)`  
 
 #### Specialized function:
 | input type     | returns cartesian form        | returns polar form
@@ -86,11 +86,11 @@ Convert functions [^][contents]
 
 ### Get part from complex number [^][contents]
 [c-part]: #get-part-from-complex-number- "Get part from complex number"
-Return real part or imaginary part from complex number
+Return real part or imaginary part from complex number.
 
 #### Common function:
-`get_real (c)`\
-`get_imaginary (c)`
+`get_real (c)`  
+`get_imaginary (c)`  
 
 #### Specialized function:
 | input type     | returns real part           | returns imaginary part
@@ -152,8 +152,8 @@ Calculation functions [^][contents]
 Add or subtract complex number `d` from `c`.
 
 #### Common function:
-`c_add (c, d)`\
-`c_sub (c, d)`
+`c_add (c, d)`  
+`c_sub (c, d)`  
 - return a complex number in cartesian form.
 
 #### Specialized function:
@@ -172,8 +172,8 @@ Add or subtract complex number `d` from `c`.
 Multiplicate or Divide complex number `d` from `c`.
 
 #### Common function:
-`c_mul (c, d)`\
-`c_div (c, d)`
+`c_mul (c, d)`  
+`c_div (c, d)`  
 
 #### Specialized function:
 `xxx` = `mul` or `div`
@@ -190,11 +190,11 @@ Multiplicate or Divide complex number `d` from `c`.
 
 ### Complex square root [^][contents]
 [sqrt]: #complex-square-root- "Complex square root"
-Return the square root of a complex number
+Return the square root of a complex number.
 
 #### Common function:
-`c_sqrt (c)`      - Returns the square root using the principal branch, whose cuts are along the negative real axis.
-`c_sqrt_list (c)` - Returns a list with 2 complex number, both results
+`c_sqrt (c)`      - Returns the square root using the principal branch, whose cuts are along the negative real axis.  
+`c_sqrt_list (c)` - Returns a list with 2 complex number, both results.  
 
 | input          | result
 |----------------|--------

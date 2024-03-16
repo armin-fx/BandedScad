@@ -2,15 +2,15 @@ Draft objects as data list - Transform functions
 ================================================
 
 ### defined in file
-`banded/draft.scad`\
-` `| \
-` `+--> `banded/draft_transform.scad`\
-` `| . . . . +--> `banded/draft_transform_basic.scad`\
-` `| . . . . +--> `banded/draft_transform_common.scad`\
-` `. . .
+`banded/draft.scad`  
+` `|  
+` `+--> `banded/draft_transform.scad`  
+` `| . . . . +--> `banded/draft_transform_basic.scad`  
+` `| . . . . +--> `banded/draft_transform_common.scad`  
+` `. . .  
 
-[<-- file overview](file_overview.md)\
-[<-- table of contents](contents.md)
+[<-- file overview](file_overview.md)  
+[<-- table of contents](contents.md)  
 
 ### Contents
 [contents]: #contents "Up to Contents"
@@ -39,27 +39,38 @@ Draft objects as data list - Transform functions
 Transform functions on point lists [^][contents]
 ------------------------------------------------
 
-Contains functions which transform point lists with affine transformations.\
+Contains functions which transform point lists with affine transformations.  
 [=> Wikipedia - Affine_transformation](https://en.wikipedia.org/wiki/Affine_transformation)
+
 
 ### Basic transformation [^][contents]
 Works like transformation operator in OpenSCAD for object modules,
 result is the same.
 
-#### `translate_points (list, v)` [^][contents]
-[translate_points]: #translate_points-list-v- "translate_points (list, v)"
-Translate every point in `list` along a vector `v`.
+#### translate_points [^][contents]
+[translate_points]: #translate_points-
+Translate every point in a list along a vector.  
 Works like `translate()`.
+
+_Arguments:_
+```OpenSCAD
+translate_points (list, v)
+```
 - `v` - vector
 
-_Operation for one point:_ \
+_Operation for one point:_  
 `translate_point (p, v)`
 - `p` - point
 
-#### `rotate_points (list, a, v, backwards)` [^][contents]
-[rotate_points]: #rotate_points-list-a-v-backwards- "rotate_points (list, a, v, backwards)"
-Rotate every point in `list`.
+#### rotate_points [^][contents]
+[rotate_points]: #rotate_points-
+Rotate every point in a list.  
 Works like `rotate()`.
+
+_Arguments:_
+```OpenSCAD
+rotate_points (list, a, v, backwards)
+```
 - `a` - angle parameter
   - as number: angle to rotate in degrees around an axis, defined in vector `v`
   - as list of 3 angles around a fixed axis `[X,Y,Z]`:
@@ -70,52 +81,77 @@ Works like `rotate()`.
   - `false` - default, normal forward rotate
   - `true`  - rotate backwards, undo forward rotate
 
-_Operation for one point:_ \
+_Operation for one point:_  
 `rotate_point (p, a, v, backwards)`
 - `p` - point
 
-#### `mirror_points (list, v)` [^][contents]
-[mirror_points]: #mirror_points-list-v- "mirror_points (list, v)"
-Mirror every point at origin along a vector `v` in a `list`.
+#### mirror_points [^][contents]
+[mirror_points]: #mirror_points-
+Mirror every point at origin along a vector in a list.  
 Works like `mirror()`.
+
+_Arguments:_
+```OpenSCAD
+mirror_points (list, v)
+```
 - `v` - mirror along this direction, default = X axis
 
-_Operation for one point:_ \
+_Operation for one point:_  
 `mirror_point (p, v)`
 - `p` - point
 
-#### `scale_points (list, v)` [^][contents]
-[scale_points]: #scale_points-list-v- "scale_points (list, v)"
-Scale every point in `list` at given axis in vector `v`.
+#### scale_points [^][contents]
+[scale_points]: #scale_points-
+Scale every point in a list at given axis.  
 Works like `scale()`.
+
+_Arguments:_
+```OpenSCAD
+scale_points (list, v)
+```
 - `v` - vector with scale factor for each axis
 
-_Operation for one point:_ \
+_Operation for one point:_  
 `scale_point (p, v)`
 - `p` - point
 
-#### `resize_points (list, newsize)` [^][contents]
-[resize_points]: #resize_points-list-newsize- "resize_points (list, newsize)"
-Resize and scale every point in `list` that it fits in `newsize`
+#### resize_points [^][contents]
+[resize_points]: #resize_points-
+Resize and scale every point in a list that it fits in `newsize`.  
 Works like `resize()`.
-- `newsize` - Vector with new size
 
-#### `projection_points (list, plane)` [^][contents]
-[projection_points]: #projection_points-list-plane- "projection_points (list, plane)"
-Get projection of every point in `list` to xy-plane.
+_Arguments:_
+```OpenSCAD
+resize_points (list, newsize)
+```
+- `newsize` - vector with new size
+
+#### projection_points [^][contents]
+[projection_points]: #projection_points-
+Get projection of every point in a list to the XY-plane.
+
+_Arguments:_
+```OpenSCAD
+projection_points (list, plane)
+```
 - `plane`
   - `true`  - make a 2D-list, default
   - `false` - make a 3D-list, keep points on xy-plane
   - number  - make a 3D-list, set Z-axis to this height
 
-_Operation for one point:_ \
+_Operation for one point:_  
 `projection_point (p, plane)`
 - `p` - point
 
-#### `multmatrix_points (list, m)` [^][contents]
-[multmatrix_points]: #multmatrix_points-list-m- "multmatrix_points (list, m)"
-Multiply every point in `list` with matrix `m`.
+#### multmatrix_points [^][contents]
+[multmatrix_points]: #multmatrix_points-
+Multiply every point in a list with a matrix.  
 Works like `multmatrix()`.
+
+_Arguments:_
+```OpenSCAD
+multmatrix_points (list, m)
+```
 - `m`
   - 3D: 4x3 or 4x4 matrix (or 3x3)
   - 2D: 3x2 or 3x3 matrix (or 2x2)
@@ -134,16 +170,26 @@ multmatrix_3D_point(p, m)  // 3D version
 
 ### More transformation [^][contents]
 
-#### `rotate_backwards_points (list, a, v)` [^][contents]
-[rotate_backwards_points]: #rotate_backwards_points-list-a-v-
-Rotate backwards every point in `list`.\
+#### rotate_backwards_points [^][contents]
+[rotate_backwards_points]: #rotate_backwards_points-
+Rotate backwards every point in a list.  
 Options like `rotate()`.
+
+_Arguments:_
+```OpenSCAD
+rotate_backwards_points (list, a, v)
+```
 - `a` - angle
 - `v` - vector where rotating around
 
-#### `rotate_at_points (list, a, p, v, backwards)` [^][contents]
-[rotate_at_points]: #rotate_at_points-list-a-p-v-backwards-
+#### rotate_at_points [^][contents]
+[rotate_at_points]: #rotate_at_points-
 Rotate every point in `list` at position `p`.
+
+_Arguments:_
+```OpenSCAD
+rotate_at_points (list, a, p, v, backwards)
+```
 - `a` - angle
 - `v` - vector where it rotates around
 - `p` - origin position at where it rotates, default = `[0,0,0]`
@@ -151,9 +197,14 @@ Rotate every point in `list` at position `p`.
   - `false` - default, normal forward rotate
   - `true`  - rotate backwards, undo forward rotate
 
-#### `rotate_to_vector_points (list, v, a, backwards)` [^][contents]
-[rotate_to_vector_points]: #rotate_to_vector_points-list-v-a-backwards-
-Rotate every point in `list` from direction Z axis to direction at vector `v`.
+#### rotate_to_vector_points [^][contents]
+[rotate_to_vector_points]: #rotate_to_vector_points-
+Rotate every point in a list from direction Z axis to direction as vector.
+
+_Arguments:_
+```OpenSCAD
+rotate_to_vector_points (list, v, a, backwards)
+```
 - `v` - direction as vector
 - `a`
   - angle in degree
@@ -162,7 +213,7 @@ Rotate every point in `list` from direction Z axis to direction at vector `v`.
   - `false` - default, normal forward rotate
   - `true`  - rotate backwards, undo forward rotate
 
-___way of working in 3D:___
+_Way of working in 3D:_
 - procedure 1, `a` as angle:
   - vector `v` will split in
     - inclination angle, rotate around Y axis
@@ -176,14 +227,19 @@ ___way of working in 3D:___
   - make rotation around vector `v`, so that the originally X axis point to
     orientation vector `a`
 
-___way of working in 2D:___
+_Way of working in 2D:_
 - rotate the object from direction X axis to vector `v`
 - option `a` will be ignored
 
-#### `rotate_to_vector_at_points (list, v, p, a, backwards)` [^][contents]
-[rotate_to_vector_at_points]: #rotate_to_vector_at_points-list-v-p-a-backwards-
-Rotate every point in `list` from direction Z axis to direction at vector `v`.\
-Rotate origin at position `p`.
+#### rotate_to_vector_at_points [^][contents]
+[rotate_to_vector_at_points]: #rotate_to_vector_at_points-
+Rotate every point in a list from direction Z axis to direction as vector.  
+Rotate at specific origin position.
+
+_Arguments:_
+```OpenSCAD
+rotate_to_vector_at_points (list, v, p, a, backwards)
+```
 - `v` - vector where it rotates around
 - `p` - origin point, default = `[0,0,0]`
 - `a` - angle in degree or rotational orientation vector
@@ -191,17 +247,27 @@ Rotate origin at position `p`.
   - `false` - default, normal forward rotate
   - `true`  - rotate backwards, undo forward rotate
 
-#### `mirror_at_points (list, v, p)` [^][contents]
-[mirror_at_points]: #mirror_at_points-list-v-p-
-Mirror every point in `list` along a vector `v` at origin position `p`.
+#### mirror_at_points [^][contents]
+[mirror_at_points]: #mirror_at_points-
+Mirror every point in a list along a vector at specific origin position.
+
+_Arguments:_
+```OpenSCAD
+mirror_at_points (list, v, p)
+```
 - `p` - origin position at where it mirrors, default = `[0,0,0]`
 - `v` - mirror along this direction, default = X axis
 
-#### `skew_points (list, v, t, m, a)` [^][contents]
-[skew_points]: #skew_points-list-v-t-m-a-
-skew an object in a list.\
-default for 3D = shear X along Z\
-default for 2D = shear X along Y
+#### skew_points [^][contents]
+[skew_points]: #skew_points-
+skew an object in a list.  
+- default for 3D = shear X along Z
+- default for 2D = shear X along Y
+
+_Arguments:_
+```OpenSCAD
+skew_points (list, v, t, m, a)
+```
 - `v` - vector, shear parallel to this axis
   - 3D:
     - as vector
@@ -221,9 +287,14 @@ default for 2D = shear X along Y
 - `m` - skew factor, default = 0 
 - `a` - angle in degree inside (-90 ... 90), alternative to 'm'
 
-#### `skew_at_points (list, v, t, m, a, p)` [^][contents]
-[skew_at_points]: #skew_at_points-list-v-t-m-a-p-
-skew an object in a list at position `p`.\
+#### skew_at_points [^][contents]
+[skew_at_points]: #skew_at_points-
+skew an object in a list at position `p`.
+
+_Arguments:_
+```OpenSCAD
+skew_at_points (list, v, t, m, a, p)
+```
 see [`skew_points()`][skew_points]
 - `p` - origin position at where it skews, default = `[0,0,0]`
 
@@ -231,9 +302,9 @@ see [`skew_points()`][skew_points]
 ### Transformation with preset defaults [^][contents]
 
 #### Transformation function backwards: [^][contents]
-Contains functions that define known functions with operation backwards.\
+Contains functions that define known functions with operation backwards.  
 Option `backwards` is removed and internally set to `true`.
-Name convention: 'base operation' + '_backwards' + 'additional operations'\
+Name convention: 'base operation' + '_backwards' + 'additional operations'  
 
 | Base function                                                | operation backwards
 |--------------------------------------------------------------|---------------------
@@ -243,8 +314,8 @@ Name convention: 'base operation' + '_backwards' + 'additional operations'\
 | [`rotate_to_vector_at_points()`][rotate_to_vector_at_points] | `rotate_backwards_to_vector_at_points (list, v, p, a)`
 
 #### Transformation at a fixed axis: [^][contents]
-Contains functions that define known functions on a fixed axis.\
-Name convention: 'function operation name' + '_axis'\
+Contains functions that define known functions on a fixed axis.  
+Name convention: 'function operation name' + '_axis' 
 Axis = x, y or z. later named as '?'
 
 ##### Basic transformation at fixed axis: [^][contents]

@@ -2,14 +2,14 @@ Constants
 =========
 
 ### defined in file
-`banded/constants.scad`\
-` `| \
-` `+--> `banded/constants_user.scad`\
-` `+--> `banded/constants_technical.scad`\
-` `+--> `banded/constants_helper.scad`
+`banded/constants.scad`  
+` `|  
+` `+--> `banded/constants_user.scad`  
+` `+--> `banded/constants_technical.scad`  
+` `+--> `banded/constants_helper.scad`  
 
-[<-- file overview](file_overview.md)\
-[<-- table of contents](contents.md)
+[<-- file overview](file_overview.md)  
+[<-- table of contents](contents.md)  
 
 ### Contents
 [contents]: #contents "Up to Contents"
@@ -157,18 +157,18 @@ ___`delta_std`:___
 
 
 ### Technical constants [^][contents]
-Contains constants and functions for standard sizes and measures.
+Contains constants and functions for standard sizes and measures.  
 Defined in file: `banded/constants_technical.scad`
 
 #### Paper size: [^][contents]
-Defines paper size in ISO 216.\
+Defines paper size in ISO 216.  
 ISO 216 is an international standard for paper sizes.
 The standard defines the __"A"__, __"B"__ and __"C"__ series of paper sizes,
 including __A4__, the most commonly available paper size worldwide.
 - [=> Wikipedia - Paper size](https://en.wikipedia.org/wiki/Paper_size)
 - [=> Wikipedia - ISO 216](https://en.wikipedia.org/wiki/ISO_216)
 
-_Function:_\
+_Function:_  
 __`iso_216 (format, serie, number)`__
 - Returns the paper size as list: `[smallest size, biggest size]`
 - Arguments:
@@ -190,12 +190,12 @@ _Defined Constants_:
 | 10   | `ISO_A10`        | `ISO_B10`        | `ISO_C10`
 
 #### Envelope size: [^][contents]
-Defines envelope size in ISO 269.\
+Defines envelope size in ISO 269.  
 ISO 269 is an international standard for envelope sizes.
 
 [=> Wikipedia - Envelope](https://en.wikipedia.org/wiki/Envelope)
 
-_Function:_\
+_Function:_  
 __`iso_269 (format)`__
 - Returns the envelope size as list: `[biggest size, smallest size]`
 - Arguments:

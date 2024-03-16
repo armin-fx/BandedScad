@@ -2,14 +2,14 @@ Draft objects as data list - Surfaces
 =====================================
 
 ### defined in file
-`banded/draft.scad`\
-` `| \
-` `+--> `banded/draft_surface.scad`\
-` `| \
-` `. . .
+`banded/draft.scad`  
+` `|  
+` `+--> `banded/draft_surface.scad`  
+` `|  
+` `. . .  
 
-[<-- file overview](file_overview.md)\
-[<-- table of contents](contents.md)
+[<-- file overview](file_overview.md)  
+[<-- table of contents](contents.md)  
 
 ### Contents
 [contents]: #contents "Up to Contents"
@@ -42,13 +42,16 @@ There is a name convention of functions from curves:
 
 
 ### Bezier surface [^][contents]
-Generates Bézier surfaces.\
+Generates Bézier surfaces.  
 [=> Wikipedia - Bézier surface](https://en.wikipedia.org/wiki/B%C3%A9zier_surface)
 
-#### `bezier_surface_point (t, p)` [^][contents]
+#### bezier_surface_point [^][contents]
 Returns a point of a Bézier surface of (m,n)'th degree.
 
 _Options:_
+```OpenSCAD
+bezier_surface_point (t, p)
+```
 - `t`
   - a list `[x,y]` with 2 numeric values between `0`...`1`
   - where `x` controls the position on the X-axis, `y` on the Y-axis
@@ -58,10 +61,13 @@ _Options:_
     `,[.., ..., ...]`
     `,[pn, ..., pnm]]`
 
-#### `bezier_surface_grid (p, slices)` [^][contents]
+#### bezier_surface_grid [^][contents]
 Returns a Bézier surface grid of (m,n)'th degree.
 
 _Options:_
+```OpenSCAD
+bezier_surface_grid (p, slices)
+```
 - `p`
   - a grid of control points (n·m), where n, m specify the degree of the Bézier surface
   - `[[p0, ..., pm ]`
@@ -74,10 +80,13 @@ _Options:_
   - If set `"x"`, the information from the extra special variables
     (`$fn_min`, `$fn_max`, `$fd`, ...) are also used  (roughly implemented)
 
-#### `bezier_surface_mesh (p, slices)` [^][contents]
+#### bezier_surface_mesh [^][contents]
 Returns a Bézier surface mesh of (m,n)'th degree.
 
 _Options:_
+```OpenSCAD
+bezier_surface_mesh (p, slices)
+```
 - `p`
   - a grid of control points (n·m), where n, m specify the degree of the Bézier surface
   - `[[p0, ..., pm ]`
@@ -92,13 +101,16 @@ _Options:_
 
 
 ### Bezier triangle [^][contents]
-Generates Bézier triangles.\
+Generates Bézier triangles.  
 [=> Wikipedia - Bézier triangle](https://en.wikipedia.org/wiki/B%C3%A9zier_triangle)
 
-#### `bezier_triangle_point (t, p)` [^][contents]
+#### bezier_triangle_point [^][contents]
 Returns a point of a Bézier triangle of (m,n)'th degree.
 
 _Options:_
+```OpenSCAD
+bezier_triangle_point (t, p)
+```
 - `p`
   - a triangle grid of control points, where n specify the degree of the Bézier surface
   - `[[p0, ..., pn ]`
@@ -113,10 +125,13 @@ _Options:_
   - A higher value for one egde, eg. `a` will move the point closer to this edge.
     A lower value for one egde will move the point further away from this.
 
-#### `bezier_triangle_grid (p, slices)` [^][contents]
+#### bezier_triangle_grid [^][contents]
 Returns a Bézier triangle grid of (m,n)'th degree.
 
 _Options:_
+```OpenSCAD
+bezier_triangle_grid (p, slices)
+```
 - `p`
   - a triangle grid of control points, where n specify the degree of the Bézier surface
   - `[[p0, ..., pn ]`
@@ -129,10 +144,13 @@ _Options:_
   - If set `"x"`, the information from the extra special variables
     (`$fn_min`, `$fn_max`, `$fd`, ...) are also used  (roughly implemented)
 
-#### `bezier_triangle_mesh (p, slices)` [^][contents]
+#### bezier_triangle_mesh [^][contents]
 Returns a Bézier triangle mesh of (m,n)'th degree.
 
 _Options:_
+```OpenSCAD
+bezier_triangle_mesh (p, slices)
+```
 - `p`
   - a triangle grid of control points, where n specify the degree of the Bézier surface
   - `[[p0, ..., pn ]`

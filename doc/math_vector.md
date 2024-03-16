@@ -2,13 +2,13 @@ Vector operations
 =================
 
 ### defined in file
-`banded/math.scad`\
-` `| \
-` `+--> ...\
-` `+--> `banded/math_vector.scad`\
+`banded/math.scad`  
+` `|  
+` `+--> ...  
+` `+--> `banded/math_vector.scad`  
 
-[<-- file overview](file_overview.md)\
-[<-- table of contents](contents.md)
+[<-- file overview](file_overview.md)  
+[<-- table of contents](contents.md)  
 
 [<-- Math functions](math.md)
 
@@ -88,8 +88,10 @@ echo( cross( a, b ) ); // cross product, return [1,1,-1]
 
 #### unit_vector [^][contents]
 [unit_vector]: #unit_vector-
-Return the normalized vector of `v`.\
-= vector in the same direction with length 1
+Return the normalized vector of `v`.  
+= vector in the same direction with length 1.
+
+_Arguments:_
 ```OpenSCAD
 unit_vector (v)
 ```
@@ -98,7 +100,9 @@ unit_vector (v)
 
 #### angle_vector [^][contents]
 [angle_vector]: #angle_vector-
-Return the minimum angle inside 2 vector `v1` and `v2`
+Return the minimum angle inside 2 vector `v1` and `v2`.
+
+_Arguments:_
 ```OpenSCAD
 angle_vector (v1, v2)
 ```
@@ -113,9 +117,11 @@ angle_points (origin, p1, p2)
 #### rotation_vector [^][contents]
 [rotation_vector]: #rotation_vector-
 Return the angle from vector `v1` to `v2` in 2D plane in
-mathematical direction = counter clockwise\
+mathematical direction = counter clockwise.  
 If spatial 3D vector are used, only return the minimum angle inside `v1` and `v2`.
 The 3D rotation vector can get with cross product `cross()`.
+
+_Arguments:_
 ```OpenSCAD
 rotation_vector (v1, v2)
 ```
@@ -127,8 +133,10 @@ _similar functions:_
 #### rotation_points [^][contents]
 [rotation_points]: #rotation_points-
 Return the angle from line `origin`->`p1` to `origin`->`p2` in 2D plane in
-mathematical direction = counter clockwise\
+mathematical direction = counter clockwise.  
 If spatial 3D points are used, only return the minimum angle inside both lines.
+
+_Arguments:_
 ```OpenSCAD
 rotation_points (origin, p1, p2)
 ```
@@ -136,9 +144,11 @@ rotation_points (origin, p1, p2)
 #### rotation_around_vector [^][contents]
 [rotation_around_vector]: #rotation_around_vector-
 Return the angle around vector `v` from points `p1` to `p2` in
-mathematical direction = counter clockwise.\
+mathematical direction = counter clockwise.  
 This is the angle you see if you show into the vector `v` from the upper side,
 from point `p1` to `p2`.
+
+_Arguments:_
 ```OpenSCAD
 rotation_around_vector (v, p1, p2)
 ```
@@ -149,9 +159,11 @@ rotation_around_vector (v, p1, p2)
 #### rotation_around_line [^][contents]
 [rotation_around_line]: #rotation_around_line-
 Return the angle around a line from points `p1` to `p2` in
-mathematical direction = counter clockwise.\
+mathematical direction = counter clockwise.  
 This is the angle you see if you show into the line from the upper side,
 from point `p1` to `p2`.
+
+_Arguments:_
 ```OpenSCAD
 rotation_around_line (line, p1, p2)
 ```
@@ -161,9 +173,11 @@ rotation_around_line (line, p1, p2)
 
 #### normal_vector [^][contents]
 [normal_vector]: #normal_vector-
-Return the normal vector of vector `v` and `w`.\
+Return the normal vector of vector `v` and `w`.  
 A normal is an object such as a line, ray, or vector
 that is perpendicular to a given object.
+
+_Arguments:_
 ```OpenSCAD
 normal_vector (v, w)
 ```
@@ -180,10 +194,12 @@ normal_vector (v, w)
 
 #### normal_unit_vector [^][contents]
 [normal_unit_vector]: #normal_unit_vector-
-Return the normal unit vector of vector `v` and `w`.\
+Return the normal unit vector of vector `v` and `w`.  
 A normal is an object such as a line, ray, or vector
 that is perpendicular to a given object.
 A normal unit vector has the length 1.
+
+_Arguments:_
 ```OpenSCAD
 normal_unit_vector (v, w)
 ```
@@ -199,6 +215,8 @@ normal_unit_vector (v, w)
 [normal_triangle]: #normal_triangle-
 Return the normal vector of a triangle
 defined by 3 points in 3D space.
+
+_Arguments:_
 ```OpenSCAD
 normal_triangle (p1, p2, p3, points)
 ```
@@ -207,8 +225,10 @@ normal_triangle (p1, p2, p3, points)
 
 #### triple_product [^][contents]
 [triple_product]: #triple_product-
-Calculate the triple productof three 3-dimensional vectors `a`, `b` and `c`.
-Return the (signed) volume of the parallelepiped defined by the three vectors given.\
+Calculate the triple productof three 3-dimensional vectors `a`, `b` and `c`.  
+Return the (signed) volume of the parallelepiped defined by the three vectors given.
+
+_Arguments:_
 ```OpenSCAD
 triple_product (a, b, c)
 ```
@@ -216,11 +236,13 @@ triple_product (a, b, c)
 
 #### cross_universal [^][contents]
 [cross_universal]: #cross_universal-
-Calculate the cross product for n dimensional vector in a list of n-1 vectors.\
+Calculate the cross product for n dimensional vector in a list of n-1 vectors.  
 Characteristic in this version:
 - it uses the right hand rule in every dimension
 - if will set in order the n-1 unit vector,
   then the last missing unit vector will be the result
+
+_Arguments:_
 ```OpenSCAD
 cross_universal (list)
 ```
@@ -230,8 +252,10 @@ cross_universal (list)
 
 #### is_collinear [^][contents]
 [is_collinear]: #is_collinear-
-Return `true` if the 2 vectors are collinear.
+Return `true` if the 2 vectors are collinear.  
 This means they are parallel or anti parallel.
+
+_Arguments:_
 ```OpenSCAD
 is_collinear (v1, v2)
 ```
@@ -239,6 +263,8 @@ is_collinear (v1, v2)
 #### is_nearly_collinear [^][contents]
 [is_nearly_collinear]: #is_nearly_collinear-
 Return `true` if the 2 vectors are nearly collinear.
+
+_Arguments:_
 ```OpenSCAD
 is_nearly_collinear (v1, v2, deviation)
 ```
@@ -250,8 +276,10 @@ is_nearly_collinear (v1, v2, deviation)
 
 #### is_coplanar [^][contents]
 [is_coplanar]: #is_coplanar-
-Returns `true` if the 3 spanned vectors in 3D space are coplanar.
+Returns `true` if the 3 spanned vectors in 3D space are coplanar.  
 This means they are in the same plane.
+
+_Arguments:_
 ```OpenSCAD
 is_coplanar (v1, v2, v3)
 ```
@@ -259,6 +287,8 @@ is_coplanar (v1, v2, v3)
 #### is_nearly_coplanar [^][contents]
 [is_nearly_coplanar]: #is_nearly_coplanar-
 Returns `true` if the 3 spanned vectors in 3D space are nearly coplanar.
+
+_Arguments:_
 ```OpenSCAD
 is_nearly_coplanar (v1, v2, v3, deviation)
 ```
@@ -271,7 +301,9 @@ is_nearly_coplanar (v1, v2, v3, deviation)
 
 #### reverse_norm [^][contents]
 [reverse_norm]: #reverse_norm-
-Invert the euclidean norm
+Invert the euclidean norm.
+
+_Arguments:_
 ```OpenSCAD
 reverse_norm (n, v)
 ```
@@ -292,6 +324,8 @@ echo( reverse_norm (13, [12,4]  ) ); // 3
 #### norm_sqr [^][contents]
 [norm_sqr]: #norm_sqr-
 Returns the squared euclidean norm of a vector.
+
+_Arguments:_
 ```OpenSCAD
 norm_sqr (v)
 ```
@@ -299,6 +333,8 @@ norm_sqr (v)
 #### max_norm [^][contents]
 [max_norm]: #max_norm-
 Returns the maximum possible space diagonal of all vectors in a list.
+
+_Arguments:_
 ```OpenSCAD
 max_norm (list)
 ```
@@ -306,6 +342,8 @@ max_norm (list)
 #### max_norm_sqr [^][contents]
 [max_norm_sqr]: #max_norm_sqr-
 Returns the maximum possible squared space diagonal of all vectors in a list.
+
+_Arguments:_
 ```OpenSCAD
 max_norm_sqr (list)
 ```

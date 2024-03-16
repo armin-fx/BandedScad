@@ -2,15 +2,15 @@ Draft objects as data list - Generate matrix
 ============================================
 
 ### defined in file
-`banded/draft.scad`\
-` `| \
-` `+--> `banded/draft_matrix.scad`\
-` `| . . . . +--> `banded/draft_matrix_basic.scad`\
-` `| . . . . +--> `banded/draft_matrix_common.scad`\
-` `. . .
+`banded/draft.scad`  
+` `|  
+` `+--> `banded/draft_matrix.scad`  
+` `| . . . . +--> `banded/draft_matrix_basic.scad`  
+` `| . . . . +--> `banded/draft_matrix_common.scad`  
+` `. . .  
 
-[<-- file overview](file_overview.md)\
-[<-- table of contents](contents.md)
+[<-- file overview](file_overview.md)  
+[<-- table of contents](contents.md)  
 
 ### Contents
 [contents]: #contents "Up to Contents"
@@ -37,7 +37,7 @@ Draft objects as data list - Generate matrix
 
 Generate matrices [^][contents]
 -------------------------------
-Returns matrices for use with `multmatrix()`.
+Returns matrices for use with `multmatrix()`.  
 These can linked with matrix multiplication.
 ```OpenSCAD
 multmatrix( matrix_translate() * matrix_rotate() * matrix_scale() )
@@ -47,13 +47,13 @@ multmatrix( matrix_translate() * matrix_rotate() * matrix_scale() )
 translate() rotate() scale()
     object();
 ```
-The functions of OpenSCAD modules for transformation are reproduced.\
+The functions of OpenSCAD modules for transformation are reproduced.  
 [=> Wikipedia - Transformation matrix](https://en.wikipedia.org/wiki/Transformation_matrix)
 
 #### Parameter `short`, size of the matrix [^][contents]
 [short]: #parameter-short-size-of-the-matrix-
 
-Some functions can generate a "short" matrix.\
+Some functions can generate a "short" matrix.  
 They have the same n×n size like a n-dimensional point and
 can directly multiplicated in OpenSCAD to get the transformed point.
 E.g. `matrix * point`
@@ -71,7 +71,7 @@ You can _not_:
 
 If you want to mix with translate transformation,
 you must use the default matrix with size n+1.
-Matrices with different size can not mixed.\
+Matrices with different size can not mixed.  
 The size of a short n×n matrix can pushed up to default size n+1 with:
 ```OpenSCAD
 m = repair_matrix (m_short, n + 1);
@@ -80,18 +80,28 @@ m = repair_matrix (m_short, n + 1);
 
 ### Basic functions to generate a matrix [^][contents]
 
-#### `matrix_translate (v, d)` [^][contents]
-[matrix_translate]: #matrix_translate-v-d-
-Generate a matrix to translate along a vector `v`.
+#### matrix_translate [^][contents]
+[matrix_translate]: #matrix_translate-
+Generate a matrix to translate along a vector.
+
+_Arguments:_
+```OpenSCAD
+matrix_translate (v, d)
+```
 - `v` - vector
 - `d`
   - dimensions of vector which will transformed with matrix
     - `3` - spatial (3D) - default, result is a 4×4 matrix
     - `2` - flat (2D), result is a 3×3 matrix
 
-#### `matrix_rotate (a, v, backwards, d, short)` [^][contents]
-[matrix_rotate]: #matrix_rotate-a-v-backwards-d-short-
+#### matrix_rotate [^][contents]
+[matrix_rotate]: #matrix_rotate-
 Generate a matrix to rotate.
+
+_Arguments:_
+```OpenSCAD
+matrix_rotate (a, v, backwards, d, short)
+```
 - `a` - angle parameter
   - as number: angle to rotate in degrees around an axis, defined in vector `v`
   - as list of 3 angles around a fixed axis `[X,Y,Z]`:
@@ -109,9 +119,14 @@ Generate a matrix to rotate.
   - `false` = default, size of matrix = `d` + 1
   - `true`  = short d×d matrix
 
-#### `matrix_mirror (v, d, short)` [^][contents]
-[matrix_mirror]: #matrix_mirror-v-d-short-
-Generate a matrix to mirror at origin along a vector `v`.
+#### matrix_mirror [^][contents]
+[matrix_mirror]: #matrix_mirror-
+Generate a matrix to mirror at origin along a vector.
+
+_Arguments:_
+```OpenSCAD
+matrix_mirror (v, d, short)`
+```
 - `v` - mirror along this direction, default = X axis
 - `d`
   - dimensions of vector which will transformed with matrix
@@ -121,9 +136,14 @@ Generate a matrix to mirror at origin along a vector `v`.
   - `false` = default, size of matrix = `d` + 1
   - `true`  = short d×d matrix
 
-#### `matrix_scale (v, d, short)` [^][contents]
-[matrix_scale]: #matrix_scale-v-d-short-
-Generate a matrix to scale to a given axis in vector `v`.
+#### matrix_scale [^][contents]
+[matrix_scale]: #matrix_scale-
+Generate a matrix to scale to a given axis in vector.
+
+_Arguments:_
+```OpenSCAD
+matrix_scale (v, d, short)
+```
 - `v` - vector with scale factor for each axis
 - `d`
   - dimensions of vector which will transformed with matrix
@@ -133,10 +153,15 @@ Generate a matrix to scale to a given axis in vector `v`.
   - `false` = default, size of matrix = `d` + 1
   - `true`  = short d×d matrix
 
-#### `matrix_projection (v, d, short)` [^][contents]
-[matrix_projection]: #matrix_projection-v-d-short-
+#### matrix_projection [^][contents]
+[matrix_projection]: #matrix_projection-
 Generate a matrix to get a projection on a plane (3D) or on a line (2D)
 which crosses origin.
+
+_Arguments:_
+```OpenSCAD
+matrix_projection (v, d, short)
+```
 - `v` - normal vector of the plane (3D) or the line (2D)
   - 2D-default = X-axis
   - 3D-default = Z-axis
@@ -151,9 +176,14 @@ which crosses origin.
 
 ### More functions to generate a matrix [^][contents]
 
-#### `matrix_rotate_backwards (a, v, d, short)` [^][contents]
-[matrix_rotate_backwards]: #matrix_rotate_backwards-a-v-d-short-
+#### matrix_rotate_backwards [^][contents]
+[matrix_rotate_backwards]: #matrix_rotate_backwards-
 Generate a matrix to rotate backwards.
+
+_Arguments:_
+```OpenSCAD
+matrix_rotate_backwards (a, v, d, short)
+```
 - `a` - angle
 - `v` - vector where it rotating around
 - `d`
@@ -164,9 +194,14 @@ Generate a matrix to rotate backwards.
   - `false` = default, size of matrix = `d` + 1
   - `true`  = short d×d matrix
 
-#### `matrix_rotate_at (a, p, v, backwards, d)` [^][contents]
-[matrix_rotate_at]: #matrix_rotate_at-a-p-v-backwards-d-
-Generate a matrix to rotate at position `p`.
+#### matrix_rotate_at [^][contents]
+[matrix_rotate_at]: #matrix_rotate_at-
+Generate a matrix to rotate at specific origin position.
+
+_Arguments:_
+```OpenSCAD
+matrix_rotate_at (a, p, v, backwards, d)
+```
 - `a` - angle
 - `v` - vector where it rotates around
 - `p` - origin position at where it rotates
@@ -178,9 +213,14 @@ Generate a matrix to rotate at position `p`.
   - `false` - default, normal forward rotate
   - `true`  - rotate backwards, undo forward rotate
 
-#### `matrix_rotate_to_vector (v, a, backwards, d, short)` [^][contents]
-[matrix_rotate_to_vector]: #matrix_rotate_to_vector-v-a-backwards-d-short-
-Generate a matrix to rotate from direction Z axis to direction at vector `v`.
+#### matrix_rotate_to_vector [^][contents]
+[matrix_rotate_to_vector]: #matrix_rotate_to_vector-
+Generate a matrix to rotate from direction Z axis to direction as vector.
+
+_Arguments:_
+```OpenSCAD
+matrix_rotate_to_vector (v, a, backwards, d, short)
+```
 - `v` - direction as vector
 - `a`
   - angle in degree
@@ -210,12 +250,17 @@ procedure 2 (3D), `a` as orientation vector:
 - make rotation around vector `v`, so that the originally X axis point to
   orientation vector `a`
 
-#### `matrix_rotate_to_vector_at (v, p, a, backwards, d)` [^][contents]
-[matrix_rotate_to_vector_at]: #matrix_rotate_to_vector_at-v-p-a-backwards-
-Generate a matrix to rotate from direction Z axis to direction at vector `v`.
-Rotate origin at vector `p`.
-- `v` - vector where it rotates around
-- `p` - direction as vector
+#### matrix_rotate_to_vector_at [^][contents]
+[matrix_rotate_to_vector_at]: #matrix_rotate_to_vector_at-
+Generate a matrix to rotate from direction Z axis to direction as vector.  
+Rotate at a specific origin position.
+
+_Arguments:_
+```OpenSCAD
+matrix_rotate_to_vector_at (v, p, a, backwards, d)
+```
+- `v` - direction as vector
+- `p` - origin position at where it rotates
 - `a` - angle in degree or rotational orientation vector
 - `backwards`
   - `false` - default, normal forward rotate
@@ -225,9 +270,14 @@ Rotate origin at vector `p`.
     - `3` - spatial (3D) - default
     - `2` - flat (2D)
 
-#### `matrix_mirror_at (v, p, d)` [^][contents]
-[matrix_mirror_at]: #matrix_mirror_at-v-p-d-
-Generate a matrix to mirror along a vector `v` at origin position `p`.
+#### matrix_mirror_at [^][contents]
+[matrix_mirror_at]: #matrix_mirror_at-
+Generate a matrix to mirror along a vector at specific origin position.
+
+_Arguments:_
+```OpenSCAD
+matrix_mirror_at (v, p, d)
+```
 - `v` - mirror along this direction, default = X axis
 - `p` - origin position at where it mirrors
 - `d`
@@ -235,11 +285,16 @@ Generate a matrix to mirror along a vector `v` at origin position `p`.
     - `3` - spatial (3D) - default
     - `2` - flat (2D)
 
-#### `matrix_skew (v, t, m, a, d, short)` [^][contents]
-[matrix_skew]: #matrix_skew-v-t-m-a-d-short-
-Generate a matrix to skew an object.\
-default for 3D = shear X along Z\
-default for 2D = shear X along Y
+#### matrix_skew [^][contents]
+[matrix_skew]: #matrix_skew-
+Generate a matrix to skew an object.
+- default for 3D = shear X along Z
+- default for 2D = shear X along Y
+
+_Arguments:_
+```OpenSCAD
+matrix_skew (v, t, m, a, d, short)
+```
 - `v` - vector, shear parallel to this axis
   - 3D:
     - as vector
@@ -266,9 +321,14 @@ default for 2D = shear X along Y
   - `false` = default, size of matrix = `d` + 1
   - `true`  = short d×d matrix
 
-#### `matrix_skew_at (v, t, m, a, p, d)` [^][contents]
-[matrix_skew_at]: #matrix_skew_at-v-t-m-a-p-d-
-Generate a matrix to skew an object at position `p`.\
+#### matrix_skew_at [^][contents]
+[matrix_skew_at]: #matrix_skew_at-
+Generate a matrix to skew an object at specific origin position.
+
+_Arguments:_
+```OpenSCAD
+matrix_skew_at (v, t, m, a, p, d)
+```
 see [`matrix_skew()`][matrix_skew]
 - `p` - origin position at where it skews
 
@@ -276,8 +336,8 @@ see [`matrix_skew()`][matrix_skew]
 ### Generate matrix with preset defaults [^][contents]
 
 #### Transform backwards: [^][contents]
-Contains functions that define known functions with operation backwards.\
-Option `backwards` is removed and internally set to `true`.\
+Contains functions that define known functions with operation backwards.  
+Option `backwards` is removed and internally set to `true`.  
 Name convention: 'base operation' + '_backwards' + 'additional operations'
 
 | Base function                                                | operation backwards
@@ -288,8 +348,8 @@ Name convention: 'base operation' + '_backwards' + 'additional operations'
 | [`matrix_rotate_to_vector_at()`][matrix_rotate_to_vector_at] | `matrix_rotate_backwards_to_vector_at (v, p, a)`
 
 #### Transform on a fixed axis: [^][contents]
-Contains functions that define known functions on a fixed axis.\
-Name convention: 'function operation name' + '_axis'\
+Contains functions that define known functions on a fixed axis.  
+Name convention: 'function operation name' + '_axis'  
 Axis = x, y or z. later named as '?'
 
 ##### Basic at fixed axis: [^][contents]

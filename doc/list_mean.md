@@ -6,8 +6,8 @@ Math on lists - mean
 ` `|  
 ` `+--> `banded/list_mean.scad`  
 
-[<-- file overview](file_overview.md)\
-[<-- table of contents](contents.md)
+[<-- file overview](file_overview.md)  
+[<-- table of contents](contents.md)  
 
 ### Contents
 [contents]: #contents "Up to Contents"
@@ -46,7 +46,7 @@ List of mean functions [^][contents]
 Calculates the arithmetic mean (or mean or average) of a list.  
 [=> Wikipedia - Arithmetic mean](https://en.wikipedia.org/wiki/Arithmetic_mean)
 
-_Options:_
+_Arguments:_
 ```OpenSCAD
 mean_arithmetic (list, weight, normalize)
 ```
@@ -65,7 +65,7 @@ echo ( mean_arithmetic (l) ); // echo 5
 Calculates the geometic mean of a list.  
 [=> Wikipedia - Geometric mean](https://en.wikipedia.org/wiki/Geometric_mean)
 
-_Options:_
+_Arguments:_
 ```OpenSCAD
 mean_geometric (list, weight, normalize)
 ```
@@ -81,7 +81,7 @@ echo ( mean_geometric (l) ); // echo 4.68069
 Calculates the harmonic mean of a list.  
 [=> Wikipedia - Harmonic mean](https://en.wikipedia.org/wiki/Harmonic_mean)
 
-_Options:_
+_Arguments:_
 ```OpenSCAD
 mean_harmonic (list, weight, normalize)
 ```
@@ -97,7 +97,7 @@ echo ( mean_harmonic (l) ); // echo 4.40367
 Calculates the root mean square of a list.  
 [=> Wikipedia - Root mean square](https://en.wikipedia.org/wiki/Root_mean_square)
 
-_Options:_
+_Arguments:_
 ```OpenSCAD
 root_mean_square (list, weight, normalize)
 ```
@@ -113,7 +113,7 @@ echo ( root_mean_square (l) ); // echo 5.33854
 Calculates the cubic mean of a list.  
 [=> Wikipedia - Cubic mean](https://en.wikipedia.org/wiki/Cubic_mean)
 
-_Options:_
+_Arguments:_
 ```OpenSCAD
 mean_cubic (list, weight, normalize)
 ```
@@ -129,7 +129,7 @@ echo ( mean_cubic (l) ); // echo 5.66705
 Calculates the generalized mean (or power mean, or Hölder mean) of a list.  
 [=> Wikipedia - Generalized mean](https://en.wikipedia.org/wiki/Generalized_mean)
 
-_Options:_
+_Arguments:_
 ```OpenSCAD
 mean_generalized (p, list, weight, normalize)
 ```
@@ -156,7 +156,7 @@ Other mean functions [^][contents]
 Calculates the median of a list.  
 [=> Wikipedia - Median](https://en.wikipedia.org/wiki/Median)
 
-_Options:_
+_Arguments:_
 ```OpenSCAD
 median (list)
 ```
@@ -166,7 +166,7 @@ median (list)
 Calculates the mid-range or mid-extreme of a list.  
 [=> Wikipedia - Mid-range](https://en.wikipedia.org/wiki/Mid-range)
 
-_Options:_
+_Arguments:_
 ```OpenSCAD
 mid_range (list)
 ```
@@ -179,7 +179,7 @@ Removes outliers from a data list.
 - Leaves always at minimum 1 element if odd size of list or
   at minimum 2 element if even size of list.
 
-_Options:_
+_Arguments:_
 ```OpenSCAD
 truncate_outlier (list, ratio)
 ```
@@ -204,7 +204,7 @@ echo (mean);  // 5
 Removes same elements from the ends like [`truncate_outlier()`][truncate_outlier]
 without previous sorting the list.
 
-_Options:_
+_Arguments:_
 ```OpenSCAD
 truncate (list, ratio)
 ```
@@ -218,7 +218,7 @@ Variance is a measure of dispersion,
 meaning it is a measure of how far a set of numbers is spread out from their average value.  
 [=> Wikipedia - Variance](https://en.wikipedia.org/wiki/Variance)
 
-_Options:_
+_Arguments:_
 ```OpenSCAD
 variance (list, biased, mean)
 ```

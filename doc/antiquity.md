@@ -2,15 +2,15 @@ Antiquity
 =========
 
 ### defined in file
-`antiquity/*`\
-` `|\
-` `+- `compatibility_v2015.scad`\
-` `+- `compatibility_v2015_assert.scad`\
-` `|\
-` `+- `compatibility_v2019.scad`
+`antiquity/*`  
+` `|  
+` `+- `compatibility_v2015.scad`  
+` `+- `compatibility_v2015_assert.scad`  
+` `|  
+` `+- `compatibility_v2019.scad`  
 
-[<-- file overview](file_overview.md)\
-[<-- table of contents](contents.md)
+[<-- file overview](file_overview.md)  
+[<-- table of contents](contents.md)  
 
 ### Contents
 [contents]: #contents "Up to Contents"
@@ -25,7 +25,7 @@ If you want to use some new buildin functions from OpenSCAD in older OpenSCAD ve
 you can include file 'compatibility_???.scad'.
 They emulate the missing functions
 and don't disturb on newer versions if you have forgotten to remove them.
-They are not needed for the library.\
+They are not needed for the library.  
 These are in the folder `antiquity`.
 
 #### For OpenSCAD version 2015.03: [^][contents]

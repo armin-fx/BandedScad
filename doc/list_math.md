@@ -2,15 +2,15 @@ Math on lists
 =============
 
 ### defined in file
-`banded/list.scad`\
-` `| \
-` `+--> `banded/list_algorithm.scad`\
-` `+--> `banded/list_math.scad`\
-` `| \
-` `. . .
+`banded/list.scad`  
+` `|  
+` `+--> `banded/list_algorithm.scad`  
+` `+--> `banded/list_math.scad`  
+` `|   
+` `. . .  
 
-[<-- file overview](file_overview.md)\
-[<-- table of contents](contents.md)
+[<-- file overview](file_overview.md)  
+[<-- table of contents](contents.md)  
 
 ### Contents
 [contents]: #contents "Up to Contents"
@@ -34,54 +34,84 @@ Math on lists
 Algorithm on lists [^][contents]
 ================================
 
-#### `summation (list, n, k)` [^][contents]
-[summation]: #summation-list-n-k-
-Summation of a list.\
+#### summation [^][contents]
+[summation]: #summation-
+Summation of a list.  
 Add all values in a list from position `k` to `n`.
 This function accepts numeric values and vectors in the list.
+
+_Arguments:_
+```OpenSCAD
+summation (list, n, k)
+```
 - `k` - default = `0`, from first element
 - `n` - if undefined, run until the last element
 
-#### `product (list, n, k)` [^][contents]
-[product]: #product-list-n-k-
-Product of a list.\
-Multiply all values in a list from position `k` to `n`
+#### product [^][contents]
+[product]: #product-
+Product of a list.  
+Multiply all values in a list from position `k` to `n`.
+
+_Arguments:_
+```OpenSCAD
+product (list, n, k)
+```
 - `k` - default = `0`, from first element
 - `n` - if undefined, run until the last element
 
-#### `unit_summation (list)` [^][contents]
-[unit_summation]: #unit_summation-list-
-Scale the complete list that the summation of the list equals `1`
+#### unit_summation [^][contents]
+[unit_summation]: #unit_summation-
+Scale the complete list that the summation of the list equals `1`.
 
-#### `unit_product (list)` [^][contents]
-[unit_product]: #unit_product-list-
-Scale the complete list that the product of the list equals `1`
+_Arguments:_
+```OpenSCAD
+unit_summation (list)
+```
 
-#### `polynomial_division (a, b)` [^][contents]
-[polynomial_division]: #polynomial_division-a-b-
-Calculates the polynomial division from a polynomial in a list `a` with `b`.\
+#### unit_product [^][contents]
+[unit_product]: #unit_product-
+Scale the complete list that the product of the list equals `1`.
+
+_Arguments:_
+```OpenSCAD
+unit_product (list)
+```
+
+#### polynomial_division [^][contents]
+[polynomial_division]: #polynomial_division-
+Calculates the polynomial division from a polynomial in a list `a` with `b`.  
 Returns the result polynomial and the remainder polynomial in a list.
 - `[result, remainder]`
 
-The coefficients of the polynomial are stored in a list like:
+_Arguments:_
+```OpenSCAD
+polynomial_division (a, b)
+```
+
+_The coefficients of the polynomial are stored in a list like:_
 - `P(x) = a[0] + a[1]*x + a[2]*x^2 + ... + a[n]*x^n`
 - The index in the list means the coefficient from `x^index`
 
 [Wikipedia -> Polynomial long division](https://en.wikipedia.org/wiki/Polynomial_long_division)
 
-#### `polynomial_division_remainder (a, b)` [^][contents]
-[polynomial_division_remainder]: #polynomial_division_remainder-a-b-
-Calculates the polynomial division from a polynomial in a list `a` with `b`.\
-Returns only the remainder polynomial.\
+#### polynomial_division_remainder [^][contents]
+[polynomial_division_remainder]: #polynomial_division_remainder-
+Calculates the polynomial division from a polynomial in a list `a` with `b`.  
+Returns only the remainder polynomial.  
 The coefficients of the polynomial are stored in a list like:
 - `P(x) = a[0] + a[1]*x + a[2]*x^2 + ... + a[n]*x^n`
 - The index in the list means the coefficient from `x^index`
+
+_Arguments:_
+```OpenSCAD
+polynomial_division_remainder (a, b)
+```
 
 
 Math operation on each list element [^][contents]
 =================================================
 
-Calculates a operation on a list at each position.\
+Calculates a operation on a list at each position.  
 Returns a list with the result.
 - `xxx_each (list)`         - do the operator xxx at each position
 - `xxx_each (list1, list2)` - operator xxx with 2 arguments gets his 2 argument from both lists at the same index
@@ -91,8 +121,8 @@ Returns a list with the result.
 ### Integrated in Openscad [^][contents]
 
 #### Addition / Subtraction: [^][contents]
-`[1,2,3] + [0,4,2]` -> `[1,6,5]`\
-`[6,7,8] - [1,2,3]` -> `[5,5,5]`
+`[1,2,3] + [0,4,2]` -> `[1,6,5]`  
+`[6,7,8] - [1,2,3]` -> `[5,5,5]`  
 
 
 ### Operand with functions from OpenSCAD [^][contents]

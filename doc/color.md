@@ -2,13 +2,13 @@ Color
 =====
 
 ### defined in file
-`banded/draft.scad`\
-` `| \
-` `+--> `banded/draft_color.scad`\
-` `. . .
+`banded/draft.scad`  
+` `|  
+` `+--> `banded/draft_color.scad`  
+` `. . .  
 
-[<-- file overview](file_overview.md)\
-[<-- table of contents](contents.md)
+[<-- file overview](file_overview.md)  
+[<-- table of contents](contents.md)  
 
 ### Contents
 [contents]: #contents "Up to Contents"
@@ -27,7 +27,7 @@ Convert colors [^][contents]
 
 #### get_color [^][contents]
 [get_color]: #get_color-
-Return the color as rgb or rgba list from different color arguments.\
+Return the color as rgb or rgba list from different color arguments.  
 The color argument is the same like OpenSCAD module `color()`
 ```OpenSCAD
 get_color (c, alpha, default)
@@ -36,7 +36,7 @@ get_color (c, alpha, default)
 - `alpha`   - optional, alpha value - transparent to opaque: `0...1`, default = `1`.
 - `default` - optional, default color if `c` is not set, default = not set
 
-Color arguments:
+_Color arguments:_
 - color name as string
   - The color names are taken from the
     World Wide Web consortium's [SVG color list](https://www.w3.org/TR/css-color-3/).
@@ -56,13 +56,14 @@ Color arguments:
     - `"#rrggbb"`
     - `"#rrggbbaa"`
 
-Return list `[r, g, b, alpha]`:
-- `r` = red:   `0...1`
-- `g` = green: `0...1`
-- `b` = blue:  `0...1`
-- `alpha` = transparent to opaque: `0...1`, default = `1`
+_Return list:_
+- `[r, g, b, alpha]`
+  - `r` = red:   `0...1`
+  - `g` = green: `0...1`
+  - `b` = blue:  `0...1`
+  - `alpha` = transparent to opaque: `0...1`, default = `1`
 
-Additional defined colors:
+_Additional defined colors:_
 - metal:
   - `"aluminium"`
   - `"brass"`
@@ -81,6 +82,8 @@ Additional defined colors:
 #### color_hsv_to_rgb [^][contents]
 [color_hsv_to_rgb]: #color_hsv_to_rgb-
 Transform color from hsv model to rgb model.
+
+_Arguments:_
 ```OpenSCAD
 color_hsv_to_rgb (hsv, alpha)
 ```
@@ -97,6 +100,8 @@ color_hsv_to_rgb (hsv, alpha)
 #### color_rgb_to_hsv [^][contents]
 [color_rgb_to_hsv]: #color_rgb_to_hsv-
 Transform color from rgb model to hsv model.
+
+_Arguments:_
 ```OpenSCAD
 color_rgb_to_hsv (rgb, alpha)
 ```
@@ -113,6 +118,8 @@ color_rgb_to_hsv (rgb, alpha)
 #### color_list_to_hex [^][contents]
 [color_list_to_hex]: #color_list_to_hex-
 Convert a rgb color list to a hex value string.
+
+_Arguments:_
 ```OpenSCAD
 color_list_to_hex (rgb, alpha)
 ```
@@ -125,9 +132,13 @@ color_list_to_hex (rgb, alpha)
 #### color_hex_to_list [^][contents]
 [color_hex_to_list]: #color_hex_to_list-
 Convert a hex color string to a rgb color list.
+
+_Arguments:_
 ```OpenSCAD
 color_hex_to_list (hex, alpha)
 ```
+
+_Description:_
 It can be used the same hex values like for OpenSCAD module `color()`.
 - optional alpha value - transparent to opaque: `0...1`, default = `1`
 - Every hex string begin with a `#`
@@ -146,8 +157,11 @@ Hex string formats:
 
 #### color_name [^][contents]
 [color_name]: #color_name-
-Return the name of color to rgb value as list.\
+Return the name of color to rgb value as list.  
 The color names are taken from the World Wide Web consortium's SVG color list.
+Contains additional defined colors, see [`get_color()`][get_color].
+
+_Arguments:_
 ```OpenSCAD
 color_name (name, alpha)
 ```
@@ -156,6 +170,8 @@ color_name (name, alpha)
 #### color_brightness [^][contents]
 [color_brightness]: #color_brightness-
 Return the brightness of a color from rgb list.
+
+_Arguments:_
 ```OpenSCAD
 color_brightness (rgb, gamma)
 ```

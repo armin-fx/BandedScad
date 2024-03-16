@@ -2,13 +2,13 @@ Math with Functions
 ===================
 
 ### defined in file
-`banded/math.scad`\
-` `| \
-` `+--> ...\
-` `+--> `banded/math_function.scad`
+`banded/math.scad`  
+` `|  
+` `+--> ...  
+` `+--> `banded/math_function.scad`  
 
-[<-- file overview](file_overview.md)\
-[<-- table of contents](contents.md)
+[<-- file overview](file_overview.md)  
+[<-- table of contents](contents.md)  
 
 [<-- Math functions](math.md)
 
@@ -40,9 +40,11 @@ This needs 1 or 2 arguments depending on the function.
 
 #### summation_fn [^][contents]
 [summation_fn]: #summation_fn-
-Calculate the summation on function `fn()`.\
+Calculate the summation on function `fn()`.  
 Call a function by 1 ascending sequence of numbers from `k` to `n`
 and add every result of this.
+
+_Arguments:_
 ```OpenSCAD
 summation_fn (fn, n, k)
 ```
@@ -62,9 +64,11 @@ echo( summation_fn( function (n) n*n, 4) );
 
 #### summation_auto_fn [^][contents]
 [summation_auto_fn]: #summation_auto_fn-
-Calculate the summation on function `fn()`.\
+Calculate the summation on function `fn()`.  
 Call a function by 1 ascending sequence of numbers from `k`
 and add every result of this until the result has no changes.
+
+_Arguments:_
 ```OpenSCAD
 summation_auto_fn (fn, k)
 ```
@@ -90,9 +94,11 @@ echo( summation_auto_fn( function (n) pow(1/2, n) ) );
 
 #### product_fn [^][contents]
 [product_fn]: #product_fn-fn-n-k-
-Calculate the product on function `fn()`.\
+Calculate the product on function `fn()`.  
 Call a function by 1 ascending sequence of numbers from `k` to `n`
 and multiply every result of this.
+
+_Arguments:_
 ```OpenSCAD
 product_fn (fn, n, k)
 ```
@@ -113,9 +119,11 @@ echo( product_fn ( function(n) n*n, 4, 1) );
 
 #### taylor [^][contents]
 [taylor]: #taylor-
-Calculate the taylor series with value `x`.\
+Calculate the taylor series with value `x`.  
 Call a function `fn()` to calculate every term with value `x`
 by ascending sequence of numbers from `k` to `n`.
+
+_Arguments:_
 ```OpenSCAD
 taylor (fn, x, n, k, step)
 ```
@@ -146,10 +154,12 @@ echo( taylor ( sin_term, val, n=10) );
 
 #### taylor_auto [^][contents]
 [taylor_auto]: #taylor_auto-
-Calculate the taylor series with value `x`.\
+Calculate the taylor series with value `x`.  
 Call a function `fn()` to calculate every term with value `x`
 by ascending sequence of numbers from `k` up
 until the result has no changes.
+
+_Arguments:_
 ```OpenSCAD
 taylor_auto (fn, x, n, k, step)
 ```
@@ -183,6 +193,8 @@ Approximate infinitesimal calculus [^][contents]
 #### integrate [^][contents]
 [integrate]: #integrate-
 Approximate an integral of a function `fn` with value range from `begin` to `end`.
+
+_Arguments:_
 ```OpenSCAD
 integrate (fn, begin, end, constant, delta)
 ```
@@ -211,6 +223,8 @@ echo( FN (val) );
 #### derivation [^][contents]
 [derivation]: #derivation-
 Approximate the derivative of a function `fn` on `value`.
+
+_Arguments:_
 ```OpenSCAD
 derivation (fn, value, delta)
 ```
@@ -261,12 +275,14 @@ The following root-finding algorithm find zeros of functions.
 
 #### zero_regula_falsi [^][contents]
 [zero_regula_falsi]: #zero_regula_falsi-
-Find zero of a function with method regula falsi.\
+Find zero of a function with method regula falsi.  
 This will get the next value by connect the 2 points `[a, fn(a)]` and `[b, fn(b)]` with a line.
 The point of the line which cross zero will used as next end-point
 together with the one of the last end-points which has the other sign.
 The next point is always between `a` and `b`.
 And then it will repeat the procedure.
+
+_Arguments:_
 ```OpenSCAD
 zero_regula_falsi (fn, a, b, m, deviation, iteration)
 ```
@@ -302,13 +318,15 @@ Spezialized functions with fixed modified algorithm:
 
 #### zero_regula_falsi_parabola [^][contents]
 [zero_regula_falsi_parabola]: #zero_regula_falsi_parabola-
-Find zero of a function with method regula falsi.\
+Find zero of a function with method regula falsi.  
 This get a third point half between `a` and `b` and calculate the
 zero of a parabola, which fits to all 3 points.
 This position is set as next end-point
 together with the one of the last end-points which has the other sign.
 The next point is always between `a` and `b`.
 And then it will repeat the procedure.
+
+_Arguments:_
 ```OpenSCAD
 zero_regula_falsi_parabola (fn, a, b, deviation, iteration)
 ```
@@ -318,11 +336,13 @@ zero_regula_falsi_parabola (fn, a, b, deviation, iteration)
 
 #### zero_bisection [^][contents]
 [zero_bisection]: #zero_bisection-
-Find zero of a function with bisection method.\
+Find zero of a function with bisection method.  
 This set the next end-point half between `a` and `b`.
 The next point is always between `a` and `b`.
 This new point will used together with the one of the last end-points which has the other sign.
 And then it will repeat the procedure.
+
+_Arguments:_
 ```OpenSCAD
 zero_bisection (fn, a, b, deviation, iteration)
 ```
@@ -334,13 +354,15 @@ zero_bisection (fn, a, b, deviation, iteration)
 
 #### zero_secant [^][contents]
 [zero_secant]: #zero_secant-
-Find zero of a function with secant method.\
+Find zero of a function with secant method.  
 This will get the next value by connect the 2 points `a` and `b` with a line.
 The point of the line which cross zero will used as next point
 together with the last point.
 And then it will repeat the procedure.
 The next point must not be between `a` and `b`.
 Both points must not have a different sign.
+
+_Arguments:_
 ```OpenSCAD
 zero_secant (fn, a, b, deviation, iteration)
 ```
@@ -351,10 +373,12 @@ zero_secant (fn, a, b, deviation, iteration)
 
 #### zero_newton [^][contents]
 [zero_newton]: #zero_newton-
-Find zero of a function with Newton's method.\
+Find zero of a function with Newton's method.  
 This needs the first derivation of function `fn`.
 This method will calculate the tangent line on point `x`.
 The point of the line which cross zero will used as next point.
+
+_Arguments:_
 ```OpenSCAD
 zero_newton (fn, fn_d, x, deviation, iteration)
 ```
@@ -367,19 +391,23 @@ zero_newton (fn, fn_d, x, deviation, iteration)
 
 #### zero_newton_auto [^][contents]
 [zero_newton_auto]: #zero_newton_auto-
-Find zero of a function with Newton's method.\
+Find zero of a function with Newton's method.  
 Specialized version of [`zero_newton()`][zero_newton]
 where the first derivation of `fn` will calculated with function `derivation (fn)`.
+
+_Arguments:_
 ```OpenSCAD
 zero_newton_auto (fn, x, deviation, iteration)
 ```
 
 #### zero_halley [^][contents]
 [zero_halley]: #zero_halley-
-Find zero of a function with Halleys's method.\
+Find zero of a function with Halleys's method.  
 This needs the first and the second derivation of function `fn`.
 This method is motivated by unbend the function `fn` around position `x`
 with: `g(x) = fn(x) / sqrt(abs(fn_d(x)))`.
+
+_Arguments:_
 ```OpenSCAD
 zero_halley (fn, fn_d, fn_dd, x, deviation, iteration)
 ```
@@ -395,10 +423,12 @@ zero_halley (fn, fn_d, fn_dd, x, deviation, iteration)
 
 #### zero_halley_auto [^][contents]
 [zero_halley_auto]: #zero_halley_auto-
-Find zero of a function with Halleys's method.\
+Find zero of a function with Halleys's method.  
 Specialized version of [`zero_halley()`][zero_halley]
 where the first derivation of `fn` will calculated with function `derivation (fn)`
 and second derivation of `fn` will calculated with function `derivation (fn_d)`.
+
+_Arguments:_
 ```OpenSCAD
 zero_halley_auto (fn, x, deviation, iteration)
 ```
@@ -406,6 +436,8 @@ zero_halley_auto (fn, x, deviation, iteration)
 #### zero_euler_tschebyschow [^][contents]
 [zero_euler_tschebyschow]: #zero_euler_tschebyschow-
 Find zero of a function with Euler-Tschebyschow's method.
+
+_Arguments:_
 ```OpenSCAD
 zero_euler_tschebyschow (fn, fn_d, fn_dd, x, deviation, iteration)
 ```
@@ -421,10 +453,12 @@ zero_euler_tschebyschow (fn, fn_d, fn_dd, x, deviation, iteration)
 
 #### zero_euler_tschebyschow_auto [^][contents]
 [zero_euler_tschebyschow_auto]: #zero_euler_tschebyschow_auto-
-Find zero of a function with Euler-Tschebyschow's method.\
+Find zero of a function with Euler-Tschebyschow's method.  
 Specialized version of [`zero_euler_tschebyschow()`][zero_euler_tschebyschow]
 where the first derivation of `fn` will calculated with function `derivation (fn)`
 and second derivation of `fn` will calculated with function `derivation (fn_d)`.
+
+_Arguments:_
 ```OpenSCAD
 zero_euler_tschebyschow_auto (fn, x, deviation, iteration)
 ```

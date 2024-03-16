@@ -2,17 +2,17 @@ Draft objects as data list - Primitives
 =======================================
 
 ### defined in file
-`banded/draft.scad`\
-` `| \
-` `+--> `banded/draft_primitives.scad`\
-` `| . . . . +--> `banded/draft_primitives_basic.scad`\
-` `| . . . . +--> `banded/draft_primitives_figure.scad`\
-` `| . . . . +--> `banded/draft_primitives_transform.scad`\
-` `| . . . . +--> `banded/draft_primitives_operator.scad`\
-` `. . .
+`banded/draft.scad`  
+` `|  
+` `+--> `banded/draft_primitives.scad`  
+` `| . . . . +--> `banded/draft_primitives_basic.scad`  
+` `| . . . . +--> `banded/draft_primitives_figure.scad`  
+` `| . . . . +--> `banded/draft_primitives_transform.scad`  
+` `| . . . . +--> `banded/draft_primitives_operator.scad`  
+` `. . .  
 
-[<-- file overview](file_overview.md)\
-[<-- table of contents](contents.md)
+[<-- file overview](file_overview.md)  
+[<-- table of contents](contents.md)  
 
 ### Contents
 [contents]: #contents "Up to Contents"
@@ -42,9 +42,9 @@ like OpenSCAD modules.
 
 #### List convention: [^][contents]
 Default:
-- as points-path-list\
+- as points-path-list  
   `[  points,              [path, path2, ...], color ]`
-- as traces list\
+- as traces list  
   `[ [trace, trace2, ...], undef,              color ]`
 
 Other:
@@ -97,17 +97,21 @@ build(c);
 
 #### build [^][contents]
 [build]: #build-
-Create a real object from object in list.\
+Create a real object from object in list.  
 The object can be in 2D or 3D.
 It will send to `polygon()` or `polyhedron()` and become the defined color.
+
+_Arguments:_
 ```OpenSCAD
 build (object, convexity)
 ```
 
 #### text [^][contents]
 [text]: #text-
-Create a text as 2D object.\
+Create a text as 2D object.  
 It can only use fonts created as data object in `*.scad` files.
+
+_Arguments:_
 ```OpenSCAD
 text (text, font)
 ```
@@ -115,17 +119,17 @@ text (text, font)
   - String. The text to generate.
 - `font`
   - font data object of the font that should be used.
-  - String. The name of the font that should be used.\
+  - String. The name of the font that should be used.  
     Fonts are specified by their logical font name;
     in addition a style parameter can be added to select
-    a specific font style like "__bold__" or "_italic_", such as:\
+    a specific font style like "__bold__" or "_italic_", such as:  
     `font="Liberation Sans:style=Bold Italic"`
 - `$fn`
   - used for subdividing the curved path segments provided by freetype
 
-Fonts:
+_Fonts:_
 - _Libbard_ family: _Libbard Sans_, _Libbard Serif_, _Libbard Sans Narrow_, and _Libbard Mono_
-  - It's a clone of the font family _Liberation_.\
+  - It's a clone of the font family _Liberation_.  
     This font is not finished yet, it contains all letters
     `0x20` (Space) to `0xFF`, different spacing between
     different letters is not implemented but planned.
@@ -139,7 +143,7 @@ Fonts:
     Elsewise a message will shown with include details.
   - You can write the name "Liberation", this will be renamed to "Libbard"
     for compatibility reason with buildin module `text()`
-  - The font files are divided into families.\
+  - The font files are divided into families.  
     You can load the whole _Libbard_ family with:
     ```OpenSCAD
     include <banded/fonts/libbard.scad>
@@ -174,10 +178,11 @@ Fonts:
 
 
 ### Edit objects based on OpenSCAD buildin modules [^][contents]
-Argument convention:
+
+_Argument convention:_
 - `transform_function (object, transform_arguments)`
 
-Implemented functions:
+_Implemented functions:_
 - `translate (object, v)`
 - `rotate    (object, a, v, backwards)`
 - `mirror    (object, v)`
@@ -190,7 +195,7 @@ Implemented functions:
 - [`linear_extrude (object, height, center, twist, slices, scale)`][linear_extrude]
 - [`rotate_extrude (object, angle, slices)`][rotate_extrude]
 
-Not yet implemented:
+_Not yet implemented:_
 - `union()`
 - `difference()`
 - `intersection()`
@@ -199,9 +204,11 @@ Not yet implemented:
 
 #### linear_extrude [^][contents]
 [linear_extrude]: #linear_extrude-
-Extrudes a 2D object in a list to a 3D solid object.\
-Uses the same arguments like buildin module `linear_extrude()` in OpenSCAD.\
+Extrudes a 2D object in a list to a 3D solid object.  
+Uses the same arguments like buildin module `linear_extrude()` in OpenSCAD.  
 Returns a list with object data.
+
+_Arguments:_
 ```OpenSCAD
 linear_extrude (object, height, center, twist, slices, scale)
 ```
@@ -212,9 +219,11 @@ linear_extrude (object, height, center, twist, slices, scale)
 #### rotate_extrude [^][contents]
 [rotate_extrude]: #rotate_extrude-
 Rotational extrudes a 2D hull as trace in a point list
-around the Z axis to a 3D solid object.\
-Uses the same arguments like `rotate_extrude()` in OpenSCAD.\
+around the Z axis to a 3D solid object.  
+Uses the same arguments like `rotate_extrude()` in OpenSCAD.  
 Returns a list with object data.
+
+_Arguments:_
 ```OpenSCAD
 rotate_extrude (object, angle, slices)
 ```
@@ -239,10 +248,10 @@ _Modified version:_
 
 All modules from file
 [`operator_transform.scad`](operator.md#transform-operator- "Transform operator for affine transformations")
-as function.
+as function.  
 In file `draft_primitives_transform.scad`.
 
-Implemented:
+_Implemented:_
 - `rotate_backwards    (object, a, v)`
 - `rotate_at           (object, a, p, v, backwards)`
 - `rotate_to_vector    (object, v, a, backwards, d)`
@@ -251,7 +260,7 @@ Implemented:
 - `skew    (object, v, t, m, a, d)`
 - `skew_at (object, v, t, m, a, p, d)`
 
-Implemented, but needs rework:
+_Implemented, but needs rework:_
 - `mirror_copy        (object, v)`
 - `mirror_copy_at     (object, v, p)`
 - `mirror_repeat      (object, v, v2, v3)`
@@ -259,8 +268,10 @@ Implemented, but needs rework:
 
 #### helix_extrude [^][contents]
 [helix_extrude]: #helix_extrude-
-Creates a helix with a 2D hull as trace similar rotate_extrude.\
+Creates a helix with a 2D hull as trace similar rotate_extrude.  
 Returns a list with object data.
+
+_Arguments:_
 ```OpenSCAD
 helix_extrude (object, angle, rotations, pitch, height, r, opposite, orientation, slices)
 ```

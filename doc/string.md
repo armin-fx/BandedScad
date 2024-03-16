@@ -2,15 +2,15 @@ Functions for editing strings
 =============================
 
 ### defined in file
-`banded/string.scad`\
-` `| \
-` `+--> `banded/string_convert.scad`\
-` `+--> `banded/string_character.scad`\
-` `+--> `banded/string_edit.scad`\
-` `+--> `banded/string_format.scad`
+`banded/string.scad`  
+` `|  
+` `+--> `banded/string_convert.scad`  
+` `+--> `banded/string_character.scad`  
+` `+--> `banded/string_edit.scad`  
+` `+--> `banded/string_format.scad`  
 
-[<-- file overview](file_overview.md)\
-[<-- table of contents](contents.md)
+[<-- file overview](file_overview.md)  
+[<-- table of contents](contents.md)  
 
 ### Contents
 [contents]: #contents "Up to Contents"
@@ -51,17 +51,32 @@ Functions for editing strings
 Convert strings [^][contents]
 -----------------------------
 
-#### `to_lower_str (txt)` [^][contents]
-[to_lower_str]: #to_lower_str-txt-
-Replace every uppercase letter in text `txt` to lowercase letter
+#### to_lower_str [^][contents]
+[to_lower_str]: #to_lower_str-
+Replace every uppercase letter in text `txt` to lowercase letter.
 
-#### `to_upper_str (txt)` [^][contents]
-[to_upper_str]: #to_upper_str-txt-
-Replace every lowercase letter in text `txt` to uppercase letter
+_Arguments:_
+```OpenSCAD
+to_lower_str (txt)
+```
 
-#### `value_to_hex (value, size, upper)` [^][contents]
-[value_to_hex]: #value_to_hex-value-size-upper-
-Turn a positive integer to a hexadecimal string
+#### to_upper_str [^][contents]
+[to_upper_str]: #to_upper_str-
+Replace every lowercase letter in text `txt` to uppercase letter.
+
+_Arguments:_
+```OpenSCAD
+to_upper_str (txt)
+```
+
+#### value_to_hex [^][contents]
+[value_to_hex]: #value_to_hex-
+Turn a positive integer to a hexadecimal string.
+
+_Arguments:_
+```OpenSCAD
+value_to_hex (value, size, upper)
+```
 - `size`
   - set the minimum size of hex string, filled with `0`
   - default = 1 letter
@@ -69,10 +84,14 @@ Turn a positive integer to a hexadecimal string
   - `true`  - return string in uppercase letters
   - `false` - return string in lowercase letters, default
 
-#### `hex_to_value (txt, pos, size, error)` [^][contents]
-[hex_to_value]: #hex_to_value-txt-pos-size-error-
-Turn a hexadecimal string to an integer\
-optional arguments:
+#### hex_to_value [^][contents]
+[hex_to_value]: #hex_to_value-
+Turn a hexadecimal string to an integer.
+
+_Arguments:_
+```OpenSCAD
+hex_to_value (txt, pos, size, error)
+```
 - `pos`
   - begin position of hex string
   - default = `0`
@@ -82,10 +101,14 @@ optional arguments:
 - `error` - return this value if string is no hex value
   - default = `undef`
 
-#### `hex_letter_to_value (txt, pos, error)` [^][contents]
-[hex_letter_to_value]: #hex_letter_to_value-txt-pos-error-
-Turn a hexadecimal letter at position `pos` to an integer\
-optional arguments:
+#### hex_letter_to_value [^][contents]
+[hex_letter_to_value]: #hex_letter_to_value-
+Turn a hexadecimal letter at position `pos` to an integer.
+
+_Arguments:_
+```OpenSCAD
+hex_letter_to_value (txt, pos, error)
+```
 - `pos`
   - position of hex letter
   - default = `0`
@@ -93,16 +116,26 @@ optional arguments:
   - return this value if string is no hex value
   - default = `undef`
 
-#### `value_to_octal (value, size)` [^][contents]
-[value_to_octal]: #value_to_octal-value-size-
-Turn a positive integer to a octal number string
+#### value_to_octal [^][contents]
+[value_to_octal]: #value_to_octal-
+Turn a positive integer to a octal number string.
+
+_Arguments:_
+```OpenSCAD
+value_to_octal (value, size)
+```
 - `size`
   - set the minimum size of octal string, filled with `0`
   - default = 1 letter
 
-#### `int_to_str (x, sign)` [^][contents]
-[int_to_str]: #int_to_str-x-sign-
+#### int_to_str [^][contents]
+[int_to_str]: #int_to_str-
 Convert an integer to a string.
+
+_Arguments:_
+```OpenSCAD
+int_to_str (x, sign)
+```
 - `x`    - integer value
 - `sign`   - character of positive sign
   - default = empty `""`
@@ -114,9 +147,14 @@ _Specialized function:_
   - no negative values, `x` must be positive
   - `count` - maximum number of letters, default = `308`
 
-#### `str_to_int (txt, begin)` [^][contents]
-[str_to_int]: #str_to_int-txt-begin-
+#### str_to_int [^][contents]
+[str_to_int]: #str_to_int-
 Convert a string to an integer.
+
+_Arguments:_
+```OpenSCAD
+str_to_int (txt, begin)
+```
 - `begin`
   - optional, position in the string where the number begin
   - default = position `0`
@@ -135,15 +173,18 @@ _Specialized function:_
     - `[ number, position ]`
   - breaks on sign letter like `+` or `-`
 
-#### `float_to_str (x, digits, compress, sign, point, upper)` [^][contents]
-[float_to_str]: #float_to_str-x-digits-compress-sign-point-upper-
-Convert a floating point number to a string.\
-Result like numbers converted with `str()`.\
+#### float_to_str [^][contents]
+[float_to_str]: #float_to_str-
+Convert a floating point number to a string.  
+Result like numbers converted with `str()`.  
 This function will automatically switch between:
 - show as integer part and fraction part
 - show as significand part in normalized form and exponent with base 10
 
-Arguments:
+_Arguments:_
+```OpenSCAD
+float_to_str (x, digits, compress, sign, point, upper)
+```
 - `x`      - floating point value
 - `digits` - count of number letters
   - default = 6 character
@@ -174,9 +215,14 @@ _Specialized function:_
     exponent with base 10
   - `digits` - default = 16 character, machine accuracy
 
-#### `str_to_float (txt, begin)` [^][contents]
-[str_to_float]: #str_to_float-txt-begin-
+#### str_to_float [^][contents]
+[str_to_float]: #str_to_float-
 Convert a string to a floating point number.
+
+_Arguments:_
+```OpenSCAD
+str_to_float (txt, begin)
+```
 - `begin`
   - optional, position in the string where the number begin
   - default = position `0`
@@ -188,13 +234,23 @@ _Specialized function:_
     - `[ number, position ]`
 
 
-#### `str_to_list (txt)` [^][contents]
-[str_to_list]: #str_to_list-txt-
-Put every once letter from a string `txt` into a list
+#### str_to_list [^][contents]
+[str_to_list]: #str_to_list-
+Put every once letter from a string `txt` into a list.
 
-#### `list_to_str (list)` [^][contents]
-[list_to_str]: #list_to_str-list-
-Concat every entry in a `list` to a string
+_Arguments:_
+```OpenSCAD
+str_to_list (txt)
+```
+
+#### list_to_str [^][contents]
+[list_to_str]: #list_to_str-
+Concat every entry in a `list` to a string.
+
+_Arguments:_
+```OpenSCAD
+list_to_str (list)
+```
 
 
 Convert and test letter in strings [^][contents]
@@ -210,50 +266,95 @@ But based on the naming scheme from OpenSCAD.
   - optional, position of letter in string `txt`,
   - default = position `0` = first position
 
-#### `to_lower (txt, pos)` [^][contents]
+#### to_lower [^][contents]
 [to_lower]: #to_lower-txt-pos-
-Replace an uppercase letter to a lowercase letter.\
+Replace an uppercase letter to a lowercase letter.  
 Returns one letter.
 
-#### `to_upper (txt, pos)` [^][contents]
-[to_upper]: #to_upper-txt-pos-
-Replace a lowercase letter to an uppercase letter.\
+_Arguments:_
+```OpenSCAD
+to_lower (txt, pos)
+```
+
+#### to_upper [^][contents]
+[to_upper]: #to_upper-
+Replace a lowercase letter to an uppercase letter.  
 Returns one letter.
 
-#### `is_digit (txt, pos)` [^][contents]
-[is_digit]: #is_digit-txt-pos-
-Check if one character at position `pos` is a numeric value.\
+_Arguments:_
+```OpenSCAD
+to_upper (txt, pos)
+```
+
+#### is_digit [^][contents]
+[is_digit]: #is_digit-
+Check if one character at position `pos` is a numeric value.  
 Returns `true` if the character is a decimal digit
 
-#### `is_alpha (txt, pos)` [^][contents]
-[is_alpha]: #is_alpha-txt-pos-
-Check if one character at position `pos` is alphabetic.\
+_Arguments:_
+```OpenSCAD
+is_digit (txt, pos)
+```
+
+#### is_alpha [^][contents]
+[is_alpha]: #is_alpha-
+Check if one character at position `pos` is alphabetic.  
 Returns `true` if the character is an uppercase or lowercase letter.
 
-#### `is_alnum (txt, pos)` [^][contents]
-[is_alnum]: #is_alnum-txt-pos-
-Check if character is alphanumeric.\
+_Arguments:_
+```OpenSCAD
+is_alpha (txt, pos)
+```
+
+#### is_alnum [^][contents]
+[is_alnum]: #is_alnum-
+Check if character is alphanumeric.  
 Returns `true` if the character is either a decimal digit
 or an uppercase or lowercase letter.
 
-#### `is_xdigit (txt, pos)` [^][contents]
-[is_xdigit]: #is_xdigit-txt-pos-
-Check if character is hexadecimal digit.\
+_Arguments:_
+```OpenSCAD
+is_alnum (txt, pos)
+```
+
+#### is_xdigit [^][contents]
+[is_xdigit]: #is_xdigit-
+Check if character is hexadecimal digit.  
 Hexadecimal digits are any of: 0 1 2 3 4 5 6 7 8 9 a b c d e f A B C D E F
 
-#### `is_lower (txt, pos)` [^][contents]
-[is_lower]: #is_lower-txt-pos-
+_Arguments:_
+```OpenSCAD
+is_xdigit (txt, pos)
+```
+
+#### is_lower [^][contents]
+[is_lower]: #is_lower-
 Check if character is lowercase letter.
 
-#### `is_upper (txt, pos)` [^][contents]
-[is_upper]: #is_upper-txt-pos-
+_Arguments:_
+```OpenSCAD
+is_lower (txt, pos)
+```
+
+#### is_upper [^][contents]
+[is_upper]: #is_upper-
 Check if character is uppercase letter.
 
-#### `is_space (txt, pos)` [^][contents]
-[is_space]: #is_space-txt-pos-
+_Arguments:_
+```OpenSCAD
+is_upper (txt, pos)
+```
+
+#### is_space [^][contents]
+[is_space]: #is_space-
 Check if character is a white-space.
 
-White-space characters are any of:
+_Arguments:_
+```OpenSCAD
+is_space (txt, pos)
+```
+
+_White-space characters are any of:_
 - `" "` 	(0x20)	space (SPC)
 - `"\t"`	(0x09)	horizontal tab (TAB)
 - `"\n"`	(0x0a)	newline (LF)
@@ -263,41 +364,65 @@ White-space characters are any of:
 
 #### `is_blanc (txt, pos)` [^][contents]
 [is_blanc]: #is_blanc-txt-pos-
-Check if character is blanc.\
+Check if character is blanc.  
 Blank characters are the tab character (`"\t"`) and the space character (`" "`)
 
-#### `is_punct (txt, pos)` [^][contents]
-[is_punct]: #is_punct-txt-pos-
-Check if character is a punctuation character.\
+_Arguments:_
+```OpenSCAD
+```
+
+#### is_punct [^][contents]
+[is_punct]: #is_punct-
+Check if character is a punctuation character.  
 Punctuation characters are all graphic characters (as in [`is_graph`][is_graph])
 that are not alphanumeric (as in [`is_alnum`][is_alnum]).
 
-#### `is_cntrl (txt, pos)` [^][contents]
-[is_cntrl]: #is_cntrl-txt-pos-
+_Arguments:_
+```OpenSCAD
+is_punct (txt, pos)
+```
+
+#### is_cntrl [^][contents]
+[is_cntrl]: #is_cntrl-
 Check if character is a control character.
 
 A _control character_ is a character that does not occupy a printing position on a display
-(this is the opposite of a printable character, checked with [`is_print`][is_print]).\
+(this is the opposite of a printable character, checked with [`is_print`][is_print]).  
 For the standard ASCII character set, control characters are those between
 ASCII codes 0x00 (NUL) and 0x1f (US), plus 0x7f (DEL).
 
-#### `is_print (txt, pos)` [^][contents]
-[is_print]: #is_print-txt-pos-
+_Arguments:_
+```OpenSCAD
+is_cntrl (txt, pos)
+```
+
+#### is_print [^][contents]
+[is_print]: #is_print-
 Check if character is printable.
 
 A _printable character_ is a character that occupies a printing position on a display
-(this is the opposite of a control character, checked with [`is_cntrl`][is_cntrl]).\
+(this is the opposite of a control character, checked with [`is_cntrl`][is_cntrl]).  
 For the standard ASCII character set, printing characters are all with an
-ASCII code greater than 0x1f (US), except 0x7f (DEL).\
+ASCII code greater than 0x1f (US), except 0x7f (DEL).  
 [`is_graph`][is_graph] returns `true` for the same cases as `is_print`
 except for the space character (`" "`).
 
-#### `is_graph (txt, pos)` [^][contents]
-[is_graph]: #is_graph-txt-pos-
+_Arguments:_
+```OpenSCAD
+is_print (txt, pos)
+```
+
+#### is_graph [^][contents]
+[is_graph]: #is_graph-
 Check if character has graphical representation.
 
 The characters with graphical representation are all those characters than can be printed
 (as determined by [`is_print`][is_print] except the space character (`" "`).
+
+_Arguments:_
+```OpenSCAD
+is_graph (txt, pos)
+```
 
 
 Edit letter in strings [^][contents]
@@ -494,9 +619,14 @@ Use list functions directly:
 Format strings [^][contents]
 ----------------------------
 
-#### `add_padding_str (txt, pre, size, padding, align)` [^][contents]
-[add_padding_str]: #add_padding_str-txt-pos-
+#### add_padding_str [^][contents]
+[add_padding_str]: #add_padding_str-
 Add padding letters to a string.
+
+_Arguments:_
+```OpenSCAD
+add_padding_str (txt, pre, size, padding, align)
+```
 - `txt` - text to format
 - `pre` - text will prepend on `txt`, position depends on the arguments
 - `size`
@@ -523,23 +653,26 @@ extra arguments `size`, `padding` and `align`:
 - `float_to_str_exp_format   (x, digits, compress, sign, point, upper, size, padding, align)`
   - base on [`float_to_str_exp()`][float_to_str]
 
-#### `print (format, values)` [^][contents]
-[print]: #print-format-values-
-Composes a string by format the text with format specifiers.\
+#### print [^][contents]
+[print]: #print-
+Composes a string by format the text with format specifiers.  
 It's based on the function `sprintf()` from programming language 'C'.
 If string `format` includes ___format specifiers___ (subsequences beginning with `%`),
 the additional arguments following format are formatted and inserted
-in the resulting string replacing their respective specifiers.\
+in the resulting string replacing their respective specifiers.  
 Returns the composed string.
 
-Arguments:
+_Arguments:_
+```OpenSCAD
+print (format, values)
+```
 - `format`
   - string to print into the returned string,
     format specifier will be replaced with the associated value
 - `values`
   - a list with the values in order
 
-A ___format specifier___ follows this prototype:\
+A ___format specifier___ follows this prototype:  
 `%[flags][width][.precision][length]specifier`
 
 Where the ___specifier character___ at the end is the most significant component,
@@ -617,7 +750,7 @@ ___.precision___
     but as an additional integer value argument preceding
     the argument that has to be formatted.
 
-___Example:___
+_Example:_
 ```OpenSCAD
 include <banded.scad>
 
@@ -630,7 +763,7 @@ echo( print ("Floats: %4.2f - %+.0e - %E", [3.1416, 3.1416, 3.1416] ) );
 echo( print ("Width trick: %*d", [5, 10] ) );
 ```
 
-Output:
+_Output:_
 ```
 ECHO: "String, character: Test - A - ☺"
 ECHO: "Decimal: +99 - 42"

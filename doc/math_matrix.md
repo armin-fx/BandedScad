@@ -2,13 +2,13 @@ Matrix and vector operations
 ============================
 
 ### defined in file
-`banded/math.scad`\
-` `| \
-` `+--> ...\
-` `+--> `banded/math_matrix.scad`
+`banded/math.scad`  
+` `|  
+` `+--> ...  
+` `+--> `banded/math_matrix.scad`  
 
-[<-- file overview](file_overview.md)\
-[<-- table of contents](contents.md)
+[<-- file overview](file_overview.md)  
+[<-- table of contents](contents.md)  
 
 [<-- Math functions](math.md)
 
@@ -70,9 +70,9 @@ echo( 2 * a ); // scalar multiplication, result [ [4,6],[6,8] ]
 ### Defined matrix operations [^][contents]
 [matrix_defined]: #defined-matrix-operations-
 
-#### `identity_matrix (n)` [^][contents]
-[identity_matrix]: #identity_matrix-n-
-Generate the identity matrix with size `n` × `n`.\
+#### identity_matrix [^][contents]
+[identity_matrix]: #identity_matrix-
+Generate the identity matrix with size `n` × `n`.  
 The identity matrix of size `n` is the n × n square matrix with ones on the main diagonal and zeros elsewhere.
 ```
 [1 0 0]
@@ -81,24 +81,35 @@ The identity matrix of size `n` is the n × n square matrix with ones on the mai
 ```
 [=> Wikipedia - Identity matrix](https://en.wikipedia.org/wiki/Identity_matrix)
 
-#### `determinant (m)` [^][contents]
-[determinant]: #determinant-m-
-Return the determinant of a n × n matrix `m`.\
-The entries in matrix `m` accept numeric values and vectors.\
+_Arguments:_
+```OpenSCAD
+identity_matrix (n)
+```
+
+#### determinant [^][contents]
+[determinant]: #determinant-
+Return the determinant of a n × n matrix `m`.  
+The entries in matrix `m` accept numeric values and vectors.  
 A value of a determinant is the directed n dimensional volume of all
-spanned vectors of the matrix.\
+spanned vectors of the matrix.  
 [=> Wikipedia - Determinant](https://en.wikipedia.org/wiki/Determinant)
 
-Short name: `det (m)`
+_Arguments:_
+```OpenSCAD
+determinant (m)
+```
 
-___Specialized function with fixed matrix size:___
+_Short name:_
+- `det (m)`
+
+_Specialized function with fixed matrix size:_
 - `det_2x2 (m)` - determinant of a 2 × 2 matrix
 - `det_3x3 (m)` - determinant of a 3 × 3 matrix
 
-#### `transpose (m)` [^][contents]
-[transpose]: #transpose-m-
-Transpose a matrix `m`.\
-The transpose of a matrix is an operator which flips a matrix over its diagonal.\
+#### transpose [^][contents]
+[transpose]: #transpose-
+Transpose a matrix `m`.  
+The transpose of a matrix is an operator which flips a matrix over its diagonal.  
 [=> Wikipedia - Transpose](https://en.wikipedia.org/wiki/Transpose)
 
 ```
@@ -107,24 +118,34 @@ The transpose of a matrix is an operator which flips a matrix over its diagonal.
                        [3 6]
 ```
 
-#### `inverse (m)` [^][contents]
-[inverse]: #inverse-m-
-Return the inverse of a matrix `m`.\
-Return `undef` if `m` is not invertible.\
-The multiplication of `m * inverse(m)` get the identity matrix.\
+_Arguments:_
+```OpenSCAD
+transpose (m)
+```
+
+#### inverse [^][contents]
+[inverse]: #inverse-
+Return the inverse of a matrix `m`.  
+Return `undef` if `m` is not invertible.  
+The multiplication of `m * inverse(m)` get the identity matrix.  
 [=> Wikipedia - Invertible matrix](https://en.wikipedia.org/wiki/Invertible_matrix)
 
-#### `gauss_jordan_elimination (m, a, clean)` [^][contents]
-[gauss_jordan_elimination]: #gauss_jordan_elimination-m-a-clean-
+_Arguments:_
+```OpenSCAD
+inverse (m)
+```
+
+#### gauss_jordan_elimination [^][contents]
+[gauss_jordan_elimination]: #gauss_jordan_elimination-
 Gauss-Jordan elimination is an algorithm in linear algebra for solving
-a system of linear equations.\
+a system of linear equations.  
 [=> Wikipedia - Gaussian elimination ](https://en.wikipedia.org/wiki/Gaussian_elimination)
 
 First the matrix will set in reduced row echelon form. This means:
 - The first entries in a row are filled with zeros and leading with a 1
 - Every next row has his leading 1 minimum at 1 step next position
 
-Next the upper triangle will set to zeros with back substitution.\
+Next the upper triangle will set to zeros with back substitution.  
 In the end the matrix should contain the identity matrix in first columns
 and the result in the last columns.
 ```
@@ -133,7 +154,10 @@ and the result in the last columns.
 [4 1 8  6] -------------> [0 0 1  1] -------------> [0 0 1  1]
 ```
 
-Options:
+_Arguments:_
+```OpenSCAD
+gauss_jordan_elimination (m, a, clean)
+```
 - `m` - n×n or n×o matrix, o>=n
 - `a` - optional an additional matrix n×p, p>=1, which will append at the last column at matrix `m`
   - can be a list which will append on `m` as a column
@@ -141,22 +165,32 @@ Options:
   - true  - remove identity matrix part and keep only the result
   - false - standard, leave result with identity matrix on the first columns
 
-#### `reduced_row_echelon_form (m)` [^][contents]
-[reduced_row_echelon_form]: #reduced_row_echelon_form-m-
-Bring a matrix `m` in reduced row echelon form.\
+#### reduced_row_echelon_form [^][contents]
+[reduced_row_echelon_form]: #reduced_row_echelon_form-
+Bring a matrix `m` in reduced row echelon form.  
 [=> Wikipedia - Row echelon form](https://en.wikipedia.org/wiki/Row_echelon_form)
 
-#### `back_substitution (m)` [^][contents]
-[back_substitution]: #back_substitution-m-
-Run back substitution on matrix `m` which is set in row echelon form.\
+_Arguments:_
+```OpenSCAD
+reduced_row_echelon_form (m)
+```
+
+#### back_substitution [^][contents]
+[back_substitution]: #back_substitution-
+Run back substitution on matrix `m` which is set in row echelon form.  
 The upper triangle will set to zeros and the main diagonal will set to 1.
+
+_Arguments:_
+```OpenSCAD
+back_substitution (m)
+```
 
 
 ### Edit the content of a matrix [^][contents]
 [matrix_edit]: #edit-the-content-of-a-matrix-
 
-#### `matrix_cut_row (m, i)` [^][contents]
-[matrix_cut_row]: #matrix_cut_row-m-i-
+#### matrix_cut_row [^][contents]
+[matrix_cut_row]: #matrix_cut_row-
 Cut out a row at position `i` from the matrix `m`.
 ```
 matrix_cut_row (m, 1):
@@ -171,8 +205,13 @@ Result:
     [4 5 6]
 ```
 
-#### `matrix_cut_column (m, j)` [^][contents]
-[matrix_cut_column]: #matrix_cut_column-m-j-
+_Arguments:_
+```OpenSCAD
+matrix_cut_row (m, i)
+```
+
+#### matrix_cut_column [^][contents]
+[matrix_cut_column]: #matrix_cut_column-
 Cut out a column at position `j` from the matrix `m`.
 ```
 matrix_cut_column (m, 1):
@@ -183,8 +222,13 @@ matrix_cut_column (m, 1):
      |
 ```
 
-#### `matrix_minor (m, i, j)` [^][contents]
-[matrix_minor]: #matrix_minor-m-i-j-
+_Arguments:_
+```OpenSCAD
+matrix_cut_column (m, j)
+```
+
+#### matrix_minor [^][contents]
+[matrix_minor]: #matrix_minor-
 Cut out a row `i` and a column `j` from the matrix `m` = minor matrix.
 ```
 matrix_minor (m, 0, 1):
@@ -199,28 +243,58 @@ Result:
     [4 6]
 ```
 
-#### `matrix_insert_row (m, x, i)` [^][contents]
-[matrix_insert_row]: #matrix_insert_row-m-x-i-
+_Arguments:_
+```OpenSCAD
+matrix_minor (m, i, j)
+```
+
+#### matrix_insert_row [^][contents]
+[matrix_insert_row]: #matrix_insert_row-
 Insert a line `x` into matrix `m` at row position `i`.
 
-#### `matrix_insert_column (m, x, j)` [^][contents]
-[matrix_insert_column]: #matrix_insert_column-m-x-j-
+_Arguments:_
+```OpenSCAD
+matrix_insert_row (m, x, i)
+```
+
+#### matrix_insert_column [^][contents]
+[matrix_insert_column]: #matrix_insert_column-
 Insert a line `x` into matrix `m` at column position `j`.
 
-#### `matrix_replace_row (m, x, i)` [^][contents]
-[matrix_replace_row]: #matrix_replace_row-m-x-i-
+_Arguments:_
+```OpenSCAD
+matrix_insert_column (m, x, j)
+```
+
+#### matrix_replace_row [^][contents]
+[matrix_replace_row]: #matrix_replace_row-
 Replace a row in matrix `m` at position `i` with line `x`.
 
-#### `matrix_replace_column (m, x, i)` [^][contents]
-[matrix_replace_column]: #matrix_replace_column-m-x-i-
+_Arguments:_
+```OpenSCAD
+matrix_replace_row (m, x, i)
+```
+
+#### matrix_replace_column [^][contents]
+[matrix_replace_column]: #matrix_replace_column-
 Replace a column in matrix `m` at position `i` with line `x`.
 
-#### `concat_matrix (m, a)` [^][contents]
-[concat_matrix]: #concat_matrix-m-a-
+_Arguments:_
+```OpenSCAD
+matrix_replace_column (m, x, i)
+```
+
+#### concat_matrix [^][contents]
+[concat_matrix]: #concat_matrix-
 Append matrix `a` to matrix `m` in each row.
 ```
   m:      a:
  [1 2]   [5 5]  Result:  [1 2 5 5]
  [2 3]   [6 6] --------> [2 3 6 6]
+```
+
+_Arguments:_
+```OpenSCAD
+concat_matrix (m, a)
 ```
 

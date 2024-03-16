@@ -3,16 +3,16 @@
 
 ### defined in file
 
-`banded/extend.scad`\
-` `| \
-` `+--> `banded/extend_logic.scad`\
-` `| . . . . +--> `banded/extend_logic_helper.scad`\
-` `| . . . . +--> `banded/extend_logic_circle.scad`\
-` `| . . . . +--> `banded/extend_logic_linear_extrude.scad`\
-` `+--> `banded/extend_object.scad`
+`banded/extend.scad`  
+` `|  
+` `+--> `banded/extend_logic.scad`  
+` `| . . . . +--> `banded/extend_logic_helper.scad`  
+` `| . . . . +--> `banded/extend_logic_circle.scad`  
+` `| . . . . +--> `banded/extend_logic_linear_extrude.scad`  
+` `+--> `banded/extend_object.scad`  
 
-[<-- file overview](file_overview.md)\
-[<-- table of contents](contents.md)
+[<-- file overview](file_overview.md)  
+[<-- table of contents](contents.md)  
 
 ### Contents
 [contents]: #contents "Contents"
@@ -85,7 +85,7 @@ Variables can set off with `0`.
 
 If you want define the maximum deviation from the model in percent,
 you can do this with the _buildin special variable_ `$fa`.
-The angle for a fragment is equivalent to distance of deviation in percent.\
+The angle for a fragment is equivalent to distance of deviation in percent.  
 You can convert this with function [`get_angle_from_percent()`][get_angle_from_percent]:
 ```OpenSCAD
 $fa = get_angle_from_percent (2); // 2% deviation
@@ -95,7 +95,7 @@ $fa = get_angle_from_percent (2); // 2% deviation
 Defined modules [^][contents]
 -----------------------------
 Keep compatibility with _buildin modules_ in OpenSCAD with same arguments and can controlled
-with _extra special variables_, some modules have extra arguments
+with _extra special variables_, some modules have extra arguments.
 
 | buildin                  | extended
 |--------------------------|----------
@@ -122,6 +122,8 @@ with _extra special variables_, some modules have extra arguments
 #### circle_extend [^][contents]
 [circle_extend]: #circle_extend-
 Creates a circle with [options of `circle_curve()`][circle_curve]
+
+_Arguments:_
 ```OpenSCAD
 circle_extend (r, angle, slices, piece, outer, align, d)
 ```
@@ -157,7 +159,9 @@ circle_extend (r, angle, slices, piece, outer, align, d)
 
 #### cylinder_extend [^][contents]
 [cylinder_extend]: #cylinder_extend-
-Creates a cylinder with ground circle [options of `circle_curve()`][circle_curve]
+Creates a cylinder with ground circle [options of `circle_curve()`][circle_curve].
+
+_Arguments:_
 ```OpenSCAD
 cylinder_extend (h, r1, r2, center, r, d, d1, d2, angle, slices, piece, outer, align)
 ```
@@ -169,6 +173,8 @@ cylinder_extend (h, r1, r2, center, r, d, d1, d2, angle, slices, piece, outer, a
 #### sphere_extend [^][contents]
 [sphere_extend]: #sphere_extend-
 Creates a sphere at moment only control with extra special variables.
+
+_Arguments:_
 ```OpenSCAD
 sphere_extend (r, d, outer, align)
 ```
@@ -190,6 +196,8 @@ sphere_extend (r, d, outer, align)
 #### square_extend [^][contents]
 [square_extend]: #square_extend-
 Creates a square with extra arguments.
+
+_Arguments:_
 ```OpenSCAD
 square_extend (size, center, align)
 ```
@@ -201,6 +209,8 @@ square_extend (size, center, align)
 #### cube_extend [^][contents]
 [cube_extend]: #cube_extend-
 Creates a cube with extra arguments.
+
+_Arguments:_
 ```OpenSCAD
 cube_extend (size, center, align)
 ```
@@ -211,7 +221,7 @@ cube_extend (size, center, align)
 
 #### rotate_extrude_extend [^][contents]
 [rotate_extrude_extend]: #rotate_extrude_extend-
-Modifies `rotate_extrude()`.\
+Modifies `rotate_extrude()`.  
 Objects created with `rotate_extrude()` are rotated differently
 as e.g. the object `cylinder()`.
 With `rotate_extrude_extend()` these objects can be connected correctly.
@@ -248,28 +258,33 @@ Functions [^][contents]
 #### `get_angle_from_percent (value)` [^][contents]
 [get_angle_from_percent]: #get_angle_from_percent-value-
 Get the minimum angle for a fragment from maximum distance of deviation
-in percent to set value in special variable `$fa`.
-Angle for a fragment is equivalent to distance of deviation in percent.
+in percent to set value in _buildin special variable_ `$fa`.  
+The angle for a fragment is equivalent to distance of deviation in percent.
+
+_Usage:_
+```OpenSCAD
+$fa = get_angle_from_percent (2); // 2% deviation
+```
 
 
 ### Get fragments of a circle [^][contents]
 
 #### Function name convention: [^][contents]
 - function name _without_ ending `_x` return a value with original OpenSCAD behavior
-- function name _with_ ending `_x` return a value with control of the extra special variables
+- function name _with_ ending `_x` return a value with control of the _extra special variables_
 
 #### Recurring arguments: [^][contents]
-Values:
+_Values:_
 - `r`     - radius of a circle
 - `angle` - opening angle of a part of a circle in degrees
 - `piece` - control the look of the part of a circle [-> see options of `circle_curve()`][circle_curve]
 
-Control the fragment count of a circle (buildin):
+_Control the fragment count of a circle (buildin):_
 - `fn` - like `$fn`, fixed number of fragments
 - `fa` - like `$fa`, minimum angle (in degrees) of each fragment
 - `fs` - like `$fs`, minimum circumferential length of each fragment
 
-Control the fragment count of a circle (extend):
+_Control the fragment count of a circle (extend):_
 - `fn_min` - like `$fn_min` , minimum number of fragments
 - `fn_max` - like `$fn_max` , maximum number of fragments
 - `fd`     - like `$fd`, maximum distance of deviation from model in mm
@@ -277,46 +292,81 @@ Control the fragment count of a circle (extend):
 - `fs_enabled` - like `$fs_enabled`, `fs` can be disabled with `false`
 - `fn_safe`    - like `$fn_safe`
 
-#### `get_slices_circle_current (r, angle, piece)` [^][contents]
-[get_slices_circle_current]: #get_slices_circle_current-r-angle-piece-
-Returns the number of fragment on a part of a circle
+#### get_slices_circle_current [^][contents]
+[get_slices_circle_current]: #get_slices_circle_current-
+Returns the number of fragment on a _part of_ a circle
 with the current _buildin special variables_ `$fn`, `$fa` and `$fs`.
 
-#### `get_slices_circle_current_x (r, angle, piece)` [^][contents]
-[get_slices_circle_current_x]: #get_slices_circle_current_x-r-angle-piece-
-Returns the number of fragment on a part of a circle
+_Arguments:_
+```OpenSCAD
+get_slices_circle_current (r, angle, piece)
+```
+
+#### get_slices_circle_current_x [^][contents]
+[get_slices_circle_current_x]: #get_slices_circle_current_x-
+Returns the number of fragment on a _part of_ a circle
 with the current _buildin special variables_ `$fn`, `$fa` and `$fs`,
 and the _extra special variables_ `$fn_min`, `$fn_max`, `$fd`, `$fa_enabled`, `$fs_enabled`.
 
-#### `get_slices_circle_closed (r, fn, fa, fs)` [^][contents]
-[get_slices_circle_closed]: #get_slices_circle_closed-r-fn-fa-fs-
-Returns the number of fragment on a closed circle
-with arguments based on the _buildin special variables_.\
+_Arguments:_
+```OpenSCAD
+get_slices_circle_current_x (r, angle, piece)
+```
+
+#### get_slices_circle_closed [^][contents]
+[get_slices_circle_closed]: #get_slices_circle_closed-
+Returns the number of fragment on a _closed_ circle
+with arguments based on the _buildin special variables_.  
 Original OpenSCAD function.
 
-#### `get_slices_circle_closed_x (r, fn, fa, fs, fn_min, fn_max, fd, fa_enabled, fs_enabled)` [^][contents]
-[get_slices_circle_closed_x]: #get_slices_circle_closed_x-r-fn-fa-fs-fn_min-fn_max-fd-fa_enabled-fs_enabled-
-Returns the number of fragment on a closed circle
+_Arguments:_
+```OpenSCAD
+get_slices_circle_closed (r, fn, fa, fs)
+```
+
+#### get_slices_circle_closed_x [^][contents]
+[get_slices_circle_closed_x]: #get_slices_circle_closed_x-
+Returns the number of fragment on a _closed_ circle
 with arguments based on the _extra special variables_.
 
-#### `get_slices_circle (r, angle, piece, fn, fa, fs)` [^][contents]
-[get_slices_circle]: #get_slices_circle-r-angle-piece-fn-fa-fs-
-Returns the number of fragment on a part of a circle
-with the _buildin special variables_.\
+_Arguments:_
+```OpenSCAD
+get_slices_circle_closed_x (r, fn, fa, fs, fn_min, fn_max, fd, fa_enabled, fs_enabled)
+```
+
+#### get_slices_circle [^][contents]
+[get_slices_circle]: #get_slices_circle-
+Returns the number of fragment on a _part of_ a circle
+with arguments based on the _buildin special variables_.  
 Based on the behavior of rotate_extrude() in OpenSCAD.
 
-#### `get_slices_circle_x (r, angle, piece, fn, fa, fs, fn_min, fn_max, fd, fa_enabled, fs_enabled)` [^][contents]
-[get_slices_circle_x]: #get_slices_circle_x-r-angle-piece-fn-fa-fs-fn_min-fn_max-fd-fa_enabled-fs_enabled-
-Returns the number of fragment on a part of a circle
-with the _extra special variables_.
+_Arguments:_
+```OpenSCAD
+get_slices_circle (r, angle, piece, fn, fa, fs)
+```
 
-#### `get_fn_circle (slices, angle)` [^][contents]
-[get_fn_circle]: get_fn_circle-slices-angle-
-Returns the number for `$fn` if a fixed number of segments is desired.
+#### get_slices_circle_x [^][contents]
+[get_slices_circle_x]: #get_slices_circle_x-
+Returns the number of fragment on a _part of_ a circle
+with arguments based on the _extra special variables_.
+
+_Arguments:_
+```OpenSCAD
+get_slices_circle_x (r, angle, piece, fn, fa, fs, fn_min, fn_max, fd, fa_enabled, fs_enabled)
+```
+
+#### get_fn_circle` [^][contents]
+[get_fn_circle]: #get_fn_circle-
+Returns the number for `$fn` if a fixed number of segments is desired.  
 For e.g. rotate_extrude(), if an opening angle is specified,
 the number of segments is divided internally to keep the desired precision.
 This function calculate the value for `$fn`, so the object gets
 the real number of segments for the opening angle.
+
+_Arguments:_
+```OpenSCAD
+get_fn_circle (slices, angle)
+```
 
 
 ### Internal use [^][contents]
@@ -343,6 +393,6 @@ Returns the current value from `$sf_safe`.
 
 #### `sf_constrain_minmax (fn_min, fn_max, n)` [^][contents]
 [sf_constrain_minmax]: #sf_constrain_minmax-fn_min-fn_max-n-
-Returns the limit of a fragment number `n` between `$fn_min` and `$fn_max`.\
+Returns the limit of a fragment number `n` between `$fn_min` and `$fn_max`.  
 Depends on whether these limits are enabled.
 

@@ -2,14 +2,14 @@ Draft objects as data list - Curves
 ===================================
 
 ### defined in file
-`banded/draft.scad`\
-` `| \
-` `+--> `banded/draft_curves.scad`\
-` `| \
-` `. . .
+`banded/draft.scad`  
+` `|  
+` `+--> `banded/draft_curves.scad`  
+` `|  
+` `. . .  
 
-[<-- file overview](file_overview.md)\
-[<-- table of contents](contents.md)
+[<-- file overview](file_overview.md)  
+[<-- table of contents](contents.md)  
 
 ### Contents
 [contents]: #contents "Up to Contents"
@@ -31,7 +31,8 @@ Draft objects as data list - Curves
 
 [align]:     extend.md#extra-arguments-
 [special_x]: extend.md#special-variables-
-
+[square_extend]: extend.md#square_extend-
+[triangle]:      object.md#triangle-
 
 Curves [^][contents]
 --------------------
@@ -47,13 +48,16 @@ There is a name convention of functions from curves:
 
 
 ### Bezier curve [^][contents]
-Generates a Bézier curve.\
+Generates a Bézier curve.  
 [=> Wikipedia - Bézier curve](https://en.wikipedia.org/wiki/B%C3%A9zier_curve)
 
-#### `bezier_point (t, p, n)` [^][contents]
+#### bezier_point [^][contents]
 Returns a point of a Bézier curve of the n'th degree depending on the parameters.
 
 _Options:_
+```OpenSCAD
+bezier_point (t, p, n)
+```
 - `t`
   - a numeric value between `0`...`1`
 - `p`
@@ -72,10 +76,13 @@ _Versions:_
   - get point with _De Casteljau's algorithm_
   - default with `bezier_point()`
 
-#### `bezier_curve (p, n, slices)` [^][contents]
+#### bezier_curve [^][contents]
 Return a list with the points of a Bézier curve
 
 _Options:_
+```OpenSCAD
+bezier_curve (p, n, slices)
+```
 - `t`
   - a numeric value between `0`...`1`
 - `p`
@@ -92,29 +99,49 @@ _Options:_
   - If set `"x"`, the information from the extra special variables
     (`$fn_min`, `$fn_max`, `$fd`, ...) are also used  (roughly implemented)
 
-#### `bezier_1 (t, p)` [^][contents]
+#### bezier_1 [^][contents]
 Return a point of a Bézier curve with 1'st degree (linear Bézier curve)
+
+_Options:_
+```OpenSCAD
+bezier_1 (t, p)
+```
 - `t` - a numeric value between `0`...`1`
 - `p`
   - `[p0, p1]` - list with 2 control points
   - `p0` - first point of the curve, `p1` - last point of the curve
 
-#### `bezier_2 (t, p)` [^][contents]
+#### bezier_2 [^][contents]
 Return a point of a Bézier curve with 2'st degree (quadratic Bézier curve)
+
+_Options:_
+```OpenSCAD
+bezier_2 (t, p)
+```
 - `t` - a numeric value between `0`...`1`
 - `p`
   - `[p0, p1, p2]` - list with 3 control points
   - `p0` - first point of the curve, `p2` - last point of the curve
 
-#### `bezier_3 (t, p)` [^][contents]
+#### bezier_3 [^][contents]
 Return a point of a Bézier curve with 3'st degree (cubic Bézier curve)
+
+_Options:_
+```OpenSCAD
+bezier_3 (t, p)
+```
 - `t` - a numeric value between `0`...`1`
 - `p`
   - `[p0, p1, p2, p3]` - list with 4 control points
   - `p0` - first point of the curve, `p3` - last point of the curve
 
-#### `bezier_4 (t, p)` [^][contents]
+#### bezier_4 [^][contents]
 Return a point of a Bézier curve with 4'st degree
+
+_Options:_
+```OpenSCAD
+bezier_4 (t, p)
+```
 - `t` - a numeric value between `0`...`1`
 - `p`
   - `[p0, ... , p4]` - list with 5 control points
@@ -124,20 +151,26 @@ Return a point of a Bézier curve with 4'st degree
 ### Circle [^][contents]
 Generates a circle.
 
-#### `circle_point (r, angle, d)` [^][contents]
-Returns a 2d point of a circle with center at origin.\
+#### circle_point [^][contents]
+Returns a 2d point of a circle with center at origin.  
 Turns at mathematical direction of rotation = counter clockwise.
 
 _Options:_
+```OpenSCAD
+circle_point (r, angle, d)
+```
 - `r, d`
   - radius or diameter of circle
 - `angle`
   - point at given angle
 
-#### `circle_curve (r, angle, slices, piece, outer, align, d)` [^][contents]
+#### circle_curve [^][contents]
 Return a 2d point list of a circle.
 
 _Options:_
+```OpenSCAD
+circle_curve (r, angle, slices, piece, outer, align, d)
+```
 - `r, d`
   - radius or diameter of circle
 - `angle`
@@ -171,7 +204,7 @@ _Options:_
 
 
 ### Superellipse [^][contents]
-Generates a Superellipse curve.\
+Generates a Superellipse curve.  
 [=> Wikipedia - Superellipse](https://en.wikipedia.org/wiki/Superellipse)
 
 Example of Piet Hein's Superegg:
@@ -185,10 +218,13 @@ polygon (
 	superellipse_curve (interval=[-90,90], n=2.5, a=[3,4]) );
 ```
 
-#### `superellipse_point (t, r, a, n, s)` [^][contents]
-Return a point from a superellipse curve
+#### superellipse_point [^][contents]
+Return a point from a superellipse curve.
 
 _Options:_
+```OpenSCAD
+superellipse_point (t, r, a, n, s)
+```
 - `t`
   - position of the point from `0`...`360`
 - `r`
@@ -208,10 +244,13 @@ _Options:_
     - as number = every axis gets the same parameter
     - as list   = every axis gets his own parameter `[X,Y]`
 
-#### `superellipse_curve (interval, r, a, n, s, slices, piece)` [^][contents]
-Return a list with the points of a superellipse
+#### superellipse_curve [^][contents]
+Return a list with the points of a superellipse.
 
 _Additional options:_
+```OpenSCAD
+superellipse_curve (interval, r, a, n, s, slices, piece)
+```
 - `interval`
   - interval limit of `t`. `[begin, end]`
 - `slices`
@@ -226,13 +265,16 @@ _Additional options:_
 
 
 ### Superformula [^][contents]
-Generates a Superformula curve.\
+Generates a Superformula curve.  
 [=> Wikipedia - Superformula](https://en.wikipedia.org/wiki/Superformula)
 
-#### `superformula_point (t, a, m, n)` [^][contents]
-Return a point from a superformula curve
+#### superformula_point [^][contents]
+Return a point from a superformula curve.
 
 _Options:_
+```OpenSCAD
+superformula_point (t, a, m, n)
+```
 - `t`
   - position of the point (angle) from `0`...`360`
 - `a`
@@ -249,10 +291,13 @@ _Options:_
   - Curve, controls the curve form
   - list with 3 parameter `[n1, n2, n3]`
 
-#### `superformula_curve (interval, a, m, n, slices, piece)` [^][contents]
-Return a list with the points of a superformula
+#### superformula_curve [^][contents]
+Return a list with the points of a superformula.
 
 _Additional options:_
+```OpenSCAD
+superformula_curve (interval, a, m, n, slices, piece)
+```
 - `interval`
   - interval limit of `t`. `[begin, end]`
 - `slices`
@@ -267,13 +312,16 @@ _Additional options:_
 
 
 ### Polynomial function [^][contents]
-`P(x) = a[0] + a[1]*x + a[2]*x^2 + ... + a[n]*x^n`\
+`P(x) = a[0] + a[1]*x + a[2]*x^2 + ... + a[n]*x^n`  
 [=> Wikipedia - Polynomial](https://en.wikipedia.org/wiki/Polynomial)
 
-#### `polynomial (x, a, n)` [^][contents]
-Return a numeric value from the polynomial function
+#### polynomial [^][contents]
+Return a numeric value from the polynomial function.
 
 _Options:_
+```OpenSCAD
+polynomial (x, a, n)
+```
 - `x`
   - variable
 - `a`
@@ -282,10 +330,13 @@ _Options:_
   - Degree of the polynomial, only as many coefficients as specified are used
   - If not specified, the degree is taken according to the size of the array of coefficients
 
-#### `polynomial_curve (interval, a, n, slices)` [^][contents]
-Returns a list with the points of a polynomial interval
+#### polynomial_curve [^][contents]
+Returns a list with the points of a polynomial interval.
 
 _Additional options:_
+```OpenSCAD
+polynomial_curve (interval, a, n, slices)
+```
 - `interval`
   - Interval limit from `x`. `[begin, end]`
 - `slices`
@@ -294,28 +345,41 @@ _Additional options:_
 
 ### Square [^][contents]
 
-#### `square_curve (size, center, align)` [^][contents]
-Return a 2D square as point list.
-Options are like module `square()` from OpenSCAD.
+#### square_curve [^][contents]
+Return a 2D square as point list.  
+Options are like module [`square_extend()`][square_extend], base on module `square()` from OpenSCAD.
 Rotation is mathematical direction = counter clockwise.
+
+_Options:_
+```OpenSCAD
+square_curve (size, center, align)
+```
 - `align`
   - Side from origin away that the part should be.
   - [Extra arguments - align][align]
   - default = `[1,1]` = oriented on the positive side of axis
 
-#### `bounding_square_curve (points)` [^][contents]
-Create a 2D rectangle around the outermost points from a list.\
+#### bounding_square_curve [^][contents]
+Create a 2D rectangle around the outermost points from a list.  
 Returns a trace in a point list.
+```OpenSCAD
+bounding_square_curve (points)
+```
 - `points`
   - a list with minimum 2 points
 
 
 ### Triangle [^][contents]
 
-#### `triangle_curve (size, center, align, side)` [^][contents]
-Return a triangle, a half square as point list.
-Options are like module `square_curve()`
+#### triangle_curve [^][contents]
+Return a triangle, a half square as point list.  
+Options are like module [`triangle()`][triangle].
 Rotation is mathematical direction = counter clockwise.
+
+_Options:_
+```OpenSCAD
+triangle_curve (size, center, align, side)
+```
 - `side`
   - sets the remaining side of the triangle.
     - 0 = keep the bottom left triangle, default
@@ -332,10 +396,13 @@ Rotation is mathematical direction = counter clockwise.
 ### Helix [^][contents]
 [=> Wikipedia - Helix](https://en.wikipedia.org/wiki/Helix)
 
-#### `helix_curve (r, rotations, pitch, height, opposite, slices, angle)` [^][contents]
+#### helix_curve [^][contents]
 Return a helix as point list.
 
 _Options:_
+```OpenSCAD
+helix_curve (r, rotations, pitch, height, opposite, slices, angle)
+```
 - `r`
   - radius as number oder as list with numbers `[r1, r2]`
   - `r1` = bottom radius, `r2` = top radius
@@ -358,7 +425,7 @@ _Options:_
 
 _Required options:_
 - radius `r`
-- only 2 arguments each: `pitch`, `rotations` or `height`
+- only 2 arguments each: `pitch`, `rotations`/`angle` or `height`
 
 
 Fractal curves [^][contents]
@@ -366,11 +433,14 @@ Fractal curves [^][contents]
 
 ### Koch curve [^][contents]
 
-#### `koch_curve (trace, iteration, closed)` [^][contents]
-Generates a Koch curve on a line defined in `trace`.\
+#### koch_curve [^][contents]
+Generates a Koch curve on a line defined in `trace`.  
 [=> Wikipedia - Koch snowflake](https://en.wikipedia.org/wiki/Koch_snowflake)
 
 _Options:_
+```OpenSCAD
+koch_curve (trace, iteration, closed)
+```
 - `trace`
   - a point list
 - `iteration`
@@ -401,11 +471,14 @@ polygon (
 
 ### Hilbert curve [^][contents]
 
-#### `hilbert_curve (r, iteration)` [^][contents]
-Generates a trace of a Hilbert curve.\
+#### hilbert_curve [^][contents]
+Generates a trace of a Hilbert curve.  
 [=> Wikipedia - Hilbert curve](https://en.wikipedia.org/wiki/Hilbert_curve)
 
 _Options:_
+```OpenSCAD
+hilbert_curve (r, iteration)
+```
 - `r`
   - the radius of the square which is filled with the hilbert curve
 - `iteration`
@@ -426,11 +499,14 @@ show_trace (
 
 ### Dragon curve [^][contents]
 
-#### `dragon_curve (trace, iteration)` [^][contents]
-Generates a trace of a Dragon curve.\
+#### dragon_curve [^][contents]
+Generates a trace of a Dragon curve.  
 [=> Wikipedia - Dragon curve](https://en.wikipedia.org/wiki/Dragon_curve)
 
 _Options:_
+```OpenSCAD
+dragon_curve (trace, iteration)
+```
 - `trace`
   - a point list with the initial line
 - `iteration`

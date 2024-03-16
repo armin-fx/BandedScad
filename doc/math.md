@@ -109,6 +109,8 @@ Defined in file: `banded/math_common.scad`
 #### constrain [^][contents]
 [constrain]: #constrain-
 Limits a number to a range.
+
+_Arguments:_
 ```OpenSCAD
 constrain (value, a, b)
 ```
@@ -125,6 +127,8 @@ _Returns:_
 #### constrain_range [^][contents]
 [constrain_range]: #constrain_range-
 Limits a number to a range between `a` and `b`.
+
+_Arguments:_
 ```OpenSCAD
 constrain_range (value, a, b)
 ```
@@ -138,6 +142,8 @@ _Returns:_
 #### is_constrain [^][contents]
 [is_constrain]: #is_constrain-
 Test a number and return `true` if this is in a limit (inclusive `a` and `b`).
+
+_Arguments:_
 ```OpenSCAD
 is_constrain (value, a, b)
 ```
@@ -153,6 +159,8 @@ _Other functions:_
 #### is_nearly [^][contents]
 [is_nearly]: #is_nearly-
 Compares two values or two lists of values to see if they approximately match.
+
+_Arguments:_
 ```OpenSCAD
 is_nearly (a, b, deviation)
 ```
@@ -163,6 +171,8 @@ is_nearly (a, b, deviation)
 [quantize]: #quantize-
 Quantizes a value within a grid.  
 Default = round to an integer
+
+_Arguments:_
 ```OpenSCAD
 quantize (value, raster, offset)
 ```
@@ -172,11 +182,13 @@ quantize (value, raster, offset)
 
 #### lerp [^][contents]
 [lerp]: #lerp-
+Computes the linear interpolation between `a` and `b`,  
+if the parameter `t` is inside `[0, 1]` (the linear extrapolation otherwise).
+
+_Arguments:_
 ```OpenSCAD
 lerp (a, b, t, range)
 ```
-Computes the linear interpolation between `a` and `b`,\
-if the parameter `t` is inside `[0, 1]` (the linear extrapolation otherwise)
 - `a`, `b` - value or list with values
 - `t`      - interpolate value
   - `0...1` calculate by default a value between `a...b`
@@ -197,11 +209,13 @@ echo( lerp (10, 30, 2, [1,3]) ); // 20
 
 #### inv_lerp [^][contents]
 [inv_lerp]: #inv_lerp-
+Computes the reverse linear interpolation between `a` and `b`,  
+get the fraction between `a` and `b` on which `v` resides.
+
+_Arguments:_
 ```OpenSCAD
 inv_lerp (a, b, t, range)
 ```
-Computes the reverse linear interpolation between `a` and `b`,  
-get the fraction between `a` and `b` on which `v` resides.
 - `a`, `b` - value or list with values
 - `v`      - value
   - a value between `a...b` calculate by default a value between `0...1`
@@ -226,12 +240,12 @@ echo( inv_lerp (10, 30, 20, [1,3]) ); // 2
 #### is_odd, is_even [^][contents]
 [is_odd]: #is_odd-is_even-
 Returns `true` if
-- `n` is odd value with `is_odd (n)`
-- `n` is even value with `is_even (n)`
+- `n` is _odd_  value with `is_odd (n)`
+- `n` is _even_ value with `is_even (n)`
 
 #### positiv_if_xxx [^][contents]
 [positiv_if]: #positiv_if_xxx-
-Returns `1` or `-1` if the condition of `n` fits
+Returns `1` or `-1` if the condition of `n` fits.
 
 | function             | return `1`   | return `-1`
 |----------------------|--------------|-------------
@@ -243,24 +257,49 @@ Returns `1` or `-1` if the condition of `n` fits
 
 ### Various math functions [^][contents]
 
-#### `sqr (x)` [^][contents]
-[sqr]: #sqr-x-
+#### sqr [^][contents]
+[sqr]: #sqr-
 Square a value `x`. A function name for `x*x`
 
-#### `mod (x, n)` [^][contents]
-[mod]: #mod-x-n-
-Calculates the modulo.\
+_Arguments:_
+```OpenSCAD
+sqr (x)
+```
+
+#### mod [^][contents]
+[mod]: #mod-
+Calculates the modulo.  
 Get the remainder of `x / n` with floored division.
 The remainder would have the same sign as the divisor `n`.
 
-#### `sign_plus (x)` [^][contents]
-[sign_plus]: #sign_plus-x-
+_Arguments:_
+```OpenSCAD
+mod (x, n)
+```
+
+_Example:_
+```OpenSCAD
+echo(  5%3,  mod( 5,3) );  // ECHO:  2, 2
+echo( -4%3,  mod(-4,3) );  // ECHO: -1, 2
+echo(  5%-3, mod( 5,-3) ); // ECHO:  2, -1
+echo( -4%-3, mod(-4,-3) ); // ECHO: -1, -1
+```
+
+#### sign_plus [^][contents]
+[sign_plus]: #sign_plus-
 Mathematical positive signum function.  
 Returns `-1` if `x<0` and `1` if `x>=0`
+
+_Arguments:_
+```OpenSCAD
+sign_plus (x)
+```
 
 #### xor [^][contents]
 [xor]: #xor-
 Return a boolean value of operation xor with 2 boolean values
+
+_Arguments:_
 ```OpenSCAD
 xor (bool, bool2)
 ```
@@ -273,6 +312,8 @@ _Additional functions with more then 2 arguments:_
 #### normal_distribution [^][contents]
 [normal_distribution]: #normal_distribution-
 Calculate the Gauss normal distribution
+
+_Arguments:_
 ```OpenSCAD
 normal_distribution (x, mean, sigma)
 ```
@@ -370,19 +411,25 @@ These functions return an angle in radians `0...2*PI`:
 | `avercos_r   (x)` | Inverse versed cosine of `x`
 | `acovercos_r (x)` | Inverse coversed cosine of `x`
 
-#### `sinc (x)` [^][contents]
-[sinc]: #sinc-x-
-Sinc function
+#### sinc [^][contents]
+[sinc]: #sinc-
+Sinc function.
 
 [=> Wikipedia - Sinc function](https://en.wikipedia.org/wiki/Sinc_function)
 
+_Versions:_
 `si (x)`   - unnormalized sinc function  
 `sinc (x)` - normalized sinc function  
 
-#### `Si (x)` [^][contents]
-[si]: #si-x-
+#### Si [^][contents]
+[si]: #si-
 Trigonometric integral  
 [=> Wikipedia - Trigonometric integral](https://en.wikipedia.org/wiki/Trigonometric_integral)
+
+_Arguments:_
+```OpenSCAD
+Si (x)
+```
 
 
 Number functions [^][contents]
@@ -390,53 +437,92 @@ Number functions [^][contents]
 
 Defined in file: `banded/math_number.scad`
 
-#### `factorial (n)` [^][contents]
-[factorial]: #factorial-n-
+#### factorial [^][contents]
+[factorial]: #factorial-
 Calculate the factorial of a positive integer `n`, denoted by n!  
 [=> Wikipedia - Factorial](https://en.wikipedia.org/wiki/Factorial)
 
-#### `double_factorial (n)` [^][contents]
-[double_factorial]: #double_factorial-n-
+_Arguments:_
+```OpenSCAD
+factorial (n)
+```
+
+#### double_factorial [^][contents]
+[double_factorial]: #double_factorial-
 Calculate the double factorial or semifactorial of a number `n`, denoted by n‼  
 [=> Wikipedia - Double factorial](https://en.wikipedia.org/wiki/Double_factorial)
 
-#### `multi_factorial (n, k)` [^][contents]
-[multi_factorial]: #multi_factorial-n-k-
+_Arguments:_
+```OpenSCAD
+double_factorial (n)
+```
+
+#### multi_factorial [^][contents]
+[multi_factorial]: #multi_factorial-
 Calculate the multifactorial of a positive integer `n`  
 [=> Wikipedia - Multifactorials](https://en.wikipedia.org/wiki/Factorial#Multifactorials)
 
-#### `binomial_coefficient (n, k)` [^][contents]
-[binomial_coefficient]: #binomial_coefficient-n-k-
+_Arguments:_
+```OpenSCAD
+multi_factorial (n, k)
+```
+
+#### binomial_coefficient [^][contents]
+[binomial_coefficient]: #binomial_coefficient-
 Calculate the binomial coefficient `n` over `k`  
 [=> Wikipedia - Binomial coefficient](https://en.wikipedia.org/wiki/Binomial_coefficient)
 
-#### `fibonacci (n)` [^][contents]
-[fibonacci]: #fibonacci-n-
+_Arguments:_
+```OpenSCAD
+binomial_coefficient (n, k)
+```
+
+#### fibonacci [^][contents]
+[fibonacci]: #fibonacci-
 Calculate the Fibonacci numbers of a number `n`  
 [=> Wikipedia - Fibonacci number](https://en.wikipedia.org/wiki/Fibonacci_number)
 
-#### `continued_fraction (a, b)` [^][contents]
-[continued_fraction]: #continued_fraction-a-b-
+_Arguments:_
+```OpenSCAD
+fibonacci (n)
+```
+
+#### continued_fraction [^][contents]
+[continued_fraction]: #continued_fraction-
 Calculate the continued fraction  
 `a0 + b1 / (a1 + b2 / (a2 + (...))))`
 
 [=> Wikipedia - Continued fraction](https://en.wikipedia.org/wiki/Continued_fraction)
 
+_Arguments:_
+```OpenSCAD
+continued_fraction (a, b)
+```
 - `a` - list with the coefficients of the continued fraction
 - `b` - list with the numerator of the continued fraction
      -  size of this list is 1 less then list `a`
      -  if not specified value `1` will set
         and it calculate a simple continued fraction
 
-#### `gcd (a, b)` [^][contents]
-[gcd]: #gcd-a-b-
+#### gcd [^][contents]
+[gcd]: #gcd-
 Calculate the greatest common divisor of two integers `a` and `b`  
 [=> Wikipedia - Greatest common divisor](https://en.wikipedia.org/wiki/Greatest_common_divisor)
 
-#### `lcm (a, b)` [^][contents]
-[lcm]: #lcm-a-b-
+_Arguments:_
+```OpenSCAD
+gcd (a, b)
+```
+
+#### lcm [^][contents]
+[lcm]: #lcm-
 Calculate the least common multiple of two integers `a` and `b`  
 [=> Wikipedia - Least common multiple](https://en.wikipedia.org/wiki/Least_common_multiple)
+
+_Arguments:_
+```OpenSCAD
+lcm (a, b)
+```
 
 
 Formula functions [^][contents]
@@ -447,6 +533,8 @@ Defined in file: `banded/math_formula.scad`
 #### get_radius_from [^][contents]
 [get_radius_from]: #get_radius_from-
 Calculate the radius from a circle.
+
+_Arguments:_
 ```OpenSCAD
 get_radius_from (chord, sagitta, angle)
 ```
@@ -461,7 +549,7 @@ Calculate the parameter of a circle from 3 points.
 Return the result as a list `[center of the circle, radius]`.  
 The points can be in 2D or 3D space.
 
-_Parameters:_
+_Arguments:_
 ```OpenSCAD
 get_circle_from_points (p1, p2, p3)
 ```
@@ -477,6 +565,7 @@ Calculate the parameter of a sphere from 4 points.
 Return the result as a list `[center of the sphere, radius]`.  
 The points can be only in 3D space.
 
+_Arguments:_
 ```OpenSCAD
 get_sphere_from_points (p1, p2, p3, p4)
 ```
@@ -488,6 +577,7 @@ Calculate the parameter of a n-sphere (hypersphere) from n+1 points in a list.
 Return the result as a list `[center of the n-sphere, radius]`.  
 The points must be in n dimensions.
 
+_Arguments:_
 ```OpenSCAD
 get_hypersphere_from_points (p)
 ```
@@ -500,6 +590,7 @@ Parabola from type: `y = Ax² + Bx + C`
 Return the result as a list `[C,B,A]`.  
 The result can directly used in function [`polynomial()`][polynomial].
 
+_Arguments:_
 ```OpenSCAD
 get_parabola_from_points (p1, p2, p3)
 ```
@@ -515,6 +606,7 @@ Parabola from type: `y = Ax² + Bx + C`
 Return the result as a list `[C,B,A]`.  
 The result can directly used in function [`polynomial()`][polynomial].
 
+_Arguments:_
 ```OpenSCAD
 get_parabola_from_midpoint (p1, p2, ym)
 ```
@@ -526,7 +618,7 @@ get_parabola_from_midpoint (p1, p2, ym)
 Returns the roots of a parabola.  
 Parabola from type: `y = Ax² + Bx + C`
 
-_Parameters:_
+_Arguments:_
 ```OpenSCAD
 get_parabola_zero (P, chosen)
 ```

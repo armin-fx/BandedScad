@@ -2,13 +2,13 @@ Polygon operations
 ==================
 
 ### defined in file
-`banded/math.scad`\
-` `| \
-` `+--> ...\
-` `+--> `banded/math_polygon.scad`
+`banded/math.scad`  
+` `|  
+` `+--> ...  
+` `+--> `banded/math_polygon.scad`  
 
-[<-- file overview](file_overview.md)\
-[<-- table of contents](contents.md)
+[<-- file overview](file_overview.md)  
+[<-- table of contents](contents.md)  
 
 [<-- Math functions](math.md)
 
@@ -57,8 +57,10 @@ Polygones and Lines [^][contents]
 
 #### is_point_on_line [^][contents]
 [is_point_on_line]: #is_point_on_line-
-Returns `true` if a point is exactly on a straight line.\
+Returns `true` if a point is exactly on a straight line.  
 In 2D or 3D.
+
+_Arguments:_
 ```OpenSCAD
 is_point_on_line (line, point)
 ```
@@ -66,9 +68,11 @@ is_point_on_line (line, point)
 
 #### is_point_on_segment [^][contents]
 [is_point_on_segment]: #is_point_on_segment-
-Returns `true` if a point is exactly on a line segment.\
+Returns `true` if a point is exactly on a line segment.  
 Inclusive on the points.
 In 2D or 3D.
+
+_Arguments:_
 ```OpenSCAD
 is_point_on_segment (line, point, ends)
 ```
@@ -80,8 +84,10 @@ is_point_on_segment (line, point, ends)
 
 #### is_point_on_plane [^][contents]
 [is_point_on_plane]: #is_point_on_plane-
-Returns `true` if a point lies exactly in a plane.\
+Returns `true` if a point lies exactly in a plane.  
 In 3D.
+
+_Arguments:_
 ```OpenSCAD
 is_point_on_plane (points, point)
 ```
@@ -89,10 +95,12 @@ is_point_on_plane (points, point)
 
 #### is_point_upper_plane [^][contents]
 [is_point_upper_plane]: #is_point_upper_plane-
-Returns `true` if a point is upper a plane.\
+Returns `true` if a point is upper a plane.  
 In 3D.
 Upper side means the same side of the direction of the normal vector
 from the triangle defined by the 3 points.
+
+_Arguments:_
 ```OpenSCAD
 is_point_upper_plane (points, point)
 ```
@@ -100,8 +108,10 @@ is_point_upper_plane (points, point)
 
 #### is_intersection_segments [^][contents]
 [is_intersection_segments]: #is_intersection_segments-
-Returns `true` if two line segment intersect.\
+Returns `true` if two line segment intersect.  
 Only in 2D plane.
+
+_Arguments:_
 ```OpenSCAD
 is_intersection_segments (line1, line2, point, no_parallel, ends)
 ```
@@ -122,8 +132,10 @@ is_intersection_segments (line1, line2, point, no_parallel, ends)
 
 #### is_intersection_polygon_segment [^][contents]
 [is_intersection_polygon_segment]: #is_intersection_polygon_segment-
-Returns `true` if a line segment intersect any line from a polygon.\
+Returns `true` if a line segment intersect any line from a polygon.  
 Only in 2D plane.
+
+_Arguments:_
 ```OpenSCAD
 is_intersection_polygon_segment (points, line, path, without)
 ```
@@ -141,9 +153,11 @@ is_intersection_polygon_segment (points, line, path, without)
 
 #### is_point_inside_triangle [^][contents]
 [is_point_inside_triangle]: #is_point_inside_triangle-
-Returns `true` if a point lies exactly in a triangle.\
+Returns `true` if a point lies exactly in a triangle.  
 Inclusive the on the line.
 Only 2D plane.
+
+_Arguments:_
 ```OpenSCAD
 is_point_inside_triangle (points, point, border, rotation)
 ```
@@ -162,10 +176,12 @@ is_point_inside_triangle (points, point, border, rotation)
 
 #### is_point_inside_polygon [^][contents]
 [is_point_inside_polygon]: #is_point_inside_polygon-
-Returns `true` if a point lies exactly in a closed trace.\
+Returns `true` if a point lies exactly in a closed trace.  
 Inclusive the on the line.
 The border of the trace must not intersect itself.
 In 2D and 3D.
+
+_Arguments:_
 ```OpenSCAD
 is_point_inside_polygon (points, p, face)
 ```
@@ -185,6 +201,8 @@ _Specialized functions:_
 #### is_math_rotation_triangle [^][contents]
 [is_math_rotation_triangle]: #is_math_rotation_triangle-
 Returns `true` if the triangle is in mathematical rotation = counter clockwise.
+
+_Arguments:_
 ```OpenSCAD
 is_math_rotation_triangle (points)
 ```
@@ -192,6 +210,8 @@ is_math_rotation_triangle (points)
 #### is_math_rotation_polygon [^][contents]
 [is_math_rotation_polygon]: #is_math_rotation_polygon-
 Returns `true` if the polygon is in mathematical rotation.
+
+_Arguments:_
 ```OpenSCAD
 is_math_rotation_polygon (trace)
 ```
@@ -201,19 +221,23 @@ is_math_rotation_polygon (trace)
 
 #### get_gradient [^][contents]
 [get_gradient]: #get_gradient-
-Returns the gradient `[c, m]` of a line.\
+Returns the gradient `[c, m]` of a line.  
 The result can used as coefficient in function `polynomial()`
+
+_Arguments:_
 ```OpenSCAD
 get_gradient (line)
 ```
 - `line` - a list with 2 points defines the straight line
 
-In 2D plane:\
-`y = m*x + c`\
+In 2D plane:  
+`y = m*x + c`  
 Where `m` means the slope of the line
 and `c` means the intercept of the line throw the Y axis.
-Vertical lines don't work, then it returns `undef`.\
+Vertical lines don't work, then it returns `undef`.  
 Calculation for `y` with known `x` can done with:
+
+_Arguments:_
 ```OpenSCAD
 line = [ [0,0], [1,2] ];
 g = get_gradient_2d (line); // [c, m] = [0, 2]
@@ -223,12 +247,14 @@ y  = g[1]*x + g[0];         // 8
 y_ = polynomial (x, g);     // 8
 ```
 
-In 3D space:\
-`[x,y] = m*z + c`\
+_In 3D space:_  
+`[x,y] = m*z + c`  
 Where `m` means the slope of the line on X-axis and Y-axis as list `[m_x, m_y]`
 and `c` means the intercept of the line throw the XY-plane at `Z=0` as point `[x,y]`.
-Horizontal lines don't work, then it returns `undef`.\
+Horizontal lines don't work, then it returns `undef`.  
 Calculation for a 2D point with known `z` can done with:
+
+_Arguments:_
 ```OpenSCAD
 line = [ [0,0,-1], [1,2,3] ];
 g = get_gradient_3d (line); // [[0.25, 0.5], [0.25, 0.5]]
@@ -247,8 +273,10 @@ _Specialized functions:_
 
 #### get_intersection_lines [^][contents]
 [get_intersection_lines]: #get_intersection_lines-
-Returns the crossing point where two straight lines intersect.\
+Returns the crossing point where two straight lines intersect.  
 Only in 2D plane.
+
+_Arguments:_
 ```OpenSCAD
 get_intersection_lines (line1, line2)
 ```
@@ -276,8 +304,10 @@ echo( is_intersection_segments(l1,l2) ); // ECHO: true
 
 #### get_intersection_line_plane [^][contents]
 [get_intersection_line_plane]: #get_intersection_line_plane-
-Returns the intersecting point of a straight line through a plane.\
+Returns the intersecting point of a straight line through a plane.  
 In 3D space.
+
+_Arguments:_
 ```OpenSCAD
 get_intersection_line_plane (points, line)
 ```
@@ -290,6 +320,8 @@ get_intersection_line_plane (points, line)
 #### length_trace [^][contents]
 [length_trace]: #length_trace-points-path-closed-
 Return the length of a trace.
+
+_Arguments:_
 ```OpenSCAD
 length_trace (points, path, closed)
 ```
@@ -304,6 +336,8 @@ length_trace (points, path, closed)
 #### length_line [^][contents]
 [length_line]: #length_line-
 Return the length of a line segment.
+
+_Arguments:_
 ```OpenSCAD
 length_line (line)
 ```
@@ -316,6 +350,8 @@ length_line (line)
 #### trace_to_lines [^][contents]
 [trace_to_lines]: #trace_to_lines-
 Convert a trace to a list with line segment.
+
+_Arguments:_
 ```OpenSCAD
 trace_to_lines (trace, closed)
 ```
@@ -328,14 +364,18 @@ trace_to_lines (trace, closed)
 #### lines_to_trace [^][contents]
 [lines_to_trace]: #lines_to_trace-
 Connect all lines in a list and return the trace as a point list.
+
+_Arguments:_
 ```OpenSCAD
 lines_to_trace (lines)
 ```
 
 #### line_to_vector [^][contents]
 [line_to_vector]: #line_to_vector-
-Convert a line defined by 2 points to point and vector.\
+Convert a line defined by 2 points to point and vector.  
 Returns a list `[ starting point, vector ]`
+
+_Arguments:_
 ```OpenSCAD
 line_to_vector (line)
 ```
@@ -344,8 +384,10 @@ line_to_vector (line)
 #### vector_to_line [^][contents]
 [vector_to_line]: #vector_to_line-
 Convert a line defined by a starting point and a vector
-to a list with 2 points defines the straight line.\
+to a list with 2 points defines the straight line.  
 Returns a list `[ point 1, point 2 ]`
+
+_Arguments:_
 ```OpenSCAD
 vector_to_line (vector)
 ```
@@ -356,8 +398,10 @@ vector_to_line (vector)
 
 #### distance_line [^][contents]
 [distance_line]: #distance_line-
-Get the nearest distance of a straight line to a point.\
+Get the nearest distance of a straight line to a point.  
 Works in 2D and 3D.
+
+_Arguments:_
 ```OpenSCAD
 distance_line (line, p)
 ```
@@ -369,8 +413,10 @@ distance_line (line, p)
 
 #### distance_segment [^][contents]
 [distance_segment]: #distance_segment-
-Get the nearest distance of a segment line to a point.\
+Get the nearest distance of a segment line to a point.  
 Works in 2D and 3D.
+
+_Arguments:_
 ```OpenSCAD
 distance_segment (line, p)
 ```
@@ -383,8 +429,10 @@ distance_segment (line, p)
 
 #### distance_trace [^][contents]
 [distance_trace]: #distance_trace-
-Get the nearest distance of a trace to a point.\
+Get the nearest distance of a trace to a point.  
 Works in 2D and 3D.
+
+_Arguments:_
 ```OpenSCAD
 distance_trace (trace, p, closed)
 ```
@@ -399,8 +447,10 @@ distance_trace (trace, p, closed)
 
 #### nearest_point_line [^][contents]
 [nearest_point_line]: #nearest_point_line-
-Get the point on a straight line with the nearest distance to a point.\
+Get the point on a straight line with the nearest distance to a point.  
 Works in 2D and 3D.
+
+_Arguments:_
 ```OpenSCAD
 nearest_point_line (line, p)
 ```
@@ -412,8 +462,10 @@ nearest_point_line (line, p)
 
 #### nearest_point_segment [^][contents]
 [nearest_point_segment]: #nearest_point_segment-
-Get the point on a segment line with the nearest distance to a point.\
+Get the point on a segment line with the nearest distance to a point.  
 Works in 2D and 3D.
+
+_Arguments:_
 ```OpenSCAD
 nearest_point_segment (line, p)
 ```
@@ -426,8 +478,10 @@ nearest_point_segment (line, p)
 
 #### nearest_point_trace [^][contents]
 [nearest_point_trace]: #nearest_point_trace-
-Get the point on a trace with the nearest distance to a point.\
+Get the point on a trace with the nearest distance to a point.  
 Works in 2D and 3D.
+
+_Arguments:_
 ```OpenSCAD
 nearest_point_trace (trace, p, closed)
 ```

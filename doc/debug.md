@@ -5,8 +5,8 @@ Debug
 
 `banded/debug.scad`
 
-[<-- file overview](file_overview.md)\
-[<-- table of contents](contents.md)
+[<-- file overview](file_overview.md)  
+[<-- table of contents](contents.md)  
 
 ### Contents
 [contents]: #contents "Contents"
@@ -39,8 +39,10 @@ Objects to make parts of objects and points in variables seeable.
 
 #### echo_line [^][contents]
 [echo_line]: #echo_line-
-Echo a horizontal line into the console.\
+Echo a horizontal line into the console.  
 As module or as function to generate the text for `echo()`.
+
+_Arguments:_
 ```OpenSCAD
 echo_line (length, char)
 ```
@@ -54,9 +56,11 @@ _Specialized modules with fixed character:_
 
 #### echo_list [^][contents]
 [echo_list]: #echo_list-
-Echo every entry from a list into the console.\
+Echo every entry from a list into the console.  
 Every entry will start in a new line.
 As module or as function to generate the text for `echo()`.
+
+_Arguments:_
 ```OpenSCAD
 echo_list (list, txt, pre)
 ```
@@ -76,6 +80,8 @@ The default color of these objects is "orange".
 #### show_point [^][contents]
 [show_point]: #show_point-
 Module to create a visible point.
+
+_Arguments:_
 ```OpenSCAD
 show_point (p, c, d, auto)
 ```
@@ -91,6 +97,8 @@ show_point (p, c, d, auto)
 #### show_points [^][contents]
 [show_points]: #show_points-
 Module to create visible points.
+
+_Arguments:_
 ```OpenSCAD
 show_points (p_list, c, d, auto)
 ```
@@ -110,8 +118,10 @@ _Specialized module:_
 
 #### show_points_grid [^][contents]
 [show_points_grid]: #show_points_grid-
-Module to create visible points in a grid.\
+Module to create visible points in a grid.  
 A grid is defined by a list with lists which contains points.
+
+_Arguments:_
 ```OpenSCAD
 show_points_grid (p_list, c, d, auto)
 ```
@@ -132,6 +142,8 @@ _Specialized module:_
 #### show_line [^][contents]
 [show_line]: #show_line-
 Module to create a visible line.
+
+_Arguments:_
 ```OpenSCAD
 show_line (l, c, direction, d, auto)
 ```
@@ -149,6 +161,8 @@ show_line (l, c, direction, d, auto)
 #### show_lines [^][contents]
 [show_lines]: #show_lines-
 Module to create visible lines in a list.
+
+_Arguments:_
 ```OpenSCAD
 show_lines (l_list, c, direction, d, auto)
 ```
@@ -171,6 +185,8 @@ _Specialized module:_
 #### show_vector [^][contents]
 [show_vector]: #show_vector-
 Module to create a visible line to show a vector.
+
+_Arguments:_
 ```OpenSCAD
 show_vector (v, p, c, direction, d, auto)
 ```
@@ -188,9 +204,11 @@ show_vector (v, p, c, direction, d, auto)
 
 #### show_trace [^][contents]
 [show_trace]: #show_trace-
-Module to create a visible trace.\
+Module to create a visible trace.  
 Create a line between the points.
 If the same point is twice in order, then it will create a visible point at this position.
+
+_Arguments:_
 ```OpenSCAD
 show_trace (p_list, c, closed, direction, d, p_factor, auto)
 ```
@@ -219,9 +237,11 @@ _Specialized module:_
 
 #### show_traces [^][contents]
 [show_traces]: #show_traces-
-Module to create visible traces.\
+Module to create visible traces.  
 Create a line between the points of ervery trace.
 If the same point is twice in order, then it will create a visible point at this position.
+
+_Arguments:_
 ```OpenSCAD
 show_traces (p_lists, c, closed, direction, d, p_factor, auto)
 ```
@@ -251,6 +271,8 @@ _Specialized module:_
 #### show_label [^][contents]
 [show_label]: #show_label-
 Show a label with text.
+
+_Arguments:_
 ```OpenSCAD
 show_label (txt, h, a, valign, halign, auto)
 ```
@@ -274,8 +296,10 @@ show_label (txt, h, a, valign, halign, auto)
 
 #### object_slice [^][contents]
 [object_slice]: #object_slice-
-Cuts a slice out of an object.\
+Cuts a slice out of an object.  
 Useful for testing hidden details of an object.
+
+_Arguments:_
 ```OpenSCAD
 object_slice (axis, position, thickness, limit)
 ```
@@ -295,6 +319,8 @@ object_slice (axis, position, thickness, limit)
 #### object_pane [^][contents]
 [object_pane]: #object_pane-
 Create a small pane in X-Y-plane of an object at given height.
+
+_Arguments:_
 ```OpenSCAD
 object_pane (position, thickness, limit)
 ```
