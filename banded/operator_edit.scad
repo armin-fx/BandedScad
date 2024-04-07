@@ -187,7 +187,7 @@ module select_object (i)
 {
 	if (i!=undef && is_num(i))
 	    if (i>=0) children (i);
-		else      children ($children-i);
+		else      children ($children+i);
 	else if (i!=undef && is_list(i))
 		for (j=i) children (j);
 	else          children ();
@@ -245,8 +245,8 @@ module xor_2 (d=3, skirt=epsilon)
 		{
 			intersection_for (i = [0:1:$children-1])
 			children(i);
-			if      (d==3) sphere(skirt);
-			else if (d==2) circle(skirt);
+			if      (d==3) sphere(skirt, $fn=8);
+			else if (d==2) circle(skirt, $fn=8);
 		}
 	}
 }
@@ -266,7 +266,7 @@ module minkowski_difference (d=3, convexity)
 				minkowski()
 				{
 					bounding_box(d=d) children(0);
-					if (d==3) cube(center=true);
+					if (d==3) cube  (center=true);
 					if (d==2) square(center=true);
 				}
 				//

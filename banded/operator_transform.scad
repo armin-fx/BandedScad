@@ -118,10 +118,14 @@ module rotate_backwards (a, v)
 module rotate_at (a, p, v, backwards=false)
 {
 	if (! (backwards==true))
-		translate(p)
-		rotate(a, v)
-		translate(-p)
-		children();
+		if (p!=undef)
+			translate(p)
+			rotate(a, v)
+			translate(-p)
+			children();
+		else
+			rotate(a, v)
+			children();
 	else
 		rotate_backwards_at (a, p, v)
 		children();
@@ -133,10 +137,14 @@ module rotate_at (a, p, v, backwards=false)
 // p      - wie bei translate()
 module rotate_backwards_at (a, p, v)
 {
-	translate(p)
-	rotate_backwards(a, v)
-	translate(-p)
-	children();
+	if (p!=undef)
+		translate(p)
+		rotate_backwards(a, v)
+		translate(-p)
+		children();
+	else
+		rotate_backwards(a, v)
+		children();
 }
 
 // Objekt von in Richtung Z-Achse in Richtung Vektor v drehen
@@ -179,7 +187,7 @@ module rotate_to_vector (v, a, backwards=false, d=3)
 // Objekt von in Richtung Z-Achse in Richtung Vektor v rückwärts drehen
 module rotate_backwards_to_vector (v, a, d=3)
 {
-	rotate_to_vector (v, a, backwards=true, d=d);
+	rotate_to_vector (v, a, backwards=true, d=d)
 	children();
 }
 
@@ -187,10 +195,14 @@ module rotate_backwards_to_vector (v, a, d=3)
 module rotate_to_vector_at (v, p, a, backwards=false, d=3)
 {
 	if (! (backwards==true))
-		translate(p)
-		rotate_to_vector(v, a, d=d)
-		translate(-p)
-		children();
+		if (p!=undef)
+			translate(p)
+			rotate_to_vector(v, a, d=d)
+			translate(-p)
+			children();
+		else
+			rotate_to_vector(v, a, d=d)
+			children();
 	else
 		rotate_backwards_to_vector_at (v, p, a, d=d)
 		children();
@@ -198,10 +210,14 @@ module rotate_to_vector_at (v, p, a, backwards=false, d=3)
 // Objekt von in Richtung Z-Achse in Richtung Vektor v rückwärts drehen an der angegebenen Position
 module rotate_backwards_to_vector_at (v, p, a, d=3)
 {
-	translate(p)
-	rotate_backwards_to_vector(v, a, d=d)
-	translate(-p)
-	children();
+	if (p!=undef)
+		translate(p)
+		rotate_backwards_to_vector(v, a, d=d)
+		translate(-p)
+		children();
+	else
+		rotate_backwards_to_vector(v, a, d=d)
+		children();
 }
 
 // rotiert um die jeweilige Achse wie die Hauptfunktion
