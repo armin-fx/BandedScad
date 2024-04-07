@@ -262,21 +262,17 @@ module corner_rounded_cube (r=[1,1,1])
 	b = parameter_circle_r (R[1]);
 	c = parameter_circle_r (R[2]);
 	//
-	if (c==max(a,b,c))  render(convexity=8) intersection()
+	if (c==max(a,b,c))
 	{
 		fn_c = get_slices_circle_current_x (c, 90);
 		//
-		for (i=[0.5:fn_c])
+		for (i=[0.5:1:fn_c])
 		{
 			t = i/fn_c;
 			rotate_at_z(90*t, [c,c,0])
 			rotate_x(270)
-		//	edge_rounded(r=bezier_1(t, [   b ,   a ]), h=a+b+c, angle=[90,270], extra=a+b+c);
-			edge_rounded(r=lookup  (t, [[0,b],[1,a]]), h=a+b+c, angle=[90,270], extra=a+b+c);
+			edge_rounded(r=lerp(b,a,t), h=a+b+c, angle=configure_angle(opening=90, end=0), extra=a+b+c);
 		}
-		
-		translate(-[extra,extra,extra])
-		cube(      [extra,extra,extra] + [c*(1+2/fn_c),c*(1+2/fn_c),max(a,b)]);
 	}
 	else if (b==max(a,b,c))
 	{
