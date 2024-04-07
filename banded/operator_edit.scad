@@ -277,6 +277,51 @@ module minkowski_difference (d=3, convexity)
 	}
 }
 
+// Experimentell,
+// manchmal treten Probleme auf
+module hull_difference (d=3, skirt=epsilon)
+{
+	if ($children>0)
+	hull()
+	{
+		for (i=[0:1:$children-1])
+		difference()
+		{
+			hull()
+				children(i);
+			//
+			minkowski()
+			{
+				children(i);
+				if      (d==3) sphere(skirt, $fn=8);
+				else if (d==2) circle(skirt, $fn=8);
+			}
+		}
+	}
+}
+
+// Experimentell,
+// manchmal treten Probleme auf
+module chain (d=3, skirt=epsilon)
+{
+	if ($children>1)
+	render()
+	for (i=[0:1:$children-2])
+	difference()
+	{
+		hull()
+			{ children(i); children(i+1); }
+		//
+		minkowski()
+		{
+			hull_difference (skirt=skirt)
+				{ children(i); children(i+1); }
+			if      (d==3) sphere(skirt, $fn=8);
+			else if (d==2) circle(skirt, $fn=8);
+		}
+	}
+}
+
 module bounding_box (d=3, height=1000)
 {
 	if (d==3) bounding_box_3d_intern (height=height) hull() children();

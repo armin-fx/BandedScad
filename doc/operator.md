@@ -55,6 +55,8 @@ Transform and edit objects
   - [Modifying operations](#modifying-operations-)
     - [`xor()`][xor]
     - [`minkowski_difference()`][minkowski_difference]
+    - [`hull_difference()`][hull_difference]
+    - [`chain()`][chain]
     - [`bounding_box()`][bounding_box]
     - [Split object in 2 parts][split_xxx]
       - `split_top()`
@@ -667,6 +669,38 @@ minkowski_difference (d, convexity)
 - `convexity`
   - Integer. The convexity parameter specifies the maximum number
     of front sides (or back sides) a ray intersecting the object might penetrate.
+
+#### hull_difference [^][contents]
+[hull_difference]: #hull_difference-
+Create a difference from the convex hull of an object and the object itself.  
+Experimental, make sometimes errors.
+
+_Arguments:_
+```OpenSCAD
+hull_difference (d=3, skirt=epsilon)
+```
+- `d`
+  - dimension of the objects
+    - `3` - 3D object, default
+    - `2` - 2D object
+- `skirt` - optional, create a little skirt around the object to prevent errors
+  - default = constant `epsilon`
+
+#### chain [^][contents]
+[chain]: #chain-
+Fill the space between each object pair.  
+Experimental, make sometimes errors.
+
+_Arguments:_
+```OpenSCAD
+chain (d=3, skirt=epsilon)
+```
+- `d`
+  - dimension of the objects
+    - `3` - 3D object, default
+    - `2` - 2D object
+- `skirt` - optional, create a little skirt around the object to prevent errors
+  - default = constant `epsilon`
 
 #### bounding_box [^][contents]
 [bounding_box]: #bounding_box-
