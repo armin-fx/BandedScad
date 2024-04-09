@@ -19,6 +19,8 @@ Version
     - [`required_version()`][required_version]
   - [Convert version format](#convert-version-format-)
     - [`version_to_str()`][version_to_str]
+  - [Deprecated functionality](#deprecated-functionality-)
+    - [`deprecated()`][deprecated]
 
 
 Versioning [^][contents]
@@ -123,4 +125,24 @@ version_to_str (version)
 ```
 - `version`
   - the version as list in Semantic Versioning scheme
+
+
+### Deprecated functionality [^][contents]
+
+#### module and function deprecated() [^][contents]
+[deprecated]: #module-and-function-deprecated-
+Yield a 'deprecated' message in console.  
+You can put this in deprecated modules or functions.
+Then it will show a message if these are executed.
+
+_Arguments:_
+```OpenSCAD
+deprecated (old, alternative, message)
+```
+- `old`
+  - old deprecated name of functionality as string
+- `alternative`
+  - optional, alternative name of functionality as string
+- `message`
+  - optional, an additional text
 

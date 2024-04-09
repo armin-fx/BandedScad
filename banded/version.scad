@@ -18,13 +18,13 @@
 // format: [ MAJOR, MINOR, PATCH ]
 // or:     [ MAJOR, MINOR, PATCH, "pre" ]
 //
-function version_banded() = [ 2, 8, 0 ];
+function version_banded() = [ 2, 9, 0 ];
 
 // Version date
 //
 // Number format: year 4 digit - month 2 digit - day 2 digit
 //
-function date_banded() = 20240407;
+function date_banded() = 20240409;
 
 
 version_banded = version_banded();
@@ -71,4 +71,31 @@ function version_to_str (version) =
 		: str(version[0],".",version[1],".",version[2])
 	: ""
 ;
+
+// - Deprecated functionality:
+
+// Yield a 'deprecated' message in console
+function deprecated (old, alternative, message) =
+	assert (old!=undef, "Please set the deprecated functionality as string.")
+	let (
+		s = str(
+			"\nDEPRECATED: ", old, " will be removed in future releases.",
+			alternative==undef ? "" : " Use ", alternative," instead.",
+			message    ==undef ? "" : str("\n", message)
+			)
+	)
+	echo (
+		version_num()>=20210100
+		? s
+		: str (
+			"<span style=\"background-color:yellow\">",
+			s,
+			"</span>"
+		)
+	)
+;
+//
+module deprecated (old, alternative, message)
+{  x = deprecated (old, alternative, message);
+}
 
