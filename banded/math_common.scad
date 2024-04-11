@@ -60,7 +60,7 @@ function is_constrain_inner (value, a, b) =
 // deviation - maximale Abweichung der Werte
 function is_nearly (a, b, deviation=deviation) =
 	 is_num (a)&&is_num(b) ? min(a,b)+abs(deviation) >= max(a,b)
-	:is_list(a) ? min( [ for (e=[0:len(a)-1]) is_nearly(a[e],b[e],deviation) ] )
+	:is_list(a) ? [ for (i=[0:1:len(a)-1]) if (! is_nearly(a[i],b[i],deviation)) 0] == []
 	:a==b
 ;
 

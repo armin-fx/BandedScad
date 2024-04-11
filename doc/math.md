@@ -164,8 +164,12 @@ _Arguments:_
 ```OpenSCAD
 is_nearly (a, b, deviation)
 ```
-- `a`, `b`  - Values or lists to compare
-- deviation - Maximum deviation of the values, default = `1e-14`, calculation deviation
+- `a`, `b`
+  - Values or lists to compare
+  - as lists: Compare each value on the same index on both lists.
+    This is useful to test 2 vectors or points.
+- deviation
+  - Maximum deviation of the values, default = `1e-14`, calculation deviation
 
 #### quantize [^][contents]
 [quantize]: #quantize-
