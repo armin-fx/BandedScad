@@ -109,7 +109,7 @@ You can use this to ensure that you use the correct version.
 _Example:_
 ```OpenSCAD
 // Assert a message if the current version is incompatible:
-required_version ([1.0.0]);
+required_version ([1,0,0]);
 ```
 
 
