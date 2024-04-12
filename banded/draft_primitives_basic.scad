@@ -331,7 +331,7 @@ function linear_extrude (object, height, center, twist, slices, scale) =
 					 m_r = matrix_rotate_z  (-Twist * n/Slices, d=2, short=true)
 				//	,m_s = matrix_scale     (bezier_1 (n/Slices, [[1,1],Scale]), d=2, short=true)
 					,m_s = matrix_scale     ([1,1] * ((Slices-n)/Slices) + Scale * (n/Slices), d=2, short=true)
-					,z   = H * n/Slices
+					,z   = H * n/Slices + (Center ? -H/2 : 0)
 				)
 				for (e=Object[0]) let( b = m_s * m_r * e ) [b.x,b.y, z]
 			]
