@@ -73,11 +73,12 @@ Color:
 More objects:
 - 2D
   - [`triangle()`](object.md#triangle-)
+  - [`ring()`](object.md#ring-)
 - 3D
   - [`wedge()`](object.md#wedge-)
   - [`wedge_freecad()`](object.md#wedge_freecad-)
   - [`torus()`](object.md#torus-)
-  - [`ring_square()`](object.md#ring_square-)
+  - [`tube()`](object.md#tube-)
   - [`funnel()`](object.md#funnel-)
 - Verschiedenes
   - [`bounding_square()`](object.md#bounding_square-)

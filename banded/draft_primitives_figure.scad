@@ -11,6 +11,8 @@ use <banded/draft_curves.scad>
 use <banded/draft_transform.scad>
 use <banded/draft_primitives_basic.scad>
 
+use <banded/version.scad>
+
 
 // - 2D:
 
@@ -22,6 +24,32 @@ function triangle (size, center, align, side) =
 		trace = triangle_curve (size, center, align, side)
 	)
 	[ trace, [[for (i=[0:1:len(trace)-1]) i]] ]
+;
+
+// erzeugt einen Ring als 2D Objekt
+// Argumente:
+//   r      - mittlerer Radius
+//   ri, di - Innenradius, Innendurchmesser
+//   ro, do - Außenradius, Außendurchmesser
+//   w      - Breite der Wand
+//   angle  - gezeichneter Winkel in Grad, Standart=360
+//            als Zahl  = Winkel von 0 bis 'angle' = Öffnungswinkel
+//            als Liste = [Öffnungswinkel, Anfangswinkel]
+// Angegeben müssen:
+//   genau 2 Angaben von r oder ri oder ro oder w
+function ring (r, w, ri, ro, angle=360, center=false, d, di, do, outer, align) =
+	let (
+		 rx    = parameter_ring_2r(r, w, ri, ro, d, di, do)
+		,angles = parameter_angle (angle, [360,0])
+		,slices = get_slices_circle_current_x (max(rx), angles[0], true)
+		,Outer  = parameter_numlist (2, outer, [0,0], true)
+		,rx_o   = [for (i=[0:1]) rx[i] * get_circle_factor (slices, Outer[i], angles[0]) ]
+		,Align = parameter_align (align, [0,0], center)
+	)
+	translate (v=[ Align.x*rx[1], Align.y*rx[1]], object=append_object(
+		             circle_curve(r = rx_o[1], angle=angles, piece=true, slices=slices),
+		reverse_full(circle_curve(r = rx_o[0], angle=angles, piece=true, slices=slices))
+	) )
 ;
 
 
@@ -180,7 +208,7 @@ function torus (r, w, ri, ro, angle=360, center=false, fn_ring, outer, align) =
 	)
 ;
 
-// erzeugt einen quadratischen Ring
+// erzeugt eine Röhre
 // Argumente:
 //   h      - Höhe
 //   r      - mittlerer Radius
@@ -193,7 +221,7 @@ function torus (r, w, ri, ro, angle=360, center=false, fn_ring, outer, align) =
 // Angegeben müssen:
 //   h
 //   genau 2 Angaben von r oder ri oder ro oder w
-function ring_square (h=1, r, w, ri, ro, angle=360, center=false, d, di, do, outer, align) =
+function tube (h=1, r, w, ri, ro, angle=360, center=false, d, di, do, outer, align) =
 	let (
 		 rx    = parameter_ring_2r(r, w, ri, ro, d, di, do)
 		,angles = parameter_angle (angle, [360,0])
@@ -209,6 +237,10 @@ function ring_square (h=1, r, w, ri, ro, angle=360, center=false, d, di, do, out
 			translate_points( v=[rx_o[0], 0], list=
 			square_curve([ rx_o[1]-rx_o[0], h ]) )
 	) )
+;
+function ring_square (h=1, r, w, ri, ro, angle=360, center=false, d, di, do, outer, align) =
+	let(_= deprecated ("ring_square", "tube") )
+	tube (h, r, w, ri, ro, angle, center, d, di, do, outer, align)
 ;
 
 // Erzeugt einen Trichter

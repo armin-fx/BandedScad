@@ -16,11 +16,12 @@ Configurable objects
 - [Figures](#figures-)
   - [2D](#2d-)
     - [`triangle()`][triangle]
+    - [`ring()`][ring]
   - [3D](#3d-)
     - [`wedge()`][wedge]
     - [`wedge_freecad()`][wedge_freecad]
     - [`torus()`][torus]
-    - [`ring_square()`][ring_square]
+    - [`tube()`][tube]
     - [`funnel()`][funnel]
   - [Miscellaneous](#miscellaneous-)
     - [`empty()`][empty]
@@ -88,6 +89,38 @@ triangle (size, center, align, side)
   - [Extra arguments - align][align]
   - default = `[1,1]` = oriented on the positive side of axis
     like `square_extend()`
+
+#### ring [^][contents]
+[ring]: #ring-
+Creates a ring.  
+A circle with a circle hole.
+
+_Arguments:_
+```OpenSCAD
+ring (r, w, ri, ro, angle, center, d, di, do, outer, align)
+```
+- `r`        - mean radius, distance between midpoint and middle of the wall
+- `ri`, `di` - inner radius, inner diameter
+- `ro`, `do` - outside radius, outside diameter
+- `w`        - width of the wall
+- `angle`    - drawed angle in degree, default=`360`
+  - as number = angle from `0` to `angle` = opening angle
+  - as list   = `[opening angle, start angle]`
+- `align`
+  - Side from origin away that the part should be.
+  - [Extra arguments - align][align]
+  - default = `[0,0,1]` = X-Y-axis centered
+- `outer`
+  - value `0`...`1`
+    - `0` - edges on real circle line, default like `circle()` in OpenSCAD
+    - `1` - tangent on real circle line
+    - any value between, such as `0.5` = middle around inner or outer circle
+  - or as list `[inner circle, outer circle]`
+  - the problem is described in website
+    <https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/undersized_circular_objects>
+
+_Must specify:_
+- exactly 2 specifications of `r` or `ri` or `ro` or `w`
 
 
 ### 3D [^][contents]
@@ -225,19 +258,20 @@ r=6; w=8;
 	       torus (r=r, w=w, outer=0.99, $fn=7) ;
 ```
 
-#### ring_square [^][contents]
-[ring_square]: #ring_square-
-Creates a square ring.
+#### tube [^][contents]
+[tube]: #tube-
+Creates a tube.  
+A cylinder with a cylinder hole.
 
 _Arguments:_
 ```OpenSCAD
-ring_square (h, r, w, ri, ro, angle, center, d, di, do, outer, align)
+tube (h, r, w, ri, ro, angle, center, d, di, do, outer, align)
 ```
 - `h`        - height
-- `r`        - mean radius, middle line of the ring
+- `r`        - mean radius, distance between midpoint and middle of the wall
 - `ri`, `di` - inner radius, inner diameter
 - `ro`, `do` - outside radius, outside diameter
-- `w`        - width of the ring
+- `w`        - width of the wall
 - `angle`    - drawed angle in degree, default=`360`
   - as number = angle from `0` to `angle` = opening angle
   - as list   = `[opening angle, start angle]`
@@ -257,6 +291,10 @@ ring_square (h, r, w, ri, ro, angle, center, d, di, do, outer, align)
 _Must specify:_
 - `h`
 - exactly 2 specifications of `r` or `ri` or `ro` or `w`
+
+_Deprecated name:_
+- `ring_square()`
+  - A link to `tube()`. This will be removed in future releases.
 
 #### funnel [^][contents]
 [funnel]: #funnel-
@@ -295,7 +333,7 @@ funnel (h=6, w=1, ri1=2, ri2=3);
 translate ([0,0,6])
 funnel (h=3, w=1, ri1=3, ri2=7);
 translate ([0,0,9])
-ring_square (h=0.5, w=1, ri=7);
+tube   (h=0.5, w=1, ri=7);
 ```
 
 

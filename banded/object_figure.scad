@@ -11,6 +11,8 @@ use <banded/draft_curves.scad>
 use <banded/draft_primitives_figure.scad>
 use <banded/operator_transform.scad>
 
+use <banded/version.scad>
+
 
 // - 2D:
 
@@ -21,6 +23,34 @@ module triangle (size, center, align, side)
 {
 	polygon (
 		triangle_curve (size, center, align, side) );
+}
+
+// erzeugt einen Ring als 2D Objekt
+// Argumente:
+//   r      - mittlerer Radius
+//   ri, di - Innenradius, Innendurchmesser
+//   ro, do - Außenradius, Außendurchmesser
+//   w      - Breite der Wand
+//   angle  - gezeichneter Winkel in Grad, Standart=360
+//            als Zahl  = Winkel von 0 bis 'angle' = Öffnungswinkel
+//            als Liste = [Öffnungswinkel, Anfangswinkel]
+// Angegeben müssen:
+//   genau 2 Angaben von r oder ri oder ro oder w
+module ring (r, w, ri, ro, angle=360, center=false, d, di, do, outer, align)
+{
+	rx     = parameter_ring_2r (r, w, ri, ro, d, di, do);
+	angles = parameter_angle (angle, [360,0]);
+	slices = get_slices_circle_current_x (max(rx), angles[0], true);
+	Outer  = parameter_numlist (2, outer, [0,0], true);
+	rx_o   = [for (i=[0:1]) rx[i] * get_circle_factor (slices, Outer[i], angles[0]) ];
+	Align  = parameter_align (align, [0,0], center);
+	//
+	translate ([ Align[0]*rx[1], Align[1]*rx[1]])
+	difference()
+	{
+		polygon(circle_curve(r = rx_o[1], angle=angles, piece=true, slices=slices));
+		polygon(circle_curve(r = rx_o[0], angle=angles, piece=true, slices=slices));
+	}
 }
 
 
@@ -117,20 +147,20 @@ module torus (r, w, ri, ro, angle=360, center=false, fn_ring, outer, align)
 	}
 }
 
-// erzeugt einen quadratischen Ring
+// erzeugt eine Röhre
 // Argumente:
 //   h      - Höhe
 //   r      - mittlerer Radius
 //   ri, di - Innenradius, Innendurchmesser
 //   ro, do - Außenradius, Außendurchmesser
-//   w      - Breite des Rings
+//   w      - Breite der Wand
 //   angle  - gezeichneter Winkel in Grad, Standart=360
 //            als Zahl  = Winkel von 0 bis 'angle' = Öffnungswinkel
 //            als Liste = [Öffnungswinkel, Anfangswinkel]
 // Angegeben müssen:
 //   h
 //   genau 2 Angaben von r oder ri oder ro oder w
-module ring_square (h=1, r, w, ri, ro, angle=360, center=false, d, di, do, outer, align)
+module tube (h=1, r, w, ri, ro, angle=360, center=false, d, di, do, outer, align)
 {
 	rx     = parameter_ring_2r (r, w, ri, ro, d, di, do);
 	angles = parameter_angle (angle, [360,0]);
@@ -146,6 +176,11 @@ module ring_square (h=1, r, w, ri, ro, angle=360, center=false, d, di, do, outer
 		polygon(circle_curve(r = rx_o[1], angle=angles, piece=true, slices=slices));
 		polygon(circle_curve(r = rx_o[0], angle=angles, piece=true, slices=slices));
 	}
+}
+module ring_square (h=1, r, w, ri, ro, angle=360, center=false, d, di, do, outer, align)
+{
+	deprecated ("ring_square", "tube");
+	tube (h, r, w, ri, ro, angle, center, d, di, do, outer, align);
 }
 
 // Erzeugt einen Trichter

@@ -608,7 +608,7 @@ d_inner=4;
 combine()
 {
 	cube_extend([7,7,2], align=[0,0,-1]);
-	ring_square(h=2, di=d_inner, w=1);
+	tube       (h=2, di=d_inner, w=1);
 	cylinder   (h=6, d =d_inner, center=true);
 }
 ```
