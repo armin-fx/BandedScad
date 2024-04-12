@@ -435,7 +435,7 @@ function get_next_trace_position (string, append, is_reverse) =
 // Vorbereitung zum Aufteilen in Dreiecke
 function connect_polygon_holes_traces (traces) =
 	let (
-		 children  =         list_polygon_holes_next_traces (traces)
+		 children  =         list_polygon_holes_next_traces  (traces)
 		,orient    = [for (e=list_polygon_holes_parent_traces(traces)) len(e)]
 		,t_rotated = unify_polygon_rotation_traces (traces, orient)
 		,linked    =
@@ -530,11 +530,13 @@ function list_polygon_holes_children_traces (traces) =
 function unify_polygon_rotation_traces (traces, orientation) =
 	[for (i=[0:1:len(traces)-1])
 		let (
-			keep =
-				!(orientation!=undef && is_odd(orientation[i]))
-				&& is_math_rotation_polygon (traces[i])
+			maintain =
+				xor (
+				 	(orientation!=undef && is_odd(orientation[i]))
+				,	is_math_rotation_polygon (traces[i])
+				)
 		)
-		keep ? traces[i] : reverse(traces[i])
+		maintain ? traces[i] : reverse(traces[i])
 	]
 ;
 
