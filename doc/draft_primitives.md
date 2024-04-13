@@ -221,11 +221,8 @@ linear_extrude (object, height, center, twist, slices, scale, align)
    - count of segments, optional, without specification it will set automatically
 - `align`
   - Side from origin away that the part should be.
-    Use only the Z-Axis.
-  - `align` overwrites parameter `center`
+    Configures only the Z-Axis, all other axis will be ignored.
   - [Extra arguments - align][align]
-  - as number: align in Z-axis
-  - as list: only Z-axis will be used
 
 #### rotate_extrude [^][contents]
 [rotate_extrude]: #rotate_extrude-

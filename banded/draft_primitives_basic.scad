@@ -319,7 +319,7 @@ function linear_extrude (object, height, center, twist, slices, scale, align) =
 		 H     = height!=undef ? height : 100
 		,Twist = twist !=undef ? twist  : 0
 		,Scale = parameter_scale (scale, 2)
-		,Align = parameter_align ((is_num(align) ? [0,0,align] : align), [0,0,1], center)
+		,Align = parameter_align (align, [0,0,1], center)
 		,Slices = get_slices_extrude (Object[0], H, Twist, slices, Scale, $fn, $fs, $fa)
 		//
 		,len_base = len(Object[0])

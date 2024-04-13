@@ -843,6 +843,7 @@ parameter_align (align, preset, center)
   - Specification of `align` overrides specification of `center`.
 - `align`
   - A list with an align value on each respective axis
+  - You can set a numeric value, then all axis will set to this align value.
   - Values can be given at the respective axis `-1...0...1`.
     - `1`  = alignment of the object to the positive side of the respective axis.
     - `-1` = alignment of the object to the negative side.
@@ -851,6 +852,7 @@ parameter_align (align, preset, center)
 - `preset`
   - Specify the default align of the object if `center` or `align` is not set
   - The list size defines the dimension of the object
+  - If this parameter is not set a 3 dimensional centered object will set as default
 
 #### parameter_numlist [^][contents]
 [parameter_numlist]: #parameter_numlist-

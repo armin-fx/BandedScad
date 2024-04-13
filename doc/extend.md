@@ -113,6 +113,7 @@ with _extra special variables_, some modules have extra arguments.
     - `1` means for example the object will set into the positive side
       of this axis and touch origin.
     - `0` means this axis of the object is centered
+  - You can set a numeric value, then all axis will set to this align value.
   - If the module has an argument `center`:
     Specifying `align` replaces specifying `center`,
     `center` is then ignored.
@@ -222,7 +223,7 @@ cube_extend (size, center, align)
 
 #### linear_extrude_extend [^][contents]
 [linear_extrude_extend]: linear_extrude_extend-
-Extend `linear_extrude_extend()` with extra arguments.  
+Extend `linear_extrude_extend()` with extra arguments.
 
 _Additional options:_
 ```OpenSCAD
@@ -230,11 +231,8 @@ linear_extrude_extend (height, center, twist, slices, scale, align, convexity)
 ```
 - `align`
   - Side from origin away that the part should be.
-    Use only the Z-Axis.
-  - `align` overwrites parameter `center`
+    Configures only the Z-Axis, all other axis will be ignored.
   - [Extra arguments- align][align]
-  - as number: align in Z-axis
-  - as list: only Z-axis will be used
 
 #### rotate_extrude_extend [^][contents]
 [rotate_extrude_extend]: #rotate_extrude_extend-

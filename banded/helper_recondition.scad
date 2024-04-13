@@ -319,17 +319,21 @@ function parameter_scale (scale, d=3, preset) =
 // An der jeweiligen Achse können Werte gegeben werden '-1...0...1'.
 // - '1' = Ausrichtung des Objekts an der positiven Seite der jeweiligen Achse.
 // - '0' = Das Objekt ist an der jeweiligen Achse im Mittelpunkt
+// Bei Angabe als Zahlwert wird jede Achse auf diese Ausrichtung gesetzt.
 // [0,0,0] ist wie center=true, Standartverhalten ist center=false, angegeben in preset.
 // Angabe von 'align' überschreibt Angabe 'center'.
 function parameter_align (align, preset, center) =
 	 preset==undef ?
-		align==undef ? [0,0,0]
-		:              align
+		align==undef  ? [0,0,0] :
+		is_num(align) ? [align,align,align] :
+		align
 	:align==undef ?
 		center!=undef ?
 			center==true ? [for (i=[0:1:len(preset)-1]) 0 ]
 			:              preset
 		:	preset
+	:is_num(align) ?
+		[for (e=preset) align ]
 	:[for (i=[0:1:len(preset)-1])
 		align[i]==undef ? preset[i]
 		:                 align[i]

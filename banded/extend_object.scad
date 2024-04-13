@@ -109,7 +109,7 @@ module sphere_extend (r, d, outer, align)
 module linear_extrude_extend (height, center, twist, slices, scale, align, convexity)
 {
 	H     = height!=undef ? height : 100;
-	Align = parameter_align ((is_num(align) ? [0,0,align] : align), [0,0,1], center);
+	Align = parameter_align (align, [0,0,1], center);
 	
 	translate ([0,0, H * (Align.z-1)/2 ])
 	linear_extrude (height=H, twist=twist, slices=slices, scale=scale, convexity=convexity)
