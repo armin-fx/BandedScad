@@ -18,7 +18,7 @@
 // format: [ MAJOR, MINOR, PATCH ]
 // or:     [ MAJOR, MINOR, PATCH, "pre" ]
 //
-function version_banded() = [ 2, 12, 0 ];
+function version_banded() = [ 2, 12, 1 ];
 
 // Version date
 //
@@ -35,9 +35,10 @@ date_banded    = date_banded();
 
 // test if this version of BandedScad is compatible with the destinated version
 function is_compatible (version, current=version_banded) =
-	(version[0] == current[0]) &&
-	(version[1] <= current[1]) &&
-	(version[2] <= current[2])
+	(version[0] == current[0]) && (
+		 (version[1] <  current[1]) ||
+		((version[1] == current[1]) && (version[2] <= current[2]))
+	)
 ;
 
 // test if this version of OpenSCAD is compatible with the destinated version
