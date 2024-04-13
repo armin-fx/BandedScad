@@ -305,13 +305,12 @@ function rotate_extrude_extend (object, angle=360, slices="x") =
 	[points, [ each faces, each bottom_triangles, each top_triangles ] ]
 ;
 
-function linear_extrude_points (list, height, center, twist, slices, scale) =
-	linear_extrude (list, height, center, twist, slices, scale)
+function linear_extrude_points (list, height, center, twist, slices, scale, align) =
+	linear_extrude (list, height, center, twist, slices, scale, align)
 ;
 //
 // TODO work on the case scale=0
-// TODO better ends generation on bottom and top
-function linear_extrude (object, height, center, twist, slices, scale) =
+function linear_extrude (object, height, center, twist, slices, scale, align) =
 	let(
 		 Object = prepare_object_2d_path (object)
 	)
@@ -320,7 +319,7 @@ function linear_extrude (object, height, center, twist, slices, scale) =
 		 H     = height!=undef ? height : 100
 		,Twist = twist !=undef ? twist  : 0
 		,Scale = parameter_scale (scale, 2)
-		,Center = center==true
+		,Align = parameter_align ((is_num(align) ? [0,0,align] : align), [0,0,1], center)
 		,Slices = get_slices_extrude (Object[0], H, Twist, slices, Scale, $fn, $fs, $fa)
 		//
 		,len_base = len(Object[0])
@@ -331,7 +330,7 @@ function linear_extrude (object, height, center, twist, slices, scale) =
 					 m_r = matrix_rotate_z  (-Twist * n/Slices, d=2, short=true)
 				//	,m_s = matrix_scale     (bezier_1 (n/Slices, [[1,1],Scale]), d=2, short=true)
 					,m_s = matrix_scale     ([1,1] * ((Slices-n)/Slices) + Scale * (n/Slices), d=2, short=true)
-					,z   = H * n/Slices + (Center ? -H/2 : 0)
+					,z   = H * (n/Slices + (Align.z-1)/2)
 				)
 				for (e=Object[0]) let( b = m_s * m_r * e ) [b.x,b.y, z]
 			]

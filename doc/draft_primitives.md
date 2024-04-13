@@ -27,6 +27,7 @@ Draft objects as data list - Primitives
     - Defined transform operations
     - [`helix_extrude()`][helix_extrude]
 
+[align]:     extend.md#extra-arguments-
 [special_x]: extend.md#special-variables-
 
 
@@ -80,7 +81,7 @@ More objects:
   - [`torus()`](object.md#torus-)
   - [`tube()`](object.md#tube-)
   - [`funnel()`](object.md#funnel-)
-- Verschiedenes
+- Miscellaneous
   - [`bounding_square()`](object.md#bounding_square-)
   - [`bounding_cube()`](object.md#bounding_cube-)
 
@@ -193,7 +194,7 @@ _Implemented functions:_
 - `multmatrix(object, m)`
 - `color     (object, c, alpha)`
 - `hull      (object)`
-- [`linear_extrude (object, height, center, twist, slices, scale)`][linear_extrude]
+- [`linear_extrude (object, height, center, twist, slices, scale, align)`][linear_extrude]
 - [`rotate_extrude (object, angle, slices)`][rotate_extrude]
 
 _Not yet implemented:_
@@ -206,22 +207,33 @@ _Not yet implemented:_
 #### linear_extrude [^][contents]
 [linear_extrude]: #linear_extrude-
 Extrudes a 2D object in a list to a 3D solid object.  
-Uses the same arguments like buildin module `linear_extrude()` in OpenSCAD.  
+Uses the same arguments like buildin module
+[`linear_extrude()`](https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Using_the_2D_Subsystem#linear_extrude)
+in OpenSCAD.  
 Returns a list with object data.
 
 _Arguments:_
 ```OpenSCAD
-linear_extrude (object, height, center, twist, slices, scale)
+linear_extrude (object, height, center, twist, slices, scale, align)
 ```
 - `object` - 2D data object or a trace as point list
 - `slices`
    - count of segments, optional, without specification it will set automatically
+- `align`
+  - Side from origin away that the part should be.
+    Use only the Z-Axis.
+  - `align` overwrites parameter `center`
+  - [Extra arguments - align][align]
+  - as number: align in Z-axis
+  - as list: only Z-axis will be used
 
 #### rotate_extrude [^][contents]
 [rotate_extrude]: #rotate_extrude-
 Rotational extrudes a 2D hull as trace in a point list
 around the Z axis to a 3D solid object.  
-Uses the same arguments like `rotate_extrude()` in OpenSCAD.  
+Uses the same arguments like
+[`rotate_extrude()`](https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Using_the_2D_Subsystem#rotate_extrude)
+in OpenSCAD.  
 Returns a list with object data.
 
 _Arguments:_

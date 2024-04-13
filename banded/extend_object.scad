@@ -100,6 +100,22 @@ module sphere_extend (r, d, outer, align)
 
 // - 2D to 3D:
 
+// modifiziert linear_extrude()
+//
+// Zusätzliche Angaben:
+//   align   - Ausrichtung eines Objekts vom Mittelpunkt aus an der Z-Achse.
+//           - als Liste wird nur die Z-Achse ausgewertet, andere Achsenangaben werden ignoriert
+//           - als Zahl für die Z-Achse direkt
+module linear_extrude_extend (height, center, twist, slices, scale, align, convexity)
+{
+	H     = height!=undef ? height : 100;
+	Align = parameter_align ((is_num(align) ? [0,0,align] : align), [0,0,1], center);
+	
+	translate ([0,0, H * (Align.z-1)/2 ])
+	linear_extrude (height=H, twist=twist, slices=slices, scale=scale, convexity=convexity)
+		children();
+}
+
 // modifiziert rotate_extrude()
 // Objekte erstellt mit rotate_extrude() sind anders gedreht
 // als z.B. das Objekt cylinder().
