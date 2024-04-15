@@ -532,7 +532,7 @@ function unify_polygon_rotation_traces (traces, orientation) =
 		let (
 			maintain =
 				xor (
-				 	(orientation!=undef && is_odd(orientation[i]))
+				 	!(orientation==undef || is_even(orientation[i]))
 				,	is_math_rotation_polygon (traces[i])
 				)
 		)
