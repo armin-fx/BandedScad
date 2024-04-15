@@ -72,6 +72,7 @@ function split_self_intersection_path_intern (points, face) =
 		f2 = concat( [ for (i=[0     :1:n[0]]) face[i] ], len(points), [ for (i=[n[1]+1:1:size-1]) face[i] ] )
 	)
 	[new_points, [f1,f2], true]
+//	[new_points, [f1,reverse(f2)], true]
 ;
 
 // gibt die Position in 'face' der Überkreuzung zurück, sonst eine leere Liste

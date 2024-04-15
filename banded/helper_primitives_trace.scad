@@ -38,9 +38,10 @@ function split_intersection_traces (traces) =
 function split_intersection_trace (trace) =
 	let (
 		ts1 = split_self_intersection_trace (trace),
-		ts2 = xor_all_traces (ts1)
+		ts2 = [for (t=ts1) is_math_rotation_polygon(t) ? t : reverse(t) ],
+		ts3 = xor_all_traces (ts2)
 	)
-	ts2
+	ts3
 ;
 
 // gibt 'traces' zurück
@@ -98,6 +99,7 @@ function split_self_intersection_trace_intern (trace) =
 		f2 = concat( [ for (i=[0     :1:n[0]]) trace[i] ], [p], [ for (i=[n[1]+1:1:size-1]) trace[i] ] )
 	)
 	[ [f1,f2], true]
+//	[ [f1,reverse(f2)], true]
 ;
 
 // gibt die Position in 'trace' der Überkreuzung zurück, sonst eine leere Liste
@@ -236,7 +238,8 @@ function xor_2_traces (trace1, trace2) =
 				//	if (line1[0]!=point && line1[1]!=point)
 					if (is_intersection_segments (line1, line2, point, ends=-1))
 						point!=true
-						?	[[point, i, j, undef, line1, line2]]
+						?	//            |<-- debug part -->|
+							[[point, i, j, undef, line1, line2]]
 						:	// list all jointly points on the same segment line
 						[for (e= //                                                     |<-- debug part ->|
 						[	is_constrain(line1[0], line2[0],line2[1]) ? [line1[0], i, j, true, line1, line2] : []
@@ -246,16 +249,27 @@ function xor_2_traces (trace1, trace2) =
 						]) if (e!=[]) e ]
 			]
 	)
-	//	echo("xor - isp", echo_list(isp))
+	/*
+		echo("xor - trace:\n",  echo_list(trace1,"trace1"),echo_list(trace2, "trace2"))
+		echo("xor - isp",       echo_list(isp))
+	//*/
 	isp==[] ? [trace1, trace2] :
 	let (
 		// sorting the points, they must insert into the traces in ascending order
 		 size_isp = len (isp)
 		,isp_sort = sort (isp     , [0])
-		,isp_1    = sort (isp_sort, [1])
-		,isp_2    = sort (isp_sort, [2])
+		,isp_clean= keep_unique (isp_sort)
+		,isp_1    = sort (isp_clean, [1])
+		,isp_2    = sort (isp_clean, [2])
+	)
+	/*
+		echo("xor - isp_clean", echo_list(isp_clean))
+	//*/
+	isp_clean==[]     ? [trace1, trace2] :
+	len(isp_clean)==1 ? [trace1, trace2] :
+	let (
 		// insert points into the traces
-		,tn_1a =
+		 tn_1a =
 			[ for (i=[0:1:size1-1])
 				let (
 					 isp_i_ = keep_value(isp_1, i, [1])
@@ -290,12 +304,14 @@ function xor_2_traces (trace1, trace2) =
 		,string  = xor_remove_double ([ each string1, each string2])
 		,res = xor_put_together (string)
 	)
-	/* echo("xor"
+	/*
+	echo("xor"
 		,"\ntrace1\t", trace1
 		,"\ntn_1\t",   tn_1
 		,"\ntrace2\t", trace2
 		,"\ntn_2\t",   tn_2
-		,"\nisp\t",    isp
+		,"\nisp\t",    echo_list_intern(isp)
+		,"\nisp_clean\t", echo_list_intern(isp_clean)
 		,"\nisp_n1\t",  isp_n1
 		,"\nisp_n2\t",  isp_n2
 		,"\nstring1\t", echo_list_intern(string1)
@@ -365,7 +381,8 @@ function xor_put_together (string, result=[]) =
 		,glue_p       = str_n[0]
 		,string_n     = remove (string, begin=0)
 	)
-	/* echo("xpt - start"
+	/*
+	echo("xpt - start"
 		,"\nis_reverse1\t",is_reverse_n
 		,"\nstring\t"    ,echo_list(string)
 	)//*/
@@ -391,6 +408,7 @@ function xor_put_together_next (string, result=[]
 		?
 			assert (false, "TODO xor_put_together_next - no match found")
 			result
+			// [each result, each value_list(string,[1]), [glue_point, each append] ]
 		:	xor_put_together_next (string, result, glue_point, is_reverse, append, reverse=false)
 	:
 	let (
@@ -403,7 +421,8 @@ function xor_put_together_next (string, result=[]
 		//
 		,pos_n = get_next_trace_position (string_n, append_n, !is_reverse_n)
 	)
-	/*echo("xpt - next"
+	/*
+	echo("xpt - next"
 		,"\npos\t"       ,pos
 		,"\nreverse\t"     ,reverse
 		,"\nis_reverse\t"  ,is_reverse
