@@ -42,19 +42,19 @@ function split_self_intersection_path_two (points, face1, face2) =
 			let (
 				l = split_self_intersection_path_two (p, res_l[1][0], res_l[1][1])
 			)
-			[l[0], concat(l[1], [face2])]
+			[l[0], [ each l[1], face2 ] ]
 	: // res_r[2]==true ?
 		res_l[2]==false ?
 			let (
 				r = split_self_intersection_path_two (p, res_r[1][0], res_r[1][1])
 			)
-			[r[0], concat([face1], r[1])]
+			[r[0], [ face1, each r[1] ] ]
 		: // res_l[2]==true ?
 			let (
 				r_ = split_self_intersection_path_two (p,     res_r[1][0], res_r[1][1]),
 				l_ = split_self_intersection_path_two (r_[0], res_l[1][0], res_l[1][1])
 			)
-			[l_[0], concat(l_[1], r_[1])]
+			[l_[0], [ each l_[1], each r_[1] ] ]
 ;
 function split_self_intersection_path_intern (points, face) =
 	let(
@@ -67,9 +67,9 @@ function split_self_intersection_path_intern (points, face) =
 			 [ select_link (points, face, n[0])[0], select_link (points, face, (n[0]+1)%size)[0] ]
 			,[ select_link (points, face, n[1])[0], select_link (points, face, (n[1]+1)%size)[0] ]
 			),
-		new_points = concat(points, [p]),
-		f1 = concat( [ for (i=[n[0]+1:1:n[1]]) face[i] ], len(points) ),
-		f2 = concat( [ for (i=[0     :1:n[0]]) face[i] ], len(points), [ for (i=[n[1]+1:1:size-1]) face[i] ] )
+		new_points = [ each points, p ],
+		f1 = [ each [ for (i=[n[0]+1:1:n[1]]) face[i] ], len(points) ],
+		f2 = [ each [ for (i=[0     :1:n[0]]) face[i] ], len(points), each [ for (i=[n[1]+1:1:size-1]) face[i] ] ]
 	)
 	[new_points, [f1,f2], true]
 //	[new_points, [f1,reverse(f2)], true]

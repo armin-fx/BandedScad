@@ -70,19 +70,19 @@ function split_self_intersection_trace_two (trace1, trace2) =
 			let (
 				l = split_self_intersection_trace_two (res_l[0][0], res_l[0][1])
 			)
-			concat(l, [trace2])
+			[ each l, trace2 ]
 	: // res_r[1]==true ?
 		res_l[1]==false ?
 			let (
 				r = split_self_intersection_trace_two (res_r[0][0], res_r[0][1])
 			)
-			concat([trace1], r)
+			[ trace1, each r ]
 		: // res_l[1]==true ?
 			let (
 				r_ = split_self_intersection_trace_two (res_r[0][0], res_r[0][1]),
 				l_ = split_self_intersection_trace_two (res_l[0][0], res_l[0][1])
 			)
-			concat(l_, r_)
+			[ each l_, each r_ ]
 ;
 function split_self_intersection_trace_intern (trace) =
 	let(
@@ -95,8 +95,8 @@ function split_self_intersection_trace_intern (trace) =
 			 [ select (trace, n[0])[0], select (trace, (n[0]+1)%size)[0] ]
 			,[ select (trace, n[1])[0], select (trace, (n[1]+1)%size)[0] ]
 			),
-		f1 = concat( [ for (i=[n[0]+1:1:n[1]]) trace[i] ], [p] ),
-		f2 = concat( [ for (i=[0     :1:n[0]]) trace[i] ], [p], [ for (i=[n[1]+1:1:size-1]) trace[i] ] )
+		f1 = [ each [ for (i=[n[0]+1:1:n[1]]) trace[i] ], p ],
+		f2 = [ each [ for (i=[0     :1:n[0]]) trace[i] ], p, each [ for (i=[n[1]+1:1:size-1]) trace[i] ] ]
 	)
 	[ [f1,f2], true]
 //	[ [f1,reverse(f2)], true]
@@ -182,7 +182,7 @@ function xor_all_traces_intern (traces, i=0, j=1) =
 		let(
 			res1 = remove (traces, begin=j, count=1),
 			res2 = remove (res1  , begin=i, count=1),
-			res3 = concat(res2,res)
+			res3 = [ each res2, each res ]
 		)
 		xor_all_traces (res3)
 ;
@@ -213,7 +213,7 @@ function xor_2_traces_intersect (trace1, trace2) =
 	let (
 		t1 = rotate_list (trace1, isp[1]+1),
 		t2 = rotate_list (trace2, isp[2]+1),
-		tx = concat ([isp[0]], t1, [isp[0]], t2),
+		tx = [ isp[0], each t1, isp[0], each t2 ],
 		res = split_self_intersection_trace(tx)
 	)
 	res
