@@ -219,7 +219,15 @@ function get_debug_color (c, i, size, default="orange") =
 ;
 function get_debug_width (d, auto=0) = d * ( (1-auto) + auto*$vpd/140 );
 
-// - Teile von Objekte testen:
+
+// - Teile von Objekte anzeigen:
+
+module virtual (color="lightgrey", alpha=0.5)
+{
+	color ( get_color (color, alpha) )
+	if ($preview)
+	children();
+}
 
 // Schneidet eine Scheibe aus einem Objekt, geeignet um testweise versteckte Details eines Objekts ansehen zu können
 module object_slice (axis=[0,1,0], position=0, thickness=1, limit=1000)

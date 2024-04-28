@@ -13,7 +13,7 @@ Debug
 - [Debug modules](#debug-modules-)
   - [Echo in console](#echo-in-console-)
     - [`echo_line()`][echo_line]
-    - [`echo_list`][echo_list]
+    - [`echo_list()`][echo_list]
   - [Make points and lines visible](#make-points-and-lines-visible-)
     - [`show_point()`][show_point]
     - [`show_points()`][show_points]
@@ -24,7 +24,8 @@ Debug
     - [`show_traces()`][show_traces]
     - [`show_vector()`][show_vector]
     - [`show_label()`][show_label]
-  - [Test parts of objects](#test-parts-of-objects-)
+  - [Show parts of objects](#show-parts-of-objects-)
+    - [`virtual()`][virtual]
     - [`object_slice()`][object_slice]
     - [`object_pane()`][object_pane]
 
@@ -292,7 +293,44 @@ show_label (txt, h, a, valign, halign, auto)
     in the same size, when `auto` is set `1` like it is set `0`.
 
 
-### Test parts of objects [^][contents]
+### Show parts of objects [^][contents]
+
+#### virtual [^][contents]
+[virtual]: #virtual-
+Show an object only in preview mode.  
+This is useful if you create a component object and
+you want to see the main object for what it is.
+
+_Arguments:_
+```OpenSCAD
+virtual (c, alpha)
+```
+- `c`
+  - optional, color argument
+  - default = `"lightgrey"`
+- `alpha`
+  - optional, alpha value - transparent to opaque: `0...1`
+  - default = `0.5`
+
+_Color arguments:_
+- color name as string
+  - The color names are taken from the
+    World Wide Web consortium's [SVG color list](https://www.w3.org/TR/css-color-3/).
+  - Additional defined colors
+- color as rgb or rgba list
+- `rgb` - as list `[r, g, b]` or `[r, g, b, alpha]`
+  - `r` = red:   `0...1`
+  - `g` = green: `0...1`
+  - `b` = blue:  `0...1`
+  - `alpha` = transparent to opaque: `0...1`, default = `1`
+- color as hex string
+  - Every hex string begin with a `#`
+  - The letters are hexadicimal numbers `0-F` (or even `00-FF`)
+  - Hex string formats:
+    - `"#rgb"`
+    - `"#rgba"`
+    - `"#rrggbb"`
+    - `"#rrggbbaa"`
 
 #### object_slice [^][contents]
 [object_slice]: #object_slice-
