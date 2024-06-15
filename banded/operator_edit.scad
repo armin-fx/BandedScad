@@ -98,10 +98,39 @@ module combine (limit=false, type=combine_type_undef, select=undef)
 	}
 }
 
+function is_part_main () =
+	$combine_type==combine_type_main
+;
+//
+function is_part_add () =
+	$combine_type==combine_type_add
+;
+//
+function is_part_cut  (self=false, all=false) =
+		$combine_type==combine_type_cut
+		|| (self==true  && all==false && $combine_type==combine_type_selfcut)
+		|| (self==false && all==true  && $combine_type==combine_type_cut_all)
+		|| (self==true  && all==true  && $combine_type==combine_type_selfcut_all)
+;
+function is_part_selfcut (all =false) = is_part_cut (self=true, all=all );
+function is_part_cut_all (self=false) = is_part_cut (self=self, all=true);
+function is_part_selfcut_all ()       = is_part_cut (self=true, all=true);
+function is_part_cut_type () =
+		   $combine_type==combine_type_cut
+		|| $combine_type==combine_type_selfcut
+		|| $combine_type==combine_type_cut_all
+		|| $combine_type==combine_type_selfcut_all
+;
+//
+function is_part_limit () =
+	$combine_type==combine_type_limit
+;
+
+
 module part_main ()
 {
 	always = $parent_modules==1 || $combine_type==combine_type_undef;
-	if (always || $combine_type==combine_type_main)
+	if (always || is_part_main() )
 	{
 		children();
 	}
@@ -110,7 +139,7 @@ module part_main ()
 module part_add ()
 {
 	always = $parent_modules==1 || $combine_type==combine_type_undef;
-	if (always || $combine_type==combine_type_add)
+	if (always || is_part_add() )
 	{
 		children();
 	}
@@ -119,11 +148,7 @@ module part_add ()
 module part_cut (self=false, all=false)
 {
 	always = $parent_modules==1;
-	if (always
-		|| $combine_type==combine_type_cut
-		|| (self==true  && all==false && $combine_type==combine_type_selfcut)
-		|| (self==false && all==true  && $combine_type==combine_type_cut_all)
-		|| (self==true  && all==true  && $combine_type==combine_type_selfcut_all) )
+	if (always || is_part_cut(self, all) )
 	{
 		children();
 	}
@@ -135,10 +160,21 @@ module part_selfcut_all ()       { part_cut (self=true, all=true) children(); }
 module part_limit ()
 {
 	always = $parent_modules==1;
-	if (always || $combine_type==combine_type_limit)
+	if (always || is_part_limit() )
 	{
 		children();
 	}
+}
+
+module part_type (type)
+{
+	if      (type==combine_type_main)        part_main()        children();
+	else if (type==combine_type_add)         part_add()         children();
+	else if (type==combine_type_cut)         part_cut()         children();
+	else if (type==combine_type_limit)       part_limit()       children();
+	else if (type==combine_type_selfcut)     part_selfcut()     children();
+	else if (type==combine_type_selfcut_all) part_selfcut_all() children();
+	else if (type==combine_type_cut_all)     part_cut_all()     children();
 }
 
 // Setzt ein Objekt mit anderen Objekten zusammen mit fester Reihenfolge

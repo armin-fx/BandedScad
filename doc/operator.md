@@ -500,31 +500,43 @@ You can put sibling parts together into a module or into an `union()` block
 and additional edit these with specialized part predicates.
 
 _Defined part elements:_
-- `part_main()`
+- `part_main ()`
   - defines the main object to edit
   - all operations will done on this object
-- `part_add()`
+- `part_add ()`
   - add an object
-- `part_cut()`
+- `part_cut ()`
   - remove a part from the main object
   - do nothing with all added objects
-- `part_cut_all()`
+- `part_cut_all ()`
   - remove a part from the main object
   - remove from all other parts,
     except from the own sibling parts, defined in the same module
-- `part_selfcut()`
+- `part_selfcut ()`
   - remove a part from the main object
   - remove from the own sibling parts, defined in the same module
   - do nothing with all other parts
   - this is useful e.g.
     if a hole must bored through the main object _and_ the added part
-- `part_selfcut_all()`
+- `part_selfcut_all ()`
   - remove a part from the main object
   - remove from all added parts, inclusive the own sibling parts
-- `part_limit()`
+- `part_limit ()`
   - defines a common hull for the main object,
     all parts they exceed this object will be removed
   - if you use this element, you _must_ set parameter `combine (limit=true)`
+- `part_type (type)`
+  - perform a part operation defined in argument `type`
+  - This is useful if a module make different things with different arguments.
+    So you can select the correct part type depend on the argument.
+  - the types are defined in constants:
+    - `combine_type_main`  - main part
+    - `combine_type_add`   - add part
+    - `combine_type_cut`   - remove part
+    - `combine_type_cut_all`
+    - `combine_type_selfcut`
+    - `combine_type_selfcut_all`
+    - `combine_type_limit` - common hull part
 
 _Example:_
 ```OpenSCAD
@@ -583,6 +595,25 @@ combine (limit, type, select)
   - as list: only the children in the list are used
   - a negative number will count from the last children backwards,
     e.g. `-1` = last children
+
+_Check current part type:_  
+You can check the current selection of part type with functions.  
+This is useful if you create modules, which do complex operations to the object.
+- `is_part_main ()`
+  - check the main object selection
+- `is_part_add ()`
+  - check the add part selection
+- `is_part_cut ()`
+  - check the cut part selection
+  - specialized cut checks:
+    - `is_part_cut_all ()`
+      - check the cut part selection for all other parts
+    - `is_part_selfcut ()`
+      - check the cut part selection for sibling parts
+    - `is_part_selfcut_all ()`
+      - check the cut part selection for all parts
+- `is_part_limit ()`
+  - check the limit part selection
 
 #### combine_fixed [^][contents]
 [combine_fixed]: #combine_fixed-
