@@ -46,9 +46,9 @@ Transform and edit objects
       - `part_main()`
       - `part_add()`
       - `part_cut()`
+      - `part_cut_self()`
+      - `part_cut_other()`
       - `part_cut_all()`
-      - `part_selfcut()`
-      - `part_selfcut_all()`
       - `part_limit()`
     - [`combine_fixed()`][combine_fixed]
     - [`select_object()`][select_object]
@@ -505,20 +505,39 @@ _Defined part elements:_
   - all operations will done on this object
 - `part_add ()`
   - add an object
-- `part_cut ()`
+- `part_cut (self, other)`
   - remove a part from the main object
-  - do nothing with all added objects
-- `part_cut_all ()`
-  - remove a part from the main object
-  - remove from all other parts,
-    except from the own sibling parts, defined in the same module
-- `part_selfcut ()`
+  - do nothing with all added objects by default
+  - _Arguments:_
+    - `self`
+      - if set `true`, this will additional
+        remove from the own sibling parts, defined in the same module
+      - default = `false`
+    - `other`
+      - if set `true`, this will additional
+        remove from all other added parts
+      - default = `false`
+- `part_cut_self (other)`
   - remove a part from the main object
   - remove from the own sibling parts, defined in the same module
   - do nothing with all other parts
   - this is useful e.g.
     if a hole must bored through the main object _and_ the added part
-- `part_selfcut_all ()`
+  - _Arguments:_
+    - `other`
+      - if set `true`, this will additional
+        remove from all other added parts
+      - default = `false`
+- `part_cut_other (self)`
+  - remove a part from the main object
+  - remove from all other parts,
+    except from the own sibling parts, defined in the same module
+  - _Arguments:_
+    - `self`
+      - if set `true`, this will additional
+        remove from the own sibling parts, defined in the same module
+      - default = `false`
+- `part_cut_all ()`
   - remove a part from the main object
   - remove from all added parts, inclusive the own sibling parts
 - `part_limit ()`
@@ -533,9 +552,9 @@ _Defined part elements:_
     - `combine_type_main`  - main part
     - `combine_type_add`   - add part
     - `combine_type_cut`   - remove part
+    - `combine_type_cut_self`
+    - `combine_type_cut_other`
     - `combine_type_cut_all`
-    - `combine_type_selfcut`
-    - `combine_type_selfcut_all`
     - `combine_type_limit` - common hull part
 
 _Example:_
@@ -561,7 +580,7 @@ module tube_element ()
 	part_cut()
 		cylinder (d=4, h=5);
 	
-	part_selfcut()
+	part_cut_self()
 		translate_z(-3)
 		cylinder (d=2, h=10);
 }
@@ -584,9 +603,9 @@ combine (limit, type, select)
     - `combine_type_main`  - only main part
     - `combine_type_add`   - only added parts
     - `combine_type_cut`   - only removed parts
+    - `combine_type_cut_self`
+    - `combine_type_cut_other`
     - `combine_type_cut_all`
-    - `combine_type_selfcut`
-    - `combine_type_selfcut_all`
     - `combine_type_limit` - only common hull parts
 - `select`
   - you can select a number of children in the combine block,
@@ -606,11 +625,11 @@ This is useful if you create modules, which do complex operations to the object.
 - `is_part_cut ()`
   - check the cut part selection
   - specialized cut checks:
-    - `is_part_cut_all ()`
-      - check the cut part selection for all other parts
-    - `is_part_selfcut ()`
+    - `is_part_cut_self ()`
       - check the cut part selection for sibling parts
-    - `is_part_selfcut_all ()`
+    - `is_part_cut_other ()`
+      - check the cut part selection for other parts
+    - `is_part_cut_all ()`
       - check the cut part selection for all parts
 - `is_part_limit ()`
   - check the limit part selection

@@ -17,14 +17,14 @@ use <banded/operator_transform.scad>
 
 // - Objekte kombinieren:
 
-combine_type_undef  = -1;
-combine_type_main   = 0;
-combine_type_add    = 1;
-combine_type_cut    = 2;
-combine_type_limit  = 3;
-combine_type_selfcut     = 4;
-combine_type_selfcut_all = 5;
-combine_type_cut_all     = 6;
+combine_type_undef = -1;
+combine_type_main  = 0;
+combine_type_add   = 1;
+combine_type_cut       = 2;
+combine_type_cut_self  = 3;
+combine_type_cut_other = 4;
+combine_type_cut_all   = 5;
+combine_type_limit = 6;
 
 $combine_type=combine_type_undef;
 
@@ -81,17 +81,17 @@ module combine (limit=false, type=combine_type_undef, select=undef)
 				}
 				// handle self cut part
 				union() {
-					$combine_type = combine_type_selfcut;
+					$combine_type = combine_type_cut_self;
 					children(i);
 				}
 				union() {
-					$combine_type = combine_type_selfcut_all;
-					children(list);
+					other = [ for (e=list) if (e!=i) e ];
+					$combine_type = combine_type_cut_other;
+					children(other);
 				}
 				union() {
-					other = [ for (e=list) if (e!=i) e ];
 					$combine_type = combine_type_cut_all;
-					children(other);
+					children(list);
 				}
 			}
 		}
@@ -106,20 +106,20 @@ function is_part_add () =
 	$combine_type==combine_type_add
 ;
 //
-function is_part_cut  (self=false, all=false) =
+function is_part_cut  (self=false, other=false) =
 		$combine_type==combine_type_cut
-		|| (self==true  && all==false && $combine_type==combine_type_selfcut)
-		|| (self==false && all==true  && $combine_type==combine_type_cut_all)
-		|| (self==true  && all==true  && $combine_type==combine_type_selfcut_all)
+		|| (self==true  && other==false && $combine_type==combine_type_cut_self)
+		|| (self==false && other==true  && $combine_type==combine_type_cut_other)
+		|| (self==true  && other==true  && $combine_type==combine_type_cut_all)
 ;
-function is_part_selfcut (all =false) = is_part_cut (self=true, all=all );
-function is_part_cut_all (self=false) = is_part_cut (self=self, all=true);
-function is_part_selfcut_all ()       = is_part_cut (self=true, all=true);
+function is_part_cut_self  (other=false) = is_part_cut (self=true, other=other);
+function is_part_cut_other (self =false) = is_part_cut (self=self, other=true);
+function is_part_cut_all   ()            = is_part_cut (self=true, other=true);
 function is_part_cut_type () =
 		   $combine_type==combine_type_cut
-		|| $combine_type==combine_type_selfcut
+		|| $combine_type==combine_type_cut_self
+		|| $combine_type==combine_type_cut_other
 		|| $combine_type==combine_type_cut_all
-		|| $combine_type==combine_type_selfcut_all
 ;
 //
 function is_part_limit () =
@@ -145,17 +145,17 @@ module part_add ()
 	}
 }
 
-module part_cut (self=false, all=false)
+module part_cut (self=false, other=false)
 {
 	always = $parent_modules==1;
-	if (always || is_part_cut(self, all) )
+	if (always || is_part_cut(self, other) )
 	{
 		children();
 	}
 }
-module part_selfcut (all =false) { part_cut (self=true, all=all ) children(); }
-module part_cut_all (self=false) { part_cut (self=self, all=true) children(); }
-module part_selfcut_all ()       { part_cut (self=true, all=true) children(); }
+module part_cut_self  (other =false) { part_cut (self=true, other=other) children(); }
+module part_cut_other (self=false)   { part_cut (self=self, other=true ) children(); }
+module part_cut_all   ()             { part_cut (self=true, other=true ) children(); }
 
 module part_limit ()
 {
@@ -168,13 +168,13 @@ module part_limit ()
 
 module part_type (type)
 {
-	if      (type==combine_type_main)        part_main()        children();
-	else if (type==combine_type_add)         part_add()         children();
-	else if (type==combine_type_cut)         part_cut()         children();
-	else if (type==combine_type_limit)       part_limit()       children();
-	else if (type==combine_type_selfcut)     part_selfcut()     children();
-	else if (type==combine_type_selfcut_all) part_selfcut_all() children();
-	else if (type==combine_type_cut_all)     part_cut_all()     children();
+	if      (type==combine_type_main)      part_main()      children();
+	else if (type==combine_type_add)       part_add()       children();
+	else if (type==combine_type_cut)       part_cut()       children();
+	else if (type==combine_type_cut_self)  part_cut_self()  children();
+	else if (type==combine_type_cut_other) part_cut_other() children();
+	else if (type==combine_type_cut_all)   part_cut_all()   children();
+	else if (type==combine_type_limit)     part_limit()     children();
 }
 
 // Setzt ein Objekt mit anderen Objekten zusammen mit fester Reihenfolge
