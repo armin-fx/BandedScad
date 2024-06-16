@@ -21,6 +21,7 @@ Version
     - [`version_to_str()`][version_to_str]
     - [`str_to_version()`][str_to_version]
     - [`convert_version()`][convert_version]
+    - [`convert_version_list()`][convert_version_list]
   - [Deprecated functionality](#deprecated-functionality-)
     - [`deprecated()`][deprecated]
 
@@ -75,6 +76,9 @@ is_compatible (version, current)
 ```
 - `version`
   - the desired version
+  - can be a list with versions, then one of the versions must be compatible.
+    This is useful if the model is designed for an older version
+    and the changes in the next major release are not used or have no effect in this version.
 - `current`
   - optional, by default the current version of BandedScad
   - can be used to check other bibliothek versions with the same version scheme
@@ -103,6 +107,9 @@ required_version (version, current)
 ```
 - `version`
   - the desired version
+  - can be a list with versions, then one of the versions must be compatible.
+    This is useful if the model is designed for an older version
+    and the changes in the next major release are not used or have no effect in this version.
 - `current`
   - optional, by default the current version of BandedScad
   - can be used to check other bibliothek versions with the same version scheme
@@ -172,6 +179,21 @@ _Version formats:_
   e.g. `[2,3,0]` or `[2,3,0,"alpha"]`
 - Missing version parts will be filled with `0`  
   e.g. `[3]` -> `[3,0,0]`
+
+#### function convert_version_list() [^][contents]
+[convert_version_list]: #function-convert_version_list-
+Convert a version in multiple format to a version list.
+
+_Arguments:_
+```OpenSCAD
+convert_version_list (list, default)
+```
+- `list`
+  - a list with versions in Semantic Versioning scheme
+- `default`
+  - optional, the version which will returned if the version is impossible to convert
+  - default = `[0,0,0]`
+
 
 
 ### Deprecated functionality [^][contents]

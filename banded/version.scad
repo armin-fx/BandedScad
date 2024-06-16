@@ -18,7 +18,7 @@
 // format: [ MAJOR, MINOR, PATCH ]
 // or:     [ MAJOR, MINOR, PATCH, "pre-release" ]
 //
-function version_banded() = [ 3, 1, 0, "alpha" ];
+function version_banded() = [ 3, 1, 0, "beta" ];
 
 // Version date
 //
@@ -35,7 +35,15 @@ date_banded    = date_banded();
 
 // test if this version of BandedScad is compatible with the destinated version
 function is_compatible (version, current=version_banded, convert=true) =
-	
+	is_version_list(version) ?
+	// check a list with version numbers
+	// returns true if one version in the list fits
+	[ for (v=version)
+		if (is_compatible (v, current, convert=convert ) )
+			0
+	] != []
+	:
+	// check a single version number
 	let (
 		Version = convert ? convert_version(version) : version
 	)
@@ -53,18 +61,38 @@ function is_compatible_openscad (version=20210100, current=version_num()) =
 // Assert if the current version is incompatible with the desired version
 module required_version (version, current, convert=true)
 {
-	Version = convert ? convert_version(version) : version;
-	//
-	if (current==undef)
-		assert (is_compatible (Version, version_banded(), convert=false), str(
-			"Current version ", version_to_str(version_banded()), " of BandedScad",
-			" is incompatible with desired version ", version_to_str(Version)
+	if (! is_version_list(version))
+	{
+		Version = convert ? convert_version(version) : version;
+		//
+		if (current==undef)
+			assert (is_compatible (Version, version_banded(), convert=false), str(
+				"Current version ", version_to_str(version_banded()), " of BandedScad",
+				" is incompatible with desired version ", version_to_str(Version)
+				) );
+		else
+			assert (is_compatible (Version, current, convert=false), str(
+				"Current version ", version_to_str(current),
+				" is incompatible with desired version ", version_to_str(Version)
 			) );
+	}
 	else
-		assert (is_compatible (Version, current, convert=false), str(
-			"Current version ", version_to_str(current),
-			" is incompatible with desired version ", version_to_str(Version)
-		) );
+	{
+		Version = convert ? convert_version_list(version) : version;
+		//
+		if (current==undef)
+			assert (is_compatible (Version, version_banded(), convert=false), str(
+				"Current version ", version_to_str(version_banded()), " of BandedScad",
+				" is incompatible with desired versions ",
+				[ for (e=Version) version_to_str(e) ]
+				) );
+		else
+			assert (is_compatible (Version, current, convert=false), str(
+				"Current version ", version_to_str(current),
+				" is incompatible with desired versions ",
+				[ for (e=Version) version_to_str(e) ]
+			) );
+	}
 }
 
 
@@ -128,6 +156,10 @@ function convert_version (version, default=[0,0,0]) =
 		str_to_version (version)
 	:default
 ;
+// convert a list with versions
+function convert_version_list (list, default=[0,0,0]) =
+	[ for (version=list) convert_version (version, default) ]
+;
 
 // Fill missing version parts with '0' to get a correct version list
 function fill_version (version, default=[0,0,0]) =
@@ -136,7 +168,10 @@ function fill_version (version, default=[0,0,0]) =
 	version[0]!=undef ? [version[0],0,0] :
 	default
 ;
-
+//
+function is_version_list (version) =
+	version[0][0]!=undef
+;
 
 // - Deprecated functionality:
 
