@@ -26,7 +26,9 @@ function is_compatible (version, current=version_banded, convert=true) =
 		((Version[2] == current[2]) && (
 			   (Version[3]==undef && current[3]==undef)
 			|| (Version[3]!=undef && current[3]==undef)
-			|| (Version[3]!=undef && current[3]!=undef && Version[3]<=current[3])
+			|| (Version[3]!=undef && current[3]!=undef &&
+				compare_prerelease (separate_prerelease(Version[3]), separate_prerelease(current[3]))
+				)
 			))
 		)
 	)
@@ -124,6 +126,37 @@ function str_to_version_intern_pre (txt, size=0, i=0, version=[]) =
 	[ each fill_version (version)
 	, list_to_str( [for (i=[i:1:size-1]) txt[i] ] )
 	]
+;
+
+// create a list with pre-release data from string
+function separate_prerelease (txt, begin=0) =
+	separate_prerelease_intern (txt, len(txt), begin, begin)
+;
+function separate_prerelease_intern (txt, size=0, begin=0, i=0, type=0, version=[]) =
+	i>=size && begin==i ? version :
+	//
+	i==size || txt[i]=="." ?
+		type==1
+		? separate_prerelease_intern (txt, size, i+1, i+1, 0, [ each version, list_to_str( [for(j=[begin:1:i-1]) txt[j]] ) ])
+		: separate_prerelease_intern (txt, size, i+1, i+1, 0, [ each version, str_to_uint (txt, begin)    ])
+	:is_digit (txt, i)
+		? separate_prerelease_intern (txt, size, begin, i+1, 0, version)
+		: separate_prerelease_intern (txt, size, begin, i+1, 1, version)
+;
+
+// compare pre-release list: a < b
+function compare_prerelease (a, b) =
+	echo(a,b)
+	a==b ? true :
+	compare_prerelease_intern (a, b, len(a), len(b))
+;
+function compare_prerelease_intern (a, b, sa=0, sb=0, i=0) =
+	(sa==i && sb>=i) ? true :
+	(sa>i  && sb==i) ? false :
+	a[i]==b[i] ? compare_prerelease_intern (a, b, sa, sb, i+1) :
+	(is_num   (a[i]) && is_string(b[i])) ? true :
+	(is_string(a[i]) && is_num   (b[i])) ? false :
+	a[i]<=b[i] ? true : false
 ;
 
 // convert version argument to a version list

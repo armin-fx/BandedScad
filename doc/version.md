@@ -83,7 +83,13 @@ _Rules of the version to the current version:_
   the PATCH version part must be the same or less.
 - If the version parts are equal:
   Pre-release versions have a lower precedence than the associated normal version.
-  Actually a pre-release will only compared alphanumerically.
+  The pre-release string will be separated by dots and every entry will be
+  compared until a difference is found and have following rules:
+  - Identifiers consisting of only digits are compared numerically.
+  - Identifiers with letters or hyphens are compared lexically in ASCII sort order.
+  - Numeric identifiers always have lower precedence than non-numeric identifiers.
+  - A larger set of pre-release fields has a higher precedence than a smaller set,
+    if all of the preceding identifiers are equal
 
 _Arguments:_
 ```OpenSCAD
