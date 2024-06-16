@@ -54,7 +54,7 @@ Given a version number MAJOR.MINOR.PATCH, increment the:
 - PATCH version when you make backward compatible bug fixes
 
 Format: `[ MAJOR, MINOR, PATCH ]`  
-or:     `[ MAJOR, MINOR, PATCH, "pre" ]`
+or:     `[ MAJOR, MINOR, PATCH, "pre-release" ]`
 
 This value is even stored in variable `version_banded`.
 
@@ -74,7 +74,16 @@ Functions and modules to check the compatibility of the version.
 #### function is_compatible() [^][contents]
 [is_compatible]: #function-is_compatible-
 Test if this version of BandedScad is compatible with the destinated version.  
-Compare Semantic Versioning scheme in a list.
+Compare Semantic Versioning scheme.
+
+_Rules of the version to the current version:_
+- The MAJOR version part must be the same number.
+- The MINOR version part must be the same or less.
+- If the MINOR version part is the same,
+  the PATCH version part must be the same or less.
+- If the version parts are equal:
+  Pre-release versions have a lower precedence than the associated normal version.
+  Actually a pre-release will only compared alphanumerically.
 
 _Arguments:_
 ```OpenSCAD
@@ -85,9 +94,11 @@ is_compatible (version, current)
   - can be a list with versions, then one of the versions must be compatible.
     This is useful if the model is designed for an older version
     and the changes in the next major release are not used or have no effect in this version.
+  - The version can be a version list or a version string
 - `current`
   - optional, by default the current version of BandedScad
   - can be used to check other bibliothek versions with the same version scheme
+  - must set as version list
 
 #### function is_compatible_openscad() [^][contents]
 [is_compatible_openscad]: #function-is_compatible_openscad-
@@ -132,7 +143,15 @@ required_version ([1,0,0]);
 
 #### function version_to_str() [^][contents]
 [version_to_str]: #function-version_to_str-
-Convert a version number to a printable string.
+Convert a version number list to a printable string.  
+The first 3 version parts MAJOR, MINOR and PATCH are separated by a dot `.`.
+Missing version parts are filled with zero `0`.
+If a pre-release part is set,
+this will append to the string and separated by a minus `-`.  
+E.g.
+- `[1,2,3]`         -> `"1.2.3"`
+- `[1,2]`           -> `"1.2.0"`
+- `[1,2,3,"alpha"]` -> `"1.2.3-alpha"`
 
 _Arguments:_
 ```OpenSCAD
@@ -157,11 +176,13 @@ str_to_version (txt)
 
 _Way of working:_
 - Ignore first letter until the first number
-- Parts of version number MAJOR.MINOR.PATCH or MAJOR.MINOR.PATCH.PRERELEASE
-  must separated with a dot `.`
+- Parts of version number must separated with a dot `.`.  
+  A pre-release version part must separated with a minus `-`.  
+  E.g. MAJOR.MINOR.PATCH or MAJOR.MINOR.PATCH-PRERELEASE
 - Missing version parts are filled with zero `0`
 - First occur of another letter then a number or a dot
   will append the remain string as pre-release string.
+  An occur of minus `-` will set the remain string as pre-release string.
   A number with following another letter will even seen as pre-release string.
 
 #### function convert_version() [^][contents]

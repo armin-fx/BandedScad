@@ -22,7 +22,13 @@ function is_compatible (version, current=version_banded, convert=true) =
 	)
 	(Version[0] == current[0]) && (
 		 (Version[1] <  current[1]) ||
-		((Version[1] == current[1]) && (Version[2] <= current[2]))
+		((Version[1] == current[1]) && (Version[2] < current[2]) ||
+		((Version[2] == current[2]) && (
+			   (Version[3]==undef && current[3]==undef)
+			|| (Version[3]!=undef && current[3]==undef)
+			|| (Version[3]!=undef && current[3]!=undef && Version[3]<=current[3])
+			))
+		)
 	)
 ;
 
@@ -74,12 +80,17 @@ module required_version (version, current, convert=true)
 // convert a version number to a printable string
 function version_to_str (version, default="") =
 	is_list (version) ?
-		version[3]!=undef ? str(version[0],".",version[1],".",version[2],".",version[3]) :
-		version[2]!=undef ? str(version[0],".",version[1],".",version[2]) :
-		version[1]!=undef ? str(version[0],".",version[1],".0") :
-		version[0]!=undef ? str(version[0],".0.0") :
-		default
-	: default
+		 version[3]!=undef ?
+			  str(version[0],".",version[1],".",version[2],"-",version[3])
+		:version[2]!=undef ? is_string(version[2])
+			? str(version[0],".",version[1],".0-",version[2])
+			: str(version[0],".",version[1],".",version[2])
+		:version[1]!=undef ? is_string(version[1])
+			? str(version[0],".0.0-",version[1])
+			: str(version[0],".",version[1],".0")
+		:version[0]!=undef ? str(version[0],".0.0")
+		:default
+	:default
 ;
 
 // convert a version number as string to a version list
@@ -103,6 +114,8 @@ function str_to_version_intern_loop (txt, size=0, i=0, pos=0, version=[]) =
 			str_to_version_intern_pre  (txt, size, res[1],          [ each version, res[0] ])
 		:txt[res[1]]=="." ?
 			str_to_version_intern_loop (txt, size, res[1]+1, pos+1, [ each version, res[0] ])
+		:txt[res[1]]=="-" ?
+			str_to_version_intern_pre  (txt, size, res[1]+1,        [ each version, res[0] ])
 		:	str_to_version_intern_pre  (txt, size, i,               version)
 	: str_to_version_intern_pre  (txt, size, i, version)
 ;
@@ -143,7 +156,7 @@ function fill_version (version, default=[0,0,0]) =
 ;
 //
 function is_version_list (version) =
-	version[0][0]!=undef
+	(version[0][0]!=undef) && (!is_string(version))
 ;
 
 // - Deprecated functionality:
