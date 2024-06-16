@@ -19,6 +19,8 @@ Version
     - [`required_version()`][required_version]
   - [Convert version format](#convert-version-format-)
     - [`version_to_str()`][version_to_str]
+    - [`str_to_version()`][str_to_version]
+    - [`convert_version()`][convert_version]
   - [Deprecated functionality](#deprecated-functionality-)
     - [`deprecated()`][deprecated]
 
@@ -121,10 +123,55 @@ Convert a version number to a printable string.
 
 _Arguments:_
 ```OpenSCAD
-version_to_str (version)
+version_to_str (version, default)
 ```
 - `version`
   - the version as list in Semantic Versioning scheme
+- `default`
+  - optional, the version which will returned if the version is impossible to convert
+  - default = `""`, an empty string
+
+#### function str_to_version() [^][contents]
+[str_to_version]: #function-str_to_version-
+Convert a version number as string to a version list.
+
+_Arguments:_
+```OpenSCAD
+str_to_version (txt)
+```
+- `txt`
+  - the version as string in Semantic Versioning scheme
+
+_Way of working:_
+- Ignore first letter until the first number
+- Parts of version number MAJOR.MINOR.PATCH or MAJOR.MINOR.PATCH.PRERELEASE
+  must separated with a dot `.`
+- Missing version parts are filled with zero `0`
+- First occur of another letter then a number or a dot
+  will append the remain string as pre-release string.
+  A number with following another letter will even seen as pre-release string.
+
+#### function convert_version() [^][contents]
+[convert_version]: #function-convert_version-
+Convert a version in multiple format to a version list.
+
+_Arguments:_
+```OpenSCAD
+convert_version (version, default)
+```
+- `version`
+  - the version in Semantic Versioning scheme
+- `default`
+  - optional, the version which will returned if the version is impossible to convert
+  - default = `[0,0,0]`
+
+_Version formats:_
+- As string, see [`str_to_version()`][str_to_version]..
+  e.g. `"v.2.3.0"` -> `[2,3,0]`
+- As list in format `[ MAJOR, MINOR, PATCH ]` or `[ MAJOR, MINOR, PATCH, "pre" ]`  
+  e.g. `[2,3,0]` or `[2,3,0,"alpha"]`
+- Missing version parts will be filled with `0`  
+  e.g. `[3]` -> `[3,0,0]`
 
 
 ### Deprecated functionality [^][contents]
