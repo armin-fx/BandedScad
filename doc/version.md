@@ -3,6 +3,8 @@ Version
 
 ### defined in file
 `banded/version.scad`  
+` `|  
+` `+--> `banded/version_helper.scad`  
 
 [<-- file overview](file_overview.md)  
 [<-- table of contents](contents.md)  
@@ -30,6 +32,10 @@ Versioning [^][contents]
 -----------------------
 
 Contains functions and modules to manage versioning.
+
+The version data are stored in file `version.scad`.  
+The helper functions and modules are in file `version_helper.scad`
+and were automatically included with `version.scad`.
 
 
 ### Current version [^][contents]

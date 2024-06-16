@@ -101,6 +101,7 @@ Overview of scad files
 ` `+--> [`debug.scad`](debug.md "Debug modules - make parts and points seeable")  
 ` `|  
 ` `+--> [`version.scad`](version.md "Functions and modules to manage versioning")  
+` `| . . . +--> `version_helper.scad`  
 ` `|  
 ` `+--> `other.scad`  
 
