@@ -2,6 +2,8 @@
 // License: LGPL-2.1-or-later
 //
 // Enthält Formeln zum Berechnen von Kreisen, ...
+//
+// Zum benutzen und zum nachschlagen.
 
 use <banded/draft_transform_common.scad>
 use <banded/math_common.scad>
@@ -213,3 +215,52 @@ function get_parabola_zero_from_midpoint (p1, p2, ym, chosen=0) =
 	z
 ;
 
+
+// - Surface area calculation:
+
+// calculate the area of a cube
+function area_cube (size) =
+	2 * (size.x*size.z + size.x*size.y + size.y*size.z)
+;
+
+// calculate the area of a cylinder (or a cone)
+function area_cylinder (h, r1, r2, r, d, d1, d2) =
+	let(
+		 R = parameter_cylinder_r (r, r1, r2, d, d1, d2)
+		,H = get_first_num (h, 1)
+		,a_bottom = PI * R[0]*R[0]
+		,a_top    = PI * R[1]*R[1]
+		,M        = sqrt( sqr(R[0] - R[1]) + H*H )
+		,a_side   = PI * M * (R[0] + R[1])
+	)
+	a_bottom + a_top + a_side
+;
+
+// calculate the area of a quadratic pyramid
+// with given height 'h' and the side length 'l', 'l2'
+function area_pyramid_quadratic (h, l, l2=0) =
+	l*l + l2*l2  +  (l + l2) * sqrt( 4*h*h + sqr( l - l2 ) )
+;
+
+
+// - Volume calculation:
+
+// calculate the volume of a cube
+function volume_cube (size) =
+	size.x * size.y * size.z
+;
+
+// calculate the volume of a cylinder (or a cone)
+function volume_cylinder (h, r1, r2, r, d, d1, d2) =
+	let(
+		 R = parameter_cylinder_r (r, r1, r2, d, d1, d2)
+		,H = get_first_num (h, 1)
+	)
+	H/3 * PI * sqrt( R[0]*R[0] + R[0]*R[1] + R[1]*R[1] )
+;
+
+// calculate the volume of a pyramid
+// with given height 'h' and both areas 'a', 'a2'
+function volume_pyramid (h, a, a2=0) =
+	h/3 * (a + sqrt(a*a2) + a2)
+;

@@ -86,15 +86,24 @@ Math functions
    - [`gcd()`][gcd]
    - [`lcm()`][lcm]
 - [Formula functions](#formula-functions-)
-  - [`get_radius_from()`][get_radius_from]
-  - [`get_circle_from_points()`][get_circle_from_points]
-  - [`get_sphere_from_points()`][get_sphere_from_points]
-  - [`get_hypersphere_from_points()`][get_hypersphere_from_points]
-  - [`get_parabola_from_points()`][get_parabola_from_points]
-  - [`get_parabola_from_midpoint()`][get_parabola_from_midpoint]
-  - [`get_parabola_zero()`][get_parabola_zero]
-  - [`get_parabola_zero_from_points()`][get_parabola_zero]
-  - [`get_parabola_zero_from_midpoint()`][get_parabola_zero]
+  - [Get data from mathematical figures](#get-data-from-mathematical-figures-)
+    - [`get_radius_from()`][get_radius_from]
+    - [`get_circle_from_points()`][get_circle_from_points]
+    - [`get_sphere_from_points()`][get_sphere_from_points]
+    - [`get_hypersphere_from_points()`][get_hypersphere_from_points]
+    - [`get_parabola_from_points()`][get_parabola_from_points]
+    - [`get_parabola_from_midpoint()`][get_parabola_from_midpoint]
+    - [`get_parabola_zero()`][get_parabola_zero]
+    - [`get_parabola_zero_from_points()`][get_parabola_zero]
+    - [`get_parabola_zero_from_midpoint()`][get_parabola_zero]
+  - [Surface area calculation](#surface-area-calculation-)
+    - [`area_cube()`][area_cube]
+    - [`area_cylinder()`][area_cylinder]
+    - [`area_pyramid_quadratic()`][area_pyramid_quadratic]
+  - [Volume calculation](#volume-calculation-)
+    - [`volume_cube()`][volume_cube]
+    - [`volume_cylinder()`][volume_cylinder]
+    - [`volume_pyramid()`][volume_pyramid]
 
 [polynomial]: draft_curves.md#polynomial-function-
 
@@ -534,6 +543,9 @@ Formula functions [^][contents]
 
 Defined in file: `banded/math_formula.scad`
 
+
+### Get data from mathematical figures [^][contents]
+
 #### get_radius_from [^][contents]
 [get_radius_from]: #get_radius_from-
 Calculate the radius from a circle.
@@ -638,3 +650,97 @@ _Specialized functions:_
   - with parameter from function [`get_parabola_from_points()`][get_parabola_from_points]
 - `get_parabola_zero_from_midpoint (p1, p2, ym, chosen)`
   - with parameter from function [`get_parabola_from_midpoint()`][get_parabola_from_midpoint]
+
+
+### Surface area calculation [^][contents]
+
+#### area_cube [^][contents]
+[area_cube]: #area_cube-
+Calculate the surface area of a cube.  
+
+_Arguments:_
+```OpenSCAD
+area_cube (size)
+```
+- `size`
+  - Uses the same `size` parameter like `cube()`.
+  - A list with the length of each axis `[ X, Y, Z ]`
+
+#### area_cylinder [^][contents]
+[area_cylinder]: #area_cylinder-
+Calculate the surface area of a cylinder (or a cone).  
+Uses the same parameter like `cylinder()`.
+
+_Arguments:_
+```OpenSCAD
+area_cylinder (h, r1, r2, r, d, d1, d2)
+```
+- `h`
+  - height of cylinder
+- `r1`, `r2`
+  - _bottom_ radius, _top_ radius
+- `r`
+  - _both_ radius get the same size
+- `d`, `d1`, `d2`
+  - diameter (instead radius)
+
+#### area_pyramid_quadratic [^][contents]
+[area_pyramid_quadratic]: #area_pyramid_quadratic-
+Calculate the surface area of a pyramid in quadratic form.  
+
+_Arguments:_
+- `h`
+  - height of the pyramid
+- `l`
+  - bottom length of one side from the pyramid
+- `l2`
+  - top length of one side from the pyramid
+  - optional, default = `0`
+
+
+### Volume calculation [^][contents]
+
+#### volume_cube [^][contents]
+[volume_cube]: #volume_cube-
+Calculate the volume of a cube.  
+
+_Arguments:_
+```OpenSCAD
+volume_cube (size)
+```
+- `size`
+  - Uses the same `size` parameter like `cube()`.
+  - A list with the length of each axis `[ X, Y, Z ]`
+
+#### volume_cylinder [^][contents]
+[volume_cylinder]: #volume_cylinder-
+Calculate the volume of a cylinder (or a cone).  
+Uses the same parameter like `cylinder()`.
+
+_Arguments:_
+```OpenSCAD
+area_cylinder (h, r1, r2, r, d, d1, d2)
+```
+- `h`
+  - height of cylinder
+- `r1`, `r2`
+  - _bottom_ radius, _top_ radius
+- `r`
+  - _both_ radius get the same size
+- `d`, `d1`, `d2`
+  - diameter (instead radius)
+
+#### volume_pyramid [^][contents]
+[volume_pyramid]: #volume_pyramid-
+Calculate the volume of a pyramid.  
+Uses the height `h` and both areas `a`, `a2`.
+
+_Arguments:_
+- `h`
+  - height of the pyramid
+- `a`
+  - bottom area of the pyramid
+- `a2`
+  - top area of the pyramid
+  - optional, default = `0`
+
