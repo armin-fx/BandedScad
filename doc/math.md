@@ -99,10 +99,12 @@ Math functions
   - [Surface area calculation](#surface-area-calculation-)
     - [`area_cube()`][area_cube]
     - [`area_cylinder()`][area_cylinder]
+    - [`area_sphere()`][area_sphere]
     - [`area_pyramid_quadratic()`][area_pyramid_quadratic]
   - [Volume calculation](#volume-calculation-)
     - [`volume_cube()`][volume_cube]
     - [`volume_cylinder()`][volume_cylinder]
+    - [`volume_sphere()`][volume_sphere]
     - [`volume_pyramid()`][volume_pyramid]
 
 [polynomial]: draft_curves.md#polynomial-function-
@@ -684,6 +686,17 @@ area_cylinder (h, r1, r2, r, d, d1, d2)
 - `d`, `d1`, `d2`
   - diameter (instead radius)
 
+#### area_sphere [^][contents]
+[area_sphere]: #area_sphere-
+Calculate the surface area of a sphere.  
+
+_Arguments:_
+```OpenSCAD
+area_sphere (r, d)
+```
+- `r`, `d`
+  - radius or diameter of the sphere
+
 #### area_pyramid_quadratic [^][contents]
 [area_pyramid_quadratic]: #area_pyramid_quadratic-
 Calculate the surface area of a pyramid in quadratic form.  
@@ -729,6 +742,17 @@ area_cylinder (h, r1, r2, r, d, d1, d2)
   - _both_ radius get the same size
 - `d`, `d1`, `d2`
   - diameter (instead radius)
+
+#### volume_sphere [^][contents]
+[volume_sphere]: #volume_sphere-
+Calculate the volume of a sphere.  
+
+_Arguments:_
+```OpenSCAD
+volume_sphere (r, d)
+```
+- `r`, `d`
+  - radius or diameter of the sphere
 
 #### volume_pyramid [^][contents]
 [volume_pyramid]: #volume_pyramid-

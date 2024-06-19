@@ -18,7 +18,7 @@
 // format: [ MAJOR, MINOR, PATCH ]
 // or:     [ MAJOR, MINOR, PATCH, "pre-release" ]
 //
-function version_banded() = [ 3, 2, 0, "alpha" ];
+function version_banded() = [ 3, 2, 0, "alpha.1" ];
 
 // Version date
 //

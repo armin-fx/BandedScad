@@ -236,6 +236,12 @@ function area_cylinder (h, r1, r2, r, d, d1, d2) =
 	a_bottom + a_top + a_side
 ;
 
+// calculate the surface area of a sphere
+function area_sphere (r, d) =
+	let( R = parameter_circle_r (r, d) )
+	4*PI * R*R
+;
+
 // calculate the area of a quadratic pyramid
 // with given height 'h' and the side length 'l', 'l2'
 function area_pyramid_quadratic (h, l, l2=0) =
@@ -257,6 +263,12 @@ function volume_cylinder (h, r1, r2, r, d, d1, d2) =
 		,H = get_first_num (h, 1)
 	)
 	H/3 * PI * sqrt( R[0]*R[0] + R[0]*R[1] + R[1]*R[1] )
+;
+
+// calculate the volume of a sphere
+function volume_sphere (r, d) =
+	let( R = parameter_circle_r (r, d) )
+	4/3*PI * R*R*R
 ;
 
 // calculate the volume of a pyramid
