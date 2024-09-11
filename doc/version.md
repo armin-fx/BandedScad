@@ -124,9 +124,15 @@ is_compatible_openscad (version, current)
 Assert if the current version is incompatible with the desired version.  
 Compare Semantic Versioning scheme in a list.
 
+_Version formats:_
+- as list, e.g. `[1,0,0]`
+- as string, e.g. `"1.0.0"` or `"v1.0.0"`
+- The version will be internally converted to a version list with
+  [function `convert_version()`][convert_version]
+
 _Arguments:_
 ```OpenSCAD
-required_version (version, current)
+required_version (version, current, convert)
 ```
 - `version`
   - the desired version
@@ -136,6 +142,10 @@ required_version (version, current)
 - `current`
   - optional, by default the current version of BandedScad
   - can be used to check other bibliothek versions with the same version scheme
+- `convert`
+  - optional, by default set `true`,
+    then convert the version automatically to a version list format.
+  - if set `false` all versions must set as version list and were not converted.
 
 You can use this to ensure that you use the correct version.  
 _Example:_

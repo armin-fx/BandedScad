@@ -51,11 +51,13 @@ module required_version (version, current, convert=true)
 				"Current version ", version_to_str(version_banded()), " of BandedScad",
 				" is incompatible with desired version ", version_to_str(Version)
 				) );
-		else
-			assert (is_compatible (Version, current, convert=false), str(
-				"Current version ", version_to_str(current),
+		else {
+			Current = convert ? convert_version(current) : current;
+			assert (is_compatible (Version, Current, convert=false), str(
+				"Current version ", version_to_str(Current),
 				" is incompatible with desired version ", version_to_str(Version)
 			) );
+		}
 	}
 	else
 	{
@@ -67,12 +69,14 @@ module required_version (version, current, convert=true)
 				" is incompatible with desired versions ",
 				[ for (e=Version) version_to_str(e) ]
 				) );
-		else
-			assert (is_compatible (Version, current, convert=false), str(
-				"Current version ", version_to_str(current),
+		else {
+			Current = convert ? convert_version(current) : current;
+			assert (is_compatible (Version, Current, convert=false), str(
+				"Current version ", version_to_str(Current),
 				" is incompatible with desired versions ",
 				[ for (e=Version) version_to_str(e) ]
 			) );
+		}
 	}
 }
 
