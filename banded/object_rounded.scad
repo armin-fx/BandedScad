@@ -37,10 +37,10 @@ module edge_fillet (h=1, r, angle=90, type, center=false, extra=extra)
 // Argumente:
 //   r_ring      Radius der Kante des Zylinders
 //   angle_ring  Winkel des Zylinders, Standart=360°
-module edge_ring_fillet (r_ring, r, angle=90, angle_ring=360, type, outer, slices, extra=extra)
+module edge_ring_fillet (r_ring, r, angle=90, angle_ring=360, type, outer, slices, extra=extra, d_ring)
 {
-	if (type==1) edge_ring_rounded (r_ring, r, angle, angle_ring, outer, slices=slices, extra=extra);
-	if (type==2) edge_ring_chamfer (r_ring, r, angle, angle_ring, outer, slices=slices, extra=extra);
+	if (type==1) edge_ring_rounded (r_ring, r, angle, angle_ring, outer, slices=slices, extra=extra, d_ring=d_ring);
+	if (type==2) edge_ring_chamfer (r_ring, r, angle, angle_ring, outer, slices=slices, extra=extra, d_ring=d_ring);
 }
 // erzeugt eine gefaste Kante entlang einer 2D Spur zum auschneiden oder ankleben
 module edge_trace_fillet (trace, r, angle=90, type, closed=false, extra=extra)

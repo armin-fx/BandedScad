@@ -506,9 +506,10 @@ It does `rotate_extrude()` with module [`edge_fillet_plane()`][edge_fillet_plane
 
 _Arguments:_
 ```OpenSCAD
-edge_ring_fillet (r_ring, r, angle, angle_ring, type, outer, slices, extra)
+edge_ring_fillet (r_ring, r, angle, angle_ring, type, outer, slices, extra, d_ring)
 ```
-- `r_ring`     - radius of the cylinder on the edge
+- `r_ring` - radius of the cylinder on the edge
+- `d_ring` - diameter of the cylinder, optional parameter
 - `angle_ring` - angle of the cylinder in degree, default=`360`
 - `r`     - parameter of the chamfer
 - `angle` - angle of the edge in degree
@@ -535,8 +536,7 @@ edge_ring_fillet (r_ring, r, angle, angle_ring, type, outer, slices, extra)
 
 _Specialized modules with no argument `type`:_
 - `edge_ring_rounded()` - creates a rounded edge
-  - `d`      - diameter of the rounded edge, optional parameter
-  - `d_ring` - diameter of the cylinder, optional parameter
+  - `d` - diameter of the rounded edge, optional parameter
 - `edge_ring_chamfer()` - creates a chamfered edge
 
 _Example:_
