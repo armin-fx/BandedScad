@@ -96,6 +96,7 @@ Math functions
     - [`get_parabola_zero()`][get_parabola_zero]
     - [`get_parabola_zero_from_points()`][get_parabola_zero]
     - [`get_parabola_zero_from_midpoint()`][get_parabola_zero]
+  - [Perimeter calculation](#perimeter-calculation-)
   - [Surface area calculation](#surface-area-calculation-)
     - [`area_cube()`][area_cube]
     - [`area_cylinder()`][area_cylinder]
@@ -652,6 +653,10 @@ _Specialized functions:_
   - with parameter from function [`get_parabola_from_points()`][get_parabola_from_points]
 - `get_parabola_zero_from_midpoint (p1, p2, ym, chosen)`
   - with parameter from function [`get_parabola_from_midpoint()`][get_parabola_from_midpoint]
+
+### Perimeter calculation [^][contents]
+
+. . .
 
 
 ### Surface area calculation [^][contents]

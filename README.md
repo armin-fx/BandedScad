@@ -39,20 +39,14 @@ Main functionality:
   - [Convert colors][color]
 - [Editing lists][list]
   - Most functions base on the STL from C++
-  - [Edit list independent from the data][list_edit_item]
-  - [Edit list with use of data, depend on type][list_edit_data]
-  - [Use function literal on data][list_edit_pred]
 - [Edit and convert strings][string]
-- Functions for [Math operations on lists][list_math]
-  - [Algorithm on lists][list_algorithm]
-  - [Math operation on each list element][list_math]
-  - [Calculating mean][mean]
 - [Math functions][math]
   - [Various common math functions][math_common]
   - Functions for [vector][vector] and [matrices][matrix]
   - Functions for [polygons and lines][polygon]
   - Calculate with [complex numbers][complex]
   - [Algorithm with function literals][function]
+- [Math operations on lists][list_math]
 - [Helper functions][helper]
 - [Benchmark functions for speed][benchmark]
 
@@ -69,14 +63,9 @@ Separate stuff:
 [multmatrix]:  doc/draft_matrix.md
 [primitives]:  doc/draft_primitives.md
 [color]:       doc/color.md
-[list]:           doc/list.md
-[list_edit_item]: doc/list.md#edit-list-independent-from-the-data-
-[list_edit_data]: doc/list.md#edit-list-with-use-of-data-depend-on-type-
-[list_edit_pred]: doc/list.md#edit-list-use-function-literal-on-data-
-[list_math]:      doc/list_math.md
-[list_algorithm]: doc/list_math.md#algorithm-on-lists-
-[list_math_each]: doc/list_math.md#math-operation-on_each-list-element-
-[mean]:           doc/list_mean.md
+[list]:        doc/list.md
+[list_math]:   doc/list_math.md
+[mean]:        doc/list_mean.md
 [string]:      doc/string.md
 [helper]:      doc/helper.md
 [benchmark]:   doc/helper.md#benchmark-function-

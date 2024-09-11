@@ -216,6 +216,9 @@ function get_parabola_zero_from_midpoint (p1, p2, ym, chosen=0) =
 ;
 
 
+// - Perimeter calculation:
+
+
 // - Surface area calculation:
 
 // calculate the area of a cube
