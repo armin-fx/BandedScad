@@ -73,6 +73,11 @@ X=x(); Y=y(); Z=z();
 O=origin();
 A=origin(v=1);
 
+// predefined 2D axis vector constants
+X2=x(2); Y2=y(2);
+O2=origin(2);
+A2=origin(2,v=1);
+
 // returns a vector with axis n
 // n - number of axis (X=0, Y=1, Z=2)
 // d - count of dimensions (2D plane = 2; 3D room, standard = 3)
@@ -146,11 +151,15 @@ function test_message_constants_str() = str (
 	//
 	inf == 1e200 * 1e200 ? "" : "WARNING: Constant 'inf' has changed. Chuck Norris counted 2 times to infinity.\n",
 	nan != nan           ? "" : "WARNING: Constant 'nan' has changed.\n",
-	X == x()         ? "" : "WARNING: Constant 'X' has changed.\n",
-	Y == y()         ? "" : "WARNING: Constant 'Y' has changed.\n",
-	Z == z()         ? "" : "WARNING: Constant 'Z' has changed.\n",
-	O == origin()    ? "" : "WARNING: Constant 'O' has changed.\n",
-	A == origin(v=1) ? "" : "WARNING: Constant 'A' has changed.\n",
+	X == x()             ? "" : "WARNING: Constant 'X' has changed.\n",
+	Y == y()             ? "" : "WARNING: Constant 'Y' has changed.\n",
+	Z == z()             ? "" : "WARNING: Constant 'Z' has changed.\n",
+	O == origin()        ? "" : "WARNING: Constant 'O' has changed.\n",
+	A == origin(v=1)     ? "" : "WARNING: Constant 'A' has changed.\n",
+	X2 == x(2)           ? "" : "WARNING: Constant 'X2' has changed.\n",
+	Y2 == y(2)           ? "" : "WARNING: Constant 'Y2' has changed.\n",
+	O2 == origin(2)      ? "" : "WARNING: Constant 'O2' has changed.\n",
+	A2 == origin(2,v=1)  ? "" : "WARNING: Constant 'A2' has changed.\n",
 	"")
 ;
 

@@ -97,6 +97,10 @@ in console if constants has changed.
 | `Z`      | `[0,0,1]` | Z-axis as 3D vector
 | `O`      | `[0,0,0]` | origin as 3D vector
 | `A`      | `[1,1,1]` | all axis set as 3D vector
+| `X2`     | `[1,0]`   | X-axis as 2D vector
+| `Y2`     | `[0,1]`   | Y-axis as 2D vector
+| `O2`     | `[0,0]`   | origin as 2D vector
+| `A2`     | `[1,1]`   | all axis set as 2D vector
 
 
 ### Functions [^][contents]
