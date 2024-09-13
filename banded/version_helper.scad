@@ -22,15 +22,16 @@ function is_compatible (version, current=version_banded, convert=true) =
 	)
 	(Version[0] == current[0]) && (
 		 (Version[1] <  current[1]) ||
-		((Version[1] == current[1]) && (Version[2] < current[2]) ||
-		((Version[2] == current[2]) && (
-			   (Version[3]==undef && current[3]==undef)
-			|| (Version[3]!=undef && current[3]==undef)
-			|| (Version[3]!=undef && current[3]!=undef &&
-				compare_prerelease (separate_prerelease(Version[3]), separate_prerelease(current[3]))
-				)
+		((Version[1] == current[1]) && (
+			 (Version[2] <  current[2]) ||
+			((Version[2] == current[2]) && (
+				   (Version[3]==undef && current[3]==undef)
+				|| (Version[3]!=undef && current[3]==undef)
+				|| (Version[3]!=undef && current[3]!=undef &&
+					compare_prerelease (separate_prerelease(Version[3]), separate_prerelease(current[3]))
+					)
 			))
-		)
+		))
 	)
 ;
 
