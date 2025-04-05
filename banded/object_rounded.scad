@@ -95,7 +95,7 @@ module edge_trace_rounded (trace, r, angle=90, closed=false, extra=extra, d)
 {
 	R = parameter_circle_r(r, d);
 	//
-	if (R!=undef && R>0) // TODO no fillet
+	if (R>0)
 	{
 		plain_trace_extrude (trace, closed=closed, convexity=4)
 		edge_rounded_plane (R, angle, extra=extra);
@@ -136,7 +136,7 @@ module edge_rounded_plane (r, angle, extra=extra, d)
 //   extra   zusätzlichen Überstand abschneiden, wegen Z-Fighting
 module edge_chamfer (h=1, r, angle=90, center=false, extra=extra)
 {
-	if (r>0 && h>0)
+	if (r!=undef && r>0 && h>0)
 		linear_extrude (height=h, center=center, convexity=2)
 		edge_chamfer_plane (r, angle, extra=extra);
 }
@@ -152,7 +152,7 @@ module edge_ring_chamfer (r_ring, r, angle=90, angle_ring=360, outer, slices, ex
 	Outer   = outer!=undef ? outer : 0;
 	R_ring_outer = R_ring * get_circle_factor (fn_ring, Outer, angles_ring[0]);
 	//
-	if (r>0 && R_ring>0) // TODO no fillet
+	if (r!=undef && r>0 && R_ring>0)
 	{
 		rotate_extrude_extend (angle=angles_ring, convexity=2, slices=fn_ring)
 		translate_x (R_ring_outer)
@@ -162,7 +162,7 @@ module edge_ring_chamfer (r_ring, r, angle=90, angle_ring=360, outer, slices, ex
 // erzeugt eine abgeschrägte Kante entlang einer 2D Spur zum auschneiden oder ankleben
 module edge_trace_chamfer (trace, r, angle=90, closed=false, extra=extra, d)
 {
-	if (r!=undef && r>0) // TODO no fillet
+	if (r!=undef && r>0)
 	{
 		plain_trace_extrude (trace, closed=closed, convexity=2)
 		edge_chamfer_plane (r, angle, extra=extra);
@@ -177,7 +177,7 @@ module edge_chamfer_plane (r, angle=90, extra=extra)
 	t       = r/2 / sin(Angle/2);
 	h_extra = extra * cot(Angle/2);
 	//
-	if (r>0 && Angle<180)
+	if (r!=undef && r>0 && Angle<180)
 	rotate_z(rotation)
 	polygon([
 		 [ t,       0]
