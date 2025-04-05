@@ -308,67 +308,73 @@ _Control the fragment count of a circle (extend):_
 - `fn_safe`    - like `$fn_safe`
 
 #### get_slices_circle_current [^][contents]
-[get_slices_circle_current]: #get_slices_circle_current-
+[get_slices_circle_current]:   #get_slices_circle_current-
+[get_slices_circle_current_x]: #get_slices_circle_current-
 Returns the number of fragment on a _part of_ a circle
-with the current _buildin special variables_ `$fn`, `$fa` and `$fs`.
+with defined _special variables_.
 
-_Arguments:_
-```OpenSCAD
-get_slices_circle_current (r, angle, piece)
-```
+Function `get_slices_circle_current`
+uses the current _buildin special variables_ `$fn`, `$fa` and `$fs`.
 
-#### get_slices_circle_current_x [^][contents]
-[get_slices_circle_current_x]: #get_slices_circle_current_x-
-Returns the number of fragment on a _part of_ a circle
-with the current _buildin special variables_ `$fn`, `$fa` and `$fs`,
+Function `get_slices_circle_current_x`
+uses the current _buildin special variables_ `$fn`, `$fa` and `$fs`
 and the _extra special variables_ `$fn_min`, `$fn_max`, `$fd`, `$fa_enabled`, `$fs_enabled`.
 
 _Arguments:_
 ```OpenSCAD
+get_slices_circle_current   (r, angle, piece)
 get_slices_circle_current_x (r, angle, piece)
 ```
 
+Argument radius `r` must be set.  
+The angle is set `360` degrees by default.  
+Argument piece is set `true` by default.  
+
 #### get_slices_circle_closed [^][contents]
-[get_slices_circle_closed]: #get_slices_circle_closed-
+[get_slices_circle_closed]:   #get_slices_circle_closed-
+[get_slices_circle_closed_x]: #get_slices_circle_closed-
 Returns the number of fragment on a _closed_ circle
-with arguments based on the _buildin special variables_.  
+with arguments based on the _special variables_.
+
+Function `get_slices_circle_closed`
+uses arguments based on the _buildin special variables_.  
 Original OpenSCAD function.
 
-_Arguments:_
-```OpenSCAD
-get_slices_circle_closed (r, fn, fa, fs)
-```
-
-#### get_slices_circle_closed_x [^][contents]
-[get_slices_circle_closed_x]: #get_slices_circle_closed_x-
-Returns the number of fragment on a _closed_ circle
-with arguments based on the _extra special variables_.
+Function `get_slices_circle_closed_x`
+uses arguments based on the _extra special variables_.
 
 _Arguments:_
 ```OpenSCAD
+get_slices_circle_closed   (r, fn, fa, fs)
 get_slices_circle_closed_x (r, fn, fa, fs, fn_min, fn_max, fd, fa_enabled, fs_enabled)
 ```
 
+Argument radius `r` must be set.  
+All other arguments are set on his defaults.  
+
 #### get_slices_circle [^][contents]
-[get_slices_circle]: #get_slices_circle-
+[get_slices_circle]:   #get_slices_circle-
+[get_slices_circle_x]: #get_slices_circle-
 Returns the number of fragment on a _part of_ a circle
-with arguments based on the _buildin special variables_.  
+with arguments based on the _special variables_.  
+
+Function `get_slices_circle`
+uses arguments based on the _buildin special variables_.  
 Based on the behavior of rotate_extrude() in OpenSCAD.
 
-_Arguments:_
-```OpenSCAD
-get_slices_circle (r, angle, piece, fn, fa, fs)
-```
-
-#### get_slices_circle_x [^][contents]
-[get_slices_circle_x]: #get_slices_circle_x-
-Returns the number of fragment on a _part of_ a circle
-with arguments based on the _extra special variables_.
+Function `get_slices_circle_x`
+uses arguments based on the _extra special variables_.
 
 _Arguments:_
 ```OpenSCAD
+get_slices_circle   (r, angle, piece, fn, fa, fs)
 get_slices_circle_x (r, angle, piece, fn, fa, fs, fn_min, fn_max, fd, fa_enabled, fs_enabled)
 ```
+
+Argument radius `r` must be set.  
+The angle is set `360` degrees by default.  
+Argument piece is set `true` by default.  
+All other arguments are set on his defaults.  
 
 #### get_fn_circle` [^][contents]
 [get_fn_circle]: #get_fn_circle-
