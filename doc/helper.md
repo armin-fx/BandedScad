@@ -740,14 +740,18 @@ parameter_funnel_r (ri1, ri2, ro1, ro2, w, di1, di2, do1, do2)
 ```
 - `ri1`, `ri2` - inner radius bottom, top
 - `ro1`, `ro2` - outer radius bottom, top
+- `ri`, `ro`   - inner radius or outer radius for both sides together
 - `w`          - width of the wall. Optional
 - `di1`, `di2` - inner diameter bottom, top. Optional
 - `do1`, `do2` - outer diameter bottom, top. Optional
 
 _Rules:_
-- Radius comes before diameter
+- radius comes before diameter
+- special values like `ri1` take precedence over general values like `ri`
 - missing radius or diameter is taken from
   the wall parameter and the opposite radius or diameter
+- missing inner radius is set to `1`,
+  missing outer radius is set to `2`
 
 #### parameter_helix_to_rp [^][contents]
 [parameter_helix_to_rp]: #parameter_helix_to_rp-

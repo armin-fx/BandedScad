@@ -248,12 +248,13 @@ function ring_square (h=1, r, w, ri, ro, angle=360, center=false, d, di, do, out
 //   h        - Höhe
 //   ri1, ri2 - Innenradius unten, oben
 //   ro1, ro2 - Außenradius unten, oben
+//   ri, ro   - Innen- und Außenradius allgemein, gemeinsame Maße für unten und oben
 //   w        - Breite der Wand. Optional
 //   angle    - Öffnungswinkel des Trichters. Standard=360°. Benötigt Version 2019.05
-function funnel (h=1, ri1, ri2, ro1, ro2, w, angle=360, di1, di2, do1, do2, outer, align) =
+function funnel (h=1, ri1, ri2, ro1, ro2, w, angle=360, di1, di2, do1, do2, ri, ro, di, do, outer, align) =
 	let (
 		// return [ri1, ri2, ro1, ro2]
-		 r  = parameter_funnel_r (ri1, ri2, ro1, ro2, w, di1, di2, do1, do2)
+		 r  = parameter_funnel_r (ri1, ri2, ro1, ro2, w, di1, di2, do1, do2, ri, ro, di, do)
 		,max_r = max(r)
 		,fn    = get_slices_circle_current_x( max_r )
 		,angles = parameter_angle (angle, [360,0])

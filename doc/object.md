@@ -302,12 +302,15 @@ Creates a funnel.
 
 _Arguments:_
 ```OpenSCAD
-funnel (h, ri1, ri2, ro1, ro2, w, angle, di1, di2, do1, do2, align)
+funnel (h, ri1, ri2, ro1, ro2, w, angle, di1, di2, do1, do2, ri, ro, di, do, outer, align)
 ```
 - `h`          - height
 - `ri1`, `ri2` - inner radius bottom, top
 - `ro1`, `ro2` - outer radius bottom, top
-- `w`          - width of the wall. Optional
+- `ri`, `ro`
+  - inner radius or outer radius for both sides together
+  - special values like `ri1` take precedence over general values like `ri`
+- `w`          - width of the wall. Optional.
 - `angle`
   - opening angle in degree of the funnel. Default=`360`.
   - requires OpenSCAD version 2019.05 or above
@@ -323,6 +326,14 @@ funnel (h, ri1, ri2, ro1, ro2, w, angle, di1, di2, do1, do2, align)
   - or as list `[inner circle, outer circle]`
   - the problem is described in website
     <https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/undersized_circular_objects>
+
+_Rules of radius parameter:_
+- radius comes before diameter
+- special values like `ri1` take precedence over general values like `ri`
+- missing radius or diameter is taken from
+  the wall parameter and the opposite radius or diameter
+- missing inner radius is set to `1`,
+  missing outer radius is set to `2`
 
 Example:
 ```OpenSCAD
