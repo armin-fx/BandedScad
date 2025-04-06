@@ -33,8 +33,10 @@ Polygon operations
     - [`get_intersection_lines()`][get_intersection_lines]
     - [`get_intersection_line_plane()`][get_intersection_line_plane]
   - [Polygon functions](#polygon-functions-)
+	- [`length_line()`][length_line]
     - [`length_trace()`][length_trace]
-    - [`length_line()`][length_line]
+    - [`position_line()`][position_line]
+    - [`position_trace()`][position_trace]
   - [Convert polygon data](#convert-polygon-data-)
     - [`trace_to_lines()`][trace_to_lines]
     - [`lines_to_trace()`][lines_to_trace]
@@ -317,8 +319,19 @@ get_intersection_line_plane (points, line)
 
 ### Polygon functions [^][contents]
 
+#### length_line [^][contents]
+[length_line]: #length_line-
+Return the length of a line segment.
+
+_Arguments:_
+```OpenSCAD
+length_line (line)
+```
+- `line`
+  - a list with 2 points defines the ends of the segment line.
+
 #### length_trace [^][contents]
-[length_trace]: #length_trace-points-path-closed-
+[length_trace]: #length_trace-
 Return the length of a trace.
 
 _Arguments:_
@@ -333,16 +346,48 @@ length_trace (points, path, closed)
   - `false` - the trace from first to last point, default
   - `true`  - the trace is a closed loop, the last point connect the first point
 
-#### length_line [^][contents]
-[length_line]: #length_line-
-Return the length of a line segment.
+#### position_line [^][contents]
+[position_line]: #position_line-
+Determines the position of a line
+starting at a specified distance from the first point.  
+Larger lengths are extrapolated.
+
+_Returns_ a point.
 
 _Arguments:_
 ```OpenSCAD
-length_line (line)
+position_line (line, length)
 ```
 - `line`
   - a list with 2 points defines the ends of the segment line.
+- `length`
+  - distance from the first point
+
+#### position_trace [^][contents]
+[position_trace]: #position_trace-
+Determines the position of a trace
+starting at a specified distance from the first point.  
+Returns `undef` if the distance is outside the line segment.
+If the ends are connected (`closed = true`), it returns the position
+corresponding to the number of rotations around.
+
+_Returns_ a list in point-direction form `[point, vector]`
+- `point`  - Position on the line segment at the desired length
+- `vector` - Direction of the line segment at the position, not normalized
+
+_Arguments:_
+```OpenSCAD
+position_trace (points, path, length, closed)
+```
+- `points` - a list with points
+- `trace`
+  - a list with the order to traverse the points
+  - is not defined, all points are used in the order listed
+- `length`
+  - distance from the first point
+- `closed`
+  - `false` - the trace from first to last point, default
+  - `true`  - the trace is a closed loop, the last point connect the first point
 
 
 ### Convert polygon data [^][contents]

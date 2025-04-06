@@ -404,6 +404,11 @@ function get_intersection_line_plane (points, line) =
 
 // - Streckenzüge:
 
+// gibt die Länge einer Strecke zurück
+function length_line (line) =
+	norm (line[1]-line[0])
+;
+
 // gibt die Länge einer Kurve zurück
 function length_trace (points, path, closed=false) =
 	let (
@@ -418,14 +423,58 @@ function length_trace (points, path, closed=false) =
 	+ (closed==true ? norm (pts[size-1]-pts[0]) : 0)
 ;
 
-// gibt die Länge einer Strecke zurück
-function length_line (line) =
-	norm (line[1]-line[0])
-;
-
 function midpoint_2 (p1, p2)     = (p1+p2   )  / 2;
 function midpoint_3 (p1, p2, p3) = (p1+p2+p3)  / 3;
 function midpoint_line (l)       = (l[0]+l[1]) / 2;
+
+// Ermittelt die Position einer Geraden
+// ab einem bestimmten Abstand vom ersten Punkt aus.
+// Größere Längen werden extrapoliert
+function position_line (line, length) =
+	let (
+		l = norm (line[1]-line[0]),
+		t = length/l
+	)
+	  line[0] * (1-t)
+	+ line[1] * t
+
+;
+
+// Ermittelt die Position eines Streckenzuges
+// ab einem bestimmten Abstand vom ersten Punkt aus.
+// Gibt 'undef' zurück, wenn der Abstand außerhalb des Streckenzuges ist.
+// Wenn die Enden verbunden sind (closed=true), gibt es die Position
+// zurück entsprechend der Umrundungen.
+//
+// Rückgabe in Punkt-Richtungs-Form [Punkt, Vektor]
+// - Punkt:  Position des Streckenzuges an der gewünschten Länge
+// - Vektor: Richtung des Streckenabschnitts an der Position, ungenormt
+function position_trace (points, path, length, closed=false) =
+	let (
+		is_path = path!=undef,
+		size = is_path ? len(path) : len(points)
+	)
+	size<2 ? undef :
+	let (
+		pts_ = is_path ? select(points, path) : points,
+		pts  = closed!=true ? pts_ : [each pts_, pts_[0]],
+		l    = length_trace (pts),
+		Length = closed!=true ? length : mod (length, l)
+	)
+	Length>l || Length<0 ? undef :
+	position_trace_intern (pts, Length, size + (closed!=true ? 0:1) )
+;
+function position_trace_intern (points, length, size, i=0) =
+	i>=size ? undef :
+	let (
+		l = norm (points[i+1]-points[i])
+	)
+	length>l
+		? position_trace_intern (points, length-l, size, i+1)
+		: [ position_line ([points[i],points[i+1]], length)
+		  , points[i+1]-points[i]
+		  ]
+;
 
 
 // - Daten von Strecken umwandeln:
