@@ -18,13 +18,13 @@
 // format: [ MAJOR, MINOR, PATCH ]
 // or:     [ MAJOR, MINOR, PATCH, "pre-release" ]
 //
-function version_banded() = [ 3, 4, 2 ];
+function version_banded() = [ 3, 4, 3 ];
 
 // Version date
 //
 // Number format: year 4 digit - month 2 digit - day 2 digit
 //
-function date_banded() = 20250405;
+function date_banded() = 20250406;
 
 
 version_banded = version_banded();

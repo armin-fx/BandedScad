@@ -151,7 +151,6 @@ function separate_prerelease_intern (txt, size=0, begin=0, i=0, type=0, version=
 
 // compare pre-release list: a < b
 function compare_prerelease (a, b) =
-	echo(a,b)
 	a==b ? true :
 	compare_prerelease_intern (a, b, len(a), len(b))
 ;
