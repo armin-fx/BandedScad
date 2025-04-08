@@ -29,16 +29,21 @@ function echo_bar       (length=50) = echo_line (length  , "=" );
 module   echo_wall      (length=50) { echo_line (length  , "#" ); }
 function echo_wall      (length=50) = echo_line (length  , "#" );
 
-module echo_list (list, txt="", pre="\t")
+module echo_list (list, txt="", pre="\t", first="[", next=",", last="]")
 {
-	echo( echo_list_intern (list, txt, pre) );
+	echo( echo_list_intern (list, txt, pre, first, next, last, len(list)) );
 }
-function echo_list (list, txt="", pre="\t") =
-	str( echo_list_intern (list, txt, pre), "\n" )
+function echo_list (list, txt="", pre="\t", first="[", next=",", last="]") =
+	str( echo_list_intern (list, txt, pre, first, next, last, len(list)), "\n" )
 ;
-function echo_list_intern (list, txt="", pre="\t", i=0) =
-	i>=len(list) ? txt :
-	echo_list_intern (list, str (txt ,"\n",pre, list[i]), pre, i+1 )
+function echo_list_intern (list, txt="", pre="\t", first="[", next=",", last="]", size=0, i=0) =
+	i>=size ? txt :
+	i==0 ?
+		echo_list_intern (list, str (txt ,"\n",pre,first, list[i]     ), pre,first,next,last, size,i+1 ):
+	i<size-1 ?
+		echo_list_intern (list, str (txt ,"\n",pre,next , list[i]     ), pre,first,next,last, size,i+1 )
+	:
+		echo_list_intern (list, str (txt ,"\n",pre,next , list[i],last), pre,first,next,last, size,i+1 )
 ;
 
 // function returns value and echo a message if version of OpenSCAD is 2019.05 or greater

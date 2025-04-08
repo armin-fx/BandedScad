@@ -60,17 +60,42 @@ _Specialized modules with fixed character:_
 Echo every entry from a list into the console.  
 Every entry will start in a new line.
 As module or as function to generate the text for `echo()`.
+As default you can copy and paste the output text and use it as code.
 
 _Arguments:_
 ```OpenSCAD
-echo_list (list, txt, pre)
+echo_list (list, txt, pre, first, next, last)
 ```
 - `txt`
   - optional text that echoes at first
 - `pre`
   - text that is preposed at every list entry
   - default = 1 tab `"\t"`
+- `first`
+  - text after `pre` and before the first list entry
+  - default = `"["`, begin of a list
+- `next`
+  - text after `pre` and before every list entry, except the first list entry
+  - default = `","`, next list entry
+- `last`
+  - text after the last list entry
+  - default = `"]"`, end of a list
 
+_Example:_
+``` OpenSCAD
+include <banded.scad>
+
+echo_list( identity_matrix (4) );
+```
+
+_Output:_
+```
+ECHO: "
+	[[1, 0, 0, 0]
+	,[0, 1, 0, 0]
+	,[0, 0, 1, 0]
+	,[0, 0, 0, 1]]"
+```
 
 ### Make points and lines visible [^][contents]
 
