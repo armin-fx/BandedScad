@@ -29,7 +29,6 @@ Table of contents
   - [Configure arguments](helper.md#configure-arguments-)
   - [Argument recondition](helper.md#recondition-arguments-of-functions-)
   - Manage data of primitives in lists
-  - [Benchmark for functions](helper.md#benchmark-function-)
 - [Control the level of detail of a mesh](extend.md)
   - [Extra special variables](extend.md#special-variables-)
   - [Functions](extend.md#functions-)
@@ -53,6 +52,10 @@ Table of contents
   - [Transform operator for affine transformations](operator.md#transform-operator-)
   - [Place objects in specific position](operator.md#place-objects-)
 - [Debug modules](debug.md)
+  - [Echo in console](debug.md#echo-in-console-)
+  - [Make points and lines visible](debug.md#make-points-and-lines-visible-)
+  - [Show parts of objects](debug.md#show-parts-of-objects-)
+  - [Benchmark for functions to measure speed](debug.md#benchmark-function-)
 - [Manage versioning](version.md)
 - [Compatibility files](antiquity.md)
 

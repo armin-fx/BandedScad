@@ -16,11 +16,11 @@ include <math.scad>
 include <list.scad>
 include <string.scad>
 include <helper.scad>
-include <benchmark.scad>
 include <extend.scad>
 include <draft.scad>
 include <object.scad>
 include <operator.scad>
 include <debug.scad>
+include <benchmark.scad>
 //
 include <other.scad>

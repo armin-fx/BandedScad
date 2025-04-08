@@ -58,8 +58,6 @@ Overview of scad files
 ` `| . . . | . . . . +--> `helper_primitives_path.scad`  
 ` `| . . . | . . . . +--> `helper_primitives_trace.scad`  
 ` `|  
-` `+--> [`benchmark.scad`](helper.md#benchmark-function- "Benchmark for functions to measure speed")  
-` `|  
 ` `+--> [`extend.scad`](extend.md "Control the level of detail of a mesh")  
 ` `| . . . +--> [`extend_logic.scad`](extend.md#functions-)  
 ` `| . . . | . . . . +--> [`extend_logic_helper.scad`](extend.md#convert-values- "Helper functions: convert values, and for internal use")  
@@ -99,6 +97,8 @@ Overview of scad files
 ` `| . . . +--> [`operator_place.scad`](operator.md#place-objects- "Modules which place objects in specific position")  
 ` `|  
 ` `+--> [`debug.scad`](debug.md "Debug modules - make parts and points seeable")  
+` `|  
+` `+--> [`benchmark.scad`](debug.md#benchmark-function- "Benchmark for functions to measure speed")  
 ` `|  
 ` `+--> [`version.scad`](version.md "Functions and modules to manage versioning")  
 ` `| . . . +--> `version_helper.scad`  
