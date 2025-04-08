@@ -177,12 +177,13 @@ function trace_intern (m, size=0, i=0, result=0) =
 // Rechnet auch mit Zahlen, hier eignet sich 'exp()' besser
 function matrix_exponential (m) =
 	m[0]==undef // keine Liste? ==> Zahl
-	?	matrix_exponential_intern (m, m*m, 1+m)
-	:	matrix_exponential_intern (m, m*m, identity_matrix(len(m))+m)
+	?	matrix_exponential_intern (m, m*m/2, 1, 1+m)
+	:	let (I = identity_matrix(len(m)))
+		matrix_exponential_intern (m, m*m/2, I, I+m)
 ;
-function matrix_exponential_intern (m, M, result, n=2, i=2, end=100) =
-	i==end ?                           result+M/n :
-	matrix_exponential_intern (m, M*m, result+M/n, n*(i+1), i+1, end)
+function matrix_exponential_intern (m, M, last, result, i=2, end=1000) =
+	i>=end || last==result ?                         result+M:
+	matrix_exponential_intern (m, M*m/(i+1), result, result+M, i+1, end)
 ;
 
 // Lineares Gleichungssystem lösen mit Koeffizientenmatrix
