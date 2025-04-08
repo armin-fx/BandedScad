@@ -25,6 +25,8 @@ Matrix and vector operations
     - [`determinant()`][determinant]
     - [`transpose()`][transpose]
     - [`inverse()`][inverse]
+    - [`trace()`][trace]
+    - [`matrix_exponential`][matrix_exponential]
     - [`gauss_jordan_elimination()`][gauss_jordan_elimination]
     - [`reduced_row_echelon_form()`][reduced_row_echelon_form]
     - [`back_substitution()`][back_substitution]
@@ -134,6 +136,34 @@ _Arguments:_
 ```OpenSCAD
 inverse (m)
 ```
+
+#### trace [^][contents]
+[trace]: #trace-
+Return the trace of a matrix `m`.  
+In linear algebra, the trace of a square matrix A is the sum of the elements
+on its main diagonal:  
+`a11 + a22 + a33 + ...`  
+It is only defined for a square matrix (n × n).  
+[=> Wikipedia - Trace (linear algebra)](https://en.wikipedia.org/wiki/Trace_(linear_algebra))
+
+_Arguments:_
+```OpenSCAD
+trace (m)
+```
+
+#### matrix_exponential [^][contents]
+[matrix_exponential]: #matrix_exponential-
+Return the matrix exponential of a matrix `m`.  
+The matrix exponential is a matrix function on square matrices
+analogous to the ordinary exponential function.  
+[=> Wikipedia - Matrix exponential](https://en.wikipedia.org/wiki/Matrix_exponential)
+
+_Arguments:_
+```OpenSCAD
+matrix_exponential (m)
+```
+
+Also calculates with numbers, here `exp()` is better suited.
 
 #### gauss_jordan_elimination [^][contents]
 [gauss_jordan_elimination]: #gauss_jordan_elimination-

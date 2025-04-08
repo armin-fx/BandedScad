@@ -164,6 +164,27 @@ function inverse (m) =
 	m4
 ;
 
+// Berechnet die Spur einer Matritze
+function trace (m) =
+	trace_intern (m, len(m))
+;
+function trace_intern (m, size=0, i=0, result=0) =
+	i>=size ? result :
+	trace_intern (m, size, i+1, result+m[i][i])
+;
+
+// Berechnet das Matrixexponential einer Matrix
+// Rechnet auch mit Zahlen, hier eignet sich 'exp()' besser
+function matrix_exponential (m) =
+	m[0]==undef // keine Liste? ==> Zahl
+	?	matrix_exponential_intern (m, m*m, 1+m)
+	:	matrix_exponential_intern (m, m*m, identity_matrix(len(m))+m)
+;
+function matrix_exponential_intern (m, M, result, n=2, i=2, end=100) =
+	i==end ?                           result+M/n :
+	matrix_exponential_intern (m, M*m, result+M/n, n*(i+1), i+1, end)
+;
+
 // Lineares Gleichungssystem lösen mit Koeffizientenmatrix
 // m = nxn oder nxo matrix (o>n)
 // a = nxp matrix, p = jede ganze Zahl >= 1,
