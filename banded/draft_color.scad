@@ -17,6 +17,25 @@ function get_color (c, alpha, default=undef) =
 		alpha==undef ? c : [c[0],c[1],c[2],alpha]
 	:default
 ;
+// module to use extra color names
+module color_extend (c, alpha, default=undef)
+{
+	color (get_color (c, alpha, default) )
+	children();
+}
+
+// get a color between 'c' and 'c2'
+// with t = 0...1  ==> c...c2
+function get_color_between (c, c2, t=0.5, alpha) =
+	  (1-t) * get_color (c , alpha)
+	+ (t  ) * get_color (c2, alpha)
+;
+module color_between (c, c2, t=0.5, alpha)
+{
+	color (get_color_between (c, c2, t, alpha) )
+	children();
+}
+
 
 // transform color from hsv model to rgb model
 //

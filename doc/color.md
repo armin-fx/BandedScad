@@ -14,6 +14,9 @@ Color
 [contents]: #contents "Up to Contents"
 - [Convert colors](#convert-colors-)
   - [`get_color`][get_color]
+  - [`color_extend`][color_extend]
+  - [`get_color_between`][color_between]
+  - [`color_between`][color_between]
   - [`color_hsv_to_rgb()`][color_hsv_to_rgb]
   - [`color_rgb_to_hsv()`][color_rgb_to_hsv]
   - [`color_list_to_hex()`][color_list_to_hex]
@@ -78,6 +81,42 @@ _Additional defined colors:_
   - `"birch"`
   - `"oak"`
   - `"pine"`
+
+#### color_extend [^][contents]
+[color_extend]: #color_extend-
+Set the color for an object from different color arguments.  
+Module to use extra color names, see [`get_color()`][get_color]
+
+```OpenSCAD
+color_extend (c, alpha, default)  object();
+```
+
+#### color_between [^][contents]
+[color_between]: #color_between-
+Return a color as rgb or rgba list between colors `c` and `c2`.  
+The color will set with parameter `t`.
+
+_Arguments:_
+```OpenSCAD
+// get color as rgb or rgba value:
+get_color_between (c, c2, t, alpha)
+
+// operator to create a colored object:
+color_between (c, c2, t, alpha)  object();
+
+// function operator to create a colored object:
+use <banded/draft_primitives_operator.scad>
+o = color_between (object, c, c2, t, alpha);
+```
+- `c`       - color 1 argument
+- `c2`      - color 2 argument
+- `t`
+  - parameter to slide between both colors
+    `0...1`  ==> `c...c2`
+  - default = `0.5`, half between both colors
+- `alpha`
+  - optional, alpha value for both colors
+  - transparent to opaque: `0...1`, default = `undef`.
 
 #### color_hsv_to_rgb [^][contents]
 [color_hsv_to_rgb]: #color_hsv_to_rgb-

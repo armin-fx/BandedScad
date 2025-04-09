@@ -261,7 +261,7 @@ All modules from file
 as function.  
 In file `draft_primitives_transform.scad`.
 
-_Implemented:_
+_Implemented transformations:_
 - `rotate_backwards    (object, a, v)`
 - `rotate_at           (object, a, p, v, backwards)`
 - `rotate_to_vector    (object, v, a, backwards, d)`
@@ -275,6 +275,10 @@ _Implemented, but needs rework:_
 - `mirror_copy_at     (object, v, p)`
 - `mirror_repeat      (object, v, v2, v3)`
 - `mirror_repeat_copy (object, v, v2, v3)`
+
+_Implemented operations:_
+- [`helix_extrude (object, angle, rotations, pitch, height, r, opposite, orientation, slices)`][helix_extrude]
+- [`color_between (object, c, c2, t, alpha)`](color.md#color_between-)
 
 #### helix_extrude [^][contents]
 [helix_extrude]: #helix_extrude-

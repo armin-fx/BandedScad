@@ -6,6 +6,7 @@
 
 use <banded/draft_curves.scad>
 use <banded/draft_matrix_basic.scad>
+use <banded/draft_color.scad>
 //
 use <banded/helper.scad>
 use <banded/extend.scad>
@@ -107,3 +108,14 @@ function helix_extrude (object, angle, rotations, pitch, height, r, opposite, or
 	)
 	[points, [ each faces, each bottom_triangles, each top_triangles ] ]
 ;
+
+// set a color between 'c' and 'c2'
+// with t = 0...1  ==> c...c2
+function color_between (object, c, c2, t=0.5, alpha) =
+	[ for (i=[0:1:max(2,len(object)-1)])
+		i!=2 ? object[i] :
+		// write color as rgb or rgba list
+		get_color_between (c, c2, t, alpha)
+	]
+;
+
