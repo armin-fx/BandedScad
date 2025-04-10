@@ -104,6 +104,10 @@ with _extra special variables_, some modules have extra arguments.
 | [`cylinder()`][cylinder] | [`cylinder_extend()`][cylinder_extend]
 | [`sphere()`][sphere]     | [`sphere_extend()`][sphere_extend]
 
+[Functions to create primitives in a data list](draft_primitives.md)
+use already the extended version.  
+They are defined in file:  
+`banded/draft_primitives_basic.scad`
 
 ##### Extra arguments: [^][contents]
 - `align`
@@ -123,11 +127,16 @@ with _extra special variables_, some modules have extra arguments.
 
 #### circle_extend [^][contents]
 [circle_extend]: #circle_extend-
-Creates a circle with [options of `circle_curve()`][circle_curve]
+Creates a circle with [options of `circle_curve()`][circle_curve].  
+[=> OpenSCAD documentation - circle](https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Using_the_2D_Subsystem#circle)  
 
 _Arguments:_
 ```OpenSCAD
+// As module:
 circle_extend (r, angle, slices, piece, outer, align, d)
+
+// As function:
+circle        (r, angle, slices, piece, outer, align, d)
 ```
 - `r, d`
   - radius or diameter of circle
@@ -161,11 +170,16 @@ circle_extend (r, angle, slices, piece, outer, align, d)
 
 #### cylinder_extend [^][contents]
 [cylinder_extend]: #cylinder_extend-
-Creates a cylinder with ground circle [options of `circle_curve()`][circle_curve].
+Creates a cylinder with ground circle [options of `circle_curve()`][circle_curve].  
+[=> OpenSCAD documentation - cylinder](https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Primitive_Solids#cylinder)  
 
 _Arguments:_
 ```OpenSCAD
+// As module:
 cylinder_extend (h, r1, r2, center, r, d, d1, d2, angle, slices, piece, outer, align)
+
+// As function:
+cylinder        (h, r1, r2, center, r, d, d1, d2, angle, slices, piece, outer, align)
 ```
 - `align`
   - Side from origin away that the part should be.
@@ -174,11 +188,16 @@ cylinder_extend (h, r1, r2, center, r, d, d1, d2, angle, slices, piece, outer, a
 
 #### sphere_extend [^][contents]
 [sphere_extend]: #sphere_extend-
-Creates a sphere at moment only control with extra special variables.
+Creates a sphere at moment only control with extra special variables.  
+[=> OpenSCAD documentation - sphere](https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Primitive_Solids#sphere)  
 
 _Arguments:_
 ```OpenSCAD
+// As module:
 sphere_extend (r, d, outer, align)
+
+// As function:
+sphere        (r, d, outer, align)
 ```
 - `align`
   - Side from origin away that the part should be.
@@ -197,11 +216,16 @@ sphere_extend (r, d, outer, align)
 
 #### square_extend [^][contents]
 [square_extend]: #square_extend-
-Creates a square with extra arguments.
+Creates a square with extra arguments.  
+[=> OpenSCAD documentation - square](https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Using_the_2D_Subsystem#square)  
 
 _Arguments:_
 ```OpenSCAD
+// As module:
 square_extend (size, center, align)
+
+// As function:
+square        (size, center, align)
 ```
 - `align`
   - Side from origin away that the part should be.
@@ -210,11 +234,16 @@ square_extend (size, center, align)
 
 #### cube_extend [^][contents]
 [cube_extend]: #cube_extend-
-Creates a cube with extra arguments.
+Creates a cube with extra arguments.  
+[=> OpenSCAD documentation - cube](https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Primitive_Solids#cube)  
 
 _Arguments:_
 ```OpenSCAD
+// As module:
 cube_extend (size, center, align)
+
+// As function:
+cube        (size, center, align)
 ```
 - `align`
   - Side from origin away that the part should be.
@@ -223,7 +252,9 @@ cube_extend (size, center, align)
 
 #### linear_extrude_extend [^][contents]
 [linear_extrude_extend]: linear_extrude_extend-
-Extend `linear_extrude_extend()` with extra arguments.
+Extend `linear_extrude_extend()` with extra arguments.  
+[=> OpenSCAD documentation - linear_extrude](https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Using_the_2D_Subsystem#linear_extrude)  
+[linear_extrude as function](draft_primitives.md#linear_extrude-)  
 
 _Additional options:_
 ```OpenSCAD
@@ -239,7 +270,10 @@ linear_extrude_extend (height, center, twist, slices, scale, align, convexity)
 Modifies `rotate_extrude()`.  
 Objects created with `rotate_extrude()` are rotated differently
 as e.g. the object `cylinder()`.
-With `rotate_extrude_extend()` these objects can be connected correctly.
+With `rotate_extrude_extend()` these objects can be connected correctly.  
+[=> OpenSCAD documentation - rotate_extrude](https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Using_the_2D_Subsystem#rotate_extrude)
+[`rotate_extrude` and `rotate_extrude_extend` as function](draft_primitives.md#rotate_extrude-)  
+
 
 _Additional options:_
 ```OpenSCAD

@@ -71,7 +71,27 @@ Transform and edit objects
 Transform operator [^][contents]
 --------------------------------
 Contains modules which extend OpenSCAD buildin operator family
-and keep the same behavior and option names.
+and keep the same behavior and option names.  
+
+Modules defined in file:
+- `operator_transform.scad`
+Functions for objects in data lists defined in files:
+- `draft_primitives_basic.scad`
+- `draft_primitives_transform.scad`
+
+All operator modules already exists as
+[functions for data list](draft_primitives.md).  
+The functions have the same argument sequence as the module version,
+but needs the object as first argument (parameter `object`).  
+_Example:_
+```OpenSCAD
+// Module version:
+operator (xxx, ...)  object();
+
+// Function version:
+o = operator (object, xxx, ...);
+```
+
 
 ### Transformation modules [^][contents]
 
@@ -82,7 +102,11 @@ Works like `rotate()`.
 
 _Arguments:_
 ```OpenSCAD
-rotate_new (a, v, backwards)
+// Operator as module:
+rotate_new (a, v, backwards)  ...
+
+// Operator as function:
+rotate (object, a, v, backwards)
 ```
 - `a` - angle parameter
   - as number: angle to rotate in degrees around an axis, defined in vector `v`
@@ -105,7 +129,11 @@ Rotate object backwards.
 
 _Arguments:_
 ```OpenSCAD
-rotate_backwards (a, v)
+// Operator as module:
+rotate_backwards (a, v)  ...
+
+// Operator as function:
+rotate_backwards (object, a, v)
 ```
 Options like `rotate()`.
 - `a` - angle
@@ -117,7 +145,11 @@ Rotate object at specific origin position.
 
 _Arguments:_
 ```OpenSCAD
-rotate_at (a, p, v, backwards)
+// Operator as module:
+rotate_at (a, p, v, backwards)  ...
+
+// Operator as function:
+rotate_at (object, a, p, v, backwards)
 ```
 - `a` - angle
 - `v` - vector where it rotates around
@@ -132,7 +164,11 @@ Rotate object from direction Z axis to direction as vector.
 
 _Arguments:_
 ```OpenSCAD
-rotate_to_vector (v, a, backwards, d)
+// Operator as module:
+rotate_to_vector (v, a, backwards, d)  ...
+
+// Operator as function:
+rotate_to_vector (v, a, backwards)
 ```
 - `v` - direction as vector
 - `a`
@@ -141,7 +177,9 @@ rotate_to_vector (v, a, backwards, d)
 - `backwards`
   - `false` - standard, normal forward rotate
   - `true`  - rotate backwards, undo forward rotate
-- `d` - dimension of the object
+- `d`
+  - dimension of the object,
+    module version only
   - The operator can not get any data of the children object.
     It must therefore be defined what number of dimensions this has.
   - `3` - 3D object = default
@@ -174,7 +212,11 @@ Rotate at a specific origin position.
 
 _Arguments:_
 ```OpenSCAD
-rotate_to_vector_at (v, p, a, backwards)
+// Operator as module:
+rotate_to_vector_at (v, p, a, backwards)  ...
+
+// Operator as function:
+rotate_to_vector_at (object, v, p, a, backwards)
 ```
 - `v` - direction as vector
 - `p` - origin position at where it rotates
@@ -189,7 +231,11 @@ Mirror an object along a vector at specific origin position.
 
 _Arguments:_
 ```OpenSCAD
-mirror_at (v, p)
+// Operator as module:
+mirror_at (v, p)  ...
+
+// Operator as function:
+mirror_at (object, v, p)
 ```
 - `p` - origin position at where it mirrors
 - `v` - mirror along this direction, standard = X axis
@@ -201,7 +247,11 @@ and keep original object.
 
 _Arguments:_
 ```OpenSCAD
-mirror_copy (v)
+// Operator as module:
+mirror_copy (v)  ...
+
+// Operator as function:
+mirror_copy (object, v)
 ```
 - `v` - mirror along this direction, standard = X axis
 
@@ -211,7 +261,11 @@ Mirror an object along a vector `v` at origin position `p` and keep original obj
 
 _Arguments:_
 ```OpenSCAD
-mirror_copy_at (v, p)
+// Operator as module:
+mirror_copy_at (v, p)  ...
+
+// Operator as function:
+mirror_copy_at (object, v, p)
 ```
 - `p` - origin position at where it mirrors
 - `v` - mirror along this direction, standard = X axis
@@ -222,7 +276,11 @@ Mirror an object at origin up to 3 times along a vector `v`, then `v2`, `v3`.
 
 _Arguments:_
 ```OpenSCAD
-mirror_repeat (v, v2, v3)
+// Operator as module:
+mirror_repeat (v, v2, v3)  ...
+
+// Operator as function:
+mirror_repeat (object, v, v2, v3)
 ```
 - `v`  - mirror along this direction, standard = X axis
 - `v2` - 2. mirror direction, optional
@@ -235,7 +293,11 @@ and keep original object.
 
 _Arguments:_
 ```OpenSCAD
-mirror_repeat_copy (v, v2, v3)
+// Operator as module:
+mirror_repeat_copy (v, v2, v3)  ...
+
+// Operator as function:
+mirror_repeat_copy (object, v, v2, v3)
 ```
 - `v`  - mirror along this direction, standard = X axis
 - `v2` - 2. mirror direction, optional
@@ -249,7 +311,11 @@ skew an object.
 
 _Arguments:_
 ```OpenSCAD
-skew (v, t, m, a, d)
+// Operator as module:
+skew (v, t, m, a, d)  ...
+
+// Operator as function:
+skew (object, v, t, m, a)
 ```
 - `v` - vector, shear parallel to this axis
   - 3D:
@@ -269,7 +335,9 @@ skew (v, t, m, a, d)
     - not needed, undefined
 - `m` - skew factor, standard = 0 
 - `a` - angle in degree inside (-90 ... 90), alternative to 'm'
-- `d` - dimensions of object
+- `d`
+  - dimensions of object,
+    module version only
   - `3` - spatial (3D)
   - `2` - flat (2D)
   - not set - Try to get this value from the other options.
@@ -282,7 +350,11 @@ skew an object in a list at specific origin position.
 
 _Arguments:_
 ```OpenSCAD
-skew_at (v, t, m, a, p, d)
+// Operator as module:
+skew_at (v, t, m, a, p, d)  ...
+
+// Operator as function:
+skew_at (object, v, t, m, a, p)
 ```
 see [`skew()`][skew]
 - `p` - origin position at where it skews
@@ -331,7 +403,7 @@ Axis = x, y or z. later named as '?'
 #### Buildin operator modules [^][contents]
 [=> OpenSCAD user manual, transformations](https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Transformations)
 
-| operator module        | function on lists                        | generating matrix
+| operator               | function on lists                        | generating matrix
 |------------------------|------------------------------------------|-------------------
 | translate()            | [translate_points()][translate_points]   | [matrix_translate()][matrix_translate]
 | [rotate()][rotate_new] | [rotate_points()][rotate_points]         | [matrix_rotate()][matrix_rotate]
@@ -356,7 +428,7 @@ Axis = x, y or z. later named as '?'
 
 #### More operator modules [^][contents]
 
-| operator module                              | function on lists                                          | generating matrix
+| operator                                     | function on lists                                          | generating matrix
 |----------------------------------------------|------------------------------------------------------------|-------------------
 | [rotate_backwards()][rotate_backwards]       | [rotate_backwards_points()][rotate_backwards_points]       | [matrix_rotate_backwards()][matrix_rotate_backwards]
 | [rotate_at()][rotate_at]                     | [rotate_at_points()][rotate_at_points]                     | [matrix_rotate_at()][matrix_rotate_at]
@@ -895,7 +967,7 @@ _Specialized modules:_
 Creates a helix with a 2D-polygon similar rotate_extrude.  
 This will generate every segment with operation `hull()` on the 2D-polygon ends.
 It makes sometimes trouble when you want to render the object.
-If you can it is maybe better to use the _function_
+If you can, it is maybe better to use the _function_
 [`helix_extrude()`](draft_primitives.md#helix_extrude-).
 
 modified from Gael Lafond, <https://www.thingiverse.com/thing:2200395>  

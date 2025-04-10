@@ -48,7 +48,9 @@ Main functionality:
   - [Algorithm with function literals][function]
 - [Math operations on lists][list_math]
 - [Helper functions][helper]
+- [Debug methods][debug]
 - [Benchmark functions for speed][benchmark]
+- [Versioning methods][version]
 
 Separate stuff:
 - [Compatibility files][antiquity]
@@ -68,7 +70,8 @@ Separate stuff:
 [mean]:        doc/list_mean.md
 [string]:      doc/string.md
 [helper]:      doc/helper.md
-[benchmark]:   doc/helper.md#benchmark-function-
+[debug]:       doc/debug.md
+[benchmark]:   doc/debug.md#benchmark-function-
 [math]:        doc/math.md
 [math_common]: doc/math.md#various-math-functions-
 [vector]:      doc/math_vector.md
@@ -122,6 +125,13 @@ So you can keep the namespace clean.
 ```OpenSCAD
 use <banded/ ??? .scad>
 include <banded/constants.scad>
+```
+
+You can specify for which version of BandedSCAD you created your model.
+Then this will yield an assert, if the current version is not compatible.
+```OpenSCAD
+include <banded.scad>
+required_version ("3.7");
 ```
 
 

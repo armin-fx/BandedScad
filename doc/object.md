@@ -7,6 +7,8 @@ Configurable objects
 ` `+--> `banded/object_figure.scad`  
 ` `+--> `banded/object_figure_rounded.scad`  
 ` `+--> `banded/object_rounded.scad`  
+` `|  
+` `+--> `banded/draft_primitives_figure.scad`  
 
 [<-- file overview](file_overview.md)  
 [<-- table of contents](contents.md)  
@@ -64,7 +66,9 @@ Configurable objects
 Figures [^][contents]
 ---------------------
 
-Modules to create configurable objects
+Modules to create configurable objects.
+They exists as module to create objects directly
+and (mostly) as function to create objects in data lists.
 
 
 ### 2D [^][contents]
@@ -72,7 +76,8 @@ Modules to create configurable objects
 #### triangle [^][contents]
 [triangle]: #triangle-
 Creates a triangle, a half square
-with arguments from [`square_extend()`][square_extend].
+with arguments from [`square_extend()`][square_extend].  
+As module and as function.
 
 _Arguments:_
 ```OpenSCAD
@@ -92,8 +97,8 @@ triangle (size, center, align, side)
 
 #### ring [^][contents]
 [ring]: #ring-
-Creates a ring.  
-A circle with a circle hole.
+Creates a ring, a circle with a circle hole.  
+As module and as function.
 
 _Arguments:_
 ```OpenSCAD
@@ -129,6 +134,7 @@ _Must specify:_
 [wedge]: #wedge-
 Creates a wedge, a half cube.  
 With arguments from [`cube_extend()`][cube_extend].
+As module and as function.
 
 _Arguments:_
 ```OpenSCAD
@@ -172,7 +178,8 @@ translate ([i%4, -floor(i/4)%3] * 8)
 
 #### wedge_freecad [^][contents]
 [wedge_freecad]: #wedge_freecad-
-Creates a wedge with the parameter from FreeCAD's wedge.
+Creates a wedge with the parameter from FreeCAD's wedge.  
+As module and as function.
 
 _Arguments:_
 ```OpenSCAD
@@ -207,7 +214,8 @@ _Location of the parameter:_
 
 #### torus [^][contents]
 [torus]: #torus-
-Creates a torus.
+Creates a torus.  
+As module and as function.
 
 _Arguments:_
 ```OpenSCAD
@@ -260,8 +268,8 @@ r=6; w=8;
 
 #### tube [^][contents]
 [tube]: #tube-
-Creates a tube.  
-A cylinder with a cylinder hole.
+Creates a tube, a cylinder with a cylinder hole.  
+As module and as function.
 
 _Arguments:_
 ```OpenSCAD
@@ -298,7 +306,8 @@ _Deprecated name:_
 
 #### funnel [^][contents]
 [funnel]: #funnel-
-Creates a funnel.
+Creates a funnel.  
+As module and as function.
 
 _Arguments:_
 ```OpenSCAD
@@ -328,7 +337,7 @@ funnel (h, ri1, ri2, ro1, ro2, w, angle, di1, di2, do1, do2, ri, ro, di, do, out
     <https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/undersized_circular_objects>
 
 _Rules of radius parameter:_
-- radius comes before diameter
+- radius `r*` comes before diameter `d*`
 - special values like `ri1` take precedence over general values like `ri`
 - missing radius or diameter is taken from
   the wall parameter and the opposite radius or diameter
@@ -362,7 +371,8 @@ empty ()
 
 #### bounding_square [^][contents]
 [bounding_square]: #bounding_square-
-Create a 2D rectangle around the outermost points from a list.
+Create a 2D rectangle around the outermost points from a list.  
+As module and as function.
 
 _Arguments:_
 ```OpenSCAD
@@ -374,6 +384,7 @@ bounding_square (points)
 #### bounding_cube [^][contents]
 [bounding_cube]: #bounding_cube-
 Create a 3D cube around the outermost points from a list.  
+As module and as function.
 
 _Arguments:_
 ```OpenSCAD
@@ -387,7 +398,8 @@ Rounded edges [^][contents]
 ---------------------------
 
 Modules and functions to create different configurable edges to add or
-remove from objects.
+remove from objects.  
+Actually only as module.
 
 #### Repeating options: [^][contents]
 

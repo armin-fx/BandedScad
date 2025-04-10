@@ -41,8 +41,8 @@ Table of contents
   - [Convert colors](color.md)
   - [Create and edit objects in data lists](draft_primitives.md)
     - Buildin OpenSCAD primitives
-    - More configurable objects
-    - Transform and edit
+    - Configurable objects
+    - Transform and edit objects
 - [Configurable objects](object.md)
   - [Figures](object.md#figures-)
   - [Rounded edges](object.md#rounded-edges-)
@@ -51,12 +51,16 @@ Table of contents
   - [Various operator to edit and test objects](operator.md#edit-and-test-objects-)
   - [Transform operator for affine transformations](operator.md#transform-operator-)
   - [Place objects in specific position](operator.md#place-objects-)
-- [Debug modules](debug.md)
+- [Debug methods](debug.md)
   - [Echo in console](debug.md#echo-in-console-)
   - [Make points and lines visible](debug.md#make-points-and-lines-visible-)
   - [Show parts of objects](debug.md#show-parts-of-objects-)
   - [Benchmark for functions to measure speed](debug.md#benchmark-function-)
 - [Manage versioning](version.md)
+  - [Get current version](version.md#current-version-)
+  - [Version check](version.md#version-check-)
+  - [Convert version format](version.md#convert-version-format-)
+  - [Deprecated functionality](version.md#deprecated-functionality-)
 - [Compatibility files](antiquity.md)
 
 [<-- file overview](file_overview.md)

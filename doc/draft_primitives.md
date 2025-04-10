@@ -262,13 +262,14 @@ as function.
 In file `draft_primitives_transform.scad`.
 
 _Implemented transformations:_
+- `rotate              (object, a, v, backwards)`
 - `rotate_backwards    (object, a, v)`
 - `rotate_at           (object, a, p, v, backwards)`
-- `rotate_to_vector    (object, v, a, backwards, d)`
+- `rotate_to_vector    (object, v, a, backwards)`
 - `rotate_to_vector_at (object, v, p, a, backwards)`
 - `mirror_at (object, v, p)`
-- `skew    (object, v, t, m, a, d)`
-- `skew_at (object, v, t, m, a, p, d)`
+- `skew    (object, v, t, m, a)`
+- `skew_at (object, v, t, m, a, p)`
 
 _Implemented, but needs rework:_
 - `mirror_copy        (object, v)`
@@ -282,8 +283,9 @@ _Implemented operations:_
 
 #### helix_extrude [^][contents]
 [helix_extrude]: #helix_extrude-
-Creates a helix with a 2D hull as trace similar rotate_extrude.  
-Returns a list with object data.
+Creates a helix with a 2D-polygon as trace similar rotate_extrude.  
+Returns a list with object data.  
+[Version as module, experimental](operator.md#helix_extrude-)
 
 _Arguments:_
 ```OpenSCAD
