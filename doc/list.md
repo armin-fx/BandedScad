@@ -52,6 +52,7 @@ Functions for edit lists
     - [`insert()`][insert]
     - [`replace()`][replace]
     - [`extract()`][extract]
+    - [`fill()`][fill]
     - [`select()`][select]
     - [`select_all()`][select_all]
     - [`select_link()`][select_link]
