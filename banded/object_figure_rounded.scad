@@ -118,14 +118,14 @@ module triangle_chamfer (size, edges, center, align, side)
 //   size         - Größe des Quaders wie bei cube()
 //   r, d         - Radius,Durchmesser der Kanten
 //   center
-module cube_rounded_full (size, r, center=false, d)
+module cube_rounded_full (size, r, center, align, d)
 {
 	// TODO interne Tests der Argumente auf Plausibilität fehlen
 	R    = parameter_circle_r(r, d);
 	Size = parameter_size_3d (size);
-	
-	center_offset = (center==false) ? [0,0,0] : [-Size[0]/2, -Size[1]/2, -Size[2]/2];
-	
+	//
+	Align = parameter_align   (align, [1,1,1], center);
+	//
 	fn=get_slices_circle_current (R);
 	fn_polar=ceil(fn / 2) * 2;
 	//
@@ -135,7 +135,7 @@ module cube_rounded_full (size, r, center=false, d)
 	r_polar = (fn_polar/2 % 2) ? R : R * fudge_polar;
 	offset  = (fn_polar/2 % 2) ? R * (1/cos(180/(fn_polar)) - 1) * cos(180/(fn_polar)) : 0;
 	
-	translate(center_offset) union()
+	translate ([for (i=[0:1:len(Size)-1]) (Align[i]-1)*Size[i]/2 ])
 	{
 		$fn=fn_polar;
 		// Quader ohne die Rundungen

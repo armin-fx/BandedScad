@@ -826,21 +826,25 @@ _Specialized modules with no arguments `type`:_
 #### cube_rounded_full [^][contents]
 [cube_rounded_full]: #cube_rounded_full-
 Cube with rounded edges, all edges with the same radius/diameter.  
-Based on `cube()`  
+Based on [`cube_extend()`](extend.md#cube_extend-), compatible with `cube()`.  
 _needs a rework_
 
 _Arguments:_
 ```OpenSCAD
-cube_rounded_full (size, r, center, d)
+cube_rounded_full (size, r, center, align, d)
 ```
 - `size`   - size of the cube like `cube()`
 - `r`, `d` - radius,diameter of the rounded edges
 - `center` - center the cube if set `true`
+- `align`
+  - Side from origin away that the part should be.
+  - [Extra arguments - align][align]
+  - default = `[1,1,1]` = oriented on the positive side of axis
 
 #### cube_fillet [^][contents]
 [cube_fillet]: #cube_fillet-
 Cube with chamfered edges, every edge can be configured.  
-Based on `cube()`.
+Based on [`cube_extend()`](extend.md#cube_extend-), compatible with `cube()`.  
 
 _Arguments:_
 ```OpenSCAD
@@ -901,7 +905,7 @@ cylinder_rounded (h, r, center, d)
 #### cylinder_edges_fillet [^][contents]
 [cylinder_edges_fillet]: #cylinder_edges_fillet-
 Cylinder with chamfered edges on bottom and top.  
-Based on [`cylinder_extend()`][cylinder_extend], compatible with `cylinder()`
+Based on [`cylinder_extend()`][cylinder_extend], compatible with `cylinder()`.
 
 _Arguments:_
 ```OpenSCAD
