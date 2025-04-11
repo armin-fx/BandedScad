@@ -13,7 +13,6 @@
 //      $fn_max  - Objekte werden in höchstens so viele Fragmente gebaut wie angegeben,
 //      $fd      - maximale Abweichung des Modells in mm
 //      $fq      - Fragmenteanzahl quantisieren = durch diese Zahl teilbar, wenn angegeben
-//                 TODO - noch nicht implementiert -
 //      $fn_safe - Anzahl der Fragmente, wenn alle Begrenzungen deaktiviert wurden. Standardwert = 12
 // veränderte Eigenschaften:
 //  - interne Variablen können deaktiviert werden mit entsprechende Schalter.

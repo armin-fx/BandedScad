@@ -80,6 +80,7 @@ Variables can set off with `0`.
 | `$fn_min`     | Number of fragments which will never lesser then this value
 | `$fn_max`     | Number of fragments which will never bigger then this value
 | `$fd`         | Maximum distance of deviation from model, distance in mm which will not exceeded
+| `$fq`         | Quantize the number of fragments to the next value that is divisible by this value without a remainder. This value can be greater than a specified value `$fn_max`.
 | `$fa_enabled` | `$fa` can be switch off when set with `false`
 | `$fs_enabled` | `$fs` can be switch off when set with `false`
 | `$fn_safe`    | If all special variables are off, this number of fragments will be used. default = `12`
@@ -337,6 +338,7 @@ _Control the fragment count of a circle (extend):_
 - `fn_min` - like `$fn_min` , minimum number of fragments
 - `fn_max` - like `$fn_max` , maximum number of fragments
 - `fd`     - like `$fd`, maximum distance of deviation from model in mm
+- `fq`     - like `$fq`, quantize number of fragment
 - `fa_enabled` - like `$fa_enabled`, `fa` can be disabled with `false`
 - `fs_enabled` - like `$fs_enabled`, `fs` can be disabled with `false`
 - `fn_safe`    - like `$fn_safe`
@@ -380,7 +382,7 @@ uses arguments based on the _extra special variables_.
 _Arguments:_
 ```OpenSCAD
 get_slices_circle_closed   (r, fn, fa, fs)
-get_slices_circle_closed_x (r, fn, fa, fs, fn_min, fn_max, fd, fa_enabled, fs_enabled)
+get_slices_circle_closed_x (r, fn, fa, fs, fn_min, fn_max, fd, fq, fa_enabled, fs_enabled)
 ```
 
 Argument radius `r` must be set.  
@@ -402,7 +404,7 @@ uses arguments based on the _extra special variables_.
 _Arguments:_
 ```OpenSCAD
 get_slices_circle   (r, angle, piece, fn, fa, fs)
-get_slices_circle_x (r, angle, piece, fn, fa, fs, fn_min, fn_max, fd, fa_enabled, fs_enabled)
+get_slices_circle_x (r, angle, piece, fn, fa, fs, fn_min, fn_max, fd, fq, fa_enabled, fs_enabled)
 ```
 
 Argument radius `r` must be set.  
