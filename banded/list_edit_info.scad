@@ -730,7 +730,7 @@ function adjacent_find_intern_f_type_loop (list, f, type, begin=0, last=-1, this
 
 // sucht einen Wert in einer aufsteigend sortierten Liste und gibt die Position zurück.
 // Gibt einen negativen Wert zurück, wenn nichts gefunden wurde. Der Betrag des Wertes
-// ist die letzte Position, wo gesucht wurde.
+// ist die letzte Position - 1, wo gesucht wurde.
 function binary_search (list, value, type=0, f=undef) =
 	list==undef || len(list)<=1 ? 0 :
 	f==undef ?
@@ -739,7 +739,7 @@ function binary_search (list, value, type=0, f=undef) =
 		binary_search_intern_f (list, value, type, f, 0, len(list)-1)
 ;
 function binary_search_intern (list, value, type, begin, end) =
-	(end<begin)        ? -begin
+	(end<begin)        ? -begin-1
 	:let(
 		middle=floor((begin+end)/2),
 		v=
@@ -753,7 +753,7 @@ function binary_search_intern (list, value, type, begin, end) =
 	:             binary_search_intern (list, value, type, begin   , middle-1)
 ;
 function binary_search_intern_f (list, value, type, f, begin, end) =
-	(end<begin)        ? -begin
+	(end<begin)        ? -begin-1
 	:let(
 		middle=floor((begin+end)/2),
 		v=
