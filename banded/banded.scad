@@ -18,6 +18,7 @@ include <string.scad>
 include <helper.scad>
 include <extend.scad>
 include <draft.scad>
+include <color.scad>
 include <object.scad>
 include <operator.scad>
 include <debug.scad>

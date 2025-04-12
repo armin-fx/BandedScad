@@ -38,11 +38,11 @@ Table of contents
   - [Creates surfaces as data list](draft_surface.md)
   - [Generate matrices for affine transformation](draft_matrix.md)
   - [Transform functions on point lists for affine transformations](draft_transform.md)
-  - [Convert colors](color.md)
   - [Create and edit objects in data lists](draft_primitives.md)
     - Buildin OpenSCAD primitives
     - Configurable objects
     - Transform and edit objects
+- [Convert colors](color.md)
 - [Configurable objects](object.md)
   - [Figures](object.md#figures-)
   - [Rounded edges](object.md#rounded-edges-)

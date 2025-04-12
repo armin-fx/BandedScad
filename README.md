@@ -36,7 +36,7 @@ Main functionality:
     as data in a list.  
     _(not finished yet)_
   - [Generate matrices for multmatrix][multmatrix]
-  - [Convert colors][color]
+- [Convert colors][color]
 - [Editing lists][list]
   - Most functions base on the STL from C++
 - [Edit and convert strings][string]

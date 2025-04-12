@@ -9,5 +9,4 @@ include <banded/draft_surface.scad>
 include <banded/draft_transform.scad>
 include <banded/draft_matrix.scad>
 //
-include <banded/draft_color.scad>
 include <banded/draft_primitives.scad>

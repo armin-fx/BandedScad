@@ -5,7 +5,7 @@
 //
 
 use <banded/operator_edit.scad>
-use <banded/draft_color.scad>
+use <banded/color.scad>
 
 
 // - In der Konsole anzeigen

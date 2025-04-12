@@ -75,12 +75,13 @@ Overview of scad files
 ` `| . . . | . . . . +--> [`draft_transform_basic.scad`](draft_transform.md#basic-multmatrix-functions- "OpenSCAD buildin transformation on point lists")  
 ` `| . . . | . . . . +--> [`draft_transform_common.scad`](draft_transform.md#more-multmatrix-functions- "More functions for affine transformations on point lists")  
 ` `| . . . |  
-` `| . . . +--> [`draft_color.scad`](color.md "Convert colors")  
 ` `| . . . +--> [`draft_primitives.scad`](draft_primitives.md "Create and edit OpenSCAD primitives in data lists")  
 ` `| . . . . . . . . +--> `draft_primitives_basic.scad`  
 ` `| . . . . . . . . +--> `draft_primitives_figure.scad`  
 ` `| . . . . . . . . +--> `draft_primitives_transform.scad`  
 ` `| . . . . . . . . +--> `draft_primitives_operator.scad`  
+` `|  
+` `+--> [`color.scad`](color.md "Convert colors")  
 ` `|  
 ` `+--> [`font.scad`](draft_primitives.md#text-)  
 ` `| . . . +--> `font_definition.scad`  

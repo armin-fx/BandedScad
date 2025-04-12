@@ -19,7 +19,7 @@
 use <banded/draft_curves.scad>
 use <banded/draft_matrix.scad>
 use <banded/draft_transform.scad>
-use <banded/draft_color.scad>
+use <banded/color.scad>
 //
 use <banded/helper.scad>
 use <banded/extend.scad>

@@ -2,10 +2,7 @@ Color
 =====
 
 ### defined in file
-`banded/draft.scad`  
-` `|  
-` `+--> `banded/draft_color.scad`  
-` `. . .  
+`banded/color.scad`  
 
 [<-- file overview](file_overview.md)  
 [<-- table of contents](contents.md)  
