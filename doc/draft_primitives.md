@@ -279,7 +279,7 @@ _Implemented, but needs rework:_
 
 _Implemented operations:_
 - [`helix_extrude (object, angle, rotations, pitch, height, r, opposite, orientation, slices)`][helix_extrude]
-- [`color_between (object, c, c2, t, alpha)`](color.md#color_between-)
+- [`color_between (object, c, c2, t, alpha, colors)`](color.md#color_between-)
 
 #### helix_extrude [^][contents]
 [helix_extrude]: #helix_extrude-

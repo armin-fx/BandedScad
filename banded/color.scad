@@ -6,43 +6,43 @@ use <banded/string.scad>
 use <banded/list_edit_data.scad>
 use <banded/list_edit_test.scad>
 //
-include <color_definition.scad>
+include <banded/color_definition.scad>
 
-include <color/color_svg.scad>
-include <color/color_other.scad>
+include <banded/color/color_svg.scad>
+include <banded/color/color_other.scad>
 
 
 color_list =
-	[ each is_undef(color_name_svg  ) ? [] : [prepare_color_name( color_name_svg   )]
-	, each is_undef(color_name_other) ? [] : [prepare_color_name( color_name_other )]
+	[ each is_undef(color_name_svg   ) ? [] : prepare_color_list( color_name_svg    )
+	, each is_undef(color_name_banded) ? [] : prepare_color_list( color_name_banded )
 	];
 
 // get color as rgb or rgba list
-function get_color (c, alpha, default=undef) =
+function get_color (c, alpha, default=undef, colors) =
 	is_string(c) ?
 		c[0]=="#" ?
 			color_hex_to_list (c, alpha)
-		:	color_name        (c, alpha)
+		:	color_name        (c, alpha, colors)
 	:is_num(c[2]) ?
 		alpha==undef ? c : [c[0],c[1],c[2],alpha]
 	:default
 ;
 // module to use extra color names
-module color_extend (c, alpha, default=undef)
+module color_extend (c, alpha, default=undef, colors)
 {
-	color (get_color (c, alpha, default) )
+	color (get_color (c, alpha, default, colors) )
 	children();
 }
 
 // get a color between 'c' and 'c2'
 // with t = 0...1  ==> c...c2
-function get_color_between (c, c2, t=0.5, alpha) =
-	  (1-t) * get_color (c , alpha)
-	+ (t  ) * get_color (c2, alpha)
+function get_color_between (c, c2, t=0.5, alpha, colors) =
+	  (1-t) * get_color (c , alpha, colors=colors)
+	+ (t  ) * get_color (c2, alpha, colors=colors)
 ;
-module color_between (c, c2, t=0.5, alpha)
+module color_between (c, c2, t=0.5, alpha, colors)
 {
-	color (get_color_between (c, c2, t, alpha) )
+	color (get_color_between (c, c2, t, alpha, colors) )
 	children();
 }
 
@@ -124,14 +124,15 @@ function color_rgb_to_hsv (rgb, alpha) =
 ;
 
 // return the name of color to rgb value as list
-function color_name (name, alpha) =
+function color_name (name, alpha, colors) =
 	name==undef || len(name)<1 ? undef :
 	let(
 		 a = alpha!=undef ? alpha : 1
 		,n = to_lower_str(name)
-		,p = color_name_find (color_list, n, len(color_list))
+		,Colors = colors==undef ? color_list : colors
+		,p = color_name_find (Colors, n, len(Colors))
 		,c = p==undef ? undef
-			: (color_list [p[0]] [color_data_list] [p[1]] [p[2]] [color_entry_rgb]) / 255
+			: (Colors [p[0]] [color_data_list] [p[1]] [p[2]] [color_entry_rgb]) / 255
 	)
 	c==undef ? undef :
 	a==1 ? c
@@ -157,6 +158,9 @@ function color_name_find_entry (list, name, s=0, j=0) =
 		: [j, res]
 ;
 
+function prepare_color_list (list) =
+	[ for (e=list) prepare_color_name (e) ]
+;
 function prepare_color_name (list) =
 	list[color_data_prepared]==true ? list :
 	[ for (i=[0:1:max (2 , len(list)-1 )])

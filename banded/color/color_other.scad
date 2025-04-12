@@ -5,7 +5,10 @@
 // other color names
 //
 
-color_name_other = prepare_color_name( [
+include <banded/color_definition.scad>
+
+
+color_name_banded = [ prepare_color_name( [
 	["BandedScad colors"
 	],[
 	// metal
@@ -22,5 +25,5 @@ color_name_other = prepare_color_name( [
 	[[230,204,153], "birch"],
 	[[166,127,102], "oak"],
 	[[217,179,115], "pine"],
-] ]);
+] ]) ];
 

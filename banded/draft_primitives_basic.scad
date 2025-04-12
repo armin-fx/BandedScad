@@ -371,11 +371,11 @@ function linear_extrude (object, height, center, twist, slices, scale, align) =
 	[points, [ each faces, each bottom_triangles, each top_triangles ] ]
 ;
 
-function color (object, c, alpha) =
+function color (object, c, alpha, colors) =
 	[ for (i=[0:1:max(2,len(object)-1)])
 		i!=2 ? object[i] :
 		// write color as rgb or rgba list
-		get_color (c, alpha)
+		get_color (c, alpha, colors=colors)
 	]
 ;
 

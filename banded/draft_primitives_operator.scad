@@ -111,11 +111,11 @@ function helix_extrude (object, angle, rotations, pitch, height, r, opposite, or
 
 // set a color between 'c' and 'c2'
 // with t = 0...1  ==> c...c2
-function color_between (object, c, c2, t=0.5, alpha) =
+function color_between (object, c, c2, t=0.5, alpha, colors) =
 	[ for (i=[0:1:max(2,len(object)-1)])
 		i!=2 ? object[i] :
 		// write color as rgb or rgba list
-		get_color_between (c, c2, t, alpha)
+		get_color_between (c, c2, t, alpha, colors)
 	]
 ;
 

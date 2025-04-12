@@ -5,7 +5,10 @@
 // Color names are taken from the World Wide Web consortium's SVG color list
 //
 
-color_name_svg = prepare_color_name( [
+include <banded/color_definition.scad>
+
+
+color_name_svg = [ prepare_color_name( [
 	["World Wide Web consortium's SVG color list"
 	],[
 	[[240,248,255], "aliceblue"],
@@ -155,5 +158,5 @@ color_name_svg = prepare_color_name( [
 	[[245,245,245], "whitesmoke"],
 	[[255,255,  0], "yellow"],
 	[[154,205, 50], "yellowgreen"]
-] ]);
+] ]) ];
 
