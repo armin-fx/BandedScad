@@ -6,6 +6,8 @@
 //
 
 color_name_other = prepare_color_name( [
+	["BandedScad colors"
+	],[
 	// metal
 	[[196,196,204], "aluminium"],
 	[[255,220,100], "brass"],
@@ -20,5 +22,5 @@ color_name_other = prepare_color_name( [
 	[[230,204,153], "birch"],
 	[[166,127,102], "oak"],
 	[[217,179,115], "pine"],
-]);
+] ]);
 

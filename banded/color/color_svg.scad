@@ -6,6 +6,8 @@
 //
 
 color_name_svg = prepare_color_name( [
+	["World Wide Web consortium's SVG color list"
+	],[
 	[[240,248,255], "aliceblue"],
 	[[250,235,215], "antiquewhite"],
 	[[  0,255,255], "aqua"],
@@ -153,5 +155,5 @@ color_name_svg = prepare_color_name( [
 	[[245,245,245], "whitesmoke"],
 	[[255,255,  0], "yellow"],
 	[[154,205, 50], "yellowgreen"]
-]);
+] ]);
 
