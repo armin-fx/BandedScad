@@ -82,6 +82,8 @@ Overview of scad files
 ` `| . . . . . . . . +--> `draft_primitives_operator.scad`  
 ` `|  
 ` `+--> [`color.scad`](color.md "Convert colors")  
+` `| . . . +--> `color_definition.scad`  
+` `| . . . +--> `color/*.scad`  
 ` `|  
 ` `+--> [`font.scad`](draft_primitives.md#text-)  
 ` `| . . . +--> `font_definition.scad`  

@@ -222,11 +222,15 @@ module combine_fixed ()
 module select_object (i)
 {
 	if (i!=undef && is_num(i))
-	    if (i>=0) children (i);
-		else      children ($children+i);
+		if (i>=$children || i<-$children) {}
+	    else if (i>=0) children (i);
+		else           children ($children+i);
 	else if (i!=undef && is_list(i))
-		for (j=i) children (j);
-	else          children ();
+		for (j=i)
+		if (j>=$children || j<-$children) {}
+	    else if (j>=0) children (j);
+		else           children ($children+j);
+	else    children ();
 }
 
 

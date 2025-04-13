@@ -64,7 +64,7 @@ _Return list:_
   - `b` = blue:  `0...1`
   - `alpha` = transparent to opaque: `0...1`, default = `1`
 
-_Color lists for argument_ `colors`_:_
+_Color lists for argument_ `colors`_:_  
 You can set a defined _color name list_,
 then the function will only use the color names from this list.  
 Actually exists the color name lists:
