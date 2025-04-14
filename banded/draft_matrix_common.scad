@@ -160,9 +160,9 @@ function matrix_mirror_at_z (p) = let(d=3) matrix_mirror_at ([0,0,1], !is_num(p)
 
 // gibt die Matrix zurück zum skalieren an der jeweiligen Achse wie die Hauptfunktion
 // f = Skalierfaktor
-function matrix_scale_x (f, d=3, short=false) =     matrix_scale ([f,0,0], d=d, short=short);
-function matrix_scale_y (f, d=3, short=false) =     matrix_scale ([0,f,0], d=d, short=short);
-function matrix_scale_z (f, short=false) = let(d=3) matrix_scale ([0,0,f], d=d, short=short);
+function matrix_scale_x (f, d=3, short=false) =     matrix_scale ([f,1,1], d=d, short=short);
+function matrix_scale_y (f, d=3, short=false) =     matrix_scale ([1,f,1], d=d, short=short);
+function matrix_scale_z (f, short=false) = let(d=3) matrix_scale ([1,1,f], d=d, short=short);
 //
 
 // Generate a matrix to create a projection at given axis

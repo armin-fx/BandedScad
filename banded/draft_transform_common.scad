@@ -107,9 +107,9 @@ function mirror_at_z_points (list, p) = mirror_at_points (list, [0,0,1], !is_num
 
 // skaliert an der jeweiligen Achse wie die Hauptfunktion
 // f = Skalierfaktor
-function scale_x_points (list, f) = scale_points (list, [f,0,0]);
-function scale_y_points (list, f) = scale_points (list, [0,f,0]);
-function scale_z_points (list, f) = scale_points (list, [0,0,f]);
+function scale_x_points (list, f) = scale_points (list, [f,1,1]);
+function scale_y_points (list, f) = scale_points (list, [1,f,1]);
+function scale_z_points (list, f) = scale_points (list, [1,1,f]);
 //
 // verändert die Größe an der jeweiligen Achse wie die Hauptfunktion
 // l = neue Größe der jeweiligen Achse

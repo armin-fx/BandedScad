@@ -252,9 +252,9 @@ module translate_xy (t)
 }
 
 // vergrößert das Objekt an der jeweiligen Achse wie die Hauptfunktion
-module scale_x (f) { if (!is_num(f)) children(); else  scale([l,0,0]) children(); }
-module scale_y (f) { if (!is_num(f)) children(); else  scale([0,l,0]) children(); }
-module scale_z (f) { if (!is_num(f)) children(); else  scale([0,0,l]) children(); }
+module scale_x (f) { if (f==undef || !is_num(f)) children(); else  scale([f,1,1]) children(); }
+module scale_y (f) { if (f==undef || !is_num(f)) children(); else  scale([1,f,1]) children(); }
+module scale_z (f) { if (f==undef || !is_num(f)) children(); else  scale([1,1,f]) children(); }
 
 // skew an object, see matrix_skew()
 // 'd' - dimension: 2 = 2D,
