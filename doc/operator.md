@@ -79,7 +79,7 @@ Functions for objects in data lists defined in files:
 - `draft_primitives_basic.scad`
 - `draft_primitives_transform.scad`
 
-All operator modules already exists as
+All (mostly) operator modules already exists as
 [functions for data list](draft_primitives.md).  
 The functions have the same argument sequence as the module version,
 but needs the object as first argument (parameter `object`).  
@@ -469,7 +469,14 @@ Move and rotate an object to a specific position.
 
 _Arguments:_
 ```OpenSCAD
+// Operator as module:
 connect (point, direction, orientation)
+
+// Operator as function for object in a list:
+connect (object, point, direction, orientation)
+
+// Operator as function for a list with points:
+connect_points (list, point, direction, orientation)
 ```
 
 _3D:_  

@@ -10,7 +10,7 @@ use <banded/operator_transform.scad>
 
 // bewegt und dreht das Objekt zum angegebenen Ort
 // 3D:
-// - Der Punkt im Koordinatenursprung wird nach point bewegt
+// - Der Punkt im Koordinatenursprung wird nach 'point' bewegt
 // - Die Z-Achse ist die Pfeilrichtung, wird nach 'direction' gedreht,
 // - Die X-Achse ist die Rotationsrichtung, wird um die Pfeilrichtung nach den Punkt 'orientation' gedreht
 // 2D:
@@ -18,7 +18,9 @@ use <banded/operator_transform.scad>
 // - Die X-Achse ist die Pfeilrichtung, wird nach 'direction' gedreht,
 module connect (point=[0,0,0], direction=[0,0,1], orientation=[1,0,0])
 {
-	if (len(point)==3)
+	dimension = len(point);
+	//
+	if (dimension)
 	{
 		// 3D
 		base_vector = [1,0];
@@ -30,7 +32,7 @@ module connect (point=[0,0,0], direction=[0,0,1], orientation=[1,0,0])
 		rotate_to_vector (direction, angle_base)
 		children();
 	}
-	else if (len(point)==2)
+	else if (dimension)
 	{
 		// 2D
 		translate (point)
@@ -38,6 +40,60 @@ module connect (point=[0,0,0], direction=[0,0,1], orientation=[1,0,0])
 		children();
 	}
 }
+function connect (object, point=[0,0,0], direction=[0,0,1], orientation=[1,0,0]) =
+	let (
+		dimension = len(point) // TODO use this from the object
+	)
+	dimension==3 ?
+	// 3D
+	let(
+		base_vector = [1,0],
+		up_to_z     = rotate_backwards_to_vector_points ( [orientation], direction),
+		plane       = projection_points (up_to_z),
+		angle_base  = rotation_vector (base_vector, plane[0]),
+		//
+		a = rotate_to_vector (object, direction, angle_base),
+		b = translate (a, point)
+	)
+		b
+	:
+	dimension==2 ?
+	// 2D
+	let(
+		a = rotate_to_vector (object, direction),
+		b = translate (a, point)
+	)
+		b
+	:
+	undef
+;
+function connect_points (list, point=[0,0,0], direction=[0,0,1], orientation=[1,0,0]) =
+	let (
+		dimension = len(point) // TODO use this from the object
+	)
+	dimension==3 ?
+	// 3D
+	let(
+		base_vector = [1,0],
+		up_to_z     = rotate_backwards_to_vector_points ( [orientation], direction),
+		plane       = projection_points (up_to_z),
+		angle_base  = rotation_vector (base_vector, plane[0]),
+		//
+		a = rotate_to_vector_points (list, direction, angle_base),
+		b = translate_points (a, point)
+	)
+		b
+	:
+	dimension==2 ?
+	// 2D
+	let(
+		a = rotate_to_vector_points (list, direction),
+		b = translate_points (a, point)
+	)
+		b
+	:
+	undef
+;
 
 // Platziert Objekte nacheinander den angegebenen Punkten in der Liste
 // Punkt 1 für Objekt 1,  Punkt 2 für Objekt 2, ...
