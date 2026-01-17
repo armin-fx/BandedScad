@@ -409,6 +409,20 @@ module bounding_box_3d_intern (height=1000)
 	}
 }
 
+// Objekt in ein Basisobjekt injizieren
+// Schneidet überlappende Bereiche aus dem Basisobjekt heraus und setzt sich selbst hinein.
+module inject (part=0)
+{
+	if (part>=0) children(1);
+	//
+	if (part<=0)
+	difference()
+	{
+		children(0);
+		children(1);
+	}
+}
+
 // Objekte aufspalten:
 //
 module split_inner (gap=0, balance=0)

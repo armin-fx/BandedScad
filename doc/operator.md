@@ -58,6 +58,7 @@ Transform and edit objects
     - [`hull_difference()`][hull_difference]
     - [`chain()`][chain]
     - [`bounding_box()`][bounding_box]
+    - [`inject()`][inject]
     - [Split object in 2 parts][split_xxx]
       - `split_top()`
       - `split_bottom()`
@@ -847,6 +848,34 @@ bounding_box (d, height)
   - for internal use, any size greater then the biggest lenght of the object
   - default = `1000`
 
+#### inject [^][contents]
+[inject]: #inject-
+Inject an object into a main object.  
+Cuts out overlapping areas from the main object and inserts itself into them.
+
+_Arguments:_
+```OpenSCAD
+inject (part)  { main_object(); injected_object(); }
+```
+- `part`
+  - Optional, select the object to show.
+    This is useful for controlling which part should be displayed.
+  -  `0`  = default, show both objects
+  - `< 0` = show only the main object
+  - `> 0` = show only the injected object
+
+_Example:_
+```OpenSCAD
+part = 0; // [-1:main_object, 0:both, 1:injected_object]
+
+include <banded.scad>
+
+inject (part)
+{
+	color("gold"  ,0.5) cube([3,3,3], center=true);
+	color("orange",0.5) cylinder(r=1, h=2, $fn=24);
+}
+```
 
 #### Split object in 2 parts: [^][contents]
 [split_xxx]: #split-object-in-2-parts-
@@ -854,6 +883,7 @@ This will split a main object on the contour of a split object.
 There will create 2 objects:
 - The inner part = an intersection of main object and split object
 - The outer part = cut split object from main object
+
 You can define a gap between both objects.  
 If you define a gap, you must make the split object little bigger
 then the main object, on parts where you won't carve out the gap.
