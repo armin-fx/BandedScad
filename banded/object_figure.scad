@@ -171,11 +171,10 @@ module tube (h=1, r, w, ri, ro, angle=360, center=false, d, di, do, outer, align
 	//
 	translate ([ Align[0]*rx[1], Align[1]*rx[1], Align[2]*h/2 - h/2])
 	linear_extrude(height=h, convexity=4)
-	difference()
-	{
-		polygon(circle_curve(r = rx_o[1], angle=angles, piece=true, slices=slices));
-		polygon(circle_curve(r = rx_o[0], angle=angles, piece=true, slices=slices));
-	}
+	polygon(
+		[ each             (circle_curve(r = rx_o[1], angle=angles, slices=slices))
+		, each reverse_full(circle_curve(r = rx_o[0], angle=angles, slices=slices))
+		] );
 }
 module ring_square (h=1, r, w, ri, ro, angle=360, center=false, d, di, do, outer, align)
 {

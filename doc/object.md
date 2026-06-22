@@ -164,6 +164,7 @@ _Example:_
 ```OpenSCAD
 include <banded.scad>
 
+// create a table of wedges with all possible parameter for 'side'
 for (i=[0:11])
 translate ([i%4, -floor(i/4)%3] * 8)
 {
@@ -258,6 +259,7 @@ _Example:_
 ``` OpenSCAD
 include <banded.scad>
 
+// show the effect with parameter 'outer'
 r=6; w=8;
 	color ("gold",0.5)
 	       torus (r=r, w=w, $fn=500);
@@ -319,7 +321,10 @@ funnel (h, ri1, ri2, ro1, ro2, w, angle, di1, di2, do1, do2, ri, ro, di, do, out
 - `ri`, `ro`
   - inner radius or outer radius for both sides together
   - special values like `ri1` take precedence over general values like `ri`
-- `w`          - width of the wall. Optional.
+- `w`
+  - optional, width of the wall.
+  - this means the width of the wall from the bottom or top ring,
+    and not the width on the wall orthogonal to the funnel body.
 - `angle`
   - opening angle in degree of the funnel. Default=`360`.
   - requires OpenSCAD version 2019.05 or above
