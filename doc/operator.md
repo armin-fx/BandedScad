@@ -67,6 +67,9 @@ Transform and edit objects
     - [`extrude_line()`][extrude_line]
     - [`plain_trace_extrude()`][plain_trace_extrude]
     - [`helix_extrude()`][helix_extrude]
+    - [`tube_extrude()`][tube_extrude]
+
+[align]: extend.md#extra-arguments-
 
 
 Transform operator [^][contents]
@@ -1019,8 +1022,9 @@ helix_extrude (angle, rotations, pitch, height, r, opposite, orientation, slices
 - `height`    - height of helix - default: 0 like `rotate_extrude()`
 - `pitch`     - rise per rotation
 - `r`
-  - radius as number or `[r1, r2]`
+  - radius as number or as list `[r1, r2]`
   - `r1` = bottom radius, `r2` = top radius
+  - `r` as number means, bottom and top radius is the same size
 - `opposite`  - if `true` reverse rotation of helix, default = `false`
 - `orientation`
   - if `true`, orientation of Y-axis from the 2D-polygon is set along the surface of the cone.
@@ -1035,3 +1039,49 @@ helix_extrude (angle, rotations, pitch, height, r, opposite, orientation, slices
       It's better to split it in concave helixes with the same parameter
       and make the difference with it.
 
+#### tube_extrude [^][contents]
+[tube_extrude]: #tube_extrude-
+Extrudes a 2D object along an arc.__
+The 2D object must be located on the positive side of the X-axis.
+This will use an 2D object along the X axis,
+extrude this to wall thickness and
+put this around an imaginary cylinder in counterclock direction starting from the X axis.
+As if you were to cover a cylinder with wallpaper.
+
+_Arguments:_
+```OpenSCAD
+tube_extrude (r, w, ri, ro, outer, align, d, di, do, convexity, size)
+```
+- `r`, `d`   - The mean radius or diameter. The wall width is divided evenly between the inside and outside.
+- `ri`, `di` - inner radius, inner diameter
+- `ro`, `do` - outer radius, outer diameter
+- `w`        - width of the wall
+- `outer`
+  - optional
+  - value `0`...`1`
+    - `0` - edges on real circle line, default
+    - `1` - tangent on real circle line
+    - any value between, such as `0.5` = middle around inner or outer circle
+    - the problem is described in website
+      <https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/undersized_circular_objects>
+  - or as a list for separate adjustment to the inner and outer radii `[for_inner_circle, for_outer_circle]`
+- `align`
+  - optional
+  - Side from origin away that the part should be.
+  - [Extra arguments - align][align]
+  - default = `[0,0]` = X and Y axis centered
+  - The align value in X and Y axis refers to the outer radius.
+  - The Z axis is not being aligned.
+    It corresponds to the Y axis of the 2D object and must be aligned in there.
+- `convexity`
+  - optional
+  - Integer. The convexity parameter specifies the maximum number
+    of front sides (or back sides) a ray intersecting the object might penetrate.
+- `size`
+  - optional
+  - Internally value in module version
+  - Describes the intern working object size as numeric value.
+    By default, `1000` is big enough to enclose most objects.
+
+_Must be specified:_
+- exactly 2 arguments `r` or `ri` or `ro` or `w`

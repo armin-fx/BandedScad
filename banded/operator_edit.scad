@@ -745,3 +745,41 @@ module helix_object_diff_intern (opposite)
 		}
 	}
 }
+
+// Extrudiert ein 2D-Objekt bogenförmig.
+// Das 2D-Objekt muss sich auf der positiven Seite der X Achse befinden.
+// Argumente:
+//   r      - mittlerer Radius
+//   ri, di - Innenradius, Innendurchmesser
+//   ro, do - Außenradius, Außendurchmesser
+//   w      - Breite der Wand
+// Angegeben müssen:
+//   genau 2 Angaben von r oder ri oder ro oder w
+module tube_extrude (r, w, ri, ro, outer, align, d, di, do, convexity, size=1000)
+{
+	rx     = parameter_ring_2r (r, w, ri, ro, d, di, do);
+	slices = get_slices_circle_current_x (max(rx));
+	Outer  = parameter_numlist (2, outer, [0,0], true);
+	rx_o   = [for (i=[0:1]) rx[i] * get_circle_factor (slices, Outer[i]) ];
+	Align  = parameter_align (align, [0,0]); // don't align Z axis
+	l      = rx  [0] * 2 * PI;
+	f      = rx_o[0] * versin (180/slices);
+
+	translate ([ Align[0]*rx[1], Align[1]*rx[1], 0])
+	for (i=[0:1:slices-1])
+	{
+		rotate_z(90 + 360 * i/slices)
+		rotate_x(90)
+		translate_z(rx_o[0]-f)
+		linear_extrude (height=rx_o[1]-rx_o[0], scale=[rx_o[1]/rx_o[0],1], convexity=convexity)
+		scale_x (rx_o[0]/rx[0])
+		intersection()
+		{
+			translate_x(-l * (i-0.5)/slices)
+			children();
+			//
+			square ([l/slices, size], center=true);
+		}
+	}
+}
+
