@@ -1085,3 +1085,12 @@ tube_extrude (r, w, ri, ro, outer, align, d, di, do, convexity, size)
 
 _Must be specified:_
 - exactly 2 arguments `r` or `ri` or `ro` or `w`
+
+_Example:_
+```OpenSCAD
+include <banded.scad>
+
+tube_extrude (ri=10, w=1)
+text ("Test Text");
+```
+
