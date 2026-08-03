@@ -70,6 +70,7 @@ Transform and edit objects
     - [`tube_extrude()`][tube_extrude]
 
 [align]: extend.md#extra-arguments-
+[tube]:  object.md#tube-
 
 
 Transform operator [^][contents]
@@ -1047,15 +1048,23 @@ This will use an 2D object along the X axis,
 extrude this to wall thickness and
 put this around an imaginary cylinder in counterclock direction starting from the X axis.
 As if you were to cover a cylinder with wallpaper.
+Behaves similarly to figure [`tube()`][tube] and can be combined with it.
 
 _Arguments:_
 ```OpenSCAD
-tube_extrude (r, w, ri, ro, outer, align, d, di, do, convexity, size)
+tube_extrude (r, w, ri, ro, angle, outer, align, d, di, do, convexity, size)
 ```
 - `r`, `d`   - The mean radius or diameter. The wall width is divided evenly between the inside and outside.
 - `ri`, `di` - inner radius, inner diameter
 - `ro`, `do` - outer radius, outer diameter
 - `w`        - width of the wall
+- `angle`    - drawed angle in degree, default=`360`
+  - as number = angle from `0` to `angle` = opening angle
+  - as list   = `[opening angle, start angle]`
+  - The angle parameter refers to the _displayed open window_,
+    viewed along the X-axis of the 2D object.
+    E.g. you can use negative start angle to show object parts
+    from the left side of the X-axis.
 - `outer`
   - optional
   - value `0`...`1`

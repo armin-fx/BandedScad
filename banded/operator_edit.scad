@@ -755,27 +755,31 @@ module helix_object_diff_intern (opposite)
 //   w      - Breite der Wand
 // Angegeben müssen:
 //   genau 2 Angaben von r oder ri oder ro oder w
-module tube_extrude (r, w, ri, ro, outer, align, d, di, do, convexity, size=1000)
+module tube_extrude (r, w, ri, ro, angle, outer, align, d, di, do, convexity, size=1000)
 {
 	rx     = parameter_ring_2r (r, w, ri, ro, d, di, do);
-	slices = get_slices_circle_current_x (max(rx));
+	Angle  = parameter_angle (angle);
+	slices = get_slices_circle_current_x (max(rx), Angle[0]);
 	Outer  = parameter_numlist (2, outer, [0,0], true);
-	rx_o   = [for (i=[0:1]) rx[i] * get_circle_factor (slices, Outer[i]) ];
+	rx_o   = [for (i=[0:1]) rx[i] * get_circle_factor (slices, Outer[i], Angle[0]) ];
 	Align  = parameter_align (align, [0,0]); // don't align Z axis
-	l      = rx  [0] * 2 * PI;
-	f      = rx_o[0] * versin (180/slices);
-
+	l      = rx  [0] * Angle[0]*radian_per_degree;
+	l_begin= rx  [0] * Angle[1]*radian_per_degree;
+	f      = rx_o[0] * versin (Angle[0]/slices/2);
+	x_chord  = chord(Angle[0]/slices  ) / (Angle[0]*radian_per_degree/slices);
+	x_height = cos  (Angle[0]/slices/2) * (rx[1]-rx[0]);
+	
 	translate ([ Align[0]*rx[1], Align[1]*rx[1], 0])
 	for (i=[0:1:slices-1])
 	{
-		rotate_z(90 + 360 * i/slices)
+		rotate_z(90+Angle[1] + Angle[0] * (i+0.5)/slices)
 		rotate_x(90)
 		translate_z(rx_o[0]-f)
-		linear_extrude (height=rx_o[1]-rx_o[0], scale=[rx_o[1]/rx_o[0],1], convexity=convexity)
-		scale_x (rx_o[0]/rx[0])
+		linear_extrude (height=x_height*(rx_o[1]-rx_o[0]), scale=[rx_o[1]/rx_o[0],1], convexity=convexity)
+		scale_x (rx_o[0]/rx[0] * x_chord)
 		intersection()
 		{
-			translate_x(-l * (i-0.5)/slices)
+			translate_x(-l_begin -l * (i+0.5)/slices)
 			children();
 			//
 			square ([l/slices, size], center=true);
