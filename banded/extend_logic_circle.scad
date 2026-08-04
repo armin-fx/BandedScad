@@ -28,15 +28,6 @@ function get_slices_circle_pie (angle=360, piece=true, fn=0) =
 	)
 ;
 
-// gibt die Angabe für $fn zurück, wenn eine feste Anzahl an Segmenten gewünscht ist.
-// Für z.B. rotate_extrude(), wenn ein Öffnungswinkel angegeben wird,
-// wird die Segmentanzahl intern heruntergeteilt.
-// Dies Funktion ermittelt den Wert für $fn,
-// so dass das Objekt die korrekte Anzahl an Segmenten hat.
-function get_fn_circle (slices, angle) = 
-	ceil (slices*360/abs(angle))
-;
-
 // gibt die Anzahl der Segmente eines geschlossenen Kreises zurück
 // erweiterte Funktion
 // Code (x!=false)  ->  Rückgabe: true = true, false = false, Standartwert bei undefiniert = true
@@ -78,4 +69,24 @@ function get_slices_circle_current_x (r, angle=360, piece=true) = get_slices_cir
 	is_undef($fa_enabled) ? undef : $fa_enabled,
 	is_undef($fs_enabled) ? undef : $fs_enabled
 );
+
+
+// gibt die Angabe für $fn zurück, wenn eine feste Anzahl an Segmenten gewünscht ist.
+// Für z.B. rotate_extrude(), wenn ein Öffnungswinkel angegeben wird,
+// wird die Segmentanzahl intern heruntergeteilt.
+// Dies Funktion ermittelt den Wert für $fn,
+// so dass das Objekt die korrekte Anzahl an Segmenten hat.
+function get_fn_circle (slices, angle) = 
+	ceil (slices*360/abs(angle))
+;
+
+// gibt den Winkel eines Kreisfragments zurück, bei welcher die Abweichung
+// der Sehne zum Kreisbogen in Prozent erreicht ist
+// dient zum Umrechnen von Prozent in die Angabe von $fa
+function get_angle_from_percent (value) =
+	let (fp=value/100)
+	2*asin( 2*sqrt( fp*(1 - 2*fp) ) )
+;
+
+function get_circle_factor (slices, outer=0, angle=360) = outer/cos(angle/(2*slices)) + 1-outer;
 

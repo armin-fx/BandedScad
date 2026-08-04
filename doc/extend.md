@@ -31,6 +31,7 @@
 - [Functions](#functions-)
   - [Convert values](#convert-values-)
     - [`get_angle_from_percent()`][get_angle_from_percent]
+    - [`get_circle_factor()`][get_circle_factor]
   - [Get fragments of a circle](#get-fragments-of-a-circle-)
     - [Recurring arguments](#recurring-arguments-)
     - [`get_slices_circle_current()`][get_slices_circle_current]
@@ -305,16 +306,45 @@ Functions [^][contents]
 
 ### Convert values [^][contents]
 
-#### `get_angle_from_percent (value)` [^][contents]
-[get_angle_from_percent]: #get_angle_from_percent-value-
+#### get_angle_from_percent [^][contents]
+[get_angle_from_percent]: #get_angle_from_percent-
 Get the minimum angle for a fragment from maximum distance of deviation
 in percent to set value in _buildin special variable_ `$fa`.  
 The angle for a fragment is equivalent to distance of deviation in percent.
+
+_Arguments:_
+```OpenSCAD
+get_angle_from_percent (value)
+```
 
 _Usage:_
 ```OpenSCAD
 $fa = get_angle_from_percent (2); // 2% deviation
 ```
+
+#### get_circle_factor [^][contents]
+[get_circle_factor]: #get_circle_factor-
+Return the factor to multiply with the radius of a circle,
+to get the real radius for calculation.  
+E.g. to set the segments on tangent of the circle with argument `outer = 1`.  
+You don't need the radius for this calculation, this factor is scaleable on each radius.
+The problem is described in website
+<https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/undersized_circular_objects>.
+
+_Arguments:_
+```OpenSCAD
+get_circle_factor (slices, outer, angle)
+```
+- `slices`
+   - count of segments into which the circular arc is divided
+- `outer`
+  - value `0`...`1`
+    - `0` - edges on real sphere surface, default like `sphere()` in OpenSCAD
+    - `1` - each face on real sphere surface
+    - any value between, such as `0.5` = middle around inner or outer sphere
+- `angle`
+  - numeric value of the opening angle from the circle in degrees
+  - default = `360`
 
 
 ### Get fragments of a circle [^][contents]

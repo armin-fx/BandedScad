@@ -196,7 +196,6 @@ function circle_curve_intern (r=1, angle=360, angle_begin=0, slices=5, align=[0,
 		+ translate_align
 	]
 ;
-function get_circle_factor (slices, outer=0, angle=360) = outer/cos(angle/(2*slices)) + 1-outer;
 
 // ermittelt den Punkt einer Superellipse
 // t  - Position des Punkts von 0...360

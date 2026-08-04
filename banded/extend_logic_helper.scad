@@ -43,10 +43,3 @@ function sf_safe () =
 	is_sf_activated( is_undef($fn_safe) ? undef : $fn_safe)
 	? $fn_safe : 12;
 
-// gibt den Winkel eines Kreisfragments zurück, bei welcher die Abweichung
-// der Sehne zum Kreisbogen in Prozent erreicht ist
-// dient zum Umrechnen von Prozent in die Angabe von $fa
-function get_angle_from_percent (value) =
-	let (fp=value/100)
-	2*asin( 2*sqrt( fp*(1 - 2*fp) ) )
-;

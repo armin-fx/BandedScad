@@ -1042,7 +1042,7 @@ helix_extrude (angle, rotations, pitch, height, r, opposite, orientation, slices
 
 #### tube_extrude [^][contents]
 [tube_extrude]: #tube_extrude-
-Extrudes a 2D object along an arc.__
+Extrudes a 2D object along an arc.  
 The 2D object must be located on the positive side of the X-axis.
 This will use an 2D object along the X axis,
 extrude this to wall thickness and
