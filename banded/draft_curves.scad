@@ -144,9 +144,10 @@ function bezier_4 (t, p) =
 // Argumente:
 //   r, (d) - Radius oder Durchmesser
 //   angle  - Winkel in Grad
-function circle_point   (r, angle=0, d) = circle_point_r(parameter_circle_r(r,d), angle);
-function circle_point_r (r, angle=0) =
-	r * [cos(angle), sin(angle)]
+function circle_point   (r, angle=0, d, dim=2) = circle_point_r(parameter_circle_r(r,d), angle, dim);
+function circle_point_r (r, angle=0, dim=2) =
+	dim==3 ? r * [cos(angle), sin(angle), 0]
+	:        r * [cos(angle), sin(angle)]
 ;
 
 // gibt ein Array mit den Punkten eines Kreisbogens zurück
@@ -165,7 +166,7 @@ function circle_point_r (r, angle=0) =
 //                    keine zusätzlichen Kanten, wenn die Segmentanzahl zu klein ist
 //   outer  - 0...1 = 0 - Ecken auf der Kreislinie (Standart)
 //                    1 - Tangenten auf der Kreislinie
-function circle_curve (r, angle=360, slices, piece=0, outer, align, d) =
+function circle_curve (r, angle=360, slices, piece=0, outer, align, d, dim=2) =
 	let(
 		 R       = parameter_circle_r (r,d)
 		,Align   = parameter_align (align, [0,0])
@@ -176,23 +177,27 @@ function circle_curve (r, angle=360, slices, piece=0, outer, align, d) =
 		,Outer   = outer!=undef ? outer : 0
 		,r_outer = R * get_circle_factor (Slices, Outer, Angle)
 		,circle_list =
-			circle_curve_intern(r_outer, Angle, Angle_begin, Slices, Align)
+			circle_curve_intern(r_outer, Angle, Angle_begin, Slices, Align, dim)
 	)
 	(piece==true && Angle!=360) ?
-		concat( circle_list, [[0,0]])
+		[ each circle_list
+		, dim==3 ? [0,0,0] : [0,0]
+		]
 	:	circle_list
 ;
-function circle_curve_intern (r=1, angle=360, angle_begin=0, slices=5, align=[0,0]) =
+function circle_curve_intern (r=1, angle=360, angle_begin=0, slices=5, align=[0,0], dim=2) =
 	let (
 		 angle_pie = angle/slices
 		,end =
 			 angle==0   ? 0
 			:angle==360 ? max (slices-1, 0)
 			:            slices
-		,translate_align = align*r
+		,translate_align =
+			dim==3 ? r*[align.x,align.y,0]
+			:        r*align
 	)
 	[for (i = [0:1:end])
-		circle_point_r(r, angle_begin + i*angle_pie )
+		circle_point_r(r, angle_begin + i*angle_pie, dim )
 		+ translate_align
 	]
 ;
@@ -211,7 +216,7 @@ function circle_curve_intern (r=1, angle=360, angle_begin=0, slices=5, align=[0,
 //      Wurde n angegeben, wird s ignoriert
 //        als Zahl  = jede Achse enthält den gleichen Parameter
 //        als Liste = jede Achse enthält ihren eigenen Parameter [X,Y]
-function superellipse_point (t, r, a, n, s) =
+function superellipse_point (t, r, a, n, s, dim=2) =
 	let (
 		 T = is_num(t) ? t : 0
 		,R = is_num(r) ? r : 1
@@ -219,29 +224,30 @@ function superellipse_point (t, r, a, n, s) =
 		,N = parameter_numlist(2, n, [2,2])
 		,S = parameter_numlist(2, s, undef)
 	)
-	(S==undef) ? superellipse_point_n (T, R, A, N)
-	:            superellipse_point_s (T, R, A, S)
+	(S==undef) ? superellipse_point_n (T, R, A, N, dim)
+	:            superellipse_point_s (T, R, A, S, dim)
 ;
-function superellipse_point_n (t=0, r=1, a=[1,1], n=[2,2]) =
+function superellipse_point_n (t=0, r=1, a=[1,1], n=[2,2], dim=2) =
 	let(
 		e = 2/n
 	)
 	superellipse_point_intern (t, r*a, e)
 ;
-function superellipse_point_s (t=0, r=1, a=[1,1], s=[1/sqrt(2),1/sqrt(2)]) =
+function superellipse_point_s (t=0, r=1, a=[1,1], s=[1/sqrt(2),1/sqrt(2)], dim=2) =
 	let(
 		e = (-2/ln(2)) * [ln(s[0]),ln(s[1])]
 	)
-	superellipse_point_intern (t, r*a, e)
+	superellipse_point_intern (t, r*a, e, dim=2)
 ;
 // e - calculated exponent
-function superellipse_point_intern (t, a, e) =
+function superellipse_point_intern (t, a, e, dim=2) =
 	let (
 		sint = sin(t),
 		cost = cos(t)
 	)
 	[ a[0] * pow( abs(cost), e[0]) * sign(cost),
-	  a[1] * pow( abs(sint), e[1]) * sign(sint)
+	  a[1] * pow( abs(sint), e[1]) * sign(sint),
+	  each dim==3 ? [0]:[]
 	]
 ;
 
@@ -251,7 +257,7 @@ function superellipse_point_intern (t, a, e) =
 // piece    - true  = wie ein Tortenstück
 //            false = Enden des Kreises verbinden
 //            0     = zum weiterverarbeiten, Enden nicht verbinden, keine zusätzlichen Kanten
-function superellipse_curve (interval, r, a, n, s, slices, piece=0) =
+function superellipse_curve (interval, r, a, n, s, slices, piece=0, dim=2) =
 	let (
 		 I = is_list(interval) ? interval :
 		     [0,360]
@@ -263,16 +269,18 @@ function superellipse_curve (interval, r, a, n, s, slices, piece=0) =
 		,e =
 			S==undef ? 2/N
 			:          (-2/ln(2)) * [ln(S[0]),ln(S[1])]
-		,curve_list = superellipse_curve_intern (I, A*R, e, Slices)
+		,curve_list = superellipse_curve_intern (I, A*R, e, Slices, dim)
 	)
 	(piece==true && (I[1]-I[0])!=360) ?
-		concat( curve_list, [[0,0]])
+		[ each curve_list
+		, dim==3 ? [0,0,0] : [0,0]
+		]
 	:	curve_list
 ;
-function superellipse_curve_intern (interval, a, e, slices) =
+function superellipse_curve_intern (interval, a, e, slices, dim=2) =
 	[ for (i = [0 : slices])
 		let (t = bezier_1(i/slices, interval))
-		superellipse_point_intern (t, a, e)
+		superellipse_point_intern (t, a, e, dim)
 	]
 ;
 
@@ -287,16 +295,16 @@ function superellipse_curve_intern (interval, a, e, slices) =
 //        als Liste = jede Achse enthält ihren eigenen Faktor [X,Y]
 // n  - Kurve, steuert die Kurvenform
 //      Liste mit 3 Parametern [n1, n2, n3]
-function superformula_point (t, a, m, n) =
+function superformula_point (t, a, m, n, dim=2) =
 	let (
 		 T = is_num(t) ? t : 0
 		,A = parameter_numlist(2, a, [1,1]  , fill=true)
 		,M = parameter_numlist(2, m, [1,1]  , fill=true)
 		,N = parameter_numlist(3, n, [1,1,1], fill=true)
 	)
-	superformula_point_intern (T, A, M, N)
+	superformula_point_intern (T, A, M, N, dim)
 ;
-function superformula_point_intern (t, a, m, n) =
+function superformula_point_intern (t, a, m, n, dim=2) =
 	let (
 		 t4 = t/4
 		,r  =
@@ -305,10 +313,10 @@ function superformula_point_intern (t, a, m, n) =
 				pow( abs(sin( m[1]*t4 ) / a[1]), n[2])
 				, -1/n[0])
 	)
-	circle_point_r (r, t)
+	circle_point_r (r, t, dim)
 ;
 //
-function superformula_curve (interval, a, m, n, slices, piece=true) =
+function superformula_curve (interval, a, m, n, slices, piece=true, dim=2) =
 	let (
 		 I = is_list(interval) ? interval :
 		     [0,360]
@@ -321,16 +329,18 @@ function superformula_curve (interval, a, m, n, slices, piece=true) =
 			slices<2 ?
 				(piece==true || piece==0) ? 1 : 2
 			:slices
-		,curve_list = superformula_curve_intern (I, A, M, N, Slices)
+		,curve_list = superformula_curve_intern (I, A, M, N, Slices, dim)
 	)
 	(piece==true && (I[1]-I[0])!=360) ?
-		concat( curve_list, [[0,0]])
+		[ each curve_list
+		, dim==3 ? [0,0,0] : [0,0]
+		]
 	:	curve_list
 ;
-function superformula_curve_intern (interval, a, m, n, slices) =
+function superformula_curve_intern (interval, a, m, n, slices, dim=2) =
 	[ for (i = [0 : slices])
 		let (t = bezier_1(i/slices, interval))
-		superformula_point_intern (t, a, m, n)
+		superformula_point_intern (t, a, m, n, dim)
 	]
 ;
 
@@ -375,21 +385,24 @@ function polynomial_curve (interval, a, n, slices) =
 // gibt ein 2D-Quadrat als Punkteliste zurück
 // Argumente wie von square() von OpenSCAD
 // Drehrichtung ist gegen den Uhrzeigersinn
-function square_curve (size, center, align) =
+function square_curve (size, center, align, dim=2) =
 	let (
 		Size  = parameter_size_2d(size),
 		Align = parameter_align  (align, [1,1], center),
-		a     = [for (i=[0:1:len(Size)-1]) (Align[i]-1)*Size[i]/2 ],
+		A     = [for (i=[0:1:len(Size)-1]) (Align[i]-1)*Size[i]/2 ],
+		a     = dim==3 ? [each A, 0] : A,
 		x=Size[0],
 		y=Size[1],
-		square_list=[[0,0], [x,0], [x,y], [0,y]]
+		square_list=
+			dim==3 ? [[0,0,0], [x,0,0], [x,y,0], [0,y,0]]
+			:        [[0,0],   [x,0],   [x,y],   [0,y]  ]
 	)
 	[for (p=square_list) p+a ]
 ;
 
 // Erzeugt ein Rechteck um die äußersten Punkte aus einer Liste
 // Gibt eine Spur in einer Punktliste zurück
-function bounding_square_curve (points) =
+function bounding_square_curve (points, dim=2) =
 	(points==undef || len(points)<2) ? undef :
 	let (
 		 x = bound_value (points, type=[0])
@@ -397,13 +410,14 @@ function bounding_square_curve (points) =
 	)
 	(x[0]>=x[1] || y[0]>=y[1]) ? undef :
 	//
-	[[x[0],y[0]], [x[1],y[0]], [x[1],y[1]], [x[0],y[1]]];
+	dim==3 ? [[x[0],y[0],0], [x[1],y[0],0], [x[1],y[1],0], [x[0],y[1],0]]
+	:        [[x[0],y[0]],   [x[1],y[0]],   [x[1],y[1]],   [x[0],y[1]]  ]
 ;
 
 // Erzeugt ein Dreieck, ein halbiertes Rechteck
 // Parameter wie bei square_extend()
 // Mit 'side' wird die übrigbleibende Seite des Dreiecks festgelegt
-function triangle_curve (size, center, align, side) =
+function triangle_curve (size, center, align, side, dim=2) =
 	let (
 		 Size  = parameter_size_2d(size)
 		,Align = parameter_align (align, [1,1], center)
@@ -416,8 +430,8 @@ function triangle_curve (size, center, align, side) =
 			side==1 ? [[x,0], [x,y], [0,0]] :
 			          [[0,0], [x,0], [0,y]] // side==0 or undef
 	)
-	//translate_points (triangle_list, a)
-	[for (p=triangle_list) p+a]
+	dim==3 ? [for (p=triangle_list) [each p+a, 0] ]
+	:        [for (p=triangle_list) p+a ]
 ;
 
 // gibt eine Helix als Punkteliste zurück
@@ -467,13 +481,18 @@ function helix_curve (r, rotations, pitch, height, opposite, slices, angle) =
 // - Fraktale:
 
 // Koch Kurve
-function koch_curve (trace, iteration=1, closed=false) =
-	lines_to_trace (
-		koch_lines (
-			 trace_to_lines (closed!=true ? trace : concat (trace, [trace[0]]) )
-			,iteration
-		)
+function koch_curve (trace, iteration=1, closed=false, dim=2) =
+	let (
+		curve_list =
+			lines_to_trace (
+			koch_lines (
+				trace_to_lines (closed!=true ? trace : [each trace, trace[0]] )
+				,iteration
+			)
+			)
 	)
+	dim==3 ? [ for (p=curve_list) [p.x,p.y,0] ]
+	:        curve_list
 ;
 
 function koch_lines (lines, iteration=1) =
@@ -496,8 +515,12 @@ function koch_lines (lines, iteration=1) =
 ;
 
 // Hilbert Kurve
-function hilbert_curve (r=1, iteration=1) =
-	[ for (e=hilbert_points(r/2, iteration)) e[0] ]
+function hilbert_curve (r=1, iteration=1, dim=2) =
+	let (
+		curve_list = [ for (e=hilbert_points(r/2, iteration)) e[0] ]
+	)
+	dim==3 ? [ for (p=curve_list) [p.x,p.y,0] ]
+	:        curve_list
 ;
 
 points_hilbert = [
@@ -529,12 +552,19 @@ function hilbert_points (r=1, iteration=1, data=[[[0,0], 0]]) =
 ;
 
 // Drachenkurve
-function dragon_curve (trace=[[0,0],[1,0]], iteration=1) =
+function dragon_curve (trace=[[0,0],[1,0]], iteration=1, dim=2) =
+	let (
+		curve_list = dragon_curve_intern (trace, iteration)
+	)
+	dim==3 ? [ for (p=curve_list) [p.x,p.y,0] ]
+	:        curve_list
+;
+function dragon_curve_intern (trace=[[0,0],[1,0]], iteration=1) =
 	iteration<=0 ? trace :
 	let (s = sqrt(1/4))
-	dragon_curve (
-		concat( [ trace[0] ],
-		[ for (i=[0:1:len(trace)-2])
+	dragon_curve_intern (
+		[ trace[0]
+		, each [ for (i=[0:1:len(trace)-2])
 			if (i%2==0)
 				each [
 					(trace[i]+trace[i+1])/2 + s*normal_vector(trace[i+1]-trace[i])
@@ -545,7 +575,7 @@ function dragon_curve (trace=[[0,0],[1,0]], iteration=1) =
 					(trace[i]+trace[i+1])/2 - s*normal_vector(trace[i+1]-trace[i])
 					,trace[i+1]
 				]
-		] )
+		] ]
 		, iteration-1
 	)
 ;

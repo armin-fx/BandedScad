@@ -158,19 +158,23 @@ Turns at mathematical direction of rotation = counter clockwise.
 
 _Options:_
 ```OpenSCAD
-circle_point (r, angle, d)
+circle_point (r, angle, d, dim)
 ```
 - `r, d`
   - radius or diameter of circle
 - `angle`
   - point at given angle
+- `dim`
+  - dimensions of the point which will return
+    - `2` - 2d point, default
+    - `3` - 3d point, flat on X-Y-axis (Z-axis = `0`)
 
 #### circle_curve [^][contents]
 Return a 2d point list of a circle.
 
 _Options:_
 ```OpenSCAD
-circle_curve (r, angle, slices, piece, outer, align, d)
+circle_curve (r, angle, slices, piece, outer, align, d, dim)
 ```
 - `r, d`
   - radius or diameter of circle
@@ -202,6 +206,10 @@ circle_curve (r, angle, slices, piece, outer, align, d)
   - Side from origin away that the part should be.
   - [Extra arguments - align][align]
   - default = `[0,0]` = centered
+- `dim`
+  - dimensions of the points in the curve which will return
+    - `2` - 2d points, default
+    - `3` - 3d points, curve flat on X-Y-axis (Z-axis = `0`)
 
 
 ### Superellipse [^][contents]
@@ -224,7 +232,7 @@ Return a point from a superellipse curve.
 
 _Options:_
 ```OpenSCAD
-superellipse_point (t, r, a, n, s)
+superellipse_point (t, r, a, n, s, dim)
 ```
 - `t`
   - position of the point from `0`...`360`
@@ -244,13 +252,17 @@ superellipse_point (t, r, a, n, s)
   - If n is specified, s is ignored
     - as number = every axis gets the same parameter
     - as list   = every axis gets his own parameter `[X,Y]`
+- `dim`
+  - dimensions of the point which will return
+    - `2` - 2d point, default
+    - `3` - 3d point, flat on X-Y-axis (Z-axis = `0`)
 
 #### superellipse_curve [^][contents]
 Return a list with the points of a superellipse.
 
 _Additional options:_
 ```OpenSCAD
-superellipse_curve (interval, r, a, n, s, slices, piece)
+superellipse_curve (interval, r, a, n, s, slices, piece, dim)
 ```
 - `interval`
   - interval limit of `t`. `[begin, end]`
@@ -263,6 +275,10 @@ superellipse_curve (interval, r, a, n, s, slices, piece)
   - `true`  - like a pie, like `rotate_extrude()` in OpenSCAD
   - `false` - connect the ends of the circle
   - `0`     - to work on, ends not connected, no edges, default
+- `dim`
+  - dimensions of the points in the curve which will return
+    - `2` - 2d points, default
+    - `3` - 3d points, curve flat on X-Y-axis (Z-axis = `0`)
 
 
 ### Superformula [^][contents]
@@ -274,7 +290,7 @@ Return a point from a superformula curve.
 
 _Options:_
 ```OpenSCAD
-superformula_point (t, a, m, n)
+superformula_point (t, a, m, n, dim)
 ```
 - `t`
   - position of the point (angle) from `0`...`360`
@@ -291,13 +307,17 @@ superformula_point (t, a, m, n)
 - `n`
   - Curve, controls the curve form
   - list with 3 parameter `[n1, n2, n3]`
+- `dim`
+  - dimensions of the point which will return
+    - `2` - 2d point, default
+    - `3` - 3d point, flat on X-Y-axis (Z-axis = `0`)
 
 #### superformula_curve [^][contents]
 Return a list with the points of a superformula.
 
 _Additional options:_
 ```OpenSCAD
-superformula_curve (interval, a, m, n, slices, piece)
+superformula_curve (interval, a, m, n, slices, piece, dim)
 ```
 - `interval`
   - interval limit of `t`. `[begin, end]`
@@ -310,6 +330,10 @@ superformula_curve (interval, a, m, n, slices, piece)
   - `true`  - like a pie, like `rotate_extrude()` in OpenSCAD
   - `false` - connect the ends of the circle
   - `0`     - to work on, ends not connected, no edges, default
+- `dim`
+  - dimensions of the points in the curve which will return
+    - `2` - 2d points, default
+    - `3` - 3d points, curve flat on X-Y-axis (Z-axis = `0`)
 
 
 ### Polynomial function [^][contents]
@@ -353,21 +377,29 @@ Rotation is mathematical direction = counter clockwise.
 
 _Options:_
 ```OpenSCAD
-square_curve (size, center, align)
+square_curve (size, center, align, dim)
 ```
 - `align`
   - Side from origin away that the part should be.
   - [Extra arguments - align][align]
   - default = `[1,1]` = oriented on the positive side of axis
+- `dim`
+  - dimensions of the points in the curve which will return
+    - `2` - 2d points, default
+    - `3` - 3d points, curve flat on X-Y-axis (Z-axis = `0`)
 
 #### bounding_square_curve [^][contents]
 Create a 2D rectangle around the outermost points from a list.  
 Returns a trace in a point list.
 ```OpenSCAD
-bounding_square_curve (points)
+bounding_square_curve (points, dim)
 ```
 - `points`
   - a list with minimum 2 points
+- `dim`
+  - dimensions of the points in the curve which will return
+    - `2` - 2d points, default
+    - `3` - 3d points, curve flat on X-Y-axis (Z-axis = `0`)
 
 
 ### Triangle [^][contents]
@@ -379,7 +411,7 @@ Rotation is mathematical direction = counter clockwise.
 
 _Options:_
 ```OpenSCAD
-triangle_curve (size, center, align, side)
+triangle_curve (size, center, align, side, dim)
 ```
 - `side`
   - sets the remaining side of the triangle.
@@ -392,6 +424,10 @@ triangle_curve (size, center, align, side)
   - [Extra arguments - align][align]
   - default = `[1,1]` = oriented on the positive side of axis
     like `square_extend()`
+- `dim`
+  - dimensions of the points in the curve which will return
+    - `2` - 2d points, default
+    - `3` - 3d points, curve flat on X-Y-axis (Z-axis = `0`)
 
 
 ### Helix [^][contents]
@@ -440,7 +476,7 @@ Generates a Koch curve on a line defined in `trace`.
 
 _Options:_
 ```OpenSCAD
-koch_curve (trace, iteration, closed)
+koch_curve (trace, iteration, closed, dim)
 ```
 - `trace`
   - a point list
@@ -450,6 +486,10 @@ koch_curve (trace, iteration, closed)
 - `closed`
   - `true`  - for a closed trace = the end point is connected with the begin point
   - `false` - default, a line with open ends
+- `dim`
+  - dimensions of the points in the curve which will return
+    - `2` - 2d points, default
+    - `3` - 3d points, curve flat on X-Y-axis (Z-axis = `0`)
 
 _Example:_
 ```OpenSCAD
@@ -478,13 +518,17 @@ Generates a trace of a Hilbert curve.
 
 _Options:_
 ```OpenSCAD
-hilbert_curve (r, iteration)
+hilbert_curve (r, iteration, dim)
 ```
 - `r`
   - the radius of the square which is filled with the hilbert curve
 - `iteration`
   - defines the nested iteration of the curve
   - default = 1 = one step
+- `dim`
+  - dimensions of the points in the curve which will return
+    - `2` - 2d points, default
+    - `3` - 3d points, curve flat on X-Y-axis (Z-axis = `0`)
 
 _Example:_
 ```OpenSCAD
@@ -506,13 +550,17 @@ Generates a trace of a Dragon curve.
 
 _Options:_
 ```OpenSCAD
-dragon_curve (trace, iteration)
+dragon_curve (trace, iteration, dim)
 ```
 - `trace`
   - a point list with the initial line
 - `iteration`
   - defines the nested iteration of the curve
   - default = 1 = one step
+- `dim`
+  - dimensions of the points in the curve which will return
+    - `2` - 2d points, default
+    - `3` - 3d points, curve flat on X-Y-axis (Z-axis = `0`)
 
 _Example:_
 ```OpenSCAD
