@@ -451,3 +451,25 @@ _Arguments:_
 benchmark_empty (count)
 ```
 
+#### Example [^][contents]
+
+```OpenSCAD
+// unset to measure benchmark speed
+benchmark_trial = true;
+
+// set to measure the internal benchmark speed only
+dry_run = false;
+
+// set up until the routine is slow enough to measure
+count = 1000; // [1,2,5,10,20,50,100,200,500,1000,2000,5000,10000,20000,50000,100000,200000,500000,1000000,2000000,5000000,10000000]
+
+/* [Hidden] */
+include <banded.scad>
+
+if (dry_run) echo (benchmark_empty (count));
+else         echo (benchmark       (count, function()
+	sqrt(2)  // <-- Test routine
+));
+```
+
+

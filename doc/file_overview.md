@@ -95,7 +95,7 @@ Overview of scad files
 ` `| . . . +--> [`object_rounded.scad`](object.md#rounded-edges- "Figures to create rounded edges")  
 ` `|  
 ` `+--> [`operator.scad`](operator.md "Transform and edit objects")  
-` `| . . . +--> [`operator_edit.scad`](operator.md#edit-and-test-objects- "Various operator to edit and test objects")  
+` `| . . . +--> [`operator_edit.scad`](operator.md#edit-and-convert-objects- "Operator to edit and convert objects")  
 ` `| . . . +--> [`operator_transform.scad`](operator.md#transform-operator- "Transform operator for affine transformations")  
 ` `| . . . +--> [`operator_place.scad`](operator.md#place-objects- "Modules which place objects in specific position")  
 ` `|  

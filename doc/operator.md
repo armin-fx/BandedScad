@@ -40,7 +40,7 @@ Transform and edit objects
   - [`place_line()`][place_line]
   - [`place_copy()`][place_copy]
   - [`place_copy_line()`][place_copy_line]
-- [Edit and test objects](#edit-and-test-objects-)
+- [Edit and convert objects](#edit-and-convert-objects-)
   - [Combine operator](#combine-operator-)
     - [`combine()`][combine]
       - `part_main()`
@@ -184,7 +184,7 @@ rotate_to_vector (v, a, backwards)
   - `true`  - rotate backwards, undo forward rotate
 - `d`
   - dimension of the object,
-    module version only
+    on module version only
   - The operator can not get any data of the children object.
     It must therefore be defined what number of dimensions this has.
   - `3` - 3D object = default
@@ -547,7 +547,7 @@ _There exist specialized modules which places copies of an object along a fixed 
 '?' means the axis. Axis = x, y or z.
 
 
-Edit and test objects [^][contents]
+Edit and convert objects [^][contents]
 -----------------------------------
 
 ### Combine operator [^][contents]
@@ -725,12 +725,12 @@ This is helpful, if more than one operator is needed to do this.
 You can create a hole to the main object and put a part on this.
 Maybe you can define a common hull for the complete object and
 cut all parts outside of.
-Every place on this operator has his own operator.
+Every place on this operator has his specific operation.
 You can "jump over" a place with the defined module `empty()`.
 
 _Sequence of operator:_
 ```OpenSCAD
-combine() { main_object(); adding_part(); cutting_part(); common_hull(); }
+combine_fixed() { main_object(); adding_part(); cutting_part(); common_hull(); }
 ```
 
 _Example:_
@@ -739,7 +739,7 @@ include <banded.scad>
 $fn=24;
 d_inner=4;
 
-combine()
+combine_fixed()
 {
 	cube_extend([7,7,2], align=[0,0,-1]);
 	tube       (h=2, di=d_inner, w=1);
@@ -949,7 +949,8 @@ split_outer (gap=gap) { split(); main(); }
 Extrudes and rotates the 2D object along the line.  
 The object will rotate around the arrow direction of the line
 till the stretched surface from X-axis of the 2D-object and the line
-will touch the point of `rotational`.
+will touch the point of `rotational`.  
+Only as _module version_.
 
 _Arguments:_
 ```OpenSCAD
@@ -970,7 +971,8 @@ This will extrude an 2D-object in the X-Y plane along a 2D-trace
 (keeping only the right half, X >= 0).
 Note that the object started on the X-Y plane but is tilted up
 (rotated +90 degrees around the X-axis) to extrude,
-then the new Y-axis is the direction which will set in the direction of the line.
+then the new Y-axis is the direction which will set in the direction of the line.  
+Only as _module version_.
 
 _Arguments:_
 ```OpenSCAD
@@ -1006,18 +1008,24 @@ _Specialized modules:_
 #### helix_extrude [^][contents]
 [helix_extrude]: #helix_extrude-
 Creates a helix with a 2D-polygon similar rotate_extrude.  
-This will generate every segment with operation `hull()` on the 2D-polygon ends.
-It makes sometimes trouble when you want to render the object.
-If you can, it is maybe better to use the _function_
-[`helix_extrude()`](draft_primitives.md#helix_extrude-).
+As module and as function.
 
-modified from Gael Lafond, <https://www.thingiverse.com/thing:2200395>  
+The _module version_ will generate every segment with operation `hull()` on the 2D-polygon ends.
+It makes sometimes trouble when you want to render the object.
+If you can, it is maybe better to use the _function version_.
+
+_module version_ modified from Gael Lafond, <https://www.thingiverse.com/thing:2200395>  
 License: CC0 1.0 Universal
 
 _Arguments:_
 ```OpenSCAD
+// module version
 helix_extrude (angle, rotations, pitch, height, r, opposite, orientation, slices, convexity, scope, step)
+
+// function version
+helix_extrude (object, angle, rotations, pitch, height, r, opposite, orientation, slices)
 ```
+- `object`    - 2D data object or a trace as point list
 - `angle`     - angle of helix in degrees - default: `360`
 - `rotations` - rotations of helix, can be used instead `angle`
 - `height`    - height of helix - default: 0 like `rotate_extrude()`
@@ -1032,6 +1040,7 @@ helix_extrude (angle, rotations, pitch, height, r, opposite, orientation, slices
   - `false` = default, orientation of Y-axis from the 2D-polygon is set to Z-axis
 - `slices`    - count of segments from helix per full rotation
 - `convexity`
+  - only for module version
   - `0` - only concave polygon (default)
   - `1` - can handle one convex polygon only
   - `2` - can maybe handle more then one convex polygon
@@ -1048,7 +1057,8 @@ This will use an 2D object along the X axis,
 extrude this to wall thickness and
 put this around an imaginary cylinder in counterclock direction starting from the X axis.
 As if you were to cover a cylinder with wallpaper.
-Behaves similarly to figure [`tube()`][tube] and can be combined with it.
+Behaves similarly to figure [`tube()`][tube] and can be combined with it.  
+Only as _module version_.
 
 _Arguments:_
 ```OpenSCAD

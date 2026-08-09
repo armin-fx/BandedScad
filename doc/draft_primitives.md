@@ -25,10 +25,11 @@ Draft objects as data list - Primitives
   - [Edit objects based on OpenSCAD buildin modules](#edit-objects-based-on-openscad-buildin-modules-)
   - [Edit objects](#edit-objects-)
     - Defined transform operations
-    - [`helix_extrude()`][helix_extrude]
 
 [align]:     extend.md#extra-arguments-
 [special_x]: extend.md#special-variables-
+[color_between]: color.md#color_between-
+[helix_extrude]: operator.md#helix_extrude-
 
 
 Primitives [^][contents]
@@ -279,28 +280,5 @@ _Implemented, but needs rework:_
 
 _Implemented operations:_
 - [`helix_extrude (object, angle, rotations, pitch, height, r, opposite, orientation, slices)`][helix_extrude]
-- [`color_between (object, c, c2, t, alpha, colors)`](color.md#color_between-)
-
-#### helix_extrude [^][contents]
-[helix_extrude]: #helix_extrude-
-Creates a helix with a 2D-polygon as trace similar rotate_extrude.  
-Returns a list with object data.  
-[Version as module, experimental](operator.md#helix_extrude-)
-
-_Arguments:_
-```OpenSCAD
-helix_extrude (object, angle, rotations, pitch, height, r, opposite, orientation, slices)
-```
-- `angle`     - angle of helix in degrees - default: `360`
-- `rotations` - rotations of helix, can be used instead `angle`
-- `height`    - height of helix - default: 0 like `rotate_extrude()`
-- `pitch`     - rise per rotation
-- `r`
-  - radius as number or `[r1, r2]`
-  - `r1` = bottom radius, `r2` = top radius
-- `opposite`  - if `true` reverse rotation of helix, default = `false`
-- `orientation`
-  - if `true`, orientation of Y-axis from the 2D-polygon is set along the surface of the cone.
-  - `false` = default, orientation of Y-axis from the 2D-polygon is set to Z-axis
-- `slices`    - count of segments from helix per full rotation
+- [`color_between (object, c, c2, t, alpha, colors)`][color_between]
 

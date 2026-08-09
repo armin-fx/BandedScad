@@ -23,7 +23,7 @@ Main functionality:
 - [Configurable object modules][object]
   - [Figures][figures] (torus, wedge, funnel, ... )
   - [Rounded and chamfered edges][edges]
-- [Transform and edit objects][operator]
+- [Transform, edit and convert objects][operator]
 - Draft objects in data lists
   - [Create curves][curves] into a point list with functions.
     These can load with `polygon()`
@@ -126,7 +126,7 @@ use <banded/ ??? .scad>
 include <banded/constants.scad>
 ```
 
-You can specify for which version of BandedSCAD you created your model.
+You can specify for which version of BandedSCAD your model is created.
 Then this will yield an assert, if the current version is not compatible.
 ```OpenSCAD
 include <banded.scad>
