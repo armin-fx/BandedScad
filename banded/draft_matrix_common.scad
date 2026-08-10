@@ -164,6 +164,16 @@ function matrix_scale_x (f, d=3, short=false) =     matrix_scale ([f,1,1], d=d, 
 function matrix_scale_y (f, d=3, short=false) =     matrix_scale ([1,f,1], d=d, short=short);
 function matrix_scale_z (f, short=false) = let(d=3) matrix_scale ([1,1,f], d=d, short=short);
 //
+// Generate a matrix to scale an object from origin at position 'p'
+function matrix_scale_at (v, p, d=3) =
+	matrix_transform_at ( p=p, d=d, m=
+	matrix_scale ( v, d=d)
+	)
+;
+// f = Skalierfaktor
+function matrix_scale_at_x (f, p, d=3) =     matrix_scale_at ([f,1,1], p, d=d);
+function matrix_scale_at_y (f, p, d=3) =     matrix_scale_at ([1,f,1], p, d=d);
+function matrix_scale_at_z (f, p) = let(d=3) matrix_scale_at ([1,1,f], p, d=d);
 
 // Generate a matrix to create a projection at given axis
 function matrix_projection_x (d=3, short=false) =
@@ -279,8 +289,8 @@ function matrix_projection_z (d=3, short=false) =
 function matrix_skew (v, t, m, a, d=3, short=false) =
 	let(
 	is_short = short==true,
-	M =	  is_num(m) ? m
-		: is_num(a) ? tan(a)
+	M =	  (m!=undef && is_num(m)) ? m
+		: (a!=undef && is_num(a)) ? tan(a)
 		: 0,
 	V =	d==2 ? // 2D => angle
 			(is_list(v) && len(v)>=2) ? atan2(v[1],v[0])

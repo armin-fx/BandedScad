@@ -26,6 +26,7 @@ Transform and edit objects
     - [`mirror_copy_at()`][mirror_copy_at]
     - [`mirror_repeat()`][mirror_repeat]
     - [`mirror_repeat_copy()`][mirror_repeat]
+    - [`scale_at()`][scale_at]
     - [`skew()`][skew]
     - [`skew_at()`][skew_at]
   - [Transformation with preset defaults](#transformation-with-preset-defaults-)
@@ -80,14 +81,32 @@ and keep the same behavior and option names.
 
 Modules defined in file:
 - `operator_transform.scad`
-Functions for objects in data lists defined in files:
-- `draft_primitives_basic.scad`
-- `draft_primitives_transform.scad`
 
 All (mostly) operator modules already exists as
-[functions for data list](draft_primitives.md).  
-The functions have the same argument sequence as the module version,
-but needs the object as first argument (parameter `object`).  
+- [Functions for objects in data list](draft_primitives.md)  
+  These functions will work on created objects stored in a data list
+  and have the same names as the module version.  
+  Defined in files:
+  - `draft_primitives_basic.scad`
+  - `draft_primitives_transform.scad`
+- [Functions for point lists](draft_transform.md)  
+  These functions will work on lists with points.
+  The naming scheme consists of the module name with the suffix `_points` appended.  
+  In files:
+  - `draft_transform_basic.scad`
+  - `draft_transform_common.scad`
+- [Functions to generate matrices](draft_matrix.md)  
+  These functions will generate a matrix for use with `multmatrix`.
+  The naming scheme consists of the module name with the prefix `matrix_`.  
+  In files:
+  - `draft_matrix_basic.scad`
+  - `draft_matrix_common.scad`
+
+These functions have the same argument sequence as the module version,
+but needs the _object_ or _list with points_ as first argument
+(parameter `object` or parameter `list`),
+except for functions to generate matrices.
+
 _Example:_
 ```OpenSCAD
 // Module version:
@@ -95,6 +114,15 @@ operator (xxx, ...)  object();
 
 // Function version:
 o = operator (object, xxx, ...);
+build (o);
+
+// Function for point lists:
+l = operator_points (list, xxx, ...);
+polygon (l);
+
+// Function to generate matrices:
+m = matrix_operator (xxx, ...);
+multmatrix (m)  object();
 ```
 
 
@@ -308,6 +336,32 @@ mirror_repeat_copy (object, v, v2, v3)
 - `v2` - 2. mirror direction, optional
 - `v3` - 3. mirror direction, optional
 
+#### scale_at [^][contents]
+[scale_at]: #scale_at-
+Scale an object on each axis at specific origin position.
+
+_Arguments:_
+```OpenSCAD
+// Operator as module:
+scale_at (v, p, d)  ...
+
+// Operator as function:
+scale_at (object, v, p)
+```
+- `v`
+  - vector with scale factor for each axis
+  - missing numbers in the vector list will not scale the respective axis
+  - as number, all axis will scale with this factor
+- `p` - origin position at where it scales, default = `[0,0,0]`
+- `d`
+  - dimensions of object,
+    needed for module version only
+  - `3` - spatial (3D)
+  - `2` - flat (2D)
+  - not set - Try to get this value from the other options.
+    Otherwise use 3D.
+    It is not possible to get this information from the object.
+
 #### skew [^][contents]
 [skew]: #skew-
 skew an object.
@@ -342,7 +396,7 @@ skew (object, v, t, m, a)
 - `a` - angle in degree inside (-90 ... 90), alternative to 'm'
 - `d`
   - dimensions of object,
-    module version only
+    needed for module version only
   - `3` - spatial (3D)
   - `2` - flat (2D)
   - not set - Try to get this value from the other options.
@@ -362,7 +416,7 @@ skew_at (v, t, m, a, p, d)  ...
 skew_at (object, v, t, m, a, p)
 ```
 see [`skew()`][skew]
-- `p` - origin position at where it skews
+- `p` - origin position at where it skews, default = `[0,0,0]`
 
 
 ### Transformation with preset defaults [^][contents]
@@ -401,6 +455,7 @@ Axis = x, y or z. later named as '?'
 | [`rotate_at()`][rotate_at]               | `rotate_at_? (a, p)`           | `a` - angle<br /> `p` - position
 | `rotate_backwards_at()`                  | `rotate_backwards_at_? (a, p)` | `a` - angle<br /> `p` - position
 | [`mirror_at()`][mirror_at]               | `mirror_at_? (p)`              | `p` - position
+| [`scale_at()`][scale_at]                 | `scale_at_? (f, p)`            | `f` - scale factor<br /> `p` - position
 
 
 ### Comparison same transformation [^][contents]
@@ -418,18 +473,18 @@ Axis = x, y or z. later named as '?'
 | projection()           | [projection_points()][projection_points] | -
 | multmatrix()           | [multmatrix_points()][multmatrix_points] | -
 
-[translate_points]:  draft_transform.md#translate_points-list-v-
-[rotate_points]:     draft_transform.md#rotate_points-list-a-v-backwards-
-[mirror_points]:     draft_transform.md#mirror_points-list-v-
-[scale_points]:      draft_transform.md#scale_points-list-v-
-[resize_points]:     draft_transform.md#resize_points-list-newsize-
-[projection_points]: draft_transform.md#projection_points-list-plane-
-[multmatrix_points]: draft_transform.md#multmatrix_points-list-m-
+[translate_points]:  draft_transform.md#translate_points-
+[rotate_points]:     draft_transform.md#rotate_points-
+[mirror_points]:     draft_transform.md#mirror_points-
+[scale_points]:      draft_transform.md#scale_points-
+[resize_points]:     draft_transform.md#resize_points-
+[projection_points]: draft_transform.md#projection_points-
+[multmatrix_points]: draft_transform.md#multmatrix_points-
 
-[matrix_translate]: draft_matrix.md#matrix_translate-v-d-
-[matrix_rotate]:    draft_matrix.md#matrix_rotate-a-v-backwards-d-
-[matrix_mirror]:    draft_matrix.md#matrix_mirror-v-d-
-[matrix_scale]:     draft_matrix.md#matrix_scale-v-d-
+[matrix_translate]: draft_matrix.md#matrix_translate-
+[matrix_rotate]:    draft_matrix.md#matrix_rotate-
+[matrix_mirror]:    draft_matrix.md#matrix_mirror-
+[matrix_scale]:     draft_matrix.md#matrix_scale-
 
 #### More operator modules [^][contents]
 
@@ -444,24 +499,27 @@ Axis = x, y or z. later named as '?'
 | [mirror_copy_at()][mirror_copy_at]           | -                                                          | -
 | [mirror_repeat()][mirror_repeat]             | -                                                          | -
 | [mirror_repeat_copy()][mirror_repeat_copy]   | -                                                          | -
+| [scale_at()][scale_at]                       | [scale_at_points][scale_at_points]                         | [matrix_scale_at()][matrix_scale_at]
 | [skew()][skew]                               | [skew_points()][skew_points]                               | [matrix_skew()][matrix_skew]
 | [skew_at()][skew_at]                         | [skew_at_points()][skew_at_points]                         | [matrix_skew_at()][matrix_skew_at]
 
-[rotate_backwards_points]:    draft_transform.md#rotate_backwards_points-list-a-v-
-[rotate_at_points]:           draft_transform.md#rotate_at_points-list-a-p-v-backwards-
-[rotate_to_vector_points]:    draft_transform.md#rotate_to_vector_points-list-v-a-backwards-
-[rotate_to_vector_at_points]: draft_transform.md#rotate_to_vector_at_points-list-v-p-a-backwards-
-[mirror_at_points]:           draft_transform.md#mirror_at_points-list-v-p-
-[skew_points]:                draft_transform.md#skew_points-list-v-t-m-a-
-[skew_at_points]:             draft_transform.md#skew_at_points-list-v-t-m-a-p-
+[rotate_backwards_points]:    draft_transform.md#rotate_backwards_points-
+[rotate_at_points]:           draft_transform.md#rotate_at_points-
+[rotate_to_vector_points]:    draft_transform.md#rotate_to_vector_points-
+[rotate_to_vector_at_points]: draft_transform.md#rotate_to_vector_at_points-
+[mirror_at_points]:           draft_transform.md#mirror_at_points-
+[scale_at_points]:            draft_transform.md#scale_at_points-
+[skew_points]:                draft_transform.md#skew_points-
+[skew_at_points]:             draft_transform.md#skew_at_points-
 
-[matrix_rotate_backwards]:    draft_matrix.md#matrix_rotate_backwards-a-v-d-
-[matrix_rotate_at]:           draft_matrix.md#matrix_rotate_at-a-p-v-backwards-d-
-[matrix_rotate_to_vector]:    draft_matrix.md#matrix_rotate_to_vector-v-a-backwards-
-[matrix_rotate_to_vector_at]: draft_matrix.md#matrix_rotate_to_vector_at-v-p-a-backwards-
-[matrix_mirror_at]:           draft_matrix.md#matrix_mirror_at-v-p-d-
-[matrix_skew]:                draft_matrix.md#matrix_skew-v-t-m-a-d-
-[matrix_skew_at]:             draft_matrix.md#matrix_skew_at-v-t-m-a-p-d-
+[matrix_rotate_backwards]:    draft_matrix.md#matrix_rotate_backwards-
+[matrix_rotate_at]:           draft_matrix.md#matrix_rotate_at-
+[matrix_rotate_to_vector]:    draft_matrix.md#matrix_rotate_to_vector-
+[matrix_rotate_to_vector_at]: draft_matrix.md#matrix_rotate_to_vector_at-
+[matrix_mirror_at]:           draft_matrix.md#matrix_mirror_at-
+[matrix_scale_at]:            draft_matrix.md#matrix_scale_at-
+[matrix_skew]:                draft_matrix.md#matrix_skew-
+[matrix_skew_at]:             draft_matrix.md#matrix_skew_at-
 
 
 Place objects [^][contents]

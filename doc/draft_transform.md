@@ -29,6 +29,7 @@ Draft objects as data list - Transform functions
     - [`rotate_to_vector_points()`][rotate_to_vector_points]
     - [`rotate_to_vector_at_points()`][rotate_to_vector_at_points]
     - [`mirror_at_points()`][mirror_at_points]
+    - [`scale_at_points()`][scale_at_points]
     - [`skew_points()`][skew_points]
     - [`skew_at_points()`][skew_at_points]
   - [Transformation with preset defaults](#transformation-with-preset-defaults-)
@@ -102,14 +103,17 @@ _Operation for one point:_
 
 #### scale_points [^][contents]
 [scale_points]: #scale_points-
-Scale every point in a list at given axis.  
+Scale every point in a list on each axis.  
 Works like `scale()`.
 
 _Arguments:_
 ```OpenSCAD
 scale_points (list, v)
 ```
-- `v` - vector with scale factor for each axis
+- `v`
+  - vector with scale factor for each axis
+  - missing numbers in the vector list will not scale the respective axis
+  - as number, all axis will scale with this factor
 
 _Operation for one point:_  
 `scale_point (p, v)`
@@ -258,9 +262,21 @@ mirror_at_points (list, v, p)
 - `p` - origin position at where it mirrors, default = `[0,0,0]`
 - `v` - mirror along this direction, default = X axis
 
+#### scale_at_points [^][contents]
+[scale_at_points]: #scale_at_points-
+Scale every point in a list on each axis at specific origin position.
+
+_Arguments:_
+```OpenSCAD
+scale_at_points (list, v, p)
+```
+see [`scale_at_points()`][scale_at_points]
+- `p` - origin position at where it scales, default = `[0,0,0]`
+
+
 #### skew_points [^][contents]
 [skew_points]: #skew_points-
-skew an object in a list.  
+Skew an object in a list.  
 - default for 3D = shear X along Z
 - default for 2D = shear X along Y
 
@@ -289,7 +305,7 @@ skew_points (list, v, t, m, a)
 
 #### skew_at_points [^][contents]
 [skew_at_points]: #skew_at_points-
-skew an object in a list at position `p`.
+Skew an object in a list at position `p`.
 
 _Arguments:_
 ```OpenSCAD
@@ -336,4 +352,5 @@ Axis = x, y or z. later named as '?'
 | [`rotate_at_points()`][rotate_at_points]               | `rotate_at_?_points (list, a, p)`           | `a` - angle<br /> `p` - position
 | `rotate_backwards_at_points()`                         | `rotate_backwards_at_?_points (list, a, p)` | `a` - angle<br /> `p` - position
 | [`mirror_at_points()`][mirror_at_points]               | `mirror_at_?_points (list, p)`              | `p` - position
+| [`scale_at_points()`][scale_at_points]                 | `scale_at_?_points (list, f, p)`            | `f` - scale factor<br /> `p` - position
 

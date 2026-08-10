@@ -256,6 +256,27 @@ module scale_x (f) { if (f==undef || !is_num(f)) children(); else  scale([f,1,1]
 module scale_y (f) { if (f==undef || !is_num(f)) children(); else  scale([1,f,1]) children(); }
 module scale_z (f) { if (f==undef || !is_num(f)) children(); else  scale([1,1,f]) children(); }
 
+// vergrößert das Objekt vom Koordinatenursprung gesetzt auf p aus
+// 'd' - dimension: 2 = 2D,
+//                  3 = 3D
+//       It is not possible to get this information from the object.
+//       Not set - Try to get this value from the other options.
+//                 Otherwise use 3D.
+module scale_at (v, p, d)
+{
+	D =	is_num(d)  ? d :
+		is_list(p) ? len(p) :
+		is_list(v) ? len(v) :
+		3
+	;
+	multmatrix( matrix_scale_at (v,p, d=D) )
+	children();
+}
+//
+module scale_at_x (f, p, d)   { if (f==undef || !is_num(f)) children(); else  scale_at([f,1,1],p,d) children(); }
+module scale_at_y (f, p, d)   { if (f==undef || !is_num(f)) children(); else  scale_at([1,f,1],p,d) children(); }
+module scale_at_z (f, p) { d=3; if (f==undef || !is_num(f)) children(); else  scale_at([1,1,f],p,d) children(); }
+
 // skew an object, see matrix_skew()
 // 'd' - dimension: 2 = 2D,
 //                  3 = 3D
@@ -264,7 +285,7 @@ module scale_z (f) { if (f==undef || !is_num(f)) children(); else  scale([1,1,f]
 //                 Otherwise use 3D.
 module skew (v, t, m, a, d)
 {
-	D =	is_num(d) ? d :
+	D =	is_num(d)  ? d :
 		is_list(v) ? len(v) :
 		is_num(v)  ? 2 :
 	//	is_list(t)&&len(t)==3 ? 3 :
@@ -278,7 +299,7 @@ module skew (v, t, m, a, d)
 // only 3D object
 module skew_at (v, t, m, a, p, d)
 {
-	D =	is_num(d) ? d :
+	D =	is_num(d)  ? d :
 		is_list(v) ? len(v) :
 		is_num(v)  ? 2 :
 	//	is_list(t)&&len(t)==3 ? 3 :

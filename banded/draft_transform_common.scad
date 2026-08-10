@@ -85,7 +85,7 @@ function translate_xy_points (list, t) =
 // jeden Punkt in der Liste <list> spiegeln entlang dem Vektor <v>
 // Spiegel an Position p
 function mirror_at_points (list, v, p) =
-	(!is_list(list) || !is_list(list[0])) ? undef :
+	(list==undef || !is_list(list) || !is_list(list[0])) ? undef :
 	p!=undef ?
 		multmatrix_points (list,
 			matrix_mirror_at (v, p, d=len(list[0]))
@@ -111,6 +111,18 @@ function scale_x_points (list, f) = scale_points (list, [f,1,1]);
 function scale_y_points (list, f) = scale_points (list, [1,f,1]);
 function scale_z_points (list, f) = scale_points (list, [1,1,f]);
 //
+// scale an object in a point list from origin at position p
+function scale_at_points (list, v, p) =
+	(list==undef || !is_list(list) || !is_list(list[0])) ? undef :
+	multmatrix_points (list,
+		matrix_scale_at (v, p, d=len(list[0]))
+	)
+;
+/// f = Skalierfaktor
+function scale_at_x_points (list, f, p) = scale_points (list, [f,1,1], p);
+function scale_at_y_points (list, f, p) = scale_points (list, [1,f,1], p);
+function scale_at_z_points (list, f, p) = scale_points (list, [1,1,f], p);
+//
 // verändert die Größe an der jeweiligen Achse wie die Hauptfunktion
 // l = neue Größe der jeweiligen Achse
 function resize_x_points (list, l) = resize_points (list, [l,0,0]);
@@ -119,7 +131,7 @@ function resize_z_points (list, l) = resize_points (list, [0,0,l]);
 
 // skew an object in a point list, see matrix_skew()
 function skew_points (list, v, t, m, a) =
-	(!is_list(list) || !is_list(list[0])) ? undef :
+	(list==undef || !is_list(list) || !is_list(list[0])) ? undef :
 	multmatrix_points (list,
 		matrix_skew (v, t, m, a, d=len(list[0]), short=true)
 	)
@@ -127,7 +139,7 @@ function skew_points (list, v, t, m, a) =
 
 // skew an object in a point list at position 'p', see matrix_skew_at()
 function skew_at_points (list, v, t, m, a, p) =
-	(!is_list(list) || !is_list(list[0])) ? undef :
+	(list==undef || !is_list(list) || !is_list(list[0])) ? undef :
 	multmatrix_points (list,
 		matrix_skew_at (v, t, m, a, p, d=len(list[0]))
 	)

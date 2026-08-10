@@ -269,6 +269,7 @@ _Implemented transformations:_
 - `rotate_to_vector    (object, v, a, backwards)`
 - `rotate_to_vector_at (object, v, p, a, backwards)`
 - `mirror_at (object, v, p)`
+- `scale_at (object, v, p)`
 - `skew    (object, v, t, m, a)`
 - `skew_at (object, v, t, m, a, p)`
 

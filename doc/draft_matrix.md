@@ -28,6 +28,7 @@ Draft objects as data list - Generate matrix
     - [`matrix_rotate_to_vector()`][matrix_rotate_to_vector]
     - [`matrix_rotate_to_vector_at()`][matrix_rotate_to_vector_at]
     - [`matrix_mirror_at()`][matrix_mirror_at]
+    - [`matrix_scale_at()`][matrix_scale_at]
     - [`matrix_skew()`][matrix_skew]
     - [`matrix_skew_at()`][matrix_skew_at]
   - [Generate matrix with preset defaults](#generate-matrix-with-preset-defaults-)
@@ -138,13 +139,16 @@ matrix_mirror (v, d, short)`
 
 #### matrix_scale [^][contents]
 [matrix_scale]: #matrix_scale-
-Generate a matrix to scale to a given axis in vector.
+Generate a matrix to scale on each axis.
 
 _Arguments:_
 ```OpenSCAD
 matrix_scale (v, d, short)
 ```
-- `v` - vector with scale factor for each axis
+- `v`
+  - vector with scale factor for each axis
+  - missing numbers in the vector list will not scale the respective axis
+  - as number, all axis will scale with this factor
 - `d`
   - dimensions of vector which will transformed with matrix
     - `3` - spatial (3D) - default
@@ -285,6 +289,17 @@ matrix_mirror_at (v, p, d)
     - `3` - spatial (3D) - default
     - `2` - flat (2D)
 
+#### matrix_scale_at [^][contents]
+[matrix_scale_at]: #matrix_scale_at-
+Generate a matrix to scale on each axis at specific origin position.
+
+_Arguments:_
+```OpenSCAD
+matrix_scale_at (v, p, d, short)
+```
+see [`matrix_scale()`][matrix_scale]
+- `p` - origin position at where it scales
+
 #### matrix_skew [^][contents]
 [matrix_skew]: #matrix_skew-
 Generate a matrix to skew an object.
@@ -375,6 +390,8 @@ Axis = x, y or z. later named as '?'
 | .                                        | `matrix_rotate_at_z           (a, p, d)`  | `d` - dimension
 | `matrix_rotate_backwards_at()`           | `matrix_rotate_backwards_at_? (a, p)`     | `a` - angle <br> `p` - position <br> only in 3 dimension
 | .                                        | `matrix_rotate_backwards_at_z (a, p, d)`  | `d` - dimension
-| [`matrix_mirror_at()`][matrix_mirror_at] | `matrix_mirror_at_? (p, d)`               | `p` - position <br> `d` - dimension
+| [`matrix_mirror_at()`][matrix_mirror_at] | `matrix_mirror_at_? (p, d)`               | `p` - position     <br> `d` - dimension
 | .                                        | `matrix_mirror_at_z (p)`                  | only in 3 dimension
+| [`matrix_scale_at()`][matrix_scale_at]   | `matrix_scale_at_? (f, p, d)`             | `f` - scale factor <br> `d` - dimension
+| .                                        | `matrix_scale_at_z (f, p)`                | only in 3 dimension
 

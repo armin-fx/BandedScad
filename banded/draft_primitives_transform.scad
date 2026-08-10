@@ -158,9 +158,21 @@ function scale_x (object, f) = transform_function (object, function (list)
 function scale_y (object, f) = transform_function (object, function (list)
     scale_y_points (list, f) )
 ;
-
 function scale_z (object, f) = transform_function (object, function (list)
     scale_z_points (list, f) )
+;
+
+function scale_at (object, v, p) = transform_function (object, function (list)
+    scale_at_points (list, f, p) )
+;
+function scale_at_x (object, f, p) = transform_function (object, function (list)
+    scale_at_x_points (list, f, p) )
+;
+function scale_at_y (object, f, p) = transform_function (object, function (list)
+    scale_at_y_points (list, f, p) )
+;
+function scale_at_z (object, f, p) = transform_function (object, function (list)
+    scale_at_z_points (list, f, p) )
 ;
 
 //---------------------------------------------------------
@@ -170,7 +182,6 @@ function resize_x (object, l) = transform_function (object, function (list)
 function resize_y (object, l) = transform_function (object, function (list)
     resize_y_points (list, l) )
 ;
-
 function resize_z (object, l) = transform_function (object, function (list)
     resize_z_points (list, l) )
 ;
