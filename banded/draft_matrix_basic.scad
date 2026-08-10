@@ -222,14 +222,15 @@ function matrix_mirror_3d (v, short=false) =
 // gibt die Matrix zum an der jeweiligen Achse vergrößern zurück
 //  v    = Vektor mit den Vergrößerungsfaktoren
 function matrix_scale (v, d=3, short=false) =
-	(!is_list(v) || len(v)==0) ? identity_matrix(d+1) :
 	let (
 		D = short==true ? d-1 : d,
 		scale_factor = parameter_scale (v, d)
 	)
-	[ for (i=[0:D])
-	[ for (j=[0:D])
-		(i==j) ? scale_factor[i] : 0
+	[ for (i=[0:1:D])
+	[ for (j=[0:1:D])
+		(i==j) ?
+			(i>=d) ? 1 : scale_factor[i]
+			: 0
 	]]
 ;
 
