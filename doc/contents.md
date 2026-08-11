@@ -37,7 +37,7 @@ Table of contents
   - [Creates curves in a point list](draft_curves.md)
   - [Creates surfaces as data list](draft_surface.md)
   - [Generate matrices for affine transformation](draft_matrix.md)
-  - [Transform functions on point lists for affine transformations](draft_transform.md)
+  - [Transform functions on point lists for affine transformations](operator.md#transform-operators-)
   - [Create and edit objects in data lists](draft_primitives.md)
     - Buildin OpenSCAD primitives
     - Configurable objects

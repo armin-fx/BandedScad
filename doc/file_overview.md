@@ -71,9 +71,9 @@ Overview of scad files
 ` `| . . . +--> [`draft_matrix.scad`](draft_matrix.md "Generate matrices for affine transformation")  
 ` `| . . . | . . . . +--> [`draft_matrix_basic.scad`](draft_matrix.md#basic-multmatrix-functions- "Generate matrix like OpenSCAD buildin affine transformation")  
 ` `| . . . | . . . . +--> [`draft_matrix_common.scad`](draft_matrix.md#more-multmatrix-functions- "Generate matrix for more affine transformations")  
-` `| . . . +--> [`draft_transform.scad`](draft_transform.md "Transform functions on point lists for affine transformations")  
-` `| . . . | . . . . +--> [`draft_transform_basic.scad`](draft_transform.md#basic-multmatrix-functions- "OpenSCAD buildin transformation on point lists")  
-` `| . . . | . . . . +--> [`draft_transform_common.scad`](draft_transform.md#more-multmatrix-functions- "More functions for affine transformations on point lists")  
+` `| . . . +--> [`draft_transform.scad`](operator.md#transform-operators- "Transform functions on point lists for affine transformations")  
+` `| . . . | . . . . +--> [`draft_transform_basic.scad`](operator.md#transform-operators- "OpenSCAD buildin transformation on point lists")  
+` `| . . . | . . . . +--> [`draft_transform_common.scad`](operator.md#transform-operators- "More functions for affine transformations on point lists")  
 ` `| . . . |  
 ` `| . . . +--> [`draft_primitives.scad`](draft_primitives.md "Create and edit OpenSCAD primitives in data lists")  
 ` `| . . . . . . . . +--> `draft_primitives_basic.scad`  

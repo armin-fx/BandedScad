@@ -9,31 +9,53 @@ Transform and edit objects
 ` `+--> `banded/operator_transform.scad`  
 ` `+--> `banded/operator_place.scad`  
 
+`banded/draft.scad`  
+` `|  
+` `+--> `banded/draft_primitives.scad`  
+` `| . . . . +--> `banded/draft_primitives_basic.scad`  
+` `| . . . . +--> `banded/draft_primitives_transform.scad`  
+` `| . . . . +--> `banded/draft_primitives_operator.scad`  
+` `|  
+` `+--> `banded/draft_transform.scad`  
+` `| . . . . +--> `banded/draft_transform_basic.scad`  
+` `| . . . . +--> `banded/draft_transform_common.scad`  
+` `|  
+` `+--> `banded/draft_matrix.scad`  
+` `| . . . . +--> `banded/draft_matrix_basic.scad`  
+` `| . . . . +--> `banded/draft_matrix_common.scad`  
+` `. . .  
+
+
 [<-- file overview](file_overview.md)  
 [<-- table of contents](contents.md)  
 
 ### Contents
 [contents]: #contents "Contents"
-- [Transform operator](#transform-operator-)
-  - [Transformation modules](#transformation-modules-)
-    - [`rotate_new()`][rotate_new]
+- [Transform operators](#transform-operators-)
+  - [Transformation modules and functions](#transformation-modules-and-functions-)
+    - [`translate()`][translate]
+    - [`rotate()`, `rotate_new()`][rotate]
     - [`rotate_backwards()`][rotate_backwards]
     - [`rotate_at()`][rotate_at]
     - [`rotate_to_vector()`][rotate_to_vector]
     - [`rotate_to_vector_at()`][rotate_to_vector_at]
+    - [`mirror()`][mirror]
     - [`mirror_at()`][mirror_at]
     - [`mirror_copy()`][mirror_copy]
     - [`mirror_copy_at()`][mirror_copy_at]
     - [`mirror_repeat()`][mirror_repeat]
     - [`mirror_repeat_copy()`][mirror_repeat]
+    - [`scale()`][scale]
     - [`scale_at()`][scale_at]
+    - [`resize()`][resize]
     - [`skew()`][skew]
     - [`skew_at()`][skew_at]
+    - [`multmatrix()`][multmatrix]
   - [Transformation with preset defaults](#transformation-with-preset-defaults-)
     - [Transformation operator backwards](#transformation-operator-backwards-)
     - [Transformation at a fixed axis](#transformation-at-a-fixed-axis-)
   - [Comparison same transformation](#comparison-same-transformation-)
-    - [Buildin operator modules](#buildin-operator-modules-)
+    - [Built-in operator modules](#built-in-operator-modules-)
     - [More operator modules](#more-operator-modules-)
 - [Place objects](#place-objects-)
   - [`connect()`][connect]
@@ -69,41 +91,74 @@ Transform and edit objects
     - [`plain_trace_extrude()`][plain_trace_extrude]
     - [`helix_extrude()`][helix_extrude]
     - [`tube_extrude()`][tube_extrude]
+  - [3D to 2D projection](#3d-to-2d-projection-)
+    - [`projection()`][projection]
+    - [`projection_points()`][projection_points]
 
 [align]: extend.md#extra-arguments-
 [tube]:  object.md#tube-
+[matrix_translate]:           draft_matrix.md#matrix_translate-
+[matrix_rotate]:              draft_matrix.md#matrix_rotate-
+[matrix_rotate_backwards]:    draft_matrix.md#matrix_rotate_backwards-
+[matrix_rotate_at]:           draft_matrix.md#matrix_rotate_at-
+[matrix_rotate_to_vector]:    draft_matrix.md#matrix_rotate_to_vector-
+[matrix_rotate_to_vector_at]: draft_matrix.md#matrix_rotate_to_vector_at-
+[matrix_mirror]:              draft_matrix.md#matrix_mirror-
+[matrix_mirror_at]:           draft_matrix.md#matrix_mirror_at-
+[matrix_scale]:               draft_matrix.md#matrix_scale-
+[matrix_scale_at]:            draft_matrix.md#matrix_scale_at-
+[matrix_skew]:                draft_matrix.md#matrix_skew-
+[matrix_skew_at]:             draft_matrix.md#matrix_skew_at-
+[O_translate]:  https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Transformations#translate
+[O_rotate]:     https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Transformations#rotate
+[O_mirror]:     https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Transformations#mirror
+[O_scale]:      https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Transformations#scale
+[O_resize]:     https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Transformations#resize
+[O_projection]: https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Using_the_2D_Subsystem#3D_to_2D_Projection
+[O_multmatrix]: https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Transformations#multmatrix
 
 
-Transform operator [^][contents]
+Transform operators [^][contents]
 --------------------------------
-Contains modules which extend OpenSCAD buildin operator family
-and keep the same behavior and option names.  
 
-Modules defined in file:
+Contains operator which transform objects with affine transformations.  
+These replicate or extend OpenSCAD buildin operator family
+and keep the same behavior and option names.  
+[=> Wikipedia - Affine_transformation](https://en.wikipedia.org/wiki/Affine_transformation)  
+
+Modules are defined in file:
 - `operator_transform.scad`
 
 All (mostly) operator modules already exists as
-- [Functions for objects in data list](draft_primitives.md)  
+- __[Functions for objects in data list](draft_primitives.md)__  
   These functions will work on created objects stored in a data list
   and have the same names as the module version.  
   Defined in files:
   - `draft_primitives_basic.scad`
+    - OpenSCAD's operators and objects as function
   - `draft_primitives_transform.scad`
-- [Functions for point lists](draft_transform.md)  
-  These functions will work on lists with points.
-  The naming scheme consists of the module name with the suffix `_points` appended.  
+    - additional operators
+- __Functions for point lists__  
+  These functions will work on lists with points, some even on one point.  
+  The operators build upon these functions.
+  The naming scheme consists of the module name with the suffix `_points`
+  or `point` appended.  
   In files:
   - `draft_transform_basic.scad`
+    - OpenSCAD's operators
   - `draft_transform_common.scad`
-- [Functions to generate matrices](draft_matrix.md)  
+    - additional operators
+- __[Functions to generate matrices](draft_matrix.md)__  
   These functions will generate a matrix for use with `multmatrix`.
   The naming scheme consists of the module name with the prefix `matrix_`.  
   In files:
   - `draft_matrix_basic.scad`
+    - OpenSCAD's operators
   - `draft_matrix_common.scad`
+    - additional operators
 
 These functions have the same argument sequence as the module version,
-but needs the _object_ or _list with points_ as first argument
+but needs the _object data list_ or _list with points_ as first argument
 (parameter `object` or parameter `list`),
 except for functions to generate matrices.
 
@@ -126,39 +181,65 @@ multmatrix (m)  object();
 ```
 
 
-### Transformation modules [^][contents]
+### Transformation modules and functions [^][contents]
 
-#### rotate_new [^][contents]
-[rotate_new]: #rotate_new-
-Rotate object with additional options.  
-Works like `rotate()`.
+#### translate [^][contents]
+[translate]: #translate-
+Translate an object along a vector.  
+Works like [`translate()` from OpenSCAD.][O_translate].
 
 _Arguments:_
+```OpenSCAD
+// Operator as function:
+translate (object, v)
+
+// Operation to work on a point list
+translate_points (list, v)
+//
+// Operation to work on one point
+translate_point  (p,    v)
+```
+- `v` - vector
+
+#### rotate, rotate_new [^][contents]
+[rotate]: #rotate-rotate_new-
+Rotate an object with additional options.  
+Works like [=> `rotate()` from OpenSCAD.][O_rotate]
+
+_Arguments:_  
 ```OpenSCAD
 // Operator as module:
 rotate_new (a, v, backwards)  ...
 
 // Operator as function:
 rotate (object, a, v, backwards)
+
+
+// Operation to work on a point list
+rotate_points (list, a, v, backwards)
+//
+// Operation to work on one point
+rotate_point  (p,    a, v, backwards)
 ```
 - `a` - angle parameter
   - as number: angle to rotate in degrees around an axis, defined in vector `v`
   - as list of 3 angles around a fixed axis `[X,Y,Z]`:
     The rotation is applied in the following order: X then Y then Z.
     Then the argument `v` is ignored.
-- `v` - vector where rotating around
+- `v` - vector where rotating around, default = Z-axis
 - `backwards`
   - `false` - default, normal forward rotate
   - `true`  - rotate backwards, undo forward rotate
 
-_You can replace buildin_ `rotate()` _with:_
+_You can replace buildin_ `rotate()` _with:_  
 ```OpenSCAD
-module rotate(a,v,backwards=false) { rotate_new(a,v,backwards) children(); }
+module rotate(a,v,backwards) { rotate_new(a,v,backwards) children(); }
 ```
 
 #### rotate_backwards [^][contents]
 [rotate_backwards]: #rotate_backwards-
-Rotate object backwards.
+Rotate object backwards.  
+Can undo forward rotate.
 
 _Arguments:_
 ```OpenSCAD
@@ -167,10 +248,11 @@ rotate_backwards (a, v)  ...
 
 // Operator as function:
 rotate_backwards (object, a, v)
+
+// Operation to work on a point list
+rotate_backwards_points (list, a, v)
 ```
-Options like `rotate()`.
-- `a` - angle
-- `v` - vector where rotating around
+Options like [`rotate()`][rotate] with fixed argument `backwards = true`.
 
 #### rotate_at [^][contents]
 [rotate_at]: #rotate_at-
@@ -183,12 +265,15 @@ rotate_at (a, p, v, backwards)  ...
 
 // Operator as function:
 rotate_at (object, a, p, v, backwards)
+
+// Operation to work on a point list
+rotate_at_points (list, a, p, v, backwards)
 ```
-- `a` - angle
+- `a` - angle, see [`rotate()`][rotate]
 - `v` - vector where it rotates around
 - `p` - origin position at where it rotates
 - `backwards`
-  - `false` - standard, normal forward rotate
+  - `false` - default, normal forward rotate
   - `true`  - rotate backwards, undo forward rotate
 
 #### rotate_to_vector [^][contents]
@@ -202,6 +287,9 @@ rotate_to_vector (v, a, backwards, d)  ...
 
 // Operator as function:
 rotate_to_vector (v, a, backwards)
+
+// Operation to work on a point list
+rotate_to_vector_points (list, v, a, backwards)
 ```
 - `v` - direction as vector
 - `a`
@@ -235,13 +323,14 @@ _Way of working in 3D:_
 _Way of working in 2D:_
 - rotate the object from direction X axis to vector `v`
 - option `a` will be ignored
-- the dimension number must be specified with `d=2`,
+- on module version the dimension number must be specified with `d=2`,
   since it cannot be determined from the object.
 
 #### rotate_to_vector_at [^][contents]
 [rotate_to_vector_at]: #rotate_to_vector_at-
 Rotate object from direction Z axis to direction as vector.  
 Rotate at a specific origin position.
+Otherwise, it works like [rotate_to_vector][rotate_to_vector].
 
 _Arguments:_
 ```OpenSCAD
@@ -250,13 +339,35 @@ rotate_to_vector_at (v, p, a, backwards)  ...
 
 // Operator as function:
 rotate_to_vector_at (object, v, p, a, backwards)
+
+// Operation to work on a point list
+rotate_to_vector_at_points (list, v, p, a, backwards)
 ```
 - `v` - direction as vector
-- `p` - origin position at where it rotates
+- `p` - origin position at where it rotates, default = `[0,0,0]`
 - `a` - angle in degree or rotational orientation vector
 - `backwards`
-  - `false` - standard, normal forward rotate
+  - `false` - default, normal forward rotate
   - `true`  - rotate backwards, undo forward rotate
+
+
+#### mirror [^][contents]
+[mirror]: #mirror-
+Mirror an object at origin along a vector.  
+Works like  [=> `mirror()` from OpenSCAD.][O_mirror].
+
+_Arguments:_
+```OpenSCAD
+// Operator as function:
+mirror (object, v)
+
+// Operation to work on a point list
+mirror_points (list, v)
+//
+// Operation to work on one point
+mirror_point  (p,    v)
+```
+- `v` - mirror along this direction, default = X axis
 
 #### mirror_at [^][contents]
 [mirror_at]: #mirror_at-
@@ -269,9 +380,12 @@ mirror_at (v, p)  ...
 
 // Operator as function:
 mirror_at (object, v, p)
+
+// Operation to work on a point list
+mirror_at_points (list, v, p)
 ```
-- `p` - origin position at where it mirrors
-- `v` - mirror along this direction, standard = X axis
+- `p` - origin position at where it mirrors, default = `[0,0,0]`
+- `v` - mirror along this direction, default = X axis
 
 #### mirror_copy [^][contents]
 [mirror_copy]: #mirror_copy-
@@ -336,6 +450,27 @@ mirror_repeat_copy (object, v, v2, v3)
 - `v2` - 2. mirror direction, optional
 - `v3` - 3. mirror direction, optional
 
+#### scale [^][contents]
+[scale]: #scale-
+Scale an object on each axis.  
+Works like [=> `scale()` from OpenSCAD][O_scale].
+
+_Arguments:_
+```OpenSCAD
+// Operator as function:
+scale (list, v)
+
+// Operation to work on a point list
+scale_points (list, v)
+//
+// Operation to work on one point
+scale_point  (p,    v)
+```
+- `v`
+  - vector with scale factor for each axis
+  - missing numbers in the vector list will not scale the respective axis
+  - as number, all axis will scale with this factor
+
 #### scale_at [^][contents]
 [scale_at]: #scale_at-
 Scale an object on each axis at specific origin position.
@@ -347,6 +482,9 @@ scale_at (v, p, d)  ...
 
 // Operator as function:
 scale_at (object, v, p)
+
+// Operation to work on a point list
+scale_at_points (list, v, p)
 ```
 - `v`
   - vector with scale factor for each axis
@@ -362,9 +500,24 @@ scale_at (object, v, p)
     Otherwise use 3D.
     It is not possible to get this information from the object.
 
+#### resize [^][contents]
+[resize]: #resize-
+Resize and scale an object that it fits in `newsize`.  
+Works like [=> `resize()` from OpenSCAD.][O_resize].
+
+_Arguments:_
+```OpenSCAD
+// Operator as function:
+resize (object, newsize)
+
+// Operation to work on a point list
+resize_points (list, newsize)
+```
+- `newsize` - vector with new size
+
 #### skew [^][contents]
 [skew]: #skew-
-skew an object.
+Skew an object.
 - default for 3D = shear X along Z
 - default for 2D = shear X along Y
 
@@ -375,6 +528,9 @@ skew (v, t, m, a, d)  ...
 
 // Operator as function:
 skew (object, v, t, m, a)
+
+// Operation to work on a point list
+skew_points (list, v, t, m, a)
 ```
 - `v` - vector, shear parallel to this axis
   - 3D:
@@ -405,7 +561,7 @@ skew (object, v, t, m, a)
 
 #### skew_at [^][contents]
 [skew_at]: #skew_at-
-skew an object in a list at specific origin position.
+Skew an object in a list at specific origin position.
 
 _Arguments:_
 ```OpenSCAD
@@ -414,9 +570,40 @@ skew_at (v, t, m, a, p, d)  ...
 
 // Operator as function:
 skew_at (object, v, t, m, a, p)
+
+// Operation to work on a point list
+skew_at_points (list, v, t, m, a, p)
 ```
 see [`skew()`][skew]
 - `p` - origin position at where it skews, default = `[0,0,0]`
+
+#### multmatrix [^][contents]
+[multmatrix]: #multmatrix-
+Multiply every point from an object with a affine transformation matrix.  
+Works like [=> `multmatrix()` from OpenSCAD.][O_multmatrix].
+
+_Arguments:_
+```OpenSCAD
+// Operator as function:
+multmatrix (object, m)
+
+// Operation to work on a point list
+multmatrix_points (list, m)
+```
+- `m`
+  - 3D: 4x3 or 4x4 matrix (or 3x3)
+  - 2D: 3x2 or 3x3 matrix (or 2x2)
+
+_Operation for one point:_
+```OpenSCAD
+multmatrix_point   (p, m)  // common version
+multmatrix_2D_point(p, m)  // 2D version
+multmatrix_3D_point(p, m)  // 3D version
+```
+- `p` - point
+- `m`
+  - 3D: must be 4x4 or 3x3 matrix
+  - 2D: must be 3x3 or 2x2 matrix
 
 
 ### Transformation with preset defaults [^][contents]
@@ -428,10 +615,10 @@ Name convention: 'base operation' + '_backwards' + 'additional operations'
 
 | Base function                                  | operation backwards
 |------------------------------------------------|---------------------
-| `rotate()`, [`rotate_new()`][rotate_new]       | [`rotate_backwards (a, v, d)`][rotate_backwards]
-| [`rotate_at()`][rotate_at]                     | `rotate_backwards_at (a, p, v, d)`
-| [`rotate_to_vector()`][rotate_to_vector]       | `rotate_backwards_to_vector (v, a)`
-| [`rotate_to_vector_at()`][rotate_to_vector_at] | `rotate_backwards_to_vector_at (v, p, a)`
+| `rotate()`, [`rotate_new()`][rotate]           | [`rotate_backwards()`][rotate_backwards]
+| [`rotate_at()`][rotate_at]                     | `rotate_backwards_at()`
+| [`rotate_to_vector()`][rotate_to_vector]       | `rotate_backwards_to_vector()`
+| [`rotate_to_vector_at()`][rotate_to_vector_at] | `rotate_backwards_to_vector_at()`
 
 #### Transformation at a fixed axis [^][contents]
 Contains modules that define known operations on a fixed axis.  
@@ -439,87 +626,73 @@ Name convention: 'function operation name' + '_axis'
 Axis = x, y or z. later named as '?'
 
 ##### Basic transformation at fixed axis [^][contents]
-| Base module buildin | with fixed axis    | description
-|---------------------|--------------------|-------------
-| `translate()`       | `translate_? (l)`  | `l` - length to translate
-| .                   | `translate_xy (t)` | `t` - 2D position at X and Y axis
-| `rotate()`          | `rotate_? (a)`     | `a` - angle to rotate in degree
-| `mirror()`          | `mirror_? ()`      |
-| `scale()`           | `scale_? (f)`      | `f` - scale factor as numeric value
-| `resize()`          | `resize_? (l)`     | `l` - new size of axis
+| Base module buildin | with fixed axis           | description
+|---------------------|---------------------------|-------------
+| `translate()`       | `translate_? (l)`         | `l` - length to translate
+| .                   | `translate_xy (t)`        | `t` - 2D position at X and Y axis
+| `rotate()`          | `rotate_? (a, backwards)` | `a` - angle to rotate in degree<br> `backwards` - set `true` to rotate backwards, default = `false`
+| `mirror()`          | `mirror_? ()`             |
+| `scale()`           | `scale_? (f)`             | `f` - scale factor as numeric value
+| `resize()`          | `resize_? (l)`            | `l` - new size of axis
+
+| Base function on a point list     | with fixed axis                        | description
+|-----------------------------------|----------------------------------------|-------------
+| [`translate_points()`][translate] | `translate_?_points (list, l)`         | `l` - length to translate
+| .                                 | `translate_xy_points (list, t)`        | `t` - 2D position at X and Y axis
+| [`rotate_points()`][rotate]       | `rotate_?_points (list, a, backwards)` | `a` - angle to rotate in degree
+| [`mirror_points()`][mirror]       | `mirror_?_points (list)`               |
+| [`scale_points()`][scale]         | `scale_?_points (list, f)`             | `f` - scale factor as numeric value
+| [`resize_points()`][resize]       | `resize_?_points (list, l)`            | `l` - new size of axis
 
 ##### More at fixed axis [^][contents]
-| Base module                              | with fixed axis                | description
-|------------------------------------------|--------------------------------|-------------
-| [`rotate_backwards()`][rotate_backwards] | `rotate_backwards_? (a)`       | `a` - angle
-| [`rotate_at()`][rotate_at]               | `rotate_at_? (a, p)`           | `a` - angle<br /> `p` - position
-| `rotate_backwards_at()`                  | `rotate_backwards_at_? (a, p)` | `a` - angle<br /> `p` - position
-| [`mirror_at()`][mirror_at]               | `mirror_at_? (p)`              | `p` - position
-| [`scale_at()`][scale_at]                 | `scale_at_? (f, p)`            | `f` - scale factor<br /> `p` - position
+| Base module                              | with fixed axis                 | description
+|------------------------------------------|---------------------------------|-------------
+| [`rotate_backwards()`][rotate_backwards] | `rotate_backwards_? (a)`        | `a` - angle
+| [`rotate_at()`][rotate_at]               | `rotate_at_? (a, p, backwards)` | `a` - angle<br /> `p` - position
+| `rotate_backwards_at()`                  | `rotate_backwards_at_? (a, p)`  | `a` - angle<br /> `p` - position
+| [`mirror_at()`][mirror_at]               | `mirror_at_? (p)`               | `p` - position
+| [`scale_at()`][scale_at]                 | `scale_at_? (f, p)`             | `f` - scale factor<br /> `p` - position
+
+| Base function on a point list                   | with fixed axis                             | description
+|-------------------------------------------------|---------------------------------------------|-------------
+| [`rotate_backwards_points()`][rotate_backwards] | `rotate_backwards_?_points (list, a)`       | `a` - angle
+| [`rotate_at_points()`][rotate_at]               | `rotate_at_?_points (list, a, p)`           | `a` - angle<br /> `p` - position
+| `rotate_backwards_at_points()`                  | `rotate_backwards_at_?_points (list, a, p)` | `a` - angle<br /> `p` - position
+| [`mirror_at_points()`][mirror_at]               | `mirror_at_?_points (list, p)`              | `p` - position
+| [`scale_at_points()`][scale_at]                 | `scale_at_?_points (list, f, p)`            | `f` - scale factor<br /> `p` - position
 
 
 ### Comparison same transformation [^][contents]
 
-#### Buildin operator modules [^][contents]
+#### Built-in operator modules [^][contents]
 [=> OpenSCAD user manual, transformations](https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Transformations)
 
-| operator               | function on lists                        | generating matrix
-|------------------------|------------------------------------------|-------------------
-| translate()            | [translate_points()][translate_points]   | [matrix_translate()][matrix_translate]
-| [rotate()][rotate_new] | [rotate_points()][rotate_points]         | [matrix_rotate()][matrix_rotate]
-| mirror()               | [mirror_points()][mirror_points]         | [matrix_mirror()][matrix_mirror]
-| scale()                | [scale_points()][scale_points]           | [matrix_scale()][matrix_scale]
-| resize()               | [resize_points()][resize_points]         | -
-| projection()           | [projection_points()][projection_points] | -
-| multmatrix()           | [multmatrix_points()][multmatrix_points] | -
-
-[translate_points]:  draft_transform.md#translate_points-
-[rotate_points]:     draft_transform.md#rotate_points-
-[mirror_points]:     draft_transform.md#mirror_points-
-[scale_points]:      draft_transform.md#scale_points-
-[resize_points]:     draft_transform.md#resize_points-
-[projection_points]: draft_transform.md#projection_points-
-[multmatrix_points]: draft_transform.md#multmatrix_points-
-
-[matrix_translate]: draft_matrix.md#matrix_translate-
-[matrix_rotate]:    draft_matrix.md#matrix_rotate-
-[matrix_mirror]:    draft_matrix.md#matrix_mirror-
-[matrix_scale]:     draft_matrix.md#matrix_scale-
+| operator                   | function on lists                        | generating matrix
+|----------------------------|------------------------------------------|-------------------
+| [translate()][translate]   | [translate_points()][translate]          | [matrix_translate()][matrix_translate]
+| [rotate()][rotate]         | [rotate_points()][rotate]                | [matrix_rotate()][matrix_rotate]
+| [mirror()][mirror]         | [mirror_points()][mirror]                | [matrix_mirror()][matrix_mirror]
+| [scale()][scale]           | [scale_points()][scale]                  | [matrix_scale()][matrix_scale]
+| [resize()][resize]         | [resize_points()][resize]                | -
+| [projection()][projection] | [projection_points()][projection_points] | -
+| [multmatrix()][multmatrix] | [multmatrix_points()][multmatrix]        | -
 
 #### More operator modules [^][contents]
 
-| operator                                     | function on lists                                          | generating matrix
-|----------------------------------------------|------------------------------------------------------------|-------------------
-| [rotate_backwards()][rotate_backwards]       | [rotate_backwards_points()][rotate_backwards_points]       | [matrix_rotate_backwards()][matrix_rotate_backwards]
-| [rotate_at()][rotate_at]                     | [rotate_at_points()][rotate_at_points]                     | [matrix_rotate_at()][matrix_rotate_at]
-| [rotate_to_vector()][rotate_to_vector]       | [rotate_to_vector_points()][rotate_to_vector_points]       | [matrix_rotate_to_vector()][matrix_rotate_to_vector]
-| [rotate_to_vector_at()][rotate_to_vector_at] | [rotate_to_vector_at_points()][rotate_to_vector_at_points] | [matrix_rotate_to_vector_at()][matrix_rotate_to_vector_at]
-| [mirror_at()][mirror_at]                     | [mirror_at_points()][mirror_at_points]                     | [matrix_mirror_at()][matrix_mirror_at]
-| [mirror_copy()][mirror_copy]                 | -                                                          | -
-| [mirror_copy_at()][mirror_copy_at]           | -                                                          | -
-| [mirror_repeat()][mirror_repeat]             | -                                                          | -
-| [mirror_repeat_copy()][mirror_repeat_copy]   | -                                                          | -
-| [scale_at()][scale_at]                       | [scale_at_points][scale_at_points]                         | [matrix_scale_at()][matrix_scale_at]
-| [skew()][skew]                               | [skew_points()][skew_points]                               | [matrix_skew()][matrix_skew]
-| [skew_at()][skew_at]                         | [skew_at_points()][skew_at_points]                         | [matrix_skew_at()][matrix_skew_at]
-
-[rotate_backwards_points]:    draft_transform.md#rotate_backwards_points-
-[rotate_at_points]:           draft_transform.md#rotate_at_points-
-[rotate_to_vector_points]:    draft_transform.md#rotate_to_vector_points-
-[rotate_to_vector_at_points]: draft_transform.md#rotate_to_vector_at_points-
-[mirror_at_points]:           draft_transform.md#mirror_at_points-
-[scale_at_points]:            draft_transform.md#scale_at_points-
-[skew_points]:                draft_transform.md#skew_points-
-[skew_at_points]:             draft_transform.md#skew_at_points-
-
-[matrix_rotate_backwards]:    draft_matrix.md#matrix_rotate_backwards-
-[matrix_rotate_at]:           draft_matrix.md#matrix_rotate_at-
-[matrix_rotate_to_vector]:    draft_matrix.md#matrix_rotate_to_vector-
-[matrix_rotate_to_vector_at]: draft_matrix.md#matrix_rotate_to_vector_at-
-[matrix_mirror_at]:           draft_matrix.md#matrix_mirror_at-
-[matrix_scale_at]:            draft_matrix.md#matrix_scale_at-
-[matrix_skew]:                draft_matrix.md#matrix_skew-
-[matrix_skew_at]:             draft_matrix.md#matrix_skew_at-
+| operator                                     | function on lists                                   | generating matrix
+|----------------------------------------------|-----------------------------------------------------|-------------------
+| [rotate_backwards()][rotate_backwards]       | [rotate_backwards_points()][rotate_backwards]       | [matrix_rotate_backwards()][matrix_rotate_backwards]
+| [rotate_at()][rotate_at]                     | [rotate_at_points()][rotate_at]                     | [matrix_rotate_at()][matrix_rotate_at]
+| [rotate_to_vector()][rotate_to_vector]       | [rotate_to_vector_points()][rotate_to_vector]       | [matrix_rotate_to_vector()][matrix_rotate_to_vector]
+| [rotate_to_vector_at()][rotate_to_vector_at] | [rotate_to_vector_at_points()][rotate_to_vector_at] | [matrix_rotate_to_vector_at()][matrix_rotate_to_vector_at]
+| [mirror_at()][mirror_at]                     | [mirror_at_points()][mirror_at]                     | [matrix_mirror_at()][matrix_mirror_at]
+| [mirror_copy()][mirror_copy]                 | -                                                   | -
+| [mirror_copy_at()][mirror_copy_at]           | -                                                   | -
+| [mirror_repeat()][mirror_repeat]             | -                                                   | -
+| [mirror_repeat_copy()][mirror_repeat_copy]   | -                                                   | -
+| [scale_at()][scale_at]                       | [scale_at_points][scale_at]                         | [matrix_scale_at()][matrix_scale_at]
+| [skew()][skew]                               | [skew_points()][skew]                               | [matrix_skew()][matrix_skew]
+| [skew_at()][skew_at]                         | [skew_at_points()][skew_at]                         | [matrix_skew_at()][matrix_skew_at]
 
 
 Place objects [^][contents]
@@ -1170,4 +1343,41 @@ include <banded.scad>
 tube_extrude (ri=10, w=1)
 text ("Test Text");
 ```
+
+
+### 3D to 2D projection [^][contents]
+
+#### projection [^][contents]
+[projection]: #projection-
+Get projection of an Object to the XY-plane.  
+Not working yet, only on point lists.  
+[=> `projection()` from OpenSCAD][O_projection].
+
+_Arguments:_
+```OpenSCAD
+// Operator as function:
+projection (object, cut, plane)
+```
+- `cut`     - not implemented yet
+- `plane`
+  - `true`  - make a 2D-list, default
+  - `false` - make a 3D-list, keep points on xy-plane
+  - number  - make a 3D-list, set Z-axis to this height
+
+#### projection_points [^][contents]
+[projection_points]: #projection_points-
+Get projection of every point in a list to the XY-plane.
+
+_Arguments:_
+```OpenSCAD
+// Operation to work on a point list
+projection_points (list, plane)
+//
+// Operation to work on one point
+projection_point  (p,    plane)
+```
+- `plane`
+  - `true`  - make a 2D-list, default
+  - `false` - make a 3D-list, keep points on xy-plane
+  - number  - make a 3D-list, set Z-axis to this height
 

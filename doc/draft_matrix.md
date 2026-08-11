@@ -182,13 +182,14 @@ matrix_projection (v, d, short)
 
 #### matrix_rotate_backwards [^][contents]
 [matrix_rotate_backwards]: #matrix_rotate_backwards-
-Generate a matrix to rotate backwards.
+Generate a matrix to rotate backwards.  
+Options like [`matrix_rotate()`][matrix_rotate] with fixed argument `backwards = true`.
 
 _Arguments:_
 ```OpenSCAD
 matrix_rotate_backwards (a, v, d, short)
 ```
-- `a` - angle
+- `a` - angle, see [`matrix_rotate()`][matrix_rotate]
 - `v` - vector where it rotating around
 - `d`
   - dimensions of vector which will transformed with matrix
@@ -206,9 +207,9 @@ _Arguments:_
 ```OpenSCAD
 matrix_rotate_at (a, p, v, backwards, d)
 ```
-- `a` - angle
+- `a` - angle, see [`matrix_rotate()`][matrix_rotate]
 - `v` - vector where it rotates around
-- `p` - origin position at where it rotates
+- `p` - origin position at where it rotates, default = `[0,0,0]`
 - `d`
   - dimensions of vector which will transformed with matrix
     - `3` - spatial (3D) - default
@@ -241,18 +242,23 @@ matrix_rotate_to_vector (v, a, backwards, d, short)
   - `false` = default, size of matrix = `d` + 1
   - `true`  = short d×d matrix
 
-procedure 1 (3D), `a` as angle:
-- vector `v` will split in
-  - inclination angle, rotate around Y axis
-  - and azimuthal angle, rotate around Z axis
-- make rotation around Y axis with inclination angle
-- make rotation around Z axis with azimuthal angle
-- make rotation around vector `v` with angle `a`
+_Way of working in 3D:_
+- procedure 1, `a` as angle:
+  - vector `v` will split in
+    - inclination angle, rotate around Y axis
+    - and azimuthal angle, rotate around Z axis
+  - make rotation around Y axis with inclination angle
+  - make rotation around Z axis with azimuthal angle
+  - make rotation around vector `v` with angle `a`
 
-procedure 2 (3D), `a` as orientation vector:
-- make rotation from Z axis to vector `v`
-- make rotation around vector `v`, so that the originally X axis point to
-  orientation vector `a`
+- procedure 2, `a` as orientation vector:
+  - make rotation from Z axis to vector `v`
+  - make rotation around vector `v`, so that the originally X axis point to
+    orientation vector `a`
+
+_Way of working in 2D:_
+- rotate the object from direction X axis to vector `v`
+- option `a` will be ignored
 
 #### matrix_rotate_to_vector_at [^][contents]
 [matrix_rotate_to_vector_at]: #matrix_rotate_to_vector_at-
@@ -264,7 +270,7 @@ _Arguments:_
 matrix_rotate_to_vector_at (v, p, a, backwards, d)
 ```
 - `v` - direction as vector
-- `p` - origin position at where it rotates
+- `p` - origin position at where it rotates, default = `[0,0,0]`
 - `a` - angle in degree or rotational orientation vector
 - `backwards`
   - `false` - default, normal forward rotate
@@ -283,7 +289,7 @@ _Arguments:_
 matrix_mirror_at (v, p, d)
 ```
 - `v` - mirror along this direction, default = X axis
-- `p` - origin position at where it mirrors
+- `p` - origin position at where it mirrors, default = `[0,0,0]`
 - `d`
   - dimensions of vector which will transformed with matrix
     - `3` - spatial (3D) - default
@@ -345,7 +351,7 @@ _Arguments:_
 matrix_skew_at (v, t, m, a, p, d)
 ```
 see [`matrix_skew()`][matrix_skew]
-- `p` - origin position at where it skews
+- `p` - origin position at where it skews, default = `[0,0,0]`
 
 
 ### Generate matrix with preset defaults [^][contents]

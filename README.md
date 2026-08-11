@@ -60,7 +60,7 @@ Separate stuff:
 [draft]:       doc/draft.md
 [curves]:      doc/draft_curves.md
 [surface]:     doc/draft_surface.md
-[transform]:   doc/draft_transform.md
+[transform]:   doc/operator.md#transform-operators-
 [multmatrix]:  doc/draft_matrix.md
 [primitives]:  doc/draft_primitives.md
 [color]:       doc/color.md
