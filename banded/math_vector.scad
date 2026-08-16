@@ -117,9 +117,10 @@ function normal_unit_vector (v, w) =
 
 // Ermittelt die Normale eines Dreiecks
 // definiert über 3 Punkte im 3D Raum
-function normal_triangle (p1, p2, p3, points) =
+function normal_triangle (p1, p2, p3, points, faces) =
 	points==undef ? cross (p2-p1, p3-p1)
-	:               cross (points[1]-points[0], points[2]-points[0])
+	:faces==undef ? cross (points[      1 ]-points[      0 ], points[      2 ]-points[      0 ])
+	:               cross (points[faces[1]]-points[faces[0]], points[faces[2]]-points[faces[0]])
 ;
 
 // rechnet das Spatprodukt aus

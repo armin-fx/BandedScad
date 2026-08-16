@@ -32,6 +32,7 @@ Polygon operations
     - [`get_gradient()`][get_gradient]
     - [`get_intersection_lines()`][get_intersection_lines]
     - [`get_intersection_line_plane()`][get_intersection_line_plane]
+    - [`midpoint()`][midpoint]
   - [Polygon functions](#polygon-functions-)
 	- [`length_line()`][length_line]
     - [`length_trace()`][length_trace]
@@ -365,7 +366,35 @@ _Arguments:_
 get_intersection_line_plane (points, line)
 ```
 - `points` - 3 points in a list defines the plane
-- `line`     - 2 points in a list defines the straight line
+- `line`   - 2 points in a list defines the straight line
+
+#### midpoint [^][contents]
+[midpoint]: #midpoint-
+Returns the midpoint of all points from a list of points.  
+
+_Arguments:_
+```OpenSCAD
+midpoint (points, faces, size)
+```
+- `points`
+  - points in a list
+- `faces`
+  - optional
+  - A list with indices to the point list.
+    Use only these points if `faces` is defined.
+- `size`
+  - optional
+  - use only the count of `size` of first points
+  - use all points if undefined
+
+_Specialized functions:_
+- `midpoint_2 (p1, p2)`
+  - for 2 points
+- `midpoint_3 (p1, p2, p3)`
+  - for 3 points
+- `midpoint_line (l)`
+  - for 2 points defined in a line
+  - same behavior like `midpoint (line)`
 
 
 ### Polygon functions [^][contents]

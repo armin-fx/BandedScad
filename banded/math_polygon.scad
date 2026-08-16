@@ -458,6 +458,28 @@ function get_intersection_line_plane (points, line) =
 	p[0]
 ;
 
+// gibt den Mittelpunkt aller Punkte zurück
+function midpoint (points, faces, size) =
+	let (
+		is_faces = faces!=undef,
+		Size =
+			size!=undef ? size :
+			is_faces    ? len(faces) : len(points)
+	)
+	Size==2 ?
+		is_faces ? (points[faces[0]]+points[faces[1]]) / 2
+		:          (points[      0 ]+points[      1 ]) / 2
+	:Size==3 ?
+		is_faces ? (points[faces[0]]+points[faces[1]]+points[faces[2]]) / 3
+		:          (points[      0 ]+points[      1 ]+points[      2 ]) / 3
+	:
+		is_faces ? summation( select (points, faces), n=Size-1 ) / Size
+		:          summation( points                , n=Size-1 ) / Size
+;
+function midpoint_2 (p1, p2)     = (p1+p2   )  / 2;
+function midpoint_3 (p1, p2, p3) = (p1+p2+p3)  / 3;
+function midpoint_line (l)       = (l[0]+l[1]) / 2;
+
 
 // - Streckenzüge:
 
@@ -479,10 +501,6 @@ function length_trace (points, path, closed=false) =
 	)
 	+ (closed==true ? norm (pts[size-1]-pts[0]) : 0)
 ;
-
-function midpoint_2 (p1, p2)     = (p1+p2   )  / 2;
-function midpoint_3 (p1, p2, p3) = (p1+p2+p3)  / 3;
-function midpoint_line (l)       = (l[0]+l[1]) / 2;
 
 // Ermittelt die Position einer Geraden
 // ab einem bestimmten Abstand vom ersten Punkt aus.

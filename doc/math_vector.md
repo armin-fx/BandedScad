@@ -218,10 +218,11 @@ defined by 3 points in 3D space.
 
 _Arguments:_
 ```OpenSCAD
-normal_triangle (p1, p2, p3, points)
+normal_triangle (p1, p2, p3, points, faces)
 ```
 - 3 points defined in `p1`, `p2` and `p2`
-- or 3 points in a list `points`
+- or 3 points in a list `points`. Uses the first 3 points.
+- or 3 points from a point list `points`, selected from the first 3 indices in `faces` if defined.
 
 #### triple_product [^][contents]
 [triple_product]: #triple_product-
