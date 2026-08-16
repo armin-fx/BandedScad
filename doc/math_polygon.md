@@ -111,11 +111,10 @@ is_point_upper_plane (points, point)
 #### is_intersection_segments [^][contents]
 [is_intersection_segments]: #is_intersection_segments-
 Returns `true` if two line segment intersect.  
-Only in 2D plane.
 
 _Arguments:_
 ```OpenSCAD
-is_intersection_segments (line1, line2, point, no_parallel, ends)
+is_intersection_segments (line1, line2, point, no_parallel, skew, ends)
 ```
 - `line1` and `line2`
   - a list with 2 points defines the line segment
@@ -125,12 +124,31 @@ is_intersection_segments (line1, line2, point, no_parallel, ends)
     see [`get_intersection_lines()`][get_intersection_lines]
 - `no_parallel`
   - optional, default = `false`
-  - `false` - if the lines are collinear then it tests whether the straight lines overlap
-  - `true`  - return always `false` if the lines are collinear
-- `ends` - defines whether the endpoint is within the segment
+  - `false`
+    - If the lines are collinear then it tests whether the straight lines overlap.
+      When the straight lines are collinear,
+      then returns `true` if they are in one line and overlap,
+      elsewise returns `false` if they are parallel
+  - `true`
+    - return always `false` if the lines are collinear
+- `skew`
+  - only needed for 3D lines, elsewise this will be ignored
+  - `false`
+    - default
+    - returns only `true` if the straight lines really intersect
+  - `true`
+    - Viewed as vectors, the two lines span a plane.
+      When projected onto this plane, the two lines "intersect".  
+      If the line segments "intersect" in this view,
+      but not in 3D view then it still returns `true`.
+ `ends` - defines whether the endpoint is within the segment
   - `0`   - default, both sides are within the segment
   - `< 0` - left point is within the segment, e.g. `-1`
   - `> 0` - right point is within the segment, e.g. `1`
+
+_Specialized functions:_
+- `is_intersection_segments_2d (line1, line2, point, no_parallel, ends)`       - only in 2D plane
+- `is_intersection_segments_3d (line1, line2, point, no_parallel, skew, ends)` - only in 3D space
 
 #### is_intersection_polygon_segment [^][contents]
 [is_intersection_polygon_segment]: #is_intersection_polygon_segment-
@@ -276,7 +294,17 @@ _Specialized functions:_
 #### get_intersection_lines [^][contents]
 [get_intersection_lines]: #get_intersection_lines-
 Returns the crossing point where two straight lines intersect.  
-Only in 2D plane.
+
+_In 2D:_
+Here, two straight lines always intersect at a single point,
+unless they are parallel to each other.
+
+_In 3D:_
+In this case, the two straight lines can also be skew.
+Viewed as vectors, the two lines span a plane.
+When projected onto this plane, the two lines "intersect".
+This results in two points for each straight line that also represent
+the minimum distance between the two straight lines.
 
 _Arguments:_
 ```OpenSCAD
@@ -286,16 +314,24 @@ get_intersection_lines (line1, line2)
   - a list with 2 points defines the straight line
 
 _Return:_
-- straight lines intersect: the crossing point
+- straight lines intersect:
+  - 2D: The crossing point
+  - 3D: A list with 2 points,
+        where the first point is crossing the first straight line and so on.
+        If the two lines intersect, both points are identical.
 - lines lie in each other:  `true`
 - lines are parallel:       `false`
 
-_Example:_
+_Specialized functions:_
+- `get_intersection_lines_2d (line1, line2)` - only in 2D plane
+- `get_intersection_lines_3d (line1, line2)` - only in 3D space
+
+_Example for 2D:_
 ```OpenSCAD
 include <banded.scad>
 
 l1=[ [-1,-1],[2, 2] ];
-l2=[ [-1, 1],[1,-1] ];
+l2=[ [ 0, 1],[2,-1] ];
 
 show_line( l1 );
 show_line( l2 );
@@ -303,6 +339,21 @@ show_line( l2 );
 show_point( get_intersection_lines(l1,l2) ,"green");
 echo( is_intersection_segments(l1,l2) ); // ECHO: true
 ```
+
+_Example for 3D:_
+```OpenSCAD
+include <banded.scad>
+
+l1 = [ [ 1,0,0],[1,3,1] ];
+l2 = [ [-1,0,0],[3,2,2] ];
+
+show_line( l1 );
+show_line( l2 );
+
+show_points( get_intersection_lines(l1,l2) ,"green");
+echo( is_intersection_segments (l1, l2) );            // ECHO: false
+echo( is_intersection_segments (l1, l2, skew=true) ); // ECHO: true
+``
 
 #### get_intersection_line_plane [^][contents]
 [get_intersection_line_plane]: #get_intersection_line_plane-

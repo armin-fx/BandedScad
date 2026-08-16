@@ -87,8 +87,11 @@ function is_point_upper_plane (points, test_point) =
 // gibt zurück, ob sich zwei Strecken kreuzen
 // mit 'point' kann ein schon berechneter Schnittpunkt beider Geraden eingesetzt werden
 // mit no_parallel=true kann angegeben werden, ob die Linie nicht parallel seinen dürfen, Standart=false
-// in 2D
-function is_intersection_segments (line1, line2, point, no_parallel=false, ends=0) =
+function is_intersection_segments (line1, line2, point, no_parallel=false, skew=false, ends=0) =
+	len(line1[0])==2 ? is_intersection_segments_2d (line1, line2, point, no_parallel, ends)
+	                 : is_intersection_segments_3d (line1, line2, point, no_parallel, skew, ends)
+;
+function is_intersection_segments_2d (line1, line2, point, no_parallel=false, ends=0) =
 	is_collinear (line1[1]-line1[0], line2[1]-line2[0]) ?
 		no_parallel==true ? false :
 		let(
@@ -110,7 +113,7 @@ function is_intersection_segments (line1, line2, point, no_parallel=false, ends=
 	:
 	let(
 		p = point!=undef ? point :
-			get_intersection_lines (line1, line2)
+			get_intersection_lines_2d (line1, line2)
 	)
 	(p!=undef && p!=false && p!=true) &&
 	(
@@ -118,6 +121,28 @@ function is_intersection_segments (line1, line2, point, no_parallel=false, ends=
 		ends< 0  ? is_constrain_left  (p, line1[0],line1[1]) && is_constrain_left  (p, line2[0],line2[1]) :
 		/*ends>0*/ is_constrain_right (p, line1[0],line1[1]) && is_constrain_right (p, line2[0],line2[1])
 	)
+;
+function is_intersection_segments_3d (line1, line2, point, no_parallel=false, skew=false, ends=0) =
+	let (
+		n = cross (
+			 line1[1]-line1[0]
+			,line2[1]-line2[0]
+			),
+		n_line1 = rotate_to_vector_points (line1, v=n, backwards=true),
+		n_line2 = rotate_to_vector_points (line2, v=n, backwards=true)
+	)
+	(skew==false && n_line1[0].z!=n_line2[0].z) ? false :
+	let (
+		n_point = point==undef ? undef :
+		          rotate_to_vector_points (point, v=n, backwards=true),
+		//
+		res_2d = is_intersection_segments_2d (
+			 [ for (p=n_line1) [p.x,p.y] ]
+			,[ for (p=n_line2) [p.x,p.y] ]
+			, n_point, no_parallel, ends
+			)
+	)
+	res_2d
 ;
 
 function is_intersection_polygon_segment (points, line, path, without) =
@@ -127,24 +152,24 @@ function is_intersection_polygon_segment (points, line, path, without) =
 			 without==undef
 			?	path==undef
 				? [for (i=[0:1:size-1])
-					if( is_intersection_segments( [points[     i ],points[     (i+1)%size] ], line) ) i ]
+					if( is_intersection_segments_2d( [points[     i ],points[     (i+1)%size] ], line) ) i ]
 				: [for (i=[0:1:size-1])
-					if( is_intersection_segments( [points[path[i]],points[path[(i+1)%size]]], line) ) i ]
+					if( is_intersection_segments_2d( [points[path[i]],points[path[(i+1)%size]]], line) ) i ]
 			:without[0]==undef
 			?	path==undef
 				? [for (i=[0:1:size-1])
 					if( (i!=without) && ((i+1)%size!=without) )
-					if( is_intersection_segments( [points[     i ],points[     (i+1)%size] ], line) ) i ]
+					if( is_intersection_segments_2d( [points[     i ],points[     (i+1)%size] ], line) ) i ]
 				: [for (i=[0:1:size-1])
 					if( (i!=without) && ((i+1)%size!=without) )
-					if( is_intersection_segments( [points[path[i]],points[path[(i+1)%size]]], line) ) i ]
+					if( is_intersection_segments_2d( [points[path[i]],points[path[(i+1)%size]]], line) ) i ]
 			:	path==undef
 				? [for (i=[0:1:size-1])
 					if( [ for (w=without) if ( (i!=w) && ((i+1)%size!=w) ) w ] == without )
-					if( is_intersection_segments( [points[     i ],points[     (i+1)%size] ], line) ) i ]
+					if( is_intersection_segments_2d( [points[     i ],points[     (i+1)%size] ], line) ) i ]
 				: [for (i=[0:1:size-1])
 					if( [ for (w=without) if ( (i!=w) && ((i+1)%size!=w) ) w ] == without )
-					if( is_intersection_segments( [points[path[i]],points[path[(i+1)%size]]], line) ) i ]
+					if( is_intersection_segments_2d( [points[path[i]],points[path[(i+1)%size]]], line) ) i ]
 	)
 	crossing != []
 ;
@@ -360,9 +385,13 @@ function get_gradient_3d (line) =
 // - liegen genau übereinander: true
 // - parallel zueinander      : false
 function get_intersection_lines (line1, line2) =
+	len(line1[0])==2 ? get_intersection_lines_2d (line1, line2)
+	                 : get_intersection_lines_3d (line1, line2)
+;
+function get_intersection_lines_2d (line1, line2) =
 	(	 line1[0].x==line1[1].x) ?
 		(line2[0].x==line2[1].x) ? (line1[0].x==line2[0].x) ? true : false : // <- both parallel
-		get_intersection_lines (line2, line1)
+		get_intersection_lines_2d (line2, line1)
 	:
 	(line2[0].x==line2[1].x) ?
 		// line2 steht senkrecht auf der x-Achse, der x-Wert liegt damit fest
@@ -384,6 +413,34 @@ function get_intersection_lines (line1, line2) =
 		y = a[1] * x + a[0]
 	)
 	[x, y]
+;
+function get_intersection_lines_3d (line1, line2) =
+	let (
+		n = cross (
+			 line1[1]-line1[0]
+			,line2[1]-line2[0]
+			),
+		n_line1 = rotate_to_vector_points (line1, v=n, backwards=true),
+		n_line2 = rotate_to_vector_points (line2, v=n, backwards=true),
+		n_p2 = get_intersection_lines_2d (
+			 [ for (p=n_line1) [p.x,p.y] ]
+			,[ for (p=n_line2) [p.x,p.y] ]
+			)
+	)
+	// check both parallel, result from get_intersection_lines_2d()
+	(n_p2==false) ? false : // 2D parallel is 3D parallel
+	(n_p2==true) ? // check if Z-axis is parallel
+		(n_line1[0].z == n_line2[0].z) ? true : false
+		:
+	// calculate both points
+	let (
+		n_pl=
+			[ [each n_p2, n_line1[0].z]
+			, [each n_p2, n_line2[0].z]
+			],
+		pl = rotate_to_vector_points (n_pl, v=n, backwards=false)
+	)
+	pl
 ;
 
 // gibt den Schnittpunkt einer Geraden durch einer Fläche zurück
