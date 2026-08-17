@@ -497,12 +497,11 @@ function hull_3d_grub_out_points_next (points, triangles, remainder, last=0) =
 		keep_triangles =
 			[ for (triangle=triangles)
 			let (
-			//	normal    = normal_triangle (points=select (points,triangle) ),
-				normal    = cross (points[triangle[1]]-points[triangle[0]], points[triangle[2]]-points[triangle[0]]),
+				normal    = normal_triangle (points=points, faces=triangle),
 				direction = next_point - points[triangle[0]],
 				angle     = angle_vector (normal, direction)
 			)
-			if (angle<90) triangle
+			if (angle<90-epsilon) triangle
 			],
 		edge_list = // list and sort all edges from the keeped triangles
 			sort (type=[0] ,list=
