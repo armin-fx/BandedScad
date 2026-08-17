@@ -233,6 +233,9 @@ module select_object (i)
 	else    children ();
 }
 
+// Modul leitet einen Block ein
+module block () { children(); }
+
 
 // - Objekte verändern:
 

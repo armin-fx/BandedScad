@@ -75,6 +75,7 @@ Transform and edit objects
       - `part_limit()`
     - [`combine_fixed()`][combine_fixed]
     - [`select_object()`][select_object]
+    - [`block()`][block]
   - [Modifying operations](#modifying-operations-)
     - [`xor()`][xor]
     - [`minkowski_difference()`][minkowski_difference]
@@ -998,6 +999,50 @@ select_object (i)
 	sphere();   // i==1
 	cylinder(); // i==2
 }
+```
+
+#### block [^][contents]
+[block]: #block-
+Module that initializes a block
+allowing new values ​​to be assigned to variables within it,
+without modifying them outside the block.  
+When using braces alone, without any operator preceding them,
+variables inside the braces overwrite the value of variables
+with the same name outside them.
+Even as the braces are not there.
+
+_Example without `block()`:_
+```OpenSCAD
+include <banded.scad>
+
+a = 0;
+echo (a);     // ECHO: 1
+
+{
+	a = 1;    // Produces a warning that 'a' was assigned but was overwritten.
+	echo (a); // ECHO: 1
+}
+```
+
+_Example with `block()`:_
+```OpenSCAD
+include <banded.scad>
+
+a = 0;
+echo (a);     // ECHO: 0
+
+block()
+{
+	a = 1;    // Here, 'a' is assigned a value within this block
+	          // without changing outside of it.
+	echo (a); // ECHO: 1
+}
+```
+
+_Alternative:_
+```OpenSCAD
+if (true)
+{ ... }
 ```
 
 
