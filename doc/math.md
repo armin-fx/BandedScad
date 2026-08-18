@@ -45,6 +45,10 @@ Math functions
     - [`sign_plus()`][sign_plus]
     - [`xor()`][xor]
     - [`normal_distribution()`][normal_distribution]
+  - [Random](#random-)
+    - `rand()`
+    - `irand()`
+    - `irands()`
   - [Trigonometric functions](#trigonometric-functions-)
     - [Trigonometric](#trigonometric-)
       - `cot()`
@@ -336,6 +340,27 @@ normal_distribution (x, mean, sigma)
 - `x`     - numeric value
 - `mean`  - mean value, standard = `0`
 - `sigma` - value standard deviation, standard = `1`
+
+
+### Random [^][contents]
+Calculate random numbers.  
+Modified versions of the `rands()` function.
+
+_Functions:_
+```OpenSCAD
+rand (min, max)
+```
+- Calculate a random floating point number within `min` and `max`
+
+```OpenSCAD
+irand (min, max)
+```
+- Calculate a random integer number within `min` and `max`
+
+```OpenSCAD
+irands (min, max, n)
+```
+- Generate a list with `n` count random integer numbers within `min` and `max`
 
 
 ### Trigonometric functions [^][contents]

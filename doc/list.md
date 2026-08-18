@@ -48,10 +48,12 @@ Functions for edit lists
     - [`reverse_all()`][reverse_all]
     - [`rotate_list()`][rotate_list]
     - [`rotate_copy()`][rotate_copy]
+    - [`shuffle()`][shuffle]
     - [`remove()`][remove]
     - [`insert()`][insert]
     - [`replace()`][replace]
     - [`extract()`][extract]
+    - [`swap()`][swap]
     - [`fill()`][fill]
     - [`select()`][select]
     - [`select_all()`][select_all]
@@ -297,12 +299,31 @@ _Arguments:_
 rotate_copy (list, middle, begin, last)
 ```
 
-#### `remove (list, begin, count)` [^][contents]
-[remove]: #remove-list-begin-count-
+#### shuffle [^][contents]
+[shuffle]: #shuffle-
+Shuffles the elements of a list.
+
+_Arguments:_
+```OpenSCAD
+shuffle (list)
+```
+
+_Example:_
+```OpenSCAD
+include <banded.scad>
+
+list = [1,2,3,4,5];
+new  = shuffle (list);
+echo (new);  // ECHO: [4, 2, 1, 3, 5]
+```
+
+#### remove [^][contents]
+[remove]: #remove-
 Remove elements from a list
 
 _Arguments:_
 ```OpenSCAD
+remove (list, begin, count)
 ```
 - `begin`
   - Erases from this position
@@ -372,6 +393,16 @@ extract (list, 'range_args')
 ```
 - [`'range_args'`][range_args] - arguments to set the range to extract
   - default = extract full list
+
+#### swap [^][contents]
+[swap]: #swap-
+Swap 2 elements in a list.
+
+_Arguments:_
+```OpenSCAD
+swap (list, i, j)
+```
+`i`, `j` - positions in the list
 
 #### fill [^][contents]
 [fill]: #fill-

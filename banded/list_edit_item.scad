@@ -4,6 +4,7 @@
 // Enthält Funktionen zum Bearbeiten von Listen ohne Zugriff auf den Inhalt
 
 use <banded/helper.scad>
+use <banded/math_common.scad>
 
 
 // verbindet einzelne Listen innerhalb einer Liste miteinander
@@ -61,6 +62,22 @@ function rotate_copy (list, middle, begin=0, last=-1) =
 	[	for (i=[Middle:1:Last    ]) list[i]
 	,	for (i=[Begin :1:Middle-1]) list[i]
 	]
+;
+
+// Würfelt die Elemente einer Liste durcheinander
+function shuffle (list) =
+	list==undef ? list :
+	let (
+		size = len(list)
+	)
+	shuffle_intern (list, size-1)
+;
+function shuffle_intern (list, n) =
+	n<2 ? list :
+	shuffle_intern (
+		  swap (list, irand(0, n) , n)
+		, n-1
+		)
 ;
 
 // entfernt Elemente aus einer Liste
@@ -148,6 +165,23 @@ function extract (list, begin, last, count, range) =
 	)
 	(Begin==0) && (Last==len(list)-1) ? list :
 	[ for (i=[Begin:1:Last]) list[i] ]
+;
+
+// vertauscht 2 Elemente
+function swap (list, i, j) =
+	list==undef ? list :
+	let (
+		S = len(list),
+		I = get_index( S, i<j ? i : j ),
+		J = get_index( S, i>j ? i : j )
+	)
+	I==J ? list :
+	[ each [ for (e=[0  :1:I-1]) list[e] ]
+	, list[J]
+	, each [ for (e=[I+1:1:J-1]) list[e] ]
+	, list[I]
+	, each [ for (e=[J+1:1:S-1]) list[e] ]
+	]
 ;
 
 // Erzeugt eine Liste mit 'count' Elementen gefüllt mit 'value'

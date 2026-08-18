@@ -153,6 +153,19 @@ function normal_distribution(x, mean=0, sigma=1) =
 	1/(sqrt(2*PI)*sigma) * exp(-sqr(x-mean/sigma)/2)
 ;
 
+// Zufallszahlen
+function rand (min, max) =
+	rands (min, max+1, 1)[0]
+;
+function irand (min, max) =
+	floor( rands (min, max+1, 1)[0] )
+;
+function irands (min, max, n) =
+	[ for (x = rands (min, max+1, n) )
+	  floor (x)
+	]
+;
+
 
 // - Trigonometrische Funktion:
 
