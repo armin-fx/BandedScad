@@ -1,7 +1,8 @@
 // Copyright (c) 2021 Armin Frenzel
 // License: LGPL-2.1-or-later
 //
-// list of names of color
+// list of color names:
+//
 // Color names are taken from the World Wide Web consortium's SVG color list
 //
 
