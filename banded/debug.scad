@@ -31,16 +31,20 @@ function echo_wall      (length=50) = echo_line (length  , "#" );
 
 module echo_list (list, txt="", pre="\t", first="[", next=",", last="]")
 {
-	echo( echo_list_intern (list, txt, pre, first, next, last, len(list)) );
+	echo( echo_list (list, txt, pre, first, next, last) );
 }
 function echo_list (list, txt="", pre="\t", first="[", next=",", last="]") =
+	list==undef ? str( txt, txt==""?"":str("\n",pre), "undef" ) :
+	list==[]    ? str( txt, txt==""?"":str("\n",pre), first, last ) :
 	str( echo_list_intern (list, txt, pre, first, next, last, len(list)), "\n" )
 ;
 function echo_list_intern (list, txt="", pre="\t", first="[", next=",", last="]", size=0, i=0) =
-	i>=size ? txt :
-	i==0 ?
-		echo_list_intern (list, str (txt ,"\n",pre,first, list[i]     ), pre,first,next,last, size,i+1 ):
-	i<size-1 ?
+	 i>=size ? txt
+	:i==0 ?
+	  size==1
+	  ?	echo_list_intern (list, str (txt ,"\n",pre,first, list[i],last), pre,first,next,last, size,i+1 )
+	  :	echo_list_intern (list, str (txt ,"\n",pre,first, list[i]     ), pre,first,next,last, size,i+1 )
+	:i<size-1 ?
 		echo_list_intern (list, str (txt ,"\n",pre,next , list[i]     ), pre,first,next,last, size,i+1 )
 	:
 		echo_list_intern (list, str (txt ,"\n",pre,next , list[i],last), pre,first,next,last, size,i+1 )
