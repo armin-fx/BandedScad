@@ -54,9 +54,9 @@ color_info_language  = 2;
 //
 // Position of filter function for color names.
 // Returns a color name in the list from argument name and the search language
-// Set undef if not needed.
+// Set 'undef' if not needed.
 // Function arguments:
-//   function ( name , short code for language )
+//   function ( name , short code for language actually used )
 color_info_function = 3;
 
 // Locations of the color data:

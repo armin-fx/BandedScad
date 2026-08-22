@@ -8,8 +8,10 @@
 include <banded/color_definition.scad>
 
 
-color_name_svg = [ prepare_color_name( [
+color_svg = [ prepare_color_name( [
 	["World Wide Web consortium's SVG color list"
+	,"svg"
+	,["en"]
 	],[
 	[[240,248,255], "aliceblue"],
 	[[250,235,215], "antiquewhite"],

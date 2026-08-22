@@ -47,6 +47,16 @@ _Color arguments:_
   - The color names are taken from the
     World Wide Web consortium's [SVG color list](https://www.w3.org/TR/css-color-3/).
   - Additional defined colors
+  - You can filter a color name by color list, color name language
+    by separate these with a colon `:`.
+    An empty string between the colon will not filter this case.  
+    Format of name:
+    - `"color_name"`
+    - `"short_name:color_name"`
+    - `"short_name:language:color_name"`
+    - `":language:color_name"`
+    This is useful if the same color name exist in different composite color lists.
+    Alternatively you can specify a color list with argument `colors`.
 - color as rgb or rgba list
 - `rgb` - as list `[r, g, b]` or `[r, g, b, alpha]`
   - `r` = red:   `0...1`
@@ -73,11 +83,13 @@ _Color lists for argument_ `colors`_:_
 You can set a defined _color name list_,
 then the function will only use the color names from this list.  
 Actually exists the color name lists:
-- `color_name_svg`
+- `color_svg`
   - SVG color list
-  - defined in file `banded/color/color_name_svg.scad`
-- `color_name_banded`
+  - short name is `svg`
+  - defined in file `banded/color/color_svg.scad`
+- `color_banded`
   - Additional defined colors
+  - short name is `banded`
   - defined in file: `banded/color/color_other.scad`
 The color name lists can be combined to one:  
 ```OpenSCAD

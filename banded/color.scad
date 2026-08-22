@@ -8,13 +8,13 @@ use <banded/list_edit_test.scad>
 //
 include <banded/color_definition.scad>
 
-include <banded/color/color_name_svg.scad>
+include <banded/color/color_svg.scad>
 include <banded/color/color_other.scad>
 
 
 color_list =
-	[ each is_undef(color_name_svg   ) ? [] : prepare_color_list( color_name_svg    )
-	, each is_undef(color_name_banded) ? [] : prepare_color_list( color_name_banded )
+	[ each is_undef(color_svg   ) ? [] : prepare_color_list( color_svg    )
+	, each is_undef(color_banded) ? [] : prepare_color_list( color_banded )
 	];
 
 // get color as rgb or rgba list
@@ -128,9 +128,9 @@ function color_name (name, alpha, colors) =
 	name==undef || len(name)<1 ? undef :
 	let(
 		 a = alpha!=undef ? alpha : 1
-		,n = to_lower_str(name)
+		,l = color_name_split (name)
 		,Colors = colors==undef ? color_list : colors
-		,p = color_name_find (Colors, n, len(Colors))
+		,p = color_name_find (Colors, l, len(Colors))
 	)
 	let(
 		c = p==undef ? undef
@@ -150,86 +150,119 @@ function color_name (name, alpha, colors) =
 // , Position der Farbe in der Farbnamenliste
 // , Position der Farbe in der RGB Farbliste
 // ]
-function color_name_find (list, name, s=0, i=0) =
+function color_name_find (list, namesplit, s=0, i=0) =
 	i>=s ? undef :
 	let (
-		res =
+		,info = list[i][color_data_info]
+		,lang = info[color_info_language]
+		,fn   = info[color_info_function]
+		,res =
+			(namesplit[0]!="" && namesplit[0]!=info[color_info_shortname]) ? undef
+			:
 			 list[i][color_data_version]==0 ?
-				color_name_find_entry (list[i][color_data_list], name, len(list[i][color_data_list]))
+				color_name_find_entry (list[i][color_data_list], namesplit, lang, fn, len(list[i][color_data_list]))
 			:list[i][color_data_version]==1 ?
-				color_name_find_entry (list[i][color_data_list], name, len(list[i][color_data_list]), 1)
+				color_name_find_entry (list[i][color_data_list], namesplit, lang, fn, len(list[i][color_data_list]), 1)
 			:undef
 	)
-	res==undef ? color_name_find (list, name, s, i+1)
+	res==undef ? color_name_find (list, namesplit, s, i+1)
 	: list[i][color_data_version]==0 ? [ i, res[0], res[1], res[1] ]
 	: list[i][color_data_version]==1 ? [ i, res[0], res[1], list[i][color_data_list][res[0]][res[1]][color_entry_index] ]
 	: undef
 ;
-function color_name_find_entry (list, name, s=0, j=0) =
+function color_name_find_entry (list, namesplit, lang, fn, s=0, j=0, l=0) =
 	j>=s ? undef :
 	let (
-		res = binary_search (list[j], name, [color_entry_name])
+		res =
+			(namesplit[1]!="" && lang[l]!="" && lang[l]!=namesplit[1]) ? -2
+			:
+			let (
+				name = fn==undef ? namesplit[2] : fn (namesplit[2], lang[l])
+			)
+			name==undef ? -3
+			:
+			binary_search (list[j], name, [color_entry_name])
 	)
 	res<0
-		? color_name_find_entry (list, name, s, j+1)
+		? color_name_find_entry (list, namesplit, lang, fn, s, j+1, l+1)
 		: [j, res]
 ;
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+// Split the name in parts
+// returns:
+//   [ color list short name, color language, color name ]
+//
+// Format of name:
+//   "color_name"
+//   "short_name:color_name"
+//   "short_name:language:color_name"
+//   ":language:color_name"
+//
+// Leading and trailing spaces are removed.
+// Multiple consecutive spaces are replaced by a single space.
+// Undefined filter will set as an empty string.
+// The color name will converted to lowercase letters.
+function color_name_split (name) =
+	let (
+		 n  = replace_all_values (name, value_list=" \t\n\r", new=" ")
+		,l_ = split (n, ":")
+		,l  =
+			[ for (e=l_)
+				strip_str (unique (e, f=function(a,b) (a==b && a==" ") ) )
+			]
+		,s = len(l)
+	)
+	 s==1 ? [""  , ""  , to_lower_str(l[0])]
+	:s==2 ? [l[0], ""  , to_lower_str(l[1])]
+	:       [l[0], l[1], to_lower_str(l[2])]
+;
 
 function prepare_color_list (list) =
 	[ for (e=list) prepare_color_name (e) ]
 ;
-function prepare_color_name (list, version=0) =
+function prepare_color_name (list, version=1) =
 	list[color_data_prepared]==true ? list :
 	//
-	version==0 ?
+	version==0 || version==1 ?
 	[ for (i=[0:1:max (3 , len(list)-1 )])
 		 i==color_data_info ? list[color_data_info]
 		:i==color_data_list ?
-			let (
-				name_entries=
-				[ for (j=[1:1:len(list[color_data_list][0])-1])
-				[ for (k=[0:1:len(list[color_data_list])-1])
-					[list[color_data_list][k][0], list[color_data_list][k][j] ]
-				]]
-			)
-			[for (e=name_entries)
-				is_sorted (e, type=[color_entry_name])
-				?	e
-				:	sort  (e, type=[color_entry_name])
-			]
-		:i==color_data_prepared ? true
-		:i==color_data_version  ? 0
-		:undef
-	]
-	//
-	:version==1 ?
-	[ for (i=[0:1:max (3 , len(list)-1 )])
-		 i==color_data_info ? list[color_data_info]
-		:i==color_data_list ?
-			let (
-				rgb_entries=
-				[ for (k=[0:1:len(list[color_data_list])-1])
-					[list[color_data_list][k][0] ]
-				]
-				//
-				,name_entries=
-				[ for (j=[1:1:len(list[color_data_list][0])-1])
-				[ for (k=[0:1:len(list[color_data_list])-1])
-					[k, list[color_data_list][k][j] ]
-				]]
-			)
-			[ rgb_entries
-			, each
+			version==0 ?
+				let (
+					name_entries=
+					[ for (j=[1:1:len(list[color_data_list][0])-1])
+					[ for (k=[0:1:len(list[color_data_list])-1])
+						[list[color_data_list][k][0], list[color_data_list][k][j] ]
+					]]
+				)
 				[for (e=name_entries)
 					is_sorted (e, type=[color_entry_name])
 					?	e
 					:	sort  (e, type=[color_entry_name])
 				]
-			]
+			: // version==1 ?
+				let (
+					rgb_entries=
+					[ for (k=[0:1:len(list[color_data_list])-1])
+						[list[color_data_list][k][0] ]
+					]
+					//
+					,name_entries=
+					[ for (j=[1:1:len(list[color_data_list][0])-1])
+					[ for (k=[0:1:len(list[color_data_list])-1])
+						[k, list[color_data_list][k][j] ]
+					]]
+				)
+				[ rgb_entries
+				, each
+					[for (e=name_entries)
+						is_sorted (e, type=[color_entry_name])
+						?	e
+						:	sort  (e, type=[color_entry_name])
+					]
+				]
 		:i==color_data_prepared ? true
-		:i==color_data_version  ? 1
+		:i==color_data_version  ? version
 		:undef
 	]
 	:list
