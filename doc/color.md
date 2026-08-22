@@ -21,6 +21,9 @@ Color
   - [`color_name()`][color_name]
   - [`color_brightness()`][color_brightness]
 
+[primitives]: draft_primitives.md
+[O_color]: https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Transformations#color
+
 
 Convert colors [^][contents]
 ----------------------------
@@ -28,14 +31,16 @@ Convert colors [^][contents]
 #### get_color [^][contents]
 [get_color]: #get_color-
 Return the color as rgb or rgba list from different color arguments.  
-The color argument is the same like OpenSCAD module `color()`
+The main color arguments are the same like [OpenSCAD module `color()`][O_color].
+
+_Arguments:_
 ```OpenSCAD
 get_color (c, alpha, default, colors)
 ```
 - `c`       - color argument
 - `alpha`   - optional, alpha value - transparent to opaque: `0...1`, default = `1`.
 - `default` - optional, default color if `c` is not set, default = not set
-- `colors`  - optional, a list of color names
+- `colors`  - optional, a defined list of color names
 
 _Color arguments:_
 - color name as string
@@ -70,7 +75,7 @@ then the function will only use the color names from this list.
 Actually exists the color name lists:
 - `color_name_svg`
   - SVG color list
-  - defined in file `banded/color/color_svg.scad`
+  - defined in file `banded/color/color_name_svg.scad`
 - `color_name_banded`
   - Additional defined colors
   - defined in file: `banded/color/color_other.scad`
@@ -78,7 +83,7 @@ The color name lists can be combined to one:
 ```OpenSCAD
 new_list = [ each name_list_1, each name_list_2, ... ];
 ```
-All color name lists are already combined in:
+All color name lists are already combined in constant:
 - `color_list`
 This is used as the default if `colors` is not set.
 
@@ -101,10 +106,21 @@ _Additional defined colors:_
 #### color_extend [^][contents]
 [color_extend]: #color_extend-
 Set the color for an object from different color arguments.  
-Module to use extra color names, see [`get_color()`][get_color]
+Module to use and load extra color names.  
+See [`get_color()`][get_color] for more information.  
+Additional defined for [primitives in data lists][primitives]
+in file `draft_primitives_basic.scad`.
 
+_Arguments:_
 ```OpenSCAD
+// Operator as module:
 color_extend (c, alpha, default, colors)  object();
+
+// Alternative, same result:
+color( get_color (c, alpha, default, colors) )  object();
+
+// Operator as function:
+color (object, c, alpha, default, colors)
 ```
 
 #### color_between [^][contents]
@@ -195,7 +211,7 @@ color_hex_to_list (hex, alpha)
 ```
 
 _Description:_
-It can be used the same hex values like for OpenSCAD module `color()`.
+It can be used the same hex values like for [OpenSCAD module `color()`][O_color].
 - optional alpha value - transparent to opaque: `0...1`, default = `1`
 - Every hex string begin with a `#`
 - The letters are hexadicimal numbers `0-F` (or even `00-FF`)
@@ -213,7 +229,7 @@ Hex string formats:
 
 #### color_name [^][contents]
 [color_name]: #color_name-
-Return the name of color to rgb value as list.  
+Return the rgb value as list from the name of a color.  
 The color names are taken from the World Wide Web consortium's SVG color list.
 Contains additional defined colors, see [`get_color()`][get_color].
 

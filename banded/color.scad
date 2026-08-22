@@ -8,7 +8,7 @@ use <banded/list_edit_test.scad>
 //
 include <banded/color_definition.scad>
 
-include <banded/color/color_svg.scad>
+include <banded/color/color_name_svg.scad>
 include <banded/color/color_other.scad>
 
 
@@ -123,7 +123,7 @@ function color_rgb_to_hsv (rgb, alpha) =
 	[h,s,v, a]
 ;
 
-// return the name of color to rgb value as list
+// return a color as rgb value as list from the color name
 function color_name (name, alpha, colors) =
 	name==undef || len(name)<1 ? undef :
 	let(
@@ -131,22 +131,39 @@ function color_name (name, alpha, colors) =
 		,n = to_lower_str(name)
 		,Colors = colors==undef ? color_list : colors
 		,p = color_name_find (Colors, n, len(Colors))
-		,c = p==undef ? undef
-			: (Colors [p[0]] [color_data_list] [p[1]] [p[2]] [color_entry_rgb]) / 255
+	)
+	let(
+		c = p==undef ? undef
+			:Colors [p[0]] [color_data_version] == 0 ?
+				(Colors [p[0]] [color_data_list] [p[1]] [p[2]] [color_entry_rgb]) / 255
+			:Colors [p[0]] [color_data_version] == 1 ?
+				(Colors [p[0]] [color_data_list] [  0 ] [p[3]] [color_entry_rgb]) / 255
+			:undef
 	)
 	c==undef ? undef :
 	a==1 ? c
 	     : [c[0],c[1],c[2], a]
 ;
-// Rückgabe: [Position der Farbliste, Position der Farbnamenliste, Position der Farbe]
+// Rückgabe des Treffers:
+// [ Position des Farbdatensatzes in der Farbliste
+// , Position der Farbnamenliste
+// , Position der Farbe in der Farbnamenliste
+// , Position der Farbe in der RGB Farbliste
+// ]
 function color_name_find (list, name, s=0, i=0) =
 	i>=s ? undef :
 	let (
-		res = color_name_find_entry (list[i][color_data_list], name, len(list[i][color_data_list]))
+		res =
+			 list[i][color_data_version]==0 ?
+				color_name_find_entry (list[i][color_data_list], name, len(list[i][color_data_list]))
+			:list[i][color_data_version]==1 ?
+				color_name_find_entry (list[i][color_data_list], name, len(list[i][color_data_list]), 1)
+			:undef
 	)
-	res==undef
-		? color_name_find (list, name, s, i+1)
-		: [ i, res[0], res[1] ]
+	res==undef ? color_name_find (list, name, s, i+1)
+	: list[i][color_data_version]==0 ? [ i, res[0], res[1], res[1] ]
+	: list[i][color_data_version]==1 ? [ i, res[0], res[1], list[i][color_data_list][res[0]][res[1]][color_entry_index] ]
+	: undef
 ;
 function color_name_find_entry (list, name, s=0, j=0) =
 	j>=s ? undef :
@@ -158,12 +175,16 @@ function color_name_find_entry (list, name, s=0, j=0) =
 		: [j, res]
 ;
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 function prepare_color_list (list) =
 	[ for (e=list) prepare_color_name (e) ]
 ;
-function prepare_color_name (list) =
+function prepare_color_name (list, version=0) =
 	list[color_data_prepared]==true ? list :
-	[ for (i=[0:1:max (2 , len(list)-1 )])
+	//
+	version==0 ?
+	[ for (i=[0:1:max (3 , len(list)-1 )])
 		 i==color_data_info ? list[color_data_info]
 		:i==color_data_list ?
 			let (
@@ -179,9 +200,41 @@ function prepare_color_name (list) =
 				:	sort  (e, type=[color_entry_name])
 			]
 		:i==color_data_prepared ? true
+		:i==color_data_version  ? 0
 		:undef
 	]
+	//
+	:version==1 ?
+	[ for (i=[0:1:max (3 , len(list)-1 )])
+		 i==color_data_info ? list[color_data_info]
+		:i==color_data_list ?
+			let (
+				rgb_entries=
+				[ for (k=[0:1:len(list[color_data_list])-1])
+					[list[color_data_list][k][0] ]
+				]
+				//
+				,name_entries=
+				[ for (j=[1:1:len(list[color_data_list][0])-1])
+				[ for (k=[0:1:len(list[color_data_list])-1])
+					[k, list[color_data_list][k][j] ]
+				]]
+			)
+			[ rgb_entries
+			, each
+				[for (e=name_entries)
+					is_sorted (e, type=[color_entry_name])
+					?	e
+					:	sort  (e, type=[color_entry_name])
+				]
+			]
+		:i==color_data_prepared ? true
+		:i==color_data_version  ? 1
+		:undef
+	]
+	:list
 ;
+
 
 // convert a rgb color list to a hex value string
 function color_list_to_hex (rgb, alpha) =
