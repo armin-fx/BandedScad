@@ -82,7 +82,7 @@ _Return list:_
 _Color lists for argument_ `colors`_:_  
 You can set a defined _color name list_,
 then the function will only use the color names from this list.  
-Actually exists the color name lists:
+Actually supported color systems, defined in color data lists:
 - `color_svg`
   - SVG color list
   - short name is `svg`
@@ -91,6 +91,14 @@ Actually exists the color name lists:
   - Additional defined colors
   - short name is `banded`
   - defined in file: `banded/color/color_other.scad`
+  - languages: english (`"en"`), german (`"de"`)
+- `color_ral_classic`
+  - Includes approximations for RAL Classic colors.
+    (RAL is a registered trademark of RAL gGmbH; see source code for disclaimer)
+  - short name is `ral`
+  - defined in file: `banded/color/color_ral.scad`
+  - You can use english (`"en"`) and german (`"de"`) color names
+    and the ral classic number as string e.g. `"1001"` or `"ral 1001"` for color "beige"
 The color name lists can be combined to one:  
 ```OpenSCAD
 new_list = [ each name_list_1, each name_list_2, ... ];

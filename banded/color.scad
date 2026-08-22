@@ -10,11 +10,13 @@ include <banded/color_definition.scad>
 
 include <banded/color/color_svg.scad>
 include <banded/color/color_other.scad>
+include <banded/color/color_ral.scad>
 
 
 color_list =
-	[ each is_undef(color_svg   ) ? [] : prepare_color_list( color_svg    )
-	, each is_undef(color_banded) ? [] : prepare_color_list( color_banded )
+	[ each is_undef(color_svg        ) ? [] : prepare_color_list( color_svg    )
+	, each is_undef(color_banded     ) ? [] : prepare_color_list( color_banded )
+	, each is_undef(color_ral_classic) ? [] : prepare_color_list( color_ral_classic )
 	];
 
 // get color as rgb or rgba list
