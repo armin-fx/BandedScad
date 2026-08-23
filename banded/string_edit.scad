@@ -40,7 +40,11 @@
 // - all_of  (list, f, type=0, begin, last, count, range)
 // - none_of (list, f, type=0, begin, last, count, range)
 // - any_of  (list, f, type=0, begin, last, count, range)
-// - equal    (list1, list2, f, type=0, begin1, begin2, count)
+// - equal      (list1, list2, f, type=0, begin1, begin2, count)
+// - equal_full (list1, list2, f, type=0)
+// - equal_all  (list, lists, f, type=0)
+// - equal_none (list, lists, f, type=0)
+// - equal_any  (list, lists, f, type=0)
 // - includes (list1, list2, f, type=0, begin1, last1, count1, range1, begin2, last2, count2, range2)
 // - is_sorted      (list, f, type=0, begin, last, count, range)
 // - is_partitioned (list, f, type=0, begin, last, count, range)
@@ -69,6 +73,11 @@ function rotate_copy_str (list, middle, begin, last) =
 	list_to_str ( rotate_copy (list, middle, begin, last) )
 ;
 
+// Würfelt die Buchstaben in einem String durcheinander
+function shuffle_str (txt) =
+	list_to_str ( shuffle (txt) )
+;
+
 // entfernt Buchstaben aus einem String
 function remove_str (txt, begin, count=1) =
 	list_to_str ( remove (txt, begin, count) )
@@ -87,6 +96,11 @@ function replace_str (txt, txt_insert, begin=-1, count=0, begin_insert=0, count_
 // extrahiert eine Sequenz aus dem String
 function extract_str (txt, begin, last, count, range) =
 	list_to_str ( extract (txt, begin, last, count, range) )
+;
+
+// vertauscht 2 Elemente
+function swap_str (txt, i, j) =
+	list_to_str ( swap (txt, i, j) )
 ;
 
 // Erzeugt einen String mit 'count' Elementen gefüllt mit 'value'

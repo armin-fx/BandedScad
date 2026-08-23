@@ -14,6 +14,8 @@ Functions for editing strings
 
 ### Contents
 [contents]: #contents "Up to Contents"
+- [Editing lists ->](list.md)
+
 - [Convert strings](#convert-strings-)
   - [`to_lower_str()`][to_lower_str]
   - [`to_upper_str()`][to_upper_str]
@@ -457,10 +459,12 @@ _The argument names differs:_
 | [`reverse_full()`][rf]      | `reverse_full_str (txt)`                | Reverse the sequence of letters in the full string
 | [`rotate_list()`][rl]       | `rotate_str (txt, middle, ... )`        | Rotates the order of the letter in a string
 | [`rotate_copy()`][rc]       | `rotate_copy_str (list, middle, ... )`  | Copy a range of a string and rotates the order of the letter in this
+| [`shuffle()`][sh]           | `shuffle_str (txt)`                     | Shuffle all letter in a string
 | [`remove()`][rm]            | `remove_str (txt, begin, count)`        | Remove letter from a string
 | [`insert()`][in]            | `insert_str  (txt, txt_insert, ...)`    | Insert a string at given position in a string
 | [`replace()`][rp]           | `replace_str (txt, txt_insert, ... )`   | Replace a range in a string with a string
 | [`extract()`][ex]           | `extract_str (txt, 'range_args' )`      | Extract a range in a string
+| [`swap`][sw]                | `swap_str (txt, i, j)`                  | Swap 2 letter in a string, index location by `i` and `j`
 | [`fill()`][fi]              | `fill_str (count, value)`               | Make a string filled with count of a string
 | [`select()`][se]            | `select_str (base, index)`              | Create a string with letters of `base` at positions in order of list `index`
 | [`select_all()`][sa]        | `select_all_str (base, indices)`        | Create a list with strings in order of a list with indices with letter from `base`
@@ -536,84 +540,93 @@ Use list functions directly:
 | [`none_of()`][no]                   | Returns `true` if `f()` returns `false` for all the letter in the range
 | [`any_of()`][so]                    | Returns `true` if `f()` returns `true` for any letter in the range
 | [`equal()`][eq]                     | Tests the letter of two strings for equality and returns `true` on success.
+| [`equal_full()`][eq]                | Tests the letter of two complete strings for equality and returns `true` on success.<br>`txt1==txt2` is faster.
+| [`equal_all()`][eqa]                | Returns `true` if a string equals with all strings in a list of strings.
+| [`equal_none()`][eqn]               | Returns `true` if a string don't equals with all strings in a list of strings.
+| [`equal_any()`][eqy]                | Returns `true` if a string equals with any string in a list of strings.
 | [`includes()`][inc]                 | Returns `true` if the sorted string contains all the elements in the second sorted string.
 | [`is_sorted()`][is]                 | Check whether string is sorted.
 | [`is_partitioned()`][ip]            | Returns `true` if all the elements in the string are split in two parts.
 
 
-[cl]:  list.md#concat_list-list-
-[rv]:  list.md#reverse-list-range_args-
-[rf]:  list.md#reverse-list-range_args-
-[rl]:  list.md#rotate_list-list-middle-begin-last-
-[rc]:  list.md#rotate_copy-list-middle-begin-last-
-[rm]:  list.md#remove-list-begin-count-
-[in]:  list.md#insert-list-list_insert-position-begin_insert-count_insert-
-[rp]:  list.md#replace-list-list_insert-begin-count-begin_insert-count_insert-
-[ex]:  list.md#extract-list-range_args-
-[fi]:  list.md#fill-count-value-
-[se]:  list.md#select-base-index-
-[sa]:  list.md#select_all-base-indices-
-[sl]:  list.md#select_link-base-link-index-
-[us]:  list.md#unselect-base-index-
-[ix]:  list.md#index-list-
-[ia]:  list.md#index_all-list-
-[ru]:  list.md#remove_unselected-list-indices-
-[cs]:  list.md#compress_selected-list-indices-
+[cl]:  list.md#concat_list-
+[rv]:  list.md#reverse-
+[rf]:  list.md#reverse-
+[rl]:  list.md#rotate_list-
+[rc]:  list.md#rotate_copy-
+[sh]:  list.md#shuffle-
+[rm]:  list.md#remove-
+[in]:  list.md#insert-
+[rp]:  list.md#replace-
+[ex]:  list.md#extract-
+[sw]:  list.md#swap-
+[fi]:  list.md#fill-
+[se]:  list.md#select-
+[sa]:  list.md#select_all-
+[sl]:  list.md#select_link-
+[us]:  list.md#unselect-
+[ix]:  list.md#index-
+[ia]:  list.md#index_all-
+[ru]:  list.md#remove_unselected-
+[cs]:  list.md#compress_selected-
 
-[st]:  list.md#sort-list-type-f-
-[mg]:  list.md#merge-list1-list2-type-f-
-[rd]:  list.md#remove_duplicate-list-type-
-[rmv]: list.md#remove_value-list-value-type-
-[rma]: list.md#remove_all_values-list-value_list-type-
-[rs]:  list.md#remove_sequence-list-sequence-type-range_args-
-[rpv]: list.md#replace_value-list-value-new-type-
-[rpa]: list.md#replace_all_values-list-value_list-new-type-
-[rps]: list.md#replace_sequence-list-sequence-new-type-range_args-
-[kv]:  list.md#keep_value-list-value-type-
-[ka]:  list.md#keep_all_values-list-value_list-type-
-[uq]:  list.md#unique-list-type-f-
-[ku]:  list.md#keep_unique-list-type-f-
-[si]:  list.md#strip-list-value_list-side-type-
-[s]:   list.md#split-list-value-type-
-[rmi]: list.md#remove_if-list-f-type-
-[rpi]: list.md#replace_if-list-f-new-type-
-[pa]:  list.md#partition-list-f-type-range_args-
-[fe]:  list.md#for_each-list-f-type-range_args-
+[st]:  list.md#sort-
+[mg]:  list.md#merge-
+[rd]:  list.md#remove_duplicate-
+[rmv]: list.md#remove_value-
+[rma]: list.md#remove_all_values-
+[rs]:  list.md#remove_sequence-
+[rpv]: list.md#replace_value-
+[rpa]: list.md#replace_all_values-
+[rps]: list.md#replace_sequence-
+[kv]:  list.md#keep_value-
+[ka]:  list.md#keep_all_values-
+[uq]:  list.md#unique-
+[ku]:  list.md#keep_unique-
+[si]:  list.md#strip-
+[s]:   list.md#split-
+[rmi]: list.md#remove_if-
+[rpi]: list.md#replace_if-
+[pa]:  list.md#partition-
+[fe]:  list.md#for_each-
 
 [mix]: list.md#minimum-or-maximum-value-
 [max]: list.md#minimum-or-maximum-value-
 [mip]: list.md#minimum-or-maximum-value-
 [map]: list.md#minimum-or-maximum-value-
-[ct]:  list.md#count-list-value-type-range_args-
-[ff]:  list.md#find_first-list-value-index-type-range_args-
-[ffo]: list.md#find_first_once-list-value-type-range_args-
-[fff]: list.md#find_first_of-list-value_list-index-type-range_args-
-[ffg]: list.md#find_first_of_once-list-value_list-type-range_args-
-[fl]:  list.md#find_last-list-value-index-type-range_args-
-[flo]: list.md#find_last_once-list-value-type-range_args-
-[flf]: list.md#find_last_of-list-value_list-index-type-range_args-
-[flg]: list.md#find_last_of_once-list-value_list-type-range_args-
-[mm]:  list.md#mismatch-list1-list2-begin1-begin2-count-type-f-
-[ml]:  list.md#mismatch_list-list1-list2-begin1-begin2-count-type-f-
-[af]:  list.md#adjacent_find-list-type-range_args-f-
-[bs]:  list.md#binary_search-list-value-type-f-
-[su]:  list.md#sorted_until-list-f-type-range_args-
-[sul]: list.md#sorted_until_list-list-f-type-range_args-
-[lc]:  list.md#lexicographical_compare-list1-list2-f-type-
-[ci]:  list.md#count_if-list-f-type-range_args-
-[ffi]: list.md#find_first_if-list-f-index-type-range_args-
-[ffj]: list.md#find_first_once_if-list-f-type-range_args-
-[fli]: list.md#find_last_if-list-f-index-type-range_args-
-[flj]: list.md#find_last_once_if-list-f-type-range_args-
-[ss]:  list.md#search_sequence-list-sequence-type-range_args-
-[sp]:  list.md#sequence_positions-list-sequence-type-range_args-
-[ao]:  list.md#all_of-list-f-type-range_args-
-[no]:  list.md#none_of-list-f-type-range_args-
-[so]:  list.md#any_of-list-f-type-range_args-
-[eq]:  list.md#equal-list1-list2-f-type-begin1-begin2-count-
-[inc]: list.md#includes-list1-list2-f-type-range_args1-range_args2-
-[is]:  list.md#is_sorted-list-f-type-range_args-
-[ip]:  list.md#is_partitioned-list-f-type-range_args-
+[ct]:  list.md#count-
+[ff]:  list.md#find_first-
+[ffo]: list.md#find_first_once-
+[fff]: list.md#find_first_of-
+[ffg]: list.md#find_first_of_once-
+[fl]:  list.md#find_last-
+[flo]: list.md#find_last_once-
+[flf]: list.md#find_last_of-
+[flg]: list.md#find_last_of_once-
+[mm]:  list.md#mismatch-
+[ml]:  list.md#mismatch_list-
+[af]:  list.md#adjacent_find-
+[bs]:  list.md#binary_search-
+[su]:  list.md#sorted_until-
+[sul]: list.md#sorted_until_list-
+[lc]:  list.md#lexicographical_compare-
+[ci]:  list.md#count_if-
+[ffi]: list.md#find_first_if-
+[ffj]: list.md#find_first_once_if-
+[fli]: list.md#find_last_if-
+[flj]: list.md#find_last_once_if-
+[ss]:  list.md#search_sequence-
+[sp]:  list.md#sequence_positions-
+[ao]:  list.md#all_of-
+[no]:  list.md#none_of-
+[so]:  list.md#any_of-
+[eq]:  list.md#equal-
+[eqa]: list.md#equal_all-
+[eqn]: list.md#equal_none-
+[eqy]: list.md#equal_any-
+[inc]: list.md#includes-
+[is]:  list.md#is_sorted-
+[ip]:  list.md#is_partitioned-
 
 
 Format strings [^][contents]

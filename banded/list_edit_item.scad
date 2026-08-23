@@ -171,9 +171,11 @@ function extract (list, begin, last, count, range) =
 function swap (list, i, j) =
 	list==undef ? list :
 	let (
-		S = len(list),
-		I = get_index( S, i<j ? i : j ),
-		J = get_index( S, i>j ? i : j )
+		S  = len(list),
+		i_ = get_index( S, i ),
+		j_ = get_index( S, j ),
+		I  = i_<j_ ? i_ : j_,
+		J  = i_>j_ ? i_ : j_
 	)
 	I==J ? list :
 	[ each [ for (e=[0  :1:I-1]) list[e] ]

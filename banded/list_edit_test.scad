@@ -43,12 +43,12 @@ function none_of_intern (list, f, type=0, begin=0, last=-1) =
 // Führt Funktion 'f' auf die Elemente in der Liste aus und
 // gibt 'true' zurück, wenn mindestens 1 Aufruf von f() 'true' zurückgibt
 function any_of (list, f, type=0, begin, last, count, range) =
-	list==undef ? true :
+	list==undef ? false :
 	let (Range = parameter_range_safe (list, begin, last, count, range))
 	any_of_intern      (list, f, type, Range[0], Range[1])
 ;
 function any_of_intern (list, f, type=0, begin=0, last=-1) =
-	begin>last ? true :
+	begin>last ? false :
 	 type   == 0                   ? [for(i=[begin:1:last]) if (f( list[i]             )==true) 0] != []
 	:type[0]>= 0                   ? [for(i=[begin:1:last]) if (f( list[i][type[0]]    )==true) 0] != []
 	:type[0]==-1 ? let( fn=type[1] ) [for(i=[begin:1:last]) if (f( fn(list[i])         )==true) 0] != []
@@ -78,6 +78,35 @@ function equal (list1, list2, f, type=0, begin1=0, begin2=0, count=undef) =
 		:type[0]>= 0                   ? [for(i=[0:1:Count-1]) if (f( list1[Begin1+i][type[0]]   , list2[Begin2+i][type[0]]   ) !=true) 0] == []
 		:type[0]==-1 ? let( fn=type[1] ) [for(i=[0:1:Count-1]) if (f( fn(list1[Begin1+i])        , fn(list2[Begin2+i])        ) !=true) 0] == []
 		:                                [for(i=[0:1:Count-1]) if (f( value(list1[Begin1+i],type), value(list2[Begin1+i],type)) !=true) 0] == []
+;
+function equal_full (list1, list2, f, type=0) =
+	f==undef &&
+		 type   == 0                   ? list1==list2
+	:
+	let ( size = len(list1) )
+	size!=len(list2) ? false :
+	f==undef ?
+		 type[0]>= 0 ?   let(p =type[0]) [ for (e=list1) e[p] ] == [ for (e=list2) e[p] ]
+		:                                value_list(list1,type) == value_list(list2,type)
+	//	 type[0]>= 0                   ? [for(i=[0:1:size-1]) if (list1[i][type[0]]    != list2[i][type[0]]   ) 0] == []
+	//	:type[0]==-1 ? let( fn=type[1] ) [for(i=[0:1:size-1]) if (fn(list1[i])         != fn(list2[i])        ) 0] == []
+	//	:                                [for(i=[0:1:size-1]) if (value(list1[i],type) != value(list2[i],type)) 0] == []
+	:
+		 type   == 0                   ? [for(i=[0:1:size-1]) if (f( list1[i]            , list2[i]            ) !=true) 0] == []
+		:type[0]>= 0                   ? [for(i=[0:1:size-1]) if (f( list1[i][type[0]]   , list2[i][type[0]]   ) !=true) 0] == []
+		:type[0]==-1 ? let( fn=type[1] ) [for(i=[0:1:size-1]) if (f( fn(list1[i])        , fn(list2[i])        ) !=true) 0] == []
+		:                                [for(i=[0:1:size-1]) if (f( value(list1[i],type), value(list2[i],type)) !=true) 0] == []
+;
+
+function equal_all  (list, lists, f, type=0) =
+	len(lists) == len(
+	[for (l=lists) if (equal_full (list, l, f, type)) 0] )
+;
+function equal_none (list, lists, f, type=0) =
+	[for (l=lists) if (equal_full (list, l, f, type)) 0] == []
+;
+function equal_any  (list, lists, f, type=0) =
+	[for (l=lists) if (equal_full (list, l, f, type)) 0] != []
 ;
 
 // Testet, ob eine sortierte Liste 1 alle Elemente aus der sortierten Liste 2 enthält
