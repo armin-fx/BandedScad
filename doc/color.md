@@ -95,7 +95,7 @@ Actually supported color systems, defined in color data lists:
 - `color_ral_classic`
   - Includes approximations for RAL Classic colors.
     (RAL is a registered trademark of RAL gGmbH; see source code for disclaimer)
-  - short name is `ral`
+  - short names are `ral`, `ral_classic`
   - defined in file: `banded/color/color_ral.scad`
   - You can use english (`"en"`) and german (`"de"`) color names
     and the ral classic number as string e.g. `"1001"` or `"ral 1001"` for color "beige"

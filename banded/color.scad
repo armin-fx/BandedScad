@@ -159,8 +159,14 @@ function color_name_find (list, namesplit, s=0, i=0) =
 		,lang = info[color_info_language]
 		,fn   = info[color_info_function]
 		,res =
-			(namesplit[0]!="" && namesplit[0]!=info[color_info_shortname]) ? undef
-			:
+			// Don't search for colors if a shortname filter is set
+			// and don't fits with any shortname of the color list
+			// If a color list has no shortname, then this will never used in this case.
+			(   namesplit[0]!=""
+			 && (info[color_info_shortname]==[] || equal_none( namesplit[0], info[color_info_shortname]) )
+			) ? undef :
+			//
+			// The search method for data version 1 an 2 is the same.
 			 list[i][color_data_version]==0 ?
 				color_name_find_entry (list[i][color_data_list], namesplit, lang, fn, len(list[i][color_data_list]))
 			:list[i][color_data_version]==1 ?
@@ -226,9 +232,31 @@ function prepare_color_name (list, version=1) =
 	list[color_data_prepared]==true ? list :
 	//
 	version==0 || version==1 ?
-	[ for (i=[0:1:max (3 , len(list)-1 )])
-		 i==color_data_info ? list[color_data_info]
-		:i==color_data_list ?
+	let(
+		// use the first entry in the color data list and count the entries
+		color_language_size = len( list[color_data_list][0] ) - 1
+	)
+	[ for (id=[0:1:3])
+		 id==color_data_info ?
+			[ for (i=[0:1:3])
+				 i==color_info_name ?
+					list[color_data_info][i]!=undef ? list[color_data_info][i] : ""
+				:i==color_info_shortname ?
+					 is_string(list[color_data_info][i]) ? [list[color_data_info][i]] :
+					 is_list  (list[color_data_info][i]) ?  list[color_data_info][i]  :
+					 []
+				:i==color_info_language ?
+					// fill all languages
+					list[color_data_info][i]==undef ? fill (color_language_size, "") :
+					[for (l=[0:1:max (color_language_size-1, len(list[color_data_info][i])-1) ])
+						list[color_data_info][i][l]!=undef ? list[color_data_info][i][l] : ""
+					]
+				:i==color_info_function ?
+					list[color_data_info][i]!=undef ? list[color_data_info][i] : undef
+				:undef
+
+			]
+		:id==color_data_list ?
 			version==0 ?
 				let (
 					name_entries=
@@ -237,7 +265,7 @@ function prepare_color_name (list, version=1) =
 						[list[color_data_list][k][0], list[color_data_list][k][j] ]
 					]]
 				)
-				[for (e=name_entries)
+				[ for (e=name_entries)
 					is_sorted (e, type=[color_entry_name])
 					?	e
 					:	sort  (e, type=[color_entry_name])
@@ -263,8 +291,8 @@ function prepare_color_name (list, version=1) =
 						:	sort  (e, type=[color_entry_name])
 					]
 				]
-		:i==color_data_prepared ? true
-		:i==color_data_version  ? version
+		:id==color_data_prepared ? true
+		:id==color_data_version  ? version
 		:undef
 	]
 	:list

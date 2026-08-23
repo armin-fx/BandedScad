@@ -17,7 +17,7 @@ include <banded/color_definition.scad>
 
 color_ral_classic = [ prepare_color_name( [
 	["RAL classic colors"
-	,"ral"
+	,["ral", "ral classic", "ral_classic"]
 	,["", "de", "en"]
 	,function(name,lang)
 		lang!="" ? name :
@@ -25,6 +25,7 @@ color_ral_classic = [ prepare_color_name( [
 			? str(name[4],name[5],name[6],name[7])
 			: name
 	],[
+	// yellow
 	[[205,186,136], "1000", "grünbeige"       , "green beige"],
 	[[208,176,132], "1001", "beige"           , "beige"],
 	[[210,170,109], "1002", "sandgelb"        , "sand yellow"],
@@ -55,6 +56,7 @@ color_ral_classic = [ prepare_color_name( [
 	[[144,131,112], "1035", "perlbeige"       , "pearl beige"],
 	[[128,100, 63], "1036", "perlgold"        , "pearl gold"],
 	[[240,146,  0], "1037", "sonnengelb"      , "sun yellow"],
+	// orange
 	[[218,110,  0], "2000", "gelborange"      , "yellow orange"],
 	[[186, 72, 27], "2001", "rotorange"       , "red orange"],
 	[[191, 57, 34], "2002", "blutorange"      , "vermilion"],
@@ -68,6 +70,7 @@ color_ral_classic = [ prepare_color_name( [
 	[[226,110, 14], "2011", "tieforange"      , "deep orange"],
 	[[213,101, 77], "2012", "lachsorange"     , "salmon orange"],
 	[[146, 62, 37], "2013", "perlorange"      , "pearl orange"],
+	// red
 	[[167, 41, 32], "3000", "feuerrot"        , "flame red"],
 	[[155, 36, 35], "3001", "signalrot"       , "signal red"],
 	[[155, 35, 33], "3002", "karminrot"       , "carmine red"],
@@ -93,6 +96,7 @@ color_ral_classic = [ prepare_color_name( [
 	[[166, 52, 55], "3031", "orientrot"       , "orient red"],
 	[[112, 29, 35], "3032", "perlrubinrot"    , "pearl ruby red"],
 	[[165, 58, 45], "3033", "perlrosa"        , "pearl pink"],
+	// purple
 	[[129, 97,131], "4001", "rotlila"         , "red lilac"],
 	[[141, 60, 75], "4002", "rotviolett"      , "red violet"],
 	[[196, 97,140], "4003", "erikaviolett"    , "heather violet"],
@@ -105,6 +109,7 @@ color_ral_classic = [ prepare_color_name( [
 	[[188, 64,119], "4010", "telemagenta"     , "telemagenta"],
 	[[110, 99,135], "4011", "perlviolett"     , "pearl violet"],
 	[[107,107,127], "4012", "perlbrombeer"    , "pearl blackberry"],
+	// blue
 	[[ 49, 79,111], "5000", "violettblau"     , "violet blue"],
 	[[ 15, 76,100], "5001", "grünblau"        , "green blue"],
 	[[  0, 56,123], "5002", "ultramarinblau"  , "ultramarine blue"],
@@ -130,6 +135,7 @@ color_ral_classic = [ prepare_color_name( [
 	[[ 96,147,172], "5024", "pastellblau"     , "pastel blue"],
 	[[ 33,105,124], "5025", "perlenzian"      , "pearl gentian blue"],
 	[[ 15, 48, 82], "5026", "perlnachtblau"   , "pearl night blue"],
+	// green
 	[[ 60,116, 96], "6000", "patinagrün"      , "patina green"],
 	[[ 54,103, 53], "6001", "smaragdgrün"     , "emerald green"],
 	[[ 50, 89, 40], "6002", "laubgrün"        , "leaf green"],
@@ -166,6 +172,7 @@ color_ral_classic = [ prepare_color_name( [
 	[[  4, 87, 75], "6036", "perlopalgrün"    , "pearl opal green"],
 	[[  0,139, 41], "6037", "reingrün"        , "pure green"],
 	[[  0,181, 26], "6038", "leuchtgrün"      , "luminous green"],
+	// grey
 	[[122,136,142], "7000", "fehgrau"         , "squirrel grey"],
 	[[140,150,157], "7001", "silbergrau"      , "silver grey"],
 	[[129,120, 99], "7002", "olivgrau"        , "olive grey"],
@@ -204,6 +211,7 @@ color_ral_classic = [ prepare_color_name( [
 	[[127,134,138], "7046", "telegrau 2"      , "telegrey 2"],
 	[[200,200,199], "7047", "telegrau 4"      , "telegrey 4"],
 	[[129,123,115], "7048", "perlmausgrau"    , "pearl mouse grey"],
+	// brown
 	[[137,105, 62], "8000", "grünbraun"       , "green brown"],
 	[[157, 98, 43], "8001", "ockerbraun"      , "ochre brown"],
 	[[121, 77, 62], "8002", "signalbraun"     , "signal brown"],
@@ -224,6 +232,7 @@ color_ral_classic = [ prepare_color_name( [
 	[[117, 88, 71], "8025", "blaßbraun"       , "pale brown"],
 	[[ 81, 58, 42], "8028", "terrabraun"      , "terra brown"],
 	[[127, 64, 49], "8029", "perlkupfer"      , "pearl copper"],
+	// white and black
 	[[233,224,210], "9001", "cremeweiß"       , "cream"],
 	[[215,213,203], "9002", "grauweiß"        , "grey white"],
 	[[236,236,231], "9003", "signalweiß"      , "signal white"],
