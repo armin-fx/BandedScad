@@ -20,7 +20,7 @@ Functions for edit lists
 ### Contents
 [contents]: #contents "Up to Contents"
 - [Math on lists ->](list_math.md)
-
+- [Editing strings ->](string.md)
 
 - [Editing lists](#editing-lists-)
   - [Repeating options](#repeating-options-)
@@ -117,7 +117,10 @@ Functions for edit lists
     - [`all_of()`][all_of]
     - [`none_of()`][none_of]
     - [`any_of()`][any_of]
-    - [`equal()`][equal]
+    - [`equal()`, `equal_full()`][equal]
+    - [`equal_all()`][equal_all]
+    - [`equal_full()`][equal_full]
+    - [`equal_any()`][equal_any]
     - [`includes()`][includes]
     - [`is_sorted()`][is_sorted]
     - [`is_partitioned()`][is_partitioned]
@@ -1172,8 +1175,8 @@ none_of (list, f, type, 'range_args')
 
 #### any_of [^][contents]
 [any_of]: #any_of-
-Returns `true` if `f()` returns `true` for any elements in the range
-or if the range is empty, and `false` otherwise.
+Returns `true` if `f()` returns `true` for one or more elements in the range
+and `false` otherwise.
 
 _Arguments:_
 ```OpenSCAD
@@ -1203,6 +1206,60 @@ equal (list1, list2, f, type, begin1, begin2, count)
 - `count`
   - count of elements to test of both lists
   - default = full list
+
+_Specialized function for full size of lists:_
+```OpenSCAD
+equal_full (list1, list2, f, type)
+```
+This function is in this case mostly faster.
+
+#### equal_all [^][contents]
+[equal_all]: #equal_all-
+Returns `true` if a list equals with all lists in a set of list
+or if the set of list is empty, and `false` otherwise.
+
+_Arguments:_
+```OpenSCAD
+equal_all (list, lists, f, type)
+```
+- `list`  - one list
+- `lists` - set of lists to compare with `list`
+- `f`
+  - function literal with two arguments
+  - returns `true` or `false`
+  - if function is not specified, the data will compared directly (with given type of data)
+
+#### equal_none [^][contents]
+[equal_none]: #equal_none-
+Returns `true` if a list equals with none of the lists in a set of list
+or if the set of list is empty, and `false` otherwise.
+
+_Arguments:_
+```OpenSCAD
+equal_none (list, lists, f, type)
+```
+- `list`  - one list
+- `lists` - set of lists to compare with `list`
+- `f`
+  - function literal with two arguments
+  - returns `true` or `false`
+  - if function is not specified, the data will compared directly (with given type of data)
+
+#### equal_any [^][contents]
+[equal_any]: #equal_any-
+Returns `true` if a list equals with one or more of the lists in a set of list
+and `false` otherwise.
+
+_Arguments:_
+```OpenSCAD
+equal_any (list, lists, f, type)
+```
+- `list`  - one list
+- `lists` - set of lists to compare with `list`
+- `f`
+  - function literal with two arguments
+  - returns `true` or `false`
+  - if function is not specified, the data will compared directly (with given type of data)
 
 #### includes [^][contents]
 [includes]: #includes-
