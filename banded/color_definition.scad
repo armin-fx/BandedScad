@@ -40,10 +40,13 @@ color_data_version  = 3;
 
 // Locations of the info list:
 //
-// Position of the full color name
+// Position of the full color name.
+// Entry as string
 color_info_name      = 0;
 //
 // Position of the short name for the color.
+// Entry as string or a list with strings for multiple short names.
+// A string will automatically transformed to a list with short names.
 color_info_shortname = 1;
 //
 // Position of the short codes for language names for the color.
