@@ -14,9 +14,9 @@ include <banded/color/color_ral.scad>
 
 
 color_list =
-	[ each is_undef(color_svg        ) ? [] : prepare_color_list( color_svg    )
-	, each is_undef(color_banded     ) ? [] : prepare_color_list( color_banded )
-	, each is_undef(color_ral_classic) ? [] : prepare_color_list( color_ral_classic )
+	[ each is_undef(color_svg   ) ? [] : prepare_color_list( color_svg    )
+	, each is_undef(color_banded) ? [] : prepare_color_list( color_banded )
+	, each is_undef(color_ral   ) ? [] : prepare_color_list( color_ral    )
 	];
 
 // get color as rgb or rgba list
@@ -147,7 +147,7 @@ function color_name (name, alpha, colors) =
 	     : [c[0],c[1],c[2], a]
 ;
 // Rückgabe des Treffers:
-// [ Position des Farbdatensatzes in der Farbliste
+// [ Position des Farbdatensatzes
 // , Position der Farbnamenliste
 // , Position der Farbe in der Farbnamenliste
 // , Position der Farbe in der RGB Farbliste
@@ -175,11 +175,18 @@ function color_name_find (list, namesplit, s=0, i=0) =
 	)
 	res==undef ? color_name_find (list, namesplit, s, i+1)
 	: list[i][color_data_version]==0 ? [ i, res[0], res[1], res[1] ]
-	: list[i][color_data_version]==1 ? [ i, res[0], res[1], list[i][color_data_list][res[0]][res[1]][color_entry_index] ]
+	: list[i][color_data_version]==1 ? [ i, res[0], res[1], res[0]==0 ? res[1] : list[i][color_data_list][res[0]][res[1]][color_entry_index] ]
 	: undef
 ;
 function color_name_find_entry (list, namesplit, lang, fn, s=0, j=0, l=0) =
-	j>=s ? undef :
+	j>=s ?
+		// Special handling no data list but language and filter function is active
+		(lang[l]==undef || fn==undef)                              ? undef :
+		(namesplit[1]!="" && lang[l]!="" && lang[l]!=namesplit[1]) ? undef :
+		let ( res = fn (namesplit[2], lang[l]) )
+		is_list(res) ? res :
+		color_name_find_entry (list, namesplit, lang, fn, s, j+1, l+1)
+	:
 	let (
 		res =
 			(namesplit[1]!="" && lang[l]!="" && lang[l]!=namesplit[1]) ? -2
@@ -189,8 +196,12 @@ function color_name_find_entry (list, namesplit, lang, fn, s=0, j=0, l=0) =
 			)
 			name==undef ? -3
 			:
+			is_string(name) ?
 			binary_search (list[j], name, [color_entry_name])
+			:
+			name
 	)
+	is_list(res) ? res :
 	res<0
 		? color_name_find_entry (list, namesplit, lang, fn, s, j+1, l+1)
 		: [j, res]
