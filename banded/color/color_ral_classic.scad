@@ -16,12 +16,15 @@ include <banded/color_definition.scad>
 
 
 color_ral_classic = [ prepare_color_name( [
-	["RAL classic colors"
+	[ "RAL Classic colors"
 	,["ral", "ral classic", "ral_classic"]
 	,["", "de", "en"]
-	,function(name,lang)
+	,function (name,lang)
 		lang!="" ? name :
-		(name[0]=="r" && name[1]=="a" && name[2]=="l" && (name[3]==" " || name[3]=="_"))
+		(  name[0]=="r"
+		&& name[1]=="a"
+		&& name[2]=="l"
+		&&(name[3]==" " || name[3]=="_"))
 			? str(name[4],name[5],name[6],name[7])
 			: name
 	],[
@@ -70,6 +73,7 @@ color_ral_classic = [ prepare_color_name( [
 	[[226,110, 14], "2011", "tieforange"      , "deep orange"],
 	[[213,101, 77], "2012", "lachsorange"     , "salmon orange"],
 	[[146, 62, 37], "2013", "perlorange"      , "pearl orange"],
+	[[250, 68,  2], "2017", "ral orange"      , "ral orange"],
 	// red
 	[[167, 41, 32], "3000", "feuerrot"        , "flame red"],
 	[[155, 36, 35], "3001", "signalrot"       , "signal red"],
@@ -242,6 +246,7 @@ color_ral_classic = [ prepare_color_name( [
 	[[135,133,129], "9007", "graualuminium"   , "grey aluminium"],
 	[[241,236,225], "9010", "reinweiß"        , "pure white"],
 	[[ 39, 41, 43], "9011", "graphitschwarz"  , "graphite black"],
+	[[255,253,230], "9012", "reinraumweiß"    , "clean room white"],
 	[[241,240,234], "9016", "verkehrsweiß"    , "traffic white"],
 	[[ 42, 41, 42], "9017", "verkehrsschwarz" , "traffic black"],
 	[[200,203,196], "9018", "papyrusweiß"     , "papyrus white"],
