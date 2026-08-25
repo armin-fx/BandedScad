@@ -15,11 +15,13 @@
 include <banded/color_definition.scad>
 
 include <banded/color/color_ral_classic.scad>
+include <banded/color/color_ral_design.scad>
 include <banded/color/color_ral_effect.scad>
 
 
 color_ral =
 	[ each is_undef(color_ral_classic) ? [] : prepare_color_list( color_ral_classic )
+	, each is_undef(color_ral_design)  ? [] : prepare_color_list( color_ral_design  )
 	, each is_undef(color_ral_effect)  ? [] : prepare_color_list( color_ral_effect  )
 	];
 
