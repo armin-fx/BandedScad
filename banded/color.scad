@@ -239,14 +239,37 @@ function color_name_split (name) =
 function prepare_color_list (list) =
 	[ for (e=list) prepare_color_name (e) ]
 ;
-function prepare_color_name (list, version=1) =
+function prepare_color_name (list, version) =
 	list[color_data_prepared]==true ? list :
 	//
-	version==0 || version==1 ?
 	let(
 		// use the first entry in the color data list and count the entries
-		color_language_size = len( list[color_data_list][0] ) - 1
+		color_language_size = len( list[color_data_list][0] ) - 1,
+		//
+		color_versions   = list[color_data_version],
+		prefered_version = color_language_size==1 ? 0 : 1,
+		//
+		Version =
+			// function parameter overrides all
+			version!=undef ? version :
+			//
+			// no restriction in data set, full range possible
+			color_versions==undef ? prefered_version :
+			//
+			// only one value possible
+			is_num(color_versions) ? color_versions :
+			//
+			// color version as list
+			// - is preferred version in the list?
+			//   Use this, elsewise seach for known versions, elsewise use first entry.
+			[]!=[for(e=color_versions) if(e==prefered_version) 0]
+			? prefered_version
+			: let( check_known = [for(e=color_versions) if(e==0 || e==1) e] )
+			  check_known!=[] ? check_known[0]
+			: color_versions[0]
 	)
+	//
+	Version==0 || Version==1 ?
 	[ for (id=[0:1:3])
 		 id==color_data_info ?
 			[ for (i=[0:1:3])
@@ -268,7 +291,7 @@ function prepare_color_name (list, version=1) =
 
 			]
 		:id==color_data_list ?
-			version==0 ?
+			Version==0 ?
 				let (
 					name_entries=
 					[ for (j=[1:1:len(list[color_data_list][0])-1])
@@ -281,7 +304,7 @@ function prepare_color_name (list, version=1) =
 					?	e
 					:	sort  (e, type=[color_entry_name])
 				]
-			: // version==1 ?
+			: // Version==1 ?
 				let (
 					rgb_entries=
 					[ for (k=[0:1:len(list[color_data_list])-1])
@@ -303,7 +326,7 @@ function prepare_color_name (list, version=1) =
 					]
 				]
 		:id==color_data_prepared ? true
-		:id==color_data_version  ? version
+		:id==color_data_version  ? Version
 		:undef
 	]
 	:list

@@ -97,6 +97,7 @@ Actually supported color systems, defined in color data lists:
     (RAL is a registered trademark of RAL gGmbH; see source code for disclaimer)  
     Includes color lists:
     - `color_ral_classic` - RAL Classic colors
+    - `color_ral_design`  - RAL Design System plus colors
     - `color_ral_effect`  - RAL Effect colors
   - defined in file: `banded/color/color_ral.scad`
   - <https://en.wikipedia.org/wiki/RAL_colour_standard>
@@ -108,6 +109,11 @@ Actually supported color systems, defined in color data lists:
   - defined in file: `banded/color/color_ral_classic.scad`
   - You can use english (`"en"`) and german (`"de"`) color names
     and the RAL Classic number as string e.g. `"1001"` or `"ral 1001"` for color "beige"
+- `color_ral_design`
+  - Includes approximations for RAL Design System plus colors.
+  - short names are `ral`, `ral_design`
+  - defined in file: `banded/color/color_ral_design.scad`
+  - You can use only english (`"en"`) color names.
 - `color_ral_effect`
   - Includes approximations for RAL Effect colors.
   - short names are `ral`, `ral_effect`
