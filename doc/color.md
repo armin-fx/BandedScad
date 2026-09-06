@@ -79,10 +79,11 @@ _Return list:_
   - `b` = blue:  `0...1`
   - `alpha` = transparent to opaque: `0...1`, default = `1`
 
-_Color lists for argument_ `colors`_:_  
+___Color lists for argument___ `colors`___:___  
 You can set a defined _color name list_,
 then the function will only use the color names from this list.  
-Actually supported color systems, defined in color data lists:
+
+_Actually supported color systems, defined in color data lists:_
 - `color_svg`
   - SVG color list
   - short name is `svg`
@@ -92,33 +93,9 @@ Actually supported color systems, defined in color data lists:
   - short name is `banded`
   - defined in file: `banded/color/color_other.scad`
   - languages: english (`"en"`), german (`"de"`)
-- `color_ral`
-  - Container with approximations for all defined RAL colors
-    (RAL is a registered trademark of RAL gGmbH; see source code for disclaimer)  
-    Includes color lists:
-    - `color_ral_classic` - RAL Classic colors
-    - `color_ral_design`  - RAL Design System plus colors
-    - `color_ral_effect`  - RAL Effect colors
-  - defined in file: `banded/color/color_ral.scad`
-  - <https://en.wikipedia.org/wiki/RAL_colour_standard>
-  - <https://en.wikipedia.org/wiki/List_of_RAL_colours>
-  - <https://www.ral-farben.de/en/>
-- `color_ral_classic`
-  - Includes approximations for RAL Classic colors.
-  - short names are `ral`, `ral_classic`
-  - defined in file: `banded/color/color_ral_classic.scad`
-  - You can use english (`"en"`) and german (`"de"`) color names
-    and the RAL Classic number as string e.g. `"1001"` or `"ral 1001"` for color "beige"
-- `color_ral_design`
-  - Includes approximations for RAL Design System plus colors.
-  - short names are `ral`, `ral_design`
-  - defined in file: `banded/color/color_ral_design.scad`
-  - You can use only english (`"en"`) color names.
-- `color_ral_effect`
-  - Includes approximations for RAL Effect colors.
-  - short names are `ral`, `ral_effect`
-  - defined in file: `banded/color/color_ral_effect.scad`
-  - Set the RAL Effect number as string e.g. `"ral 110-1"`
+
+You can define own color data systems.
+TODO I will describe this later.
 
 The color name lists can be combined to one:  
 ```OpenSCAD
