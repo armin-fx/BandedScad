@@ -40,6 +40,8 @@ Matrix and vector operations
     - [`matrix_replace_column()`][matrix_replace_column]
     - [`concat_matrix()`][concat_matrix]
 
+[constant_Mx]: constants.md#auxiliary-constants-
+
 
 Matrix operations [^][contents]
 -------------------------------
@@ -87,6 +89,9 @@ _Arguments:_
 ```OpenSCAD
 identity_matrix (n)
 ```
+
+The first four dimensions of the identity matrices were
+[defined as constants `M1`...`M4`][constant_Mx].
 
 #### determinant [^][contents]
 [determinant]: #determinant-

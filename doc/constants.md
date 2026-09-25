@@ -27,6 +27,8 @@ Constants
     - [Paper size](#paper-size-)
     - [Envelope size](#envelope-size-)
 
+[identity_matrix]: math_matrix.md#identity_matrix-
+
 
 Defined constants [^][contents]
 -------------------------------
@@ -88,10 +90,15 @@ in console if constants has changed.
 
 ### Auxiliary constants [^][contents]
 
+_Special numbers:_
+| constant | description
+|----------|-------------
+| `inf`    | value positive infinity
+| `nan`    | value not-a-number
+
+_Special vectors:_
 | constant | value     | description
 |----------|-----------|-------------
-| `inf`    |           | value positive infinity
-| `nan`    |           | value not-a-number
 | `X`      | `[1,0,0]` | X-axis as 3D vector
 | `Y`      | `[0,1,0]` | Y-axis as 3D vector
 | `Z`      | `[0,0,1]` | Z-axis as 3D vector
@@ -101,6 +108,15 @@ in console if constants has changed.
 | `Y2`     | `[0,1]`   | Y-axis as 2D vector
 | `O2`     | `[0,0]`   | origin as 2D vector
 | `A2`     | `[1,1]`   | all axis set as 2D vector
+
+_Identity matrices:_  
+They can be generated using the [`identity_matrix()`][identity_matrix] function.
+| constant | value                                       | description
+|----------|---------------------------------------------|-------------
+| `M1`     | `[[1]]`                                     | identity matrix for dimension 1
+| `M2`     | `[[1,0],[0,1]]`                             | identity matrix for dimension 2
+| `M3`     | `[[1,0,0],[0,1,0],[0,0,1]]`                 | identity matrix for dimension 3
+| `M4`     | `[[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]]` | identity matrix for dimension 4
 
 
 ### Functions [^][contents]

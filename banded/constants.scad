@@ -78,6 +78,13 @@ X2=x(2); Y2=y(2);
 O2=origin(2);
 A2=origin(2,v=1);
 
+// predefined identity matrices for the first 4 dimensions
+// see function 'identity_matrix()' to generate these
+M1 = [[1]];
+M2 = [[1,0],[0,1]];
+M3 = [[1,0,0],[0,1,0],[0,0,1]];
+M4 = [[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]];
+
 // returns a vector with axis n
 // n - number of axis (X=0, Y=1, Z=2)
 // d - count of dimensions (2D plane = 2; 3D room, standard = 3)
@@ -160,6 +167,10 @@ function test_message_constants_str() = str (
 	Y2 == y(2)           ? "" : "WARNING: Constant 'Y2' has changed.\n",
 	O2 == origin(2)      ? "" : "WARNING: Constant 'O2' has changed.\n",
 	A2 == origin(2,v=1)  ? "" : "WARNING: Constant 'A2' has changed.\n",
+	M1 == [[1]]                                     ? "" : "WARNING: Constant 'M1' has changed.\n",
+	M2 == [[1,0],[0,1]]                             ? "" : "WARNING: Constant 'M2' has changed.\n",
+	M3 == [[1,0,0],[0,1,0],[0,0,1]]                 ? "" : "WARNING: Constant 'M3' has changed.\n",
+	M4 == [[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]] ? "" : "WARNING: Constant 'M4' has changed.\n",
 	"")
 ;
 

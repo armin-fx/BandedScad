@@ -34,7 +34,7 @@ Polygon operations
     - [`get_intersection_line_plane()`][get_intersection_line_plane]
     - [`midpoint()`][midpoint]
   - [Polygon functions](#polygon-functions-)
-	- [`length_line()`][length_line]
+    - [`length_line()`][length_line]
     - [`length_trace()`][length_trace]
     - [`position_line()`][position_line]
     - [`position_trace()`][position_trace]
