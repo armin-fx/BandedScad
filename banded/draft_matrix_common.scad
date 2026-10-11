@@ -293,7 +293,7 @@ function matrix_skew (v, t, m, a, d=3, short=false) =
 		: (a!=undef && is_num(a)) ? tan(a)
 		: 0,
 	V =	d==2 ? // 2D => angle
-			(is_list(v) && len(v)>=2) ? atan2(v[1],v[0])
+			(is_list(v) && len(v)>=2) ? atan2(v.y,v.x)
 			: is_num(v) ? v
 			: 0
 		: d==3 ? // 3D => vector
@@ -329,11 +329,46 @@ function matrix_skew (v, t, m, a, d=3, short=false) =
 			,[0,0       ,1]]
 	: undef
 ;
+//
+function matrix_skew_x (t, m, a, d=3, short=false) =
+	let (
+		V = D==2 ? [1,0] : [1,0,0]
+	)
+	matrix_skew (V, t, m, a, d, short)
+;
+function matrix_skew_y (t, m, a, d=3, short=false) =
+	let (
+		V = D==2 ? [0,1] : [0,1,0]
+	)
+	matrix_skew (V, t, m, a, d, short)
+;
+function matrix_skew_z (t, m, a, short=false) =
+	let (
+		V = [0,0,1]
+	)
+	matrix_skew (V, t, m, a, 3, short)
+;
 
 // Generate a matrix to skew an object at position 'p'
 function matrix_skew_at (v, t, m, a, p, d=3) =
 	matrix_transform_at ( p=p, d=d, m=
 	matrix_skew ( v,t,m,a, d=d)
+	)
+;
+//
+function matrix_skew_at_x (t, m, a, p, d=3) =
+	matrix_transform_at ( p=p, d=d, m=
+	matrix_skew_x ( t,m,a, d=d)
+	)
+;
+function matrix_skew_at_y (t, m, a, p, d=3) =
+	matrix_transform_at ( p=p, d=d, m=
+	matrix_skew_y ( t,m,a, d=d)
+	)
+;
+function matrix_skew_at_z (t, m, a, p) =
+	matrix_transform_at ( p=p, d=3, m=
+	matrix_skew_z ( t,m,a )
 	)
 ;
 

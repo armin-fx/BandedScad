@@ -190,7 +190,26 @@ function resize_z (object, l) = transform_function (object, function (list)
 function skew (object, v, t, m, a) = transform_function (object, function (list)
     skew_points (list, v, t, m, a) )
 ;
+function skew_x (object, t, m, a) = transform_function (object, function (list)
+    skew_x_points (list, t, m, a) )
+;
+function skew_y (object, t, m, a) = transform_function (object, function (list)
+    skew_y_points (list, t, m, a) )
+;
+function skew_z (object, t, m, a) = transform_function (object, function (list)
+    skew_z_points (list, t, m, a) )
+;
+
 function skew_at (object, v, t, m, a, p) = transform_function (object, function (list)
     skew_at_points (list, v, t, m, a, p) )
+;
+function skew_at_x (object, t, m, a, p) = transform_function (object, function (list)
+    skew_at_x_points (list, t, m, a, p) )
+;
+function skew_at_y (object, t, m, a, p) = transform_function (object, function (list)
+    skew_at_y_points (list, t, m, a, p) )
+;
+function skew_at_z (object, t, m, a, p) = transform_function (object, function (list)
+    skew_at_z_points (list, t, m, a, p) )
 ;
 

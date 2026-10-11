@@ -758,7 +758,7 @@ module helix_object_diff_intern (opposite)
 //   w      - Breite der Wand
 // Angegeben müssen:
 //   genau 2 Angaben von r oder ri oder ro oder w
-module tube_extrude (r, w, ri, ro, angle, outer, align, d, di, do, convexity, size=1000)
+module tube_extrude (r, w, ri, ro, angle, outer, align, d, di, do, convexity, limit=1000)
 {
 	rx     = parameter_ring_2r (r, w, ri, ro, d, di, do);
 	Angle  = parameter_angle (angle);
@@ -785,7 +785,7 @@ module tube_extrude (r, w, ri, ro, angle, outer, align, d, di, do, convexity, si
 			translate_x(-l_begin -l * (i+0.5)/slices)
 			children();
 			//
-			square ([l/slices, size], center=true);
+			square ([l/slices, limit], center=true);
 		}
 	}
 }

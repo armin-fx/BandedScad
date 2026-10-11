@@ -294,6 +294,29 @@ module skew (v, t, m, a, d)
 	multmatrix( matrix_skew(v,t,m,a, d=D) )
 	children();
 }
+//
+module skew_x (t, m, a, d)
+{
+	D = is_num(d) ? d : 3;
+	V = D==2 ? [1,0] : [1,0,0];
+	//
+	multmatrix( matrix_skew(V,t,m,a, d=D) )
+	children();
+}
+module skew_y (t, m, a, d)
+{
+	D = is_num(d) ? d : 3;
+	V = D==2 ? [0,1] : [0,1,0];
+	//
+	multmatrix( matrix_skew(V,t,m,a, d=D) )
+	children();
+}
+module skew_z (t, m, a)
+{
+	V = [0,0,1];
+	multmatrix( matrix_skew(V,t,m,a, d=3) )
+	children();
+}
 
 // skew an object at position 'p', see matrix_skew_at()
 // only 3D object
@@ -306,6 +329,29 @@ module skew_at (v, t, m, a, p, d)
 		3
 	;
 	multmatrix( matrix_skew_at(v,t,m,a,p, d=D) )
+	children();
+}
+//
+module skew_at_x (t, m, a, p, d)
+{
+	D = is_num(d) ? d : 3;
+	V = D==2 ? [1,0] : [1,0,0];
+	//
+	multmatrix( matrix_skew_at(V,t,m,a,p, d=D) )
+	children();
+}
+module skew_at_y (t, m, a, p, d)
+{
+	D = is_num(d) ? d : 3;
+	V = D==2 ? [0,1] : [0,1,0];
+	//
+	multmatrix( matrix_skew_at(V,t,m,a,p, d=D) )
+	children();
+}
+module skew_at_z (t, m, a, p)
+{
+	V = [0,0,1];
+	multmatrix( matrix_skew_at(V,t,m,a,p, d=3) )
 	children();
 }
 

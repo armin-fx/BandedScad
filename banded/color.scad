@@ -153,7 +153,7 @@ function color_name (name, alpha, colors) =
 function color_name_find (list, namesplit, s=0, i=0) =
 	i>=s ? undef :
 	let (
-		,info = list[i][color_data_info]
+		 info = list[i][color_data_info]
 		,lang = info[color_info_language]
 		,fn   = info[color_info_function]
 		,res =

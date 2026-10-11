@@ -400,4 +400,8 @@ Axis = x, y or z. later named as '?'
 | .                                        | `matrix_mirror_at_z (p)`                  | only in 3 dimension
 | [`matrix_scale_at()`][matrix_scale_at]   | `matrix_scale_at_? (f, p, d)`             | `f` - scale factor <br> `d` - dimension
 | .                                        | `matrix_scale_at_z (f, p)`                | only in 3 dimension
+| [`matrix_skew`][matrix_skew]             | `matrix_skew_? (t, m, a, d, short)`       | `t` - shear direction<br /> `m` - skew factor<br /> `a` - angle<br /> `d`- dimensions of object (only in module version needed)
+| .                                        | `matrix_skew_z (t, m, a, short)`          | only in 3 dimension
+| [`matrix_skew_at`][matrix_skew_at]       | `matrix_skew_at_? (t, m, a, p, d)`        | `t` - shear direction<br /> `m` - skew factor<br /> `a` - angle<br /> `p` - position<br /> `d`- dimensions of object (only in module version needed)
+| .                                        | `matrix_skew_at_z (t, m, a, p)`           | only in 3 dimension
 

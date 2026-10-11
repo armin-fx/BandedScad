@@ -136,12 +136,50 @@ function skew_points (list, v, t, m, a) =
 		matrix_skew (v, t, m, a, d=len(list[0]), short=true)
 	)
 ;
+//
+function skew_x_points (list, t, m, a) =
+	(list==undef || !is_list(list) || !is_list(list[0])) ? undef :
+	multmatrix_points (list,
+		matrix_skew_x (t, m, a, d=len(list[0]), short=true)
+	)
+;
+function skew_y_points (list, t, m, a) =
+	(list==undef || !is_list(list) || !is_list(list[0])) ? undef :
+	multmatrix_points (list,
+		matrix_skew_y (t, m, a, d=len(list[0]), short=true)
+	)
+;
+function skew_z_points (list, t, m, a) =
+	(list==undef || !is_list(list) || !is_list(list[0])) ? undef :
+	multmatrix_points (list,
+		matrix_skew_z (t, m, a, short=true)
+	)
+;
 
 // skew an object in a point list at position 'p', see matrix_skew_at()
 function skew_at_points (list, v, t, m, a, p) =
 	(list==undef || !is_list(list) || !is_list(list[0])) ? undef :
 	multmatrix_points (list,
 		matrix_skew_at (v, t, m, a, p, d=len(list[0]))
+	)
+;
+//
+function skew_at_x_points (list, t, m, a, p) =
+	(list==undef || !is_list(list) || !is_list(list[0])) ? undef :
+	multmatrix_points (list,
+		matrix_skew_at_x (t, m, a, p, d=len(list[0]))
+	)
+;
+function skew_at_y_points (list, t, m, a, p) =
+	(list==undef || !is_list(list) || !is_list(list[0])) ? undef :
+	multmatrix_points (list,
+		matrix_skew_at_y (t, m, a, p, d=len(list[0]))
+	)
+;
+function skew_at_z_points (list, t, m, a, p) =
+	(list==undef || !is_list(list) || !is_list(list[0])) ? undef :
+	multmatrix_points (list,
+		matrix_skew_at_z (t, m, a, p)
 	)
 ;
 

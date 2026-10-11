@@ -536,21 +536,21 @@ skew_points (list, v, t, m, a)
 - `v` - vector, shear parallel to this axis
   - 3D:
     - as vector
-    - standard = Z axis
+    - default = Z axis
   - 2D:
     - as vector
     - or as angle in degree
     - same operation like [`rotate_to_vector()`][rotate_to_vector]
-    - standard = Y axis
+    - default = Y axis
 - `t` - target vector, shear direction to this vector
   - 3D:
-    - as vector
-    - as angle in degree
-    - standard = X axis
+    - as vector, skew this direction along the plane spanned with `v` and this vector
+    - as angle in degrees
+    - default = X axis
   - 2D:
     - not needed, undefined
-- `m` - skew factor, standard = 0 
-- `a` - angle in degree inside (-90 ... 90), alternative to 'm'
+- `m` - skew factor, default = `0`
+- `a` - angle in degrees inside (`-90` ... `90`), alternative to `m`
 - `d`
   - dimensions of object,
     needed for module version only
@@ -653,6 +653,10 @@ Axis = x, y or z. later named as '?'
 | `rotate_backwards_at()`                  | `rotate_backwards_at_? (a, p)`  | `a` - angle<br /> `p` - position
 | [`mirror_at()`][mirror_at]               | `mirror_at_? (p)`               | `p` - position
 | [`scale_at()`][scale_at]                 | `scale_at_? (f, p)`             | `f` - scale factor<br /> `p` - position
+| [`skew`][skew]                           | `skew_? (t, m, a, d)`           | `t` - shear direction<br /> `m` - skew factor<br /> `a` - angle<br /> `d`- dimensions of object (only in module version needed)
+| .                                        | `skew_z (t, m, a)`              | only in 3 dimension
+| [`skew_at`][skew_at]                     | `skew_at_? (t, m, a, p, d)`     | `t` - shear direction<br /> `m` - skew factor<br /> `a` - angle<br /> `p` - position<br /> `d`- dimensions of object (only in module version needed)
+| .                                        | `skew_at_z (t, m, a, p)`        | only in 3 dimension
 
 | Base function on a point list                   | with fixed axis                             | description
 |-------------------------------------------------|---------------------------------------------|-------------
@@ -1338,7 +1342,7 @@ Only as _module version_.
 
 _Arguments:_
 ```OpenSCAD
-tube_extrude (r, w, ri, ro, angle, outer, align, d, di, do, convexity, size)
+tube_extrude (r, w, ri, ro, angle, outer, align, d, di, do, convexity, limit)
 ```
 - `r`, `d`   - The mean radius or diameter. The wall width is divided evenly between the inside and outside.
 - `ri`, `di` - inner radius, inner diameter
@@ -1372,7 +1376,7 @@ tube_extrude (r, w, ri, ro, angle, outer, align, d, di, do, convexity, size)
   - optional
   - Integer. The convexity parameter specifies the maximum number
     of front sides (or back sides) a ray intersecting the object might penetrate.
-- `size`
+- `limit`
   - optional
   - Internally value in module version
   - Describes the intern working object size as numeric value.
